@@ -50,5 +50,9 @@ add_executable(TeRaPOC
         poc/timestamper.h poc/timestamper.cpp)
 # -lboost_filesystem -lboost_system
 # ${Boost_FILESYSTEM_LIBRARY} ${Boost_LOG_LIBRARY}
-target_link_libraries(TeRaPOC zip ssl crypto ${Boost_LIBRARIES} )
+if (APPLE)
+    target_link_libraries(TeRaPOC /usr/local/lib/libzip.dylib /usr/local/lib/libssl.dylib /usr/local/lib/libcrypto.dylib ${Boost_LIBRARIES} )
+else
+    target_link_libraries(TeRaPOC zip ssl crypto ${Boost_LIBRARIES} )
+endif
 qt5_use_modules(TeRaPOC Core Concurrent Network)
