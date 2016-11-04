@@ -8,6 +8,7 @@
 
 #include <iostream>
 
+#include <QDir>
 #include <QFileInfo>
 #include <QCryptographicHash>
 #include <QCoreApplication>
@@ -116,10 +117,8 @@ bool TimeStamperData_impl::addFile(QString const& name, QByteArray const& data) 
 }
 
 
-TimeStamper::TimeStamper(QString const& infile, QString const& tsUrl, QString const& outfile) :
-        inputFilePath(infile),
+TimeStamper::TimeStamper(QString const& tsUrl) :
         timeserverUrl(tsUrl),
-        outputFilePath(outfile),
         data(new TimeStamperData_impl())
 {
     QUrl url(timeserverUrl);
@@ -208,17 +207,10 @@ void TimeStamper::tsReplyFinished(QNetworkReply *reply) {
     }
 }
 
-void TimeStamper::exitOnFinished(bool success, QString errString) {
-    if (success) {
-        BOOST_LOG_TRIVIAL(info) << "Timestamping finished successfully :)";
-    } else {
-        BOOST_LOG_TRIVIAL(error) << "Timestamping failed: " << errString.toUtf8().constData();
-    }
-    QCoreApplication::exit(0);
-}
-
-void TimeStamper::startTimestamping() {
+void TimeStamper::startTimestamping(QString const& infile, QString const& outfile) {
     QString errorMsg;
+    inputFilePath = infile;
+    outputFilePath = outfile;
 
     QByteArray request;
     bool res = getTimestampRequest(request, errorMsg);
@@ -226,6 +218,68 @@ void TimeStamper::startTimestamping() {
         emit timestampingFinished(false, errorMsg);
     } else {
         sendTSRequest(request);
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+QString OutputNameGenerator::getOutFile(QString const& filePath) {
+    QFileInfo fileInfo(filePath);
+    QString name = fileInfo.fileName();
+
+    const QString ext(".bdoc");
+    if (name.endsWith(ext)) name = name.left(name.size() - ext.size());
+
+    QString res;
+    int nr = 0;
+    do {
+        QString newName;
+        if (nr > 0) {
+            newName = name + "(" + QString::number(nr) + ")." + extension;
+        } else {
+            newName = name + "." + extension;
+        }
+        QFileInfo outFileInfo(QDir(fileInfo.path()), newName);
+        if (!outFileInfo.exists()) {
+            res = outFileInfo.absoluteFilePath();
+        }
+        ++nr;
+    } while (res.isEmpty());
+    return res;
+}
+
+BatchStamper::BatchStamper(QString const& tsUrl, QStringList const& inputFiles, OutputNameGenerator& ng) :
+    pos(-1), input(inputFiles), ts(tsUrl), namegen(ng)
+{
+    QObject::connect(this, SIGNAL(triggerNext()),
+                     this, SLOT(processNext()));
+    QObject::connect(&ts, SIGNAL(timestampingFinished(bool,QString)),
+                     this, SLOT(timestampFinished(bool,QString)));
+}
+
+void BatchStamper::startTimestamping() {
+    emit triggerNext();
+}
+
+void BatchStamper::processNext() {
+    if ((pos+1) >= input.size()) {
+        pos = input.size();
+        emit timestampingFinished(true, "");
+        return;
+    }
+    ++pos;
+    QString infile = input[pos];
+    QString outfile = namegen.getOutFile(infile);
+std::cout << "(" << (pos+1) << "/" << input.size() << "): " << infile.toUtf8().constData() <<
+        " -> " << outfile.toUtf8().constData() << std::endl;
+    ts.startTimestamping(infile, outfile);
+}
+
+void BatchStamper::timestampFinished(bool success, QString errString) {
+    if (!success) {
+        timestampingFinished(success, errString);
+    } else {
+        emit triggerNext();
     }
 }
 

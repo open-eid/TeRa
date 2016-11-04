@@ -35,6 +35,8 @@ include_directories(/usr/local/include)
 find_library(ssl NAMES libssl.so  PATHS /home/s/Downloads/openssl-1.1.0b)
 find_library(crypto NAMES libcrypto.so PATHS /home/s/Downloads/openssl-1.1.0b)
 
+#add_library(zip STATIC /home/s/Downloads/libzip-1.1.3/lib/libzip.la)
+
 #set(libzip_DIR 'C:\\Program Files\\libzip')
 #find_package(libzip PATHS )
 
@@ -46,13 +48,13 @@ SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -pthread" )
 # TeRaPOC
 add_executable(TeRaPOC
         poc/terapoc.cpp
+        poc/utils.h poc/utils.cpp
         poc/openssl_utils.h poc/openssl_utils.cpp
+        poc/disk_crawler.h poc/disk_crawler.cpp
+        poc/logging.h poc/logging.cpp
         poc/timestamper.h poc/timestamper.cpp)
 # -lboost_filesystem -lboost_system
 # ${Boost_FILESYSTEM_LIBRARY} ${Boost_LOG_LIBRARY}
-if (APPLE)
-    target_link_libraries(TeRaPOC /usr/local/lib/libzip.dylib /usr/local/lib/libssl.dylib /usr/local/lib/libcrypto.dylib ${Boost_LIBRARIES} )
-else
-    target_link_libraries(TeRaPOC zip ssl crypto ${Boost_LIBRARIES} )
-endif
+#target_link_libraries(TeRaPOC /home/s/Downloads/libzip-1.1.3/lib/.libs/libzip.a /home/s/cmake_builds/zlib/libz.a ssl crypto ${Boost_LIBRARIES} )
+target_link_libraries(TeRaPOC zip ssl crypto ${Boost_LIBRARIES} )
 qt5_use_modules(TeRaPOC Core Concurrent Network)

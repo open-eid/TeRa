@@ -22,16 +22,14 @@ class TimeStamperData_impl;
 class TimeStamper: public QObject {
     Q_OBJECT
 public:
-    TimeStamper(QString const& infile, QString const& tsUrl, QString const& outfile);
+    TimeStamper(QString const& tsUrl);
 
-    void startTimestamping();
+    void startTimestamping(QString const& infile, QString const& outfile);
     bool getTimestampRequest(QByteArray& tsrequest, QString& error);
     void sendTSRequest(QByteArray const& timestampRequest);
     bool createAsicsContainer(QByteArray const& tsresponse);
 public slots:
     void tsReplyFinished(QNetworkReply *reply);
-
-    void exitOnFinished(bool success, QString errString);
 signals:
     void timestampingFinished(bool success, QString errString);
 private:
@@ -43,6 +41,32 @@ private:
     QNetworkRequest request;
 
     TimeStamperData_impl* data;
+};
+
+class OutputNameGenerator {
+public:
+    OutputNameGenerator(QString const& ext) : extension(ext) {};
+    QString getOutFile(QString const& filePath);
+private:
+    QString extension;
+};
+
+class BatchStamper : public QObject {
+    Q_OBJECT
+public:
+    BatchStamper(QString const& tsUrl, QStringList const& inputFiles, OutputNameGenerator& ng);
+    void startTimestamping();
+signals:
+    void triggerNext();
+    void timestampingFinished(bool success, QString errString);
+private slots:
+    void processNext();
+    void timestampFinished(bool success, QString errString);
+private:
+    int pos;
+    QStringList input;
+    TimeStamper ts;
+    OutputNameGenerator& namegen;
 };
 
 }

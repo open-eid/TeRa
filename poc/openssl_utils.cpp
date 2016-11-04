@@ -289,7 +289,7 @@ bool extract_timestamp_from_ts_response(QByteArray const& timeserverResponse, QB
                              md, signer, chain,
                              policy, timeserverResponse, token_in,
                              timestamp, token_out, text);
-std::cout << "extractTimestamp-> " << result << std::endl;
+//std::cout << "extractTimestamp-> " << result << std::endl;
     return result == 1;
 }
 
