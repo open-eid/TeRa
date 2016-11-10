@@ -1,9 +1,7 @@
-/*
- * openssl_utils.cpp
- *
- *  Created on: Oct 26, 2016
+/**
+ * Based on apps/ts.c in OpenSSL
  */
-
+// TODO ll
 #include "openssl_utils.h"
 
 #include <openssl/ssl.h>
@@ -13,12 +11,11 @@
 
 namespace ria_tera {
 
-    // apps/ts.c
+    // apps/ts.c    TODO
     // static TS_REQ *create_query(BIO *data_bio, const char *digest, const EVP_MD *md,
     //                             const char *policy, int no_nonce, int cert)
 
 
-/////////////////////////////
 /* Request nonce length, in bits (must be a multiple of 8). */
 # define NONCE_LENGTH            64
 
@@ -170,11 +167,6 @@ std::cout << "could not create query\n" << std::endl;
 	return ts_req;
 }
 /////////////////////////////
-
-
-
-
-
 
 
 
@@ -332,43 +324,39 @@ static TS_RESP *read_PKCS7(BIO *in_bio)
 
 QByteArray create_timestamp_request(QByteArray const& sha256)
 {
-    TS_REQ *query = NULL;
+    TS_REQ *query = NULL; // TODO
 
     BIO *data_bio = NULL;
     QByteArray hashHex = sha256.toHex();
     const char *digest = hashHex.constData();
-// include\openssl\evp.h (2 hits)
-//  Line 401: # define EVP_get_digestbynid(a) EVP_get_digestbyname(OBJ_nid2sn(a))
-//  Line 873: const EVP_MD *EVP_get_digestbyname(const char *name);
-    const EVP_MD *md = EVP_get_digestbyname("sha256");
-    const char *policy = NULL;
-    int no_nonce = 0; // ???????
-    int cert = 1; // 1????
+
+    const EVP_MD *md = EVP_get_digestbyname("sha256"); // TODO
+    const char *policy = NULL; // TODO
+    int no_nonce = 0;
+    int cert = 1;
 
     query = create_query(data_bio, digest, md, policy, no_nonce, cert);
-    // TODO return it
-
 
     // https://www.openssl.org/docs/manmaster/crypto/bio.html
     BIO *out_bio = NULL;
     out_bio = BIO_new(BIO_s_mem());
 
     // typedef struct buf_mem_st BUF_MEM;
-    //if ((out_bio = bio_open_default(out, 'w', FORMAT_ASN1)) == NULL)  // TODO ????
-    //  goto end;
     if (!i2d_TS_REQ_bio(out_bio, query)) {
 //      goto end;
 //std::cout << "WTF i2d_TS_REQ_bio" << std::endl;
     }
 
-//std::cout <<  "xxxxx " << std::endl;
+    // free ressources
     BUF_MEM *bptr = NULL;
     BIO_get_mem_ptr(out_bio, &bptr);
-//  BIO_set_close(out_bio, BIO_NOCLOSE); /* So BIO_free() leaves BUF_MEM alone */
-//  BIO_free(out_bio);
 
-QByteArray xxx(bptr->data, bptr->length);
-    return xxx;
+    QByteArray res(bptr->data, bptr->length);
+
+    BIO_set_close(out_bio, BIO_NOCLOSE); /* So BIO_free() leaves BUF_MEM alone */
+    BIO_free(out_bio);
+
+    return res;
 }
 
 } // namespace

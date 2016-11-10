@@ -3,7 +3,7 @@
  *
  *  Created on: Oct 26, 2016
  */
-
+// TODO ll
 #include "timestamper.h"
 
 #include <iostream>
@@ -89,7 +89,8 @@ bool TimeStamperData_impl::createAsicsContainer(QString const& outpath, QString 
 bool TimeStamperData_impl::insertInputFile(QString const& path) {
     // https://nih.at/libzip/zip_source_function.html
     zip_source *source = zip_source_file(zip, path.toUtf8().constData(), 0, -1); // TODO
-    int index = (int)zip_file_add(zip, path.toUtf8().constData(), source, ZIP_FL_OVERWRITE | ZIP_FL_ENC_UTF_8); ///////////////////////////////////
+    QFileInfo fileinfo(path);
+    int index = (int)zip_file_add(zip, fileinfo.fileName().toUtf8().constData(), source, ZIP_FL_OVERWRITE | ZIP_FL_ENC_UTF_8);
     if(index < 0)
     {
         std::cout << "failed to add file to archive. " << zip_strerror(zip) << std::endl;
@@ -169,6 +170,7 @@ void TimeStamper::sendTSRequest(QByteArray const& timestampRequest)
 }
 
 void TimeStamper::tsReplyFinished(QNetworkReply *reply) {
+    reply->deleteLater();
     if (QNetworkReply::NoError != reply->error()) {
         QString error;
         error.push_back("Time-stamping request failed: ");
@@ -224,6 +226,10 @@ void TimeStamper::startTimestamping(QString const& infile, QString const& outfil
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 QString OutputNameGenerator::getOutFile(QString const& filePath) {
+    if (fixedConversion.contains(filePath)) {
+        return fixedConversion[filePath];
+    }
+
     QFileInfo fileInfo(filePath);
     QString name = fileInfo.fileName();
 
@@ -248,8 +254,14 @@ QString OutputNameGenerator::getOutFile(QString const& filePath) {
     return res;
 }
 
-BatchStamper::BatchStamper(QString const& tsUrl, QStringList const& inputFiles, OutputNameGenerator& ng) :
-    pos(-1), input(inputFiles), ts(tsUrl), namegen(ng)
+void OutputNameGenerator::setFixedOutFile(QString const& in_file, QString const& file_out) {
+    fixedConversion[in_file] = file_out;
+}
+
+
+BatchStamper::BatchStamper(ProcessingMonitorCallback& mon, QString const& tsUrl,
+        QStringList const& inputFiles, OutputNameGenerator& ng) :
+        monitor(mon), pos(-1), input(inputFiles), ts(tsUrl), namegen(ng)
 {
     QObject::connect(this, SIGNAL(triggerNext()),
                      this, SLOT(processNext()));
@@ -270,8 +282,7 @@ void BatchStamper::processNext() {
     ++pos;
     QString infile = input[pos];
     QString outfile = namegen.getOutFile(infile);
-std::cout << "(" << (pos+1) << "/" << input.size() << "): " << infile.toUtf8().constData() <<
-        " -> " << outfile.toUtf8().constData() << std::endl;
+    monitor.processingFile(infile, outfile, pos, input.size());
     ts.startTimestamping(infile, outfile);
 }
 

@@ -3,17 +3,20 @@
  *
  *  Created on: Oct 26, 2016
  */
-
+// TODO ll
 #ifndef TIMESTAMPER_H_
 #define TIMESTAMPER_H_
 
 #include <QObject>
 #include <QByteArray>
+#include <QMap>
 #include <QScopedPointer>
 #include <QString>
 
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
+
+#include "utils.h"
 
 namespace ria_tera {
 
@@ -47,14 +50,16 @@ class OutputNameGenerator {
 public:
     OutputNameGenerator(QString const& ext) : extension(ext) {};
     QString getOutFile(QString const& filePath);
+    void setFixedOutFile(QString const& in_file, QString const& file_out);
 private:
     QString extension;
+    QMap<QString, QString> fixedConversion;
 };
 
 class BatchStamper : public QObject {
     Q_OBJECT
 public:
-    BatchStamper(QString const& tsUrl, QStringList const& inputFiles, OutputNameGenerator& ng);
+    BatchStamper(ProcessingMonitorCallback& mon, QString const& tsUrl, QStringList const& inputFiles, OutputNameGenerator& ng);
     void startTimestamping();
 signals:
     void triggerNext();
@@ -63,6 +68,7 @@ private slots:
     void processNext();
     void timestampFinished(bool success, QString errString);
 private:
+    ProcessingMonitorCallback& monitor;
     int pos;
     QStringList input;
     TimeStamper ts;
