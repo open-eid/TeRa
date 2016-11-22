@@ -10,6 +10,7 @@
 #include <QSettings>
 
 #include "utils.h"
+#include "config.h"
 #include "logging.h"
 #include "disk_crawler.h"
 #include "timestamper.h"
@@ -20,17 +21,12 @@ int const EXIT_CODE_WRONG_ARGUMENTS = 2;
 
 QString const file_in_param("file_in");
 QString const dir_in_param("dir_in");
+QString const in_dir_recursive_param("R");
 QString const file_out_param("file_out");
 QString const ext_out_param("ext_out");
 QString const excl_dir_param("excl_dir");
 QString const no_ini_excl_dirs_param("no_ini_excl_dirs");
 QString const ts_url_param("ts_url");
-
-QString const INI_FILE_NAME("terapoc.ini");
-QString const INI_GROUP("tera");
-QString const INI_GROUP_ = INI_GROUP + "/";
-
-QString const default_out_extension("asics");
 
 #define TERA_COUT(xxx) {\
     BOOST_LOG_TRIVIAL(info) << xxx;\
@@ -40,32 +36,25 @@ QString const default_out_extension("asics");
 class TeRaMonitor : public ria_tera::ProcessingMonitorCallback {
 public:
     // TODO logging
-    void virtual processingPath(QString const& path) {
+    bool processingPath(QString const& path) {
         TERA_COUT("Searching " << path.toUtf8().constData());
+        return true;
     };
-    void virtual excludingPath(QString const& path) {
+    bool excludingPath(QString const& path) {
         TERA_COUT("   Excluding " << path.toUtf8().constData());
+        return true;
     };
-    void virtual foundFile(QString const& path) {
+    bool foundFile(QString const& path) {
         TERA_COUT("   Found " << path.toUtf8().constData());
+        return true;
     };
-    void virtual processingFile(QString const& pathIn, QString const& pathOut, int nr, int totalCnt) {
+    bool processingFile(QString const& pathIn, QString const& pathOut, int nr, int totalCnt) {
         TERA_COUT("Timestamping (" << (nr+1) << "/" << totalCnt << ") " << pathIn.toUtf8().constData() <<
                 " -> " << pathOut.toUtf8().constData());
+        return true;
     };
 };
 
-}
-
-static void append_excl_dirs(QString const& val, QStringList& excl_dirs, QSet<QString>& excl_dirs_set) {
-    QStringList paths = val.split(":", QString::SkipEmptyParts);
-    for (int i = 0; i < paths.size(); ++i) {
-        QString path = ria_tera::fix_path(paths.at(i));
-        if (!excl_dirs_set.contains(path)) {
-            excl_dirs_set.insert(path);
-            excl_dirs.append(path);
-        }
-    }
 }
 
 int main(int argc, char *argv[]) {
@@ -85,13 +74,13 @@ int main(int argc, char *argv[]) {
                     "file to be time-stamped", file_in_param));
     parser.addOption(
             QCommandLineOption(dir_in_param,
-                    "input directory (*.ddoc files are searched for recursively)", dir_in_param));
+                    "input directory (*." + ria_tera::Config::EXTENSION_IN + " files are searched for recursively)", dir_in_param));
     parser.addOption(
             QCommandLineOption(ts_url_param,
                     "time server url ex. http://demo.sk.ee/tsa", ts_url_param));
     parser.addOption(
             QCommandLineOption(ext_out_param,
-                    "extension for output file (default '" + default_out_extension + "')", ext_out_param));
+                    "extension for output file (default '" + ria_tera::Config::DEFAULT_OUT_EXTENSION + "')", ext_out_param));
     parser.addOption(
             QCommandLineOption(file_out_param,
                     "output file, can only be used with --" + file_in_param + " (default <" +
@@ -114,6 +103,11 @@ int main(int argc, char *argv[]) {
             std::cout << "<" << QSTR_TO_CCHAR(dir_in_param) << "> can't be empty." << std::endl;
             parser.showHelp(EXIT_CODE_WRONG_ARGUMENTS);
         }
+    }
+
+    bool in_dir_recursive = false;
+    if (parser.isSet(in_dir_recursive_param)) {
+        in_dir_recursive = true;
     }
 
     QString in_file;
@@ -159,7 +153,8 @@ int main(int argc, char *argv[]) {
         parser.showHelp(EXIT_CODE_WRONG_ARGUMENTS);
     }
 
-    QSettings settings(INI_FILE_NAME, QSettings::IniFormat);
+    ria_tera::Config config;
+    QSettings& settings(config.getInternalSettings());
     QStringList settingsKeys = settings.allKeys();
     // TODO check unused parameters parameters
 
@@ -171,8 +166,7 @@ int main(int argc, char *argv[]) {
             return EXIT_CODE_WRONG_ARGUMENTS;
         }
     } else {
-        out_extension =
-                settings.value("output_format", default_out_extension).toString();
+        out_extension = config.readOutExtension();
         if (!QRegExp("[a-zA-Z\\d._]+").exactMatch(out_extension)) {
             std::cout << "Illegal output file extension set in configuration file '" << QSTR_TO_CCHAR(out_extension) << "'" << std::endl;
             return EXIT_CODE_WRONG_ARGUMENTS;
@@ -184,7 +178,7 @@ int main(int argc, char *argv[]) {
         if (parser.isSet(file_out_param)) {
             file_out = parser.value(file_out_param);
         } else {
-            ria_tera::OutputNameGenerator namegen(out_extension);
+            ria_tera::OutputNameGenerator namegen(ria_tera::Config::EXTENSION_IN, out_extension);
             file_out = namegen.getOutFile(in_file);
         }
     }
@@ -193,7 +187,7 @@ int main(int argc, char *argv[]) {
     if (parser.isSet(ts_url_param)) {
         time_server_url = parser.value(ts_url_param);
     } else {
-        time_server_url = settings.value(INI_GROUP_ + "time_server.url").toString();
+        time_server_url = config.readTimeServerURL();
     }
     time_server_url = time_server_url.trimmed();
 
@@ -207,23 +201,10 @@ int main(int argc, char *argv[]) {
 
     QStringList ex= parser.values(excl_dir_param);
     for (int i = 0; i < ex.size(); ++i)
-        append_excl_dirs(ex.at(i), excl_dirs, excl_dirs_set);
+        ria_tera::Config::append_excl_dirs(ex.at(i), excl_dirs_set);
 
     if (!parser.isSet(no_ini_excl_dirs_param)) {
-        QString const key = INI_GROUP_ + "excl_dir";
-        if (settings.contains(key)) {
-            QString val = settings.value(key).toString();
-            append_excl_dirs(val, excl_dirs, excl_dirs_set);
-        }
-
-        QString const key_ = key + ".";
-        for (int i = 0; i < settingsKeys.length(); ++i) {
-            QString k = settingsKeys.at(i);
-            if (k.startsWith(key_)) {
-                QString val = settings.value(k).toString();
-                append_excl_dirs(val, excl_dirs, excl_dirs_set);
-            }
-        }
+        excl_dirs_set.unite(config.readExclDirs());
     }
 
     // log output
@@ -242,14 +223,18 @@ int main(int argc, char *argv[]) {
         TERA_COUT("Parameter - exclude-directory: " << excl_dirs[i].toUtf8().constData());
     }
 
+    // TODO test network
+
     TeRaMonitor monitor;
 
     ria_tera::ExitProgram x;
-    ria_tera::OutputNameGenerator namegen(out_extension);
+    ria_tera::OutputNameGenerator namegen(ria_tera::Config::EXTENSION_IN, out_extension);
 
     QStringList inFiles;
     if (in_file.isEmpty()) {
-        ria_tera::DiskCrawler dc(monitor, in_dir, excl_dirs);
+        ria_tera::DiskCrawler dc(monitor, ria_tera::Config::EXTENSION_IN);
+        dc.addExcludeDirs(excl_dirs);
+        dc.addInputDir(in_dir, in_dir_recursive);
         inFiles = dc.crawl();
         // TODO if empty
     } else {
@@ -257,17 +242,15 @@ int main(int argc, char *argv[]) {
         namegen.setFixedOutFile(in_file, file_out);
     }
 
-    ria_tera::BatchStamper stamper(monitor, time_server_url, inFiles, namegen);
+    if (0 == inFiles.size()) {
+        TERA_COUT("No *." << QSTR_TO_CCHAR(ria_tera::Config::EXTENSION_IN) << " files found.");
+    }
+    ria_tera::BatchStamper stamper(monitor, namegen);
 
     QObject::connect(&stamper, SIGNAL(timestampingFinished(bool,QString)),
                      &x, SLOT(exitOnFinished(bool,QString)), Qt::QueuedConnection);
 
-    stamper.startTimestamping();
-
-//    ria_tera::TimeStamper stamper(file_in, time_server_url, file_out);
-//    QObject::connect(&stamper, SIGNAL(timestampingFinished(bool,QString)),
-//                     &stamper, SLOT(exitOnFinished(bool,QString)), Qt::QueuedConnection);
-//    stamper.startTimestamping();
+    stamper.startTimestamping(time_server_url, inFiles); // TODO error to XXX when network is down for example
 
     return a.exec();
 }

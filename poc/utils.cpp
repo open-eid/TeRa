@@ -38,8 +38,16 @@ void DirIterator::findNext() {
             continue;
         }
         nextPath = e.dirs.first();
-        monitor.processingPath(nextPath);
+        if (!monitor.processingPath(nextPath)) {
+            // cancelling
+            nextPath = QString();
+            stack.clear();
+            return;
+        }
         e.dirs.pop_front();
+
+        if (!e.recursive) break;
+
         // process path = list sub-dirs
         QDir dir(nextPath);
         QStringList subDirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
@@ -57,18 +65,82 @@ void DirIterator::findNext() {
 
         QString dirCanonicalPath = dir.canonicalPath();
         pathsInStack.insert(dirCanonicalPath);
-        stack.push(StackEntry(dirCanonicalPath, subDirsToVisit));
+        stack.push(StackEntry(dirCanonicalPath, true, subDirsToVisit));
         break;
     }
 }
 
-DirIterator::DirIterator(ProcessingMonitorCallback& mon, QString const& dir, QStringList const& excl) : monitor(mon) {
-    stack.push(StackEntry("", QStringList() << dir)); // TODO check out if exists, check out if in excl list
+DirIterator::DirIterator(ProcessingMonitorCallback& mon, QList<InDir> const& inDirs, QStringList const& excl) : monitor(mon) {
     for (auto it = excl.begin(); it != excl.end(); ++it) {
-        QFileInfo fi(*it);
+        QFileInfo fi(fix_path(*it));
         exclPaths.insert(fi.canonicalFilePath());
     }
+    processInDirs(inDirs);
     findNext();
+}
+
+bool isSubfolder(QString const& path, QSet<QString> const& refDirs) {
+    QString p = path;
+    while (true) {
+        int pos = p.lastIndexOf(QDir::separator());
+        if (pos <= 0 || pos == p.size()-1) break; // root folder
+
+        // found parent
+        QString parent = p.left(pos);
+        if (refDirs.contains(parent)) {
+            return true;
+        }
+
+        p = parent;
+    }
+    return false;
+}
+
+QSet<QString> filterOutSubfolders(QSet<QString> const& dirs, QSet<QString> const& refDirs) {
+    QSet<QString> res;
+    QList<QString> list = dirs.toList();
+    for (int i = 0; i < list.size(); ++i) {
+        QString path = list.at(i);
+        if (!isSubfolder(path, refDirs)) {
+            res.insert(path);
+        }
+    }
+    return res;
+}
+
+
+void DirIterator::processInDirs(QList<InDir> const& inDirs) {
+    // first filtering
+    QSet<QString> recDirs;
+    QSet<QString> nonrecDirs;
+    for (int i = 0; i < inDirs.size(); ++i) {
+        QFileInfo dir(fix_path(inDirs.at(i).path));
+        if (!dir.exists() || !dir.isDir()) continue;
+
+        QString can = dir.canonicalFilePath();
+        if (exclPaths.contains(can)) continue; // TODO
+
+        if (inDirs.at(i).recursive) {
+            recDirs.insert(can);
+        } else {
+            nonrecDirs.insert(can);
+        }
+    }
+
+    recDirs = filterOutSubfolders(recDirs, recDirs);
+    nonrecDirs = filterOutSubfolders(nonrecDirs, recDirs);
+    nonrecDirs.subtract(recDirs);
+
+    addInputDirs(false, nonrecDirs);
+    addInputDirs(true, recDirs);
+}
+
+void DirIterator::addInputDirs(bool recursive, QSet<QString> const& dirs) {
+    QList<QString> list = dirs.toList();
+    qSort(list);
+    for (int i = 0; i < list.size(); ++i) {
+        stack.push(StackEntry("", recursive, QStringList() << list.at(i)));
+    }
 }
 
 bool DirIterator::hasNext() {

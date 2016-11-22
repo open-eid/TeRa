@@ -15,6 +15,7 @@
 
 namespace ria_tera {
 
+bool isSubfolder(QString const& path, QSet<QString> const& refDirs);
 QString fix_path(QString const& path);
 
 class ExitProgram : public QObject {
@@ -25,23 +26,29 @@ public slots:
 
 class ProcessingMonitorCallback {
 public:
-    void virtual processingPath(QString const& path) {};
-    void virtual excludingPath(QString const& path) {};
-    void virtual foundFile(QString const& path) {};
-    void virtual processingFile(QString const& pathIn, QString const& pathOut, int nr, int totalCnt) {};
+    virtual bool processingPath(QString const& path) {};
+    virtual bool excludingPath(QString const& path) {};
+    virtual bool foundFile(QString const& path) {};
+    virtual bool processingFile(QString const& pathIn, QString const& pathOut, int nr, int totalCnt) {};
 };
 
 class DirIterator {
 public:
-    DirIterator(ProcessingMonitorCallback& mon, QString const& dir, QStringList const& excl);
+    struct InDir {
+        InDir(bool r, QString p) : recursive(r), path(p) {};
+        bool recursive;
+        QString path;
+    };
+    DirIterator(ProcessingMonitorCallback& mon, QList<InDir> const& inDirs, QStringList const& excl);
     bool hasNext();
     QString next();
 private:
     class StackEntry {
     public:
         StackEntry(){};
-        StackEntry(QString const& p, QStringList const& d) : parentCanonical(p), dirs(d) {}
+        StackEntry(QString const& p, bool r, QStringList const& d) : parentCanonical(p), recursive(r), dirs(d) {}
         QString parentCanonical;
+        bool recursive;
         QStringList dirs;
     };
     ProcessingMonitorCallback& monitor;
@@ -49,7 +56,10 @@ private:
     QSet<QString> pathsInStack;
     QStack<StackEntry> stack; // TODO copying
     QSet<QString> exclPaths;
-    // fills next path
+
+    void processInDirs(QList<InDir> const& inDirs);
+    void addInputDirs(bool recursive, QSet<QString> const& dirs);
+    /// fills next path
     void findNext();
 };
 

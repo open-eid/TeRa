@@ -25,9 +25,9 @@ class TimeStamperData_impl;
 class TimeStamper: public QObject {
     Q_OBJECT
 public:
-    TimeStamper(QString const& tsUrl);
+    TimeStamper();
 
-    void startTimestamping(QString const& infile, QString const& outfile);
+    void startTimestamping(QString const& tsUrl, QString const& infile, QString const& outfile);
     bool getTimestampRequest(QByteArray& tsrequest, QString& error);
     void sendTSRequest(QByteArray const& timestampRequest);
     bool createAsicsContainer(QByteArray const& tsresponse);
@@ -48,19 +48,20 @@ private:
 
 class OutputNameGenerator {
 public:
-    OutputNameGenerator(QString const& ext) : extension(ext) {};
+    OutputNameGenerator(QString const& inExt, QString const& outExt);
     QString getOutFile(QString const& filePath);
     void setFixedOutFile(QString const& in_file, QString const& file_out);
 private:
-    QString extension;
+    QString inExtension;
+    QString outExtension;
     QMap<QString, QString> fixedConversion;
 };
 
 class BatchStamper : public QObject {
     Q_OBJECT
 public:
-    BatchStamper(ProcessingMonitorCallback& mon, QString const& tsUrl, QStringList const& inputFiles, OutputNameGenerator& ng);
-    void startTimestamping();
+    BatchStamper(ProcessingMonitorCallback& mon, OutputNameGenerator& ng);
+    void startTimestamping(QString const& tsUrl, QStringList const& inputFiles);
 signals:
     void triggerNext();
     void timestampingFinished(bool success, QString errString);
@@ -69,10 +70,11 @@ private slots:
     void timestampFinished(bool success, QString errString);
 private:
     ProcessingMonitorCallback& monitor;
+    OutputNameGenerator& namegen;
     int pos;
     QStringList input;
+    QString timeServerUrl;
     TimeStamper ts;
-    OutputNameGenerator& namegen;
 };
 
 }

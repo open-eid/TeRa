@@ -118,14 +118,9 @@ bool TimeStamperData_impl::addFile(QString const& name, QByteArray const& data) 
 }
 
 
-TimeStamper::TimeStamper(QString const& tsUrl) :
-        timeserverUrl(tsUrl),
+TimeStamper::TimeStamper() :
         data(new TimeStamperData_impl())
 {
-    QUrl url(timeserverUrl);
-    request.setUrl(url);
-    request.setRawHeader(QByteArray("Content-Type"), QByteArray("application/timestamp-query"));
-
     QObject::connect(&nam, SIGNAL(finished(QNetworkReply*)), this, SLOT(tsReplyFinished(QNetworkReply*)), Qt::QueuedConnection);
 }
 
@@ -166,6 +161,9 @@ void TimeStamper::sendTSRequest(QByteArray const& timestampRequest)
     BOOST_LOG_TRIVIAL(info) << "Connecting to time-server: " << timeserverUrl.toUtf8().constData();
     BOOST_LOG_TRIVIAL(trace) << "Request (in Hex):\n" << timestampRequest.toHex().constData();
 
+    QUrl url(timeserverUrl);
+    request.setUrl(url);
+    request.setRawHeader(QByteArray("Content-Type"), QByteArray("application/timestamp-query"));
     QNetworkReply* r = nam.post(request, timestampRequest);
 }
 
@@ -209,8 +207,9 @@ void TimeStamper::tsReplyFinished(QNetworkReply *reply) {
     }
 }
 
-void TimeStamper::startTimestamping(QString const& infile, QString const& outfile) {
+void TimeStamper::startTimestamping(QString const& tsUrl, QString const& infile, QString const& outfile) {
     QString errorMsg;
+    timeserverUrl = tsUrl;
     inputFilePath = infile;
     outputFilePath = outfile;
 
@@ -225,6 +224,12 @@ void TimeStamper::startTimestamping(QString const& infile, QString const& outfil
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
+OutputNameGenerator::OutputNameGenerator(QString const& inExt, QString const& outExt)
+    : inExtension(inExt), outExtension(outExt) {
+    if (!inExtension.startsWith(".")) inExtension = "." + inExtension;
+    if (!outExtension.startsWith(".")) outExtension = "." + outExtension;
+}
+
 QString OutputNameGenerator::getOutFile(QString const& filePath) {
     if (fixedConversion.contains(filePath)) {
         return fixedConversion[filePath];
@@ -233,17 +238,16 @@ QString OutputNameGenerator::getOutFile(QString const& filePath) {
     QFileInfo fileInfo(filePath);
     QString name = fileInfo.fileName();
 
-    const QString ext(".bdoc");
-    if (name.endsWith(ext)) name = name.left(name.size() - ext.size());
+    if (name.endsWith(inExtension)) name = name.left(name.size() - inExtension.size());
 
     QString res;
     int nr = 0;
     do {
         QString newName;
         if (nr > 0) {
-            newName = name + "(" + QString::number(nr) + ")." + extension;
+            newName = name + "(" + QString::number(nr) + ")" + outExtension;
         } else {
-            newName = name + "." + extension;
+            newName = name + outExtension;
         }
         QFileInfo outFileInfo(QDir(fileInfo.path()), newName);
         if (!outFileInfo.exists()) {
@@ -259,9 +263,8 @@ void OutputNameGenerator::setFixedOutFile(QString const& in_file, QString const&
 }
 
 
-BatchStamper::BatchStamper(ProcessingMonitorCallback& mon, QString const& tsUrl,
-        QStringList const& inputFiles, OutputNameGenerator& ng) :
-        monitor(mon), pos(-1), input(inputFiles), ts(tsUrl), namegen(ng)
+BatchStamper::BatchStamper(ProcessingMonitorCallback& mon, OutputNameGenerator& ng) :
+        monitor(mon), namegen(ng), pos(-1)
 {
     QObject::connect(this, SIGNAL(triggerNext()),
                      this, SLOT(processNext()));
@@ -269,7 +272,10 @@ BatchStamper::BatchStamper(ProcessingMonitorCallback& mon, QString const& tsUrl,
                      this, SLOT(timestampFinished(bool,QString)));
 }
 
-void BatchStamper::startTimestamping() {
+void BatchStamper::startTimestamping(QString const& tsUrl, QStringList const& inputFiles) {
+    pos = -1;
+    timeServerUrl = tsUrl;
+    input = inputFiles;
     emit triggerNext();
 }
 
@@ -282,8 +288,11 @@ void BatchStamper::processNext() {
     ++pos;
     QString infile = input[pos];
     QString outfile = namegen.getOutFile(infile);
-    monitor.processingFile(infile, outfile, pos, input.size());
-    ts.startTimestamping(infile, outfile);
+    if (!monitor.processingFile(infile, outfile, pos, input.size())) {
+        emit timestampingFinished(false, tr("Operation cancelled by user...")); // TODO const text see main_window.cpp
+        return;
+    }
+    ts.startTimestamping(timeServerUrl, infile, outfile);
 }
 
 void BatchStamper::timestampFinished(bool success, QString errString) {

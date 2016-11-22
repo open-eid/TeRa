@@ -15,17 +15,26 @@
 
 namespace ria_tera {
 
-DiskCrawler::DiskCrawler(ProcessingMonitorCallback& mon, QString const& dir, QStringList const& exclDirs) :
-    monitor(mon), in_dir(dir), excl_dirs(exclDirs) {
+DiskCrawler::DiskCrawler(ProcessingMonitorCallback& mon, QString const& ext) :
+    monitor(mon), extension(ext) {
+}
+
+void DiskCrawler::addExcludeDirs(QStringList const& excl) {
+    excl_dirs << excl;
+}
+
+bool DiskCrawler::addInputDir(QString const& dir, bool rec) {
+    in_dirs.append(DirIterator::InDir(rec, dir));
+    return true; // TODO check if dir is actually excluded
 }
 
 QStringList DiskCrawler::crawl() {
     QStringList res;
 
     QStringList nameFilter;
-    nameFilter << "*.ddoc";
+    nameFilter << ("*." + extension);
 
-    DirIterator it(monitor, in_dir, excl_dirs);
+    DirIterator it(monitor, in_dirs, excl_dirs);
     while (it.hasNext()) {
         QString subDirPath = it.next();
 
