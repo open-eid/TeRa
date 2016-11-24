@@ -322,7 +322,7 @@ static TS_RESP *read_PKCS7(BIO *in_bio)
     return resp;
 }
 
-QByteArray create_timestamp_request(QByteArray const& sha256)
+QByteArray create_timestamp_request(QByteArray const& sha256) // TODO check size
 {
     TS_REQ *query = NULL; // TODO
 

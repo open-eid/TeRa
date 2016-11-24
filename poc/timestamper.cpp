@@ -156,7 +156,11 @@ bool TimeStamper::getTimestampRequest(QByteArray& tsrequest, QString& error) {
     return true;
 }
 
-void TimeStamper::sendTSRequest(QByteArray const& timestampRequest)
+QByteArray TimeStamper::getTimestampRequest4Sha256(QByteArray& sha256) { // TODO redesign
+    return create_timestamp_request(sha256);
+}
+
+void TimeStamper::sendTSRequest(QByteArray const& timestampRequest, bool test)
 {
     BOOST_LOG_TRIVIAL(info) << "Connecting to time-server: " << timeserverUrl.toUtf8().constData();
     BOOST_LOG_TRIVIAL(trace) << "Request (in Hex):\n" << timestampRequest.toHex().constData();
@@ -165,15 +169,24 @@ void TimeStamper::sendTSRequest(QByteArray const& timestampRequest)
     request.setUrl(url);
     request.setRawHeader(QByteArray("Content-Type"), QByteArray("application/timestamp-query"));
     QNetworkReply* r = nam.post(request, timestampRequest);
+
+    if (test) {
+        testReplies.insert(r);
+    }
 }
 
 void TimeStamper::tsReplyFinished(QNetworkReply *reply) {
+    bool testRequest = testReplies.contains(reply);
+    if (testRequest) {
+        testReplies.remove(reply);
+    }
+
     reply->deleteLater();
     if (QNetworkReply::NoError != reply->error()) {
         QString error;
         error.push_back("Time-stamping request failed: ");
         error.push_back(reply->errorString());
-        emit timestampingFinished(false, error);
+        notifyClientOnTimestampingFinished(testRequest, false, error);
         return;
     }
 
@@ -185,11 +198,16 @@ void TimeStamper::tsReplyFinished(QNetworkReply *reply) {
     QByteArray timestamp = timeserverResponse;
 
     if (!extract_timestamp_from_ts_response(timeserverResponse, timestamp)) {
-        emit timestampingFinished(false, "Time-server's response did not contain timestamp.");
+        notifyClientOnTimestampingFinished(testRequest, false, "Time-server's response did not contain timestamp.");
         return;
     }
 
     BOOST_LOG_TRIVIAL(trace) << "Time-stamp (in Hex):\n" << timestamp.toHex().constData();
+
+    if (testRequest) {
+        notifyClientOnTimestampingFinished(testRequest, true, "");
+        return;
+    }
 
     QFile file(inputFilePath);
     QString fileName = file.fileName();
@@ -200,10 +218,19 @@ void TimeStamper::tsReplyFinished(QNetworkReply *reply) {
         error.push_back("Couldn't create output file '");
         error.push_back(outputFilePath.toUtf8().constData());
         error.push_back("'");
-        emit timestampingFinished(false, error);
+        notifyClientOnTimestampingFinished(testRequest, false, error);
         return;
     } else {
-        emit timestampingFinished(true, "");
+        notifyClientOnTimestampingFinished(testRequest, true, "");
+    }
+}
+
+void TimeStamper::notifyClientOnTimestampingFinished(bool test, bool success, QString errString, QByteArray resp) {
+    // TODO bad design
+    if (test) {
+        emit timestampingTestFinished(success, resp, errString);
+    } else {
+        emit timestampingFinished(success, errString);
     }
 }
 
@@ -277,6 +304,10 @@ void BatchStamper::startTimestamping(QString const& tsUrl, QStringList const& in
     timeServerUrl = tsUrl;
     input = inputFiles;
     emit triggerNext();
+}
+
+TimeStamper& BatchStamper::getTimestamper() {
+    return ts;
 }
 
 void BatchStamper::processNext() {

@@ -23,7 +23,7 @@
       <bool>true</bool>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tabInput">
       <attribute name="title">
@@ -349,17 +349,20 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>listInclDir</tabstop>
+  <tabstop>lineInclDir</tabstop>
+  <tabstop>btnInclDirSearch</tabstop>
+  <tabstop>btnDelInclDir</tabstop>
+  <tabstop>btnAddInclDir</tabstop>
+  <tabstop>listExclDir</tabstop>
   <tabstop>lineExclDir</tabstop>
   <tabstop>btnExclDirSearch</tabstop>
   <tabstop>btnDelExclDir</tabstop>
   <tabstop>btnAddExclDir</tabstop>
-  <tabstop>listExclDir</tabstop>
-  <tabstop>listInclDir</tabstop>
-  <tabstop>btnDelInclDir</tabstop>
-  <tabstop>btnAddInclDir</tabstop>
-  <tabstop>tabWidget</tabstop>
   <tabstop>typeBDoc</tabstop>
   <tabstop>typeASIC</tabstop>
+  <tabstop>cbPreviewFiles</tabstop>
   <tabstop>lineTSURL</tabstop>
  </tabstops>
  <resources/>
@@ -368,7 +371,4 @@
   <slot>save()</slot>
   <slot>validateP12Cert()</slot>
  </slots>
- <buttongroups>
-  <buttongroup name="proxyConfig"/>
- </buttongroups>
 </ui>

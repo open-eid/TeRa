@@ -10,6 +10,8 @@ set(CMAKE_AUTOMOC ON)
 SET(CMAKE_AUTOUIC ON) 
 SET(CMAKE_AUTORCC ON)
 
+########### SET(UPDATE_TRANSLATIONS ON)
+
 # Find Qt libraries
 find_package(Qt5Core)
 include_directories(${Qt5Core_INCLUDE_DIRS})
@@ -21,6 +23,7 @@ find_package(Qt5Gui)
 find_package(Qt5Widgets)
 include_directories(${Qt5Widgets_INCLUDE_DIRS})
 
+FIND_PACKAGE(Qt5LinguistTools)
 
 SET(Boost_USE_STATIC_LIBS ON)
 SET(Boost_USE_MULTITHREADED ON)
@@ -50,11 +53,29 @@ set(CMAKE_CXX_STANDARD 14)
 
 SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -pthread" )
 
-#qt5_add_translation( SOURCES translations/en.ts translations/et.ts translations/ru.ts )
-qt5_add_resources( SOURCES images/images.qrc )
-qt5_wrap_ui( UI_HEADERS poc/MainWindow.ui )
-qt5_wrap_ui( UI_HEADERS poc/SettingsDialog.ui )
-qt5_wrap_ui( UI_HEADERS poc/FileListDialog.ui )
+SET (TERA_GUI_UI poc/MainWindow.ui poc/SettingsDialog.ui poc/FileListDialog.ui)
+SET (TERA_GUI_SRC
+        poc/xxx.cpp
+        poc/main_window.h poc/main_window.cpp ComboBox.h ComboBox.cpp
+        poc/gui_timestamper_processor.h poc/gui_timestamper_processor.cpp
+        poc/settings_window.h poc/settings_window.cpp
+        poc/files_window.h poc/files_window.cpp
+
+        poc/utils.h poc/utils.cpp
+        poc/openssl_utils.h poc/openssl_utils.cpp
+        poc/disk_crawler.h poc/disk_crawler.cpp
+        poc/logging.h poc/logging.cpp
+        poc/timestamper.h poc/timestamper.cpp
+        poc/config.h poc/config.cpp
+     )
+
+SET (TRANS translations/et.ts translations/en.ts) #  translations/ru.ts
+
+# qt5_create_translation( QM ${TERA_GUI_UI} ${TERA_GUI_SRC} ${TRANS})  ##### TODO 
+
+qt5_add_translation( QM ${TRANS} )
+qt5_add_resources( SOURCES images/images.qrc translations/tr.qrc )
+qt5_wrap_ui( UI_HEADERS ${TERA_GUI_UI} )
 
 # TeRaPOC
 add_executable(TeRaPOC
@@ -72,23 +93,13 @@ add_executable(TeRaPOC
 target_link_libraries(TeRaPOC zip ssl crypto ${Boost_LIBRARIES} )
 qt5_use_modules(TeRaPOC Core Concurrent Network)
 
-
 add_executable(XxX
-        poc/MainWindow.ui 
-        poc/xxx.cpp
-        poc/main_window.h poc/main_window.cpp ${UI_HEADERS} ComboBox.h ComboBox.cpp
-        images/images.qrc ${SOURCES}
-        poc/gui_timestamper_processor.h poc/gui_timestamper_processor.cpp
-        
-        poc/utils.h poc/utils.cpp
-        poc/openssl_utils.h poc/openssl_utils.cpp
-        poc/disk_crawler.h poc/disk_crawler.cpp
-        poc/logging.h poc/logging.cpp
-        poc/timestamper.h poc/timestamper.cpp
-        poc/settings_window.h poc/settings_window.cpp
-        poc/config.h poc/config.cpp
-        poc/files_window.h poc/files_window.cpp
-        
+        ${UI_HEADERS}
+        ${TERA_GUI_UI}
+        ${TERA_GUI_SRC}
+        images/images.qrc translations/tr.qrc ${SOURCES}
+        ${QM}
+        ${TRANS}
         )
 target_link_libraries(XxX zip ssl crypto ${Boost_LIBRARIES} )
 qt5_use_modules(XxX Core Concurrent Network Widgets Gui)

@@ -8,8 +8,10 @@
 #ifndef MAIN_WINDOW_H_
 #define MAIN_WINDOW_H_
 
+#include <QAction>
 #include <QAtomicInt>
 #include <QFileSystemModel>
+#include <QTranslator>
 #include <QWidget>
 
 #include "ui_MainWindow.h"
@@ -48,18 +50,24 @@ public:
     void processEvents();
     bool isCancelled();
 public slots:
+    // flow control slots
     void handleStartStamping();
     void handleCancelProcess();
-
+    void timestampingTestFinished(bool success, QByteArray resp, QString errString);
+    void startStampingFiles(); // TODO better name
     void timestampingFinished(bool success, QString errString);
 
+    // GUI related slots
     void handleSettings();
     void handleSettingsAccepted();
 
     void handleFilesAccepted();
     void handleFilesRejected();
+
+    void slotLanguageChanged(int i);
+    void slotLanguageChanged(QAction* action);
 private:
-    void startStampingFiles(); // TODO better name
+    void loadTranslation(QString const& language_short);
 private:
     QAtomicInt cancel;
     GuiTimestamperProcessor processor;
@@ -69,6 +77,10 @@ private:
 
     TeraSettingsWin* settingsWin;
     FileListWindow* filesWin;
+
+    QString lang;
+    QStringList langs;
+    QTranslator appTranslator;
 };
 
 }

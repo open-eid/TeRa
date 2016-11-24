@@ -10,6 +10,7 @@
 
 #include <QtAlgorithms>
 #include <QStringListModel>
+#include <QDebug>
 
 #include "utils.h"
 
@@ -22,7 +23,7 @@ GuiTimestamperProcessor::GuiTimestamperProcessor() {
     if (outExt != Config::EXTENSION_BDOC) outExt = Config::EXTENSION_ASICS;
 
     exclDirs.unite(config.readExclDirs());
-    inclDirs.insert(ria_tera::fix_path("~/cmake_builds/tera/test")); // TODO
+    inclDirs.insert(ria_tera::fix_path("~")); // TODO
 
     previewFiles = false;
 }
@@ -57,7 +58,6 @@ void GuiTimestamperProcessor::initializeSettingsWindow(TeraSettingsWin& sw) {
 
 void GUI2QSet(QStringListModel const& model, QSet<QString>& set) {
     set = QSet<QString>::fromList(model.stringList());
-std::cout << set.size() << std::endl;
 }
 
 void GuiTimestamperProcessor::readSettings(TeraSettingsWin& sw) {
@@ -82,7 +82,9 @@ void GuiTimestamperProcessor::initializeFilePreviewWindow(FileListWindow& fw) {
         list.append(item);
     }
     fw.model->clear();
-    fw.model->appendRow(list);
+    for (int i = 0; i < list.size(); ++i) {
+        fw.model->appendRow(list[i]);
+    }
 }
 
 void GuiTimestamperProcessor::copySelectedFiles(FileListWindow& fw) {
@@ -92,7 +94,8 @@ void GuiTimestamperProcessor::copySelectedFiles(FileListWindow& fw) {
         QStandardItem* item = fw.model->item(i);
         if (NULL == item) continue;
         if (Qt::Checked == item->checkState()) {
-            selectedFiles.append(item->data().toString());
+            QString filePath = item->text();
+            selectedFiles.append(filePath);
         }
     }
 

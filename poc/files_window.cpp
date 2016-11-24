@@ -10,6 +10,7 @@ namespace ria_tera {
 
 FileListWindow::FileListWindow(QWidget *parent) : QDialog(parent) {
     setupUi(this);
+    stackedWidget->setCurrentIndex(0);
 
     model = new QStandardItemModel(); // TODO delete
 // http://doc.qt.io/qt-5/qtwidgets-itemviews-interview-model-h.html

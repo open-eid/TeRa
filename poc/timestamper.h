@@ -29,19 +29,27 @@ public:
 
     void startTimestamping(QString const& tsUrl, QString const& infile, QString const& outfile);
     bool getTimestampRequest(QByteArray& tsrequest, QString& error);
-    void sendTSRequest(QByteArray const& timestampRequest);
+    QByteArray getTimestampRequest4Sha256(QByteArray& sha256); // TODO redesign
+    void sendTSRequest(QByteArray const& timestampRequest, bool test = false); // TODO redesign
     bool createAsicsContainer(QByteArray const& tsresponse);
 public slots:
     void tsReplyFinished(QNetworkReply *reply);
 signals:
     void timestampingFinished(bool success, QString errString);
+    void timestampingTestFinished(bool success, QByteArray resp, QString errString);
 private:
+    void notifyClientOnTimestampingFinished(bool test, bool success, QString errString, QByteArray resp = QByteArray());
+
     QString inputFilePath;
+public:
     QString timeserverUrl;
+private:
     QString outputFilePath;
 
     QNetworkAccessManager nam;
     QNetworkRequest request;
+
+    QSet<QNetworkReply*> testReplies;
 
     TimeStamperData_impl* data;
 };
@@ -62,6 +70,7 @@ class BatchStamper : public QObject {
 public:
     BatchStamper(ProcessingMonitorCallback& mon, OutputNameGenerator& ng);
     void startTimestamping(QString const& tsUrl, QStringList const& inputFiles);
+    TimeStamper& getTimestamper();
 signals:
     void triggerNext();
     void timestampingFinished(bool success, QString errString);
