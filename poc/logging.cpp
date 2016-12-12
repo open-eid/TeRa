@@ -12,6 +12,17 @@
 
 //namespace logging = boost::log;
 
+namespace boost
+{
+// http://stackoverflow.com/questions/6832666/lnk2019-when-including-asio-headers-solution-generated-with-cmake
+// http://stackoverflow.com/questions/9272648/boost-symbol-not-found
+#ifdef BOOST_NO_EXCEPTIONS
+void throw_exception( std::exception const & e ){
+    throw 11; // or whatever
+};
+#endif
+}// namespace boost
+
 namespace ria_tera {
 
 void initLogging()

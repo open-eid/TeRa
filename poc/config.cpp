@@ -8,6 +8,8 @@
 
 #include <iostream>
 
+#include <QStorageInfo>
+
 #include "utils.h"
 
 namespace ria_tera {
@@ -61,7 +63,7 @@ QString Config::readOutExtension() {
 
 
 void Config::append_excl_dirs(QString const& val, QSet<QString>& excl_dirs_set) { // TODO should be in disk_crawler or smth
-#ifdef Q_OS_MSDOS
+#ifdef Q_OS_WIN32
     QString const PATH_LIST_SEPARATOR = ";";
 #else
     QString const PATH_LIST_SEPARATOR = ":";
@@ -73,6 +75,23 @@ void Config::append_excl_dirs(QString const& val, QSet<QString>& excl_dirs_set) 
             excl_dirs_set.insert(path);
         }
     }
+}
+
+QSet<QString> Config::getDefaultInclDirs() {
+    QSet<QString> res;
+#ifdef Q_OS_WIN32
+//  res.insert(ria_tera::fix_path("~")); // TODO
+    QList<QStorageInfo> vols = QStorageInfo::mountedVolumes();
+    for (int i = 0; i < vols.length(); ++i) {
+        QStorageInfo vol = vols.at(i);
+        if (vol.isReady() && !vol.isReadOnly()) {
+          res.insert(vol.rootPath());
+        }
+    }
+#else
+    res.insert(ria_tera::fix_path("~"));
+#endif
+    return res;
 }
 
 }

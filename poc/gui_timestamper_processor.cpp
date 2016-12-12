@@ -23,7 +23,8 @@ GuiTimestamperProcessor::GuiTimestamperProcessor() {
     if (outExt != Config::EXTENSION_BDOC) outExt = Config::EXTENSION_ASICS;
 
     exclDirs.unite(config.readExclDirs());
-    inclDirs.insert(ria_tera::fix_path("~")); // TODO
+
+    inclDirs.unite(config.getDefaultInclDirs());
 
     previewFiles = false;
 }

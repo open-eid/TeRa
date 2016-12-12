@@ -38,7 +38,7 @@ void DirIterator::findNext() {
             continue;
         }
         nextPath = e.dirs.first();
-        if (!monitor.processingPath(nextPath)) {
+        if (!monitor.processingPath(nextPath, 0)) {
             // cancelling
             nextPath = QString();
             stack.clear();

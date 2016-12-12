@@ -1,4 +1,8 @@
 cmake_minimum_required (VERSION 2.6)
+cmake_policy(SET CMP0020 NEW)
+if(POLICY CMP0043)
+    cmake_policy(SET CMP0043 NEW)
+endif()
 
 project (TeRa)
 set(CMAKE_CXX_FLAGS "-std=c++11" CACHE STRING "compile flags" FORCE)
@@ -35,13 +39,22 @@ MESSAGE("Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}")
 MESSAGE("Boost_LIBRARY_DIRS: ${Boost_LIBRARY_DIRS}")  
 MESSAGE("Boost Libraries: ${Boost_LIBRARIES}") 
 
-include_directories(/usr/local/lib/libzip/include/)
-find_library(libzip NAMES libzip.so PATHS /usr/local/lib/)
+find_package(ZLib)
+
+IF (WIN32)
+    include_directories("$ENV{TERA_LIBZIP_DIR}/include")
+    find_library(libzip NAMES zip.lib PATHS "$ENV{TERA_LIBZIP_DIR}/lib")
+ELSE ()
+    include_directories(/usr/local/lib/libzip/include/)
+    find_library(libzip NAMES libzip.so PATHS /usr/local/lib/)
+ENDIF()
 
 # include openssl
-include_directories(/usr/local/include)
-find_library(ssl NAMES libssl.so  PATHS /home/s/Downloads/openssl-1.1.0b)
-find_library(crypto NAMES libcrypto.so PATHS /home/s/Downloads/openssl-1.1.0b)
+find_package(OpenSSL)
+include_directories( ${OPENSSL_INCLUDE_DIR} )
+# TODO include_directories(/usr/local/include)
+# TODO find_library(ssl NAMES libssl.so  PATHS /home/s/Downloads/openssl-1.1.0b)
+# TODO find_library(crypto NAMES libcrypto.so PATHS /home/s/Downloads/openssl-1.1.0b)
 
 #add_library(zip STATIC /home/s/Downloads/libzip-1.1.3/lib/libzip.la)
 
@@ -90,17 +103,20 @@ add_executable(TeRaPOC
 # -lboost_filesystem -lboost_system
 # ${Boost_FILESYSTEM_LIBRARY} ${Boost_LOG_LIBRARY}
 #target_link_libraries(TeRaPOC /home/s/Downloads/libzip-1.1.3/lib/.libs/libzip.a /home/s/cmake_builds/zlib/libz.a ssl crypto ${Boost_LIBRARIES} )
-target_link_libraries(TeRaPOC zip ssl crypto ${Boost_LIBRARIES} )
+##### TODO zip
+target_link_libraries(TeRaPOC "C:/Program Files (x86)/libzip/lib/zip.lib" ${OPENSSL_LIBRARIES} ${Boost_LIBRARIES} ${ZLIB_LIBRARIES} )
 qt5_use_modules(TeRaPOC Core Concurrent Network)
 
-add_executable(XxX
+MESSAGE(${ZLIB_LIBRARIES})
+add_executable(Tera WIN32 MACOSX_BUNDLE
         ${UI_HEADERS}
         ${TERA_GUI_UI}
         ${TERA_GUI_SRC}
-        images/images.qrc translations/tr.qrc ${SOURCES}
+        images/images.qrc translations/tr.qrc #${SOURCES}
         ${QM}
         ${TRANS}
         )
-target_link_libraries(XxX zip ssl crypto ${Boost_LIBRARIES} )
-qt5_use_modules(XxX Core Concurrent Network Widgets Gui)
-target_link_libraries(XxX Qt5::Widgets)
+##### TODO zip
+target_link_libraries(Tera "C:/Program Files (x86)/libzip/lib/zip.lib" ${OPENSSL_LIBRARIES} ${Boost_LIBRARIES} ${ZLIB_LIBRARIES} )
+qt5_use_modules(Tera Core Concurrent Network Widgets Gui)
+target_link_libraries(Tera Qt5::Widgets)

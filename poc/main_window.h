@@ -10,14 +10,17 @@
 
 #include <QAction>
 #include <QAtomicInt>
+#include <QAtomicPointer>
 #include <QFileSystemModel>
+#include <QRunnable>
 #include <QTranslator>
 #include <QWidget>
 
 #include "ui_MainWindow.h"
 
-#include "gui_timestamper_processor.h"
+#include "disk_crawler.h"
 #include "files_window.h"
+#include "gui_timestamper_processor.h"
 #include "timestamper.h"
 #include "utils.h"
 
@@ -32,12 +35,36 @@ class GuiProcessingMonitor : public ProcessingMonitorCallback
 {
 public:
     GuiProcessingMonitor(TeraMainWin& mainWindow);
-    bool processingPath(QString const& path);
+    bool processingPath(QString const& path, double progress_percent);
     bool excludingPath(QString const& path);
     bool foundFile(QString const& path);
     bool processingFile(QString const& pathIn, QString const& pathOut, int nr, int totalCnt);
 private:
     TeraMainWin& gui;
+};
+
+class CrawlDiskJob : public QObject, public QRunnable, public DiscCrawlMonitorCallback
+{
+    Q_OBJECT
+
+public:
+    CrawlDiskJob(TeraMainWin& mainWindow, int jobid, GuiTimestamperProcessor const & processor);
+    virtual void run();
+
+    virtual bool processingPath(QString const& path, double progress_percent);
+    virtual bool excludingPath(QString const& path);
+    virtual bool foundFile(QString const& path);
+signals:
+    void signalProcessingPath(int jobid, QString path, double progress_percent);
+    void signalExcludingPath(int jobid, QString path);
+    void signalFoundFile(int jobid, QString path);
+    void signalFindingFilesDone(int jobid);
+private:
+    bool isCanceled();
+
+    TeraMainWin& gui;
+    int jobId;
+    DiskCrawler dc;
 };
 
 class TeraMainWin: public QWidget, public Ui::MainWindow
@@ -49,11 +76,21 @@ public:
     ~TeraMainWin();
     void processEvents();
     bool isCancelled();
+    bool isCancelled(int jobid);
 public slots:
     // flow control slots
     void handleStartStamping();
     void handleCancelProcess();
+    void handleReadyButton();
+
     void timestampingTestFinished(bool success, QByteArray resp, QString errString);
+
+    void processProcessingPath(int jobid, QString path, double progress_percent);
+    void processExcludingPath(int jobid, QString path); // TODO delete
+    void processFoundFile(int jobid, QString path);
+    void processFindingFilesDone(int jobid);
+
+    void doFindingFilesDone();
     void startStampingFiles(); // TODO better name
     void timestampingFinished(bool success, QString errString);
 
@@ -66,10 +103,20 @@ public slots:
 
     void slotLanguageChanged(int i);
     void slotLanguageChanged(QAction* action);
+
+protected:
+    virtual void closeEvent(QCloseEvent *event);
+    virtual void changeEvent(QEvent *event);
+
+    void fillDoneLog();
 private:
+    void doUserCancel();
     void loadTranslation(QString const& language_short);
 private:
+    bool timestapmping;
     QAtomicInt cancel;
+    QAtomicInt jobId;
+
     GuiTimestamperProcessor processor;
     GuiProcessingMonitor monitor;
     OutputNameGenerator nameGen;

@@ -11,7 +11,7 @@
 #include <QSet>
 #include <QStack>
 
-#define QSTR_TO_CCHAR(str) (str.toUtf8().constData())
+#define QSTR_TO_CCHAR(str) ((str).toUtf8().constData())
 
 namespace ria_tera {
 
@@ -24,12 +24,16 @@ public slots:
     void exitOnFinished(bool success, QString errString);
 };
 
-class ProcessingMonitorCallback {
+class DiscCrawlMonitorCallback {
 public:
-    virtual bool processingPath(QString const& path) {};
-    virtual bool excludingPath(QString const& path) {};
-    virtual bool foundFile(QString const& path) {};
-    virtual bool processingFile(QString const& pathIn, QString const& pathOut, int nr, int totalCnt) {};
+    virtual bool processingPath(QString const& path, double progress_percent) { return true; };
+    virtual bool excludingPath(QString const& path) { return true; };
+    virtual bool foundFile(QString const& path) { return true; };
+};
+
+class ProcessingMonitorCallback : public DiscCrawlMonitorCallback {
+public:
+    virtual bool processingFile(QString const& pathIn, QString const& pathOut, int nr, int totalCnt) {return true;};
 };
 
 class DirIterator {

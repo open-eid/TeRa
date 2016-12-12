@@ -7,5 +7,8 @@
         <file>flag-russia.png</file>
         <file>flag-united-kingdom.png</file>
         <file>languages_button.png</file>
+        <file>Glass_button_red_resized.png</file>
+        <file>Glass_button_green_resized.png</file>
+        <file>Glass_button_blue_resized.png</file>
     </qresource>
 </RCC>

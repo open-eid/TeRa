@@ -17,6 +17,14 @@
 
 namespace ria_tera {
 
+struct Result {
+    Result() : success(false) {};
+    bool success;
+    QString error;
+    int cnt;
+};
+
+
 class GuiTimestamperProcessor : public QObject {
     Q_OBJECT
 public:
@@ -37,6 +45,8 @@ public:
     bool previewFiles;
 
     QStringList inFiles;
+
+    Result result;
 };
 
 }

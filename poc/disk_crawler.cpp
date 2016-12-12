@@ -8,14 +8,27 @@
 
 #include <iostream>
 
+#include <QDebug>
 #include <QDir>
+#include <QDirIterator>
 #include <QFileInfoList>
 #include <QSet>
 #include <QStack>
 
+namespace {
+
+bool inExclDirs(QString const& filePath, QStringList const& excldir) {
+    for (int i = 0; i < excldir.size(); ++i) {
+        if (filePath.startsWith(excldir.at(i))) return true;
+    }
+    return false;
+}
+
+}
+
 namespace ria_tera {
 
-DiskCrawler::DiskCrawler(ProcessingMonitorCallback& mon, QString const& ext) :
+DiskCrawler::DiskCrawler(DiscCrawlMonitorCallback& mon, QString const& ext) :
     monitor(mon), extension(ext) {
 }
 
@@ -31,17 +44,43 @@ bool DiskCrawler::addInputDir(QString const& dir, bool rec) {
 QStringList DiskCrawler::crawl() {
     QStringList res;
 
+    QStringList excldir;
+    const QString separator("/");
+    for (int i = 0; i < excl_dirs.size(); ++i) {
+        QString dir_name = fix_path(excl_dirs.at(i));
+        QFileInfo fi(dir_name);
+
+        if (!fi.isDir()) continue;
+        QString name = fi.absoluteFilePath();
+        if (!name.endsWith(separator)) name += separator;
+
+        excldir.append(name);
+qDebug() << "Excl-dir: " << name;
+    }
+
     QStringList nameFilter;
     nameFilter << ("*." + extension);
 
-    DirIterator it(monitor, in_dirs, excl_dirs);
-    while (it.hasNext()) {
-        QString subDirPath = it.next();
+    for (int i = 0; i < in_dirs.length(); ++i) {
+        DirIterator::InDir in_dir = in_dirs.at(i);
+        QDirIterator::IteratorFlags flags;
 
-        QFileInfoList files = QDir(subDirPath).entryInfoList(nameFilter, QDir::Files); // TODO filters sym? hidden?
+        if (in_dir.recursive) {
+            flags |= QDirIterator::Subdirectories;
+        }
 
-        for (int i = 0; i < files.size(); ++i) {
-            QString filePath = files[i].absoluteFilePath();
+        if (!monitor.processingPath(in_dir.path, (double)i / in_dirs.length())) return res; // TODO cancel
+
+        QDirIterator it(in_dir.path, nameFilter, QDir::Files, flags);
+        while (it.hasNext()) {
+            it.next();
+            QString filePath = it.fileInfo().absoluteFilePath();
+
+            if (inExclDirs(filePath, excldir)) {
+                monitor.excludingPath(filePath);
+                continue;
+            }
+
             monitor.foundFile(filePath);
             res << filePath;
         }

@@ -29,6 +29,8 @@ public:
     QSet<QString> readExclDirs();
     QString readTimeServerURL();
     QString readOutExtension();
+	
+	QSet<QString> getDefaultInclDirs();
 
     QSettings& getInternalSettings() {return settings;}; // TODO
 
