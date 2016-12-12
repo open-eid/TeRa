@@ -167,6 +167,3 @@ Qt5Core.dll, Qt5Gui.dll, Qt5Network.dll, Qt5Widgets.dll, d3dcompiler_47.dll, lib
 qminimal.dll, qoffscreen.dll, qwindows.dll (C:\Qt5.7.0VS\5.7\msvc2013\plugins\platforms),
 msvcp120.dll, msvcp120_clr0400.dll, msvcp120d.dll, msvcr120.dll, msvcr120_clr0400.dll, msvcr120d.dll (C:\Windows\SysWOW64),
 libcrypto-1_1.dll, libssl-1_1.dll, libzip.dll, libzlib.dll, zip.dll and zlibd.dll
-
-To run TeRaGUI
-
