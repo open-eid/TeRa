@@ -9,6 +9,7 @@
 #include <iostream>
 
 #include <QCloseEvent>
+#include <QDesktopServices>
 #include <QDirIterator>
 #include <QFile>
 #include <QMessageBox>
@@ -27,9 +28,9 @@ namespace {
 namespace ria_tera {
 
 TeraMainWin::TeraMainWin(QWidget *parent) :
-    QWidget(parent), monitor(*this),
-    nameGen("ddoc", "asics"), // TODO
-    stamper(monitor, nameGen),
+    QWidget(parent),
+    nameGen("ddoc", "asics"), // TODO consts
+    stamper(*this, nameGen, false),
     settingsWin(NULL),
     appTranslator(this)
 {
@@ -49,6 +50,9 @@ TeraMainWin::TeraMainWin(QWidget *parent) :
             this, SLOT(timestampingFinished(bool,QString)));
     connect(&stamper.getTimestamper(), SIGNAL(timestampingTestFinished(bool,QByteArray,QString)),
             this, SLOT(timestampingTestFinished(bool,QByteArray,QString)));
+
+    connect(logText, SIGNAL(anchorClicked(const QUrl&)),
+            this, SLOT(showLog(QUrl const&)));
 
     settingsWin = new TeraSettingsWin(this);
     connect(settingsWin, SIGNAL(accepted()),
@@ -91,60 +95,8 @@ QString toBulletedList(QList<QString> list) { // TODO rename
     return res;
 }
 
-void TeraMainWin::handleStartStamping() {
-    if (0 == processor.inclDirs.size()) {
-        QMessageBox::critical(this, tr("Error"), tr("No input directory selected."));
-        return;
-    }
-
-    processor.timeServerUrl = processor.timeServerUrl.trimmed(); // TODO
-    if (processor.timeServerUrl.isEmpty()) {
-        QMessageBox::critical(this, tr("Error"), tr("Time server URL is empty."));
-        return;
-    }
-
-    QList<QString> inDirList = processor.inclDirs.toList(); // TODO make checking better
-    QList<QString> doesntExist;
-    for (int i = 0; i < inDirList.size(); ++i) {
-        QString dir = inDirList.at(i);
-        QFileInfo fi(dir);
-
-        if (!fi.exists() || !fi.isDir()) {
-            doesntExist.append(dir);
-        }
-    }
-
-    if (!doesntExist.empty()) {
-        QString dirlist = toBulletedList(doesntExist);
-        QMessageBox::critical(this, tr("Error"), tr("The following input folders don't exist (or are files). Cancelling:") + "\n" + dirlist);
-        return;
-    }
-
-    //
-    cancel = false;
-    processor.inFiles.clear();
-    timestapmping = true;
-
-    stackedCntrlWidget->setCurrentIndex(1); // TODO
-    settings->setEnabled(false);
-    progressBar->setMaximum(PP_TS_TEST + PP_SEARCH + PP_TS);
-    progressBar->setValue(0);
-    progressBar->setFormat(tr("Testing Time Server..."));
-    //
-
-    logText->clear();
-    logText->append(tr("Starting..."));
-
-    logText->append(tr("Testing Time Server..."));
-
-    QByteArray pseudosha256(256/8, '\0');
-    QByteArray req = stamper.getTimestamper().getTimestampRequest4Sha256(pseudosha256);
-    stamper.getTimestamper().timeserverUrl = processor.timeServerUrl; // TODO
-    stamper.getTimestamper().sendTSRequest(req, true); // TODO api is rubbish
-}
-
 CrawlDiskJob::CrawlDiskJob(TeraMainWin& mainWindow, int jobid, GuiTimestamperProcessor const & processor) :
-    gui(mainWindow), jobId(jobid), dc(*this, Config::EXTENSION_IN)
+gui(mainWindow), jobId(jobid), dc(*this, Config::EXTENSION_IN)
 {
     dc.addExcludeDirs(processor.exclDirs.toList());
 
@@ -182,12 +134,66 @@ bool CrawlDiskJob::foundFile(QString const& path) {
     return true;
 }
 
+void TeraMainWin::handleStartStamping() {
+    if (0 == processor.inclDirs.size()) {
+        QMessageBox::critical(this, tr("Error"), tr("No input directory selected."));
+        return;
+    }
+
+    processor.timeServerUrl = processor.timeServerUrl.trimmed(); // TODO
+    if (processor.timeServerUrl.isEmpty()) {
+        QMessageBox::critical(this, tr("Error"), tr("Time server URL is empty."));
+        return;
+    }
+
+    QList<QString> inDirList = processor.inclDirs.toList(); // TODO make checking better
+    QList<QString> doesntExist;
+    for (int i = 0; i < inDirList.size(); ++i) {
+        QString dir = inDirList.at(i);
+        QFileInfo fi(dir);
+
+        if (!fi.exists() || !fi.isDir()) {
+            doesntExist.append(dir);
+        }
+    }
+
+    if (!doesntExist.empty()) {
+        QString dirlist = toBulletedList(doesntExist);
+        QMessageBox::critical(this, tr("Error"), tr("The following input folders don't exist (or are files). Cancelling:") + "\n" + dirlist);
+        return;
+    }
+
+    //
+    cancel = false;
+    processor.foundFiles.clear();
+    processor.inFiles.clear();
+    timestapmping = true;
+
+    // create file
+    QString error;
+    processor.result.reset(new GuiTimestamperProcessor::Result());
+    if (!processor.openLogFile(error)) { // TODO  finish message box
+        QMessageBox mb(this);
+        mb.exec();
+    }
+
+    stackedCntrlWidget->setCurrentIndex(1); // TODO
+    settings->setEnabled(false);
+    progressBar->setMaximum(PP_TS_TEST + PP_SEARCH + PP_TS);
+    progressBar->setValue(0);
+    fillProgressBar();
+
+    QByteArray pseudosha256(256/8, '\0');
+    QByteArray req = stamper.getTimestamper().getTimestampRequest4Sha256(pseudosha256);
+    stamper.getTimestamper().timeserverUrl = processor.timeServerUrl; // TODO
+    stamper.getTimestamper().sendTSRequest(req, true); // TODO api is rubbish
+}
+
 void TeraMainWin::timestampingTestFinished(bool success, QByteArray resp, QString errString) {
     if (!success) {
         timestampingFinished(false, tr("Test request to Time Server failed. ") + errString);
         return;
     }
-    // TODO success for TS test?
 
     if (isCancelled()) {
         doUserCancel();
@@ -195,7 +201,10 @@ void TeraMainWin::timestampingTestFinished(bool success, QByteArray resp, QStrin
     }
 
     progressBar->setValue(PP_TS_TEST);
-    progressBar->setFormat(tr("Testing Time Server..."));
+    processor.result->progressStage = GuiTimestamperProcessor::Result::SEARCHING_FILES;
+    processor.foundFiles.clear();
+    processor.inFiles.clear();
+    fillProgressBar();
 
     CrawlDiskJob* crawlJob = new CrawlDiskJob(*this, ++jobId, processor);
     connect(crawlJob, SIGNAL(signalProcessingPath(int, QString, double)),
@@ -207,29 +216,33 @@ void TeraMainWin::timestampingTestFinished(bool success, QByteArray resp, QStrin
     connect(crawlJob, SIGNAL(signalFindingFilesDone(int)),
         this, SLOT(processFindingFilesDone(int)));
 
-    processor.inFiles.clear();
     QThreadPool::globalInstance()->start(crawlJob);
 }
 
 void TeraMainWin::processProcessingPath(int jobid, QString path, double progress_percent) {
     if (isCancelled(jobid)) return;
-    logText->append(QObject::tr("Searching") + " " + path); // TODO
+
     progressBar->setValue((int)(PP_TS_TEST + progress_percent * PP_SEARCH));
     progressBar->setFormat(QObject::tr("Searching") + " " + path + "...");
 }
 
 void TeraMainWin::processExcludingPath(int jobid, QString path) {
-    qDebug() << "processExcludingPath " << path; // TODO delete ?????????????????
 }
 
 void TeraMainWin::processFoundFile(int jobid, QString path) {
-qDebug() << " xxx" << path; // TODO delete ?????????????????
     if (isCancelled(jobid)) return;
-    processor.inFiles.append(path);
+    if (!processor.foundFiles.contains(path)) {
+        processor.foundFiles.insert(path);
+        processor.inFiles.append(path);
+    }
+    fillProgressBar();
+
+    if (processor.logfile) {
+        processor.logfile->getStream() << "Found " << path << endl;
+    }
 }
 
 void TeraMainWin::processFindingFilesDone(int jobid) {
-    qDebug() << " o";
     if (isCancelled(jobid)) return;
     doFindingFilesDone();
 }
@@ -240,6 +253,11 @@ void TeraMainWin::doFindingFilesDone() {
         return;
     }
 
+    progressBar->setValue(PP_TS_TEST + PP_SEARCH);
+    progressBar->setFormat("");
+    processor.result->progressStage = GuiTimestamperProcessor::Result::CONVERTING_FILES;
+    fillProgressBar();
+
     if (processor.inFiles.size() > 0 && processor.previewFiles) {
         processor.initializeFilePreviewWindow(*filesWin);
         filesWin->open();
@@ -249,20 +267,59 @@ void TeraMainWin::doFindingFilesDone() {
 }
 
 void TeraMainWin::startStampingFiles() {
+    // TODO comment what callbacks follow in this process
     stamper.startTimestamping(processor.timeServerUrl, processor.inFiles);
+}
+
+bool TeraMainWin::processingFile(QString const& pathIn, QString const& pathOut, int nr, int totalCnt) {
+    if (isCancelled()) {
+        doUserCancel();
+        return false;
+    }
+    return true;
+}
+
+bool TeraMainWin::processingFileDone(QString const& pathIn, QString const& pathOut, int nr, int totalCnt, bool success, QString const& errString) {
+    if (isCancelled()) {
+        doUserCancel();
+        return false;
+    }
+
+    if (processor.logfile) {
+        QString log1 = QString("[%1/%2]").arg(QString::number(nr+1), QString::number(totalCnt));
+        QString log2 = QString("%1 -> %2").arg(pathIn, pathOut);
+        if (success) {
+            processor.logfile->getStream() << log1 << " DONE " << log2 << endl;
+        } else {
+            processor.logfile->getStream() << log1 << " FAILED " << log2 << " : " << errString << endl;
+        }
+    }
+
+    processor.result->progressStage = GuiTimestamperProcessor::Result::DONE;
+    processor.result->progressConverted = nr+1;
+    if (success) processor.result->progressSuccess++;
+    else processor.result->progressFailed++;
+
+    progressBar->setValue(PP_TS_TEST + PP_SEARCH + (int)(1.0*PP_TS*(nr+1) / totalCnt));
+    progressBar->setFormat("");
+    fillProgressBar();
+    return true;
 }
 
 void TeraMainWin::timestampingFinished(bool success, QString errString) {
     if (success) {
-        processor.result.success = true;
-        processor.result.cnt = processor.inFiles.size(); // TODO
+        processor.result->success = true;
+        processor.result->cnt = processor.inFiles.size(); // TODO
     }
     else {
-        processor.result.success = false;
-        processor.result.error = errString;
+        processor.result->success = false;
+        processor.result->error = errString;
         logText->clear();
     }
+    fillProgressBar();
     fillDoneLog();
+
+    if (processor.logfile) processor.logfile->close();
 
     processor.inFiles.clear();
     timestapmping = false;
@@ -292,21 +349,60 @@ void TeraMainWin::closeEvent(QCloseEvent *event) {
 void TeraMainWin::changeEvent(QEvent *event) {
     QWidget::changeEvent(event);
     if (QEvent::LanguageChange == event->type()) {
+        fillProgressBar();
         fillDoneLog();
+    }
+}
+
+void TeraMainWin::fillProgressBar() {
+    progressText->clear();
+    if (!processor.result) return;
+
+    if (GuiTimestamperProcessor::Result::TESTING_TIME_SERVER == processor.result->progressStage) {
+        progressText->setText(tr("Testing Time Server..."));
+    } else if (GuiTimestamperProcessor::Result::SEARCHING_FILES == processor.result->progressStage) {
+        progressText->setText(tr("Searching DDOC files. %1 found so far...").arg(processor.inFiles.size()));
+    } if (GuiTimestamperProcessor::Result::CONVERTING_FILES == processor.result->progressStage) {
+        progressText->setText(tr("Found %1 DDOC files. %2 left to be converted...").
+            arg(QString::number(processor.inFiles.size()),
+                QString::number(processor.inFiles.size() - processor.result->progressConverted)) );
     }
 }
 
 void TeraMainWin::fillDoneLog() {
     logText->clear();
-    if (processor.result.success) {
-        QString totalCnt = QString::number(processor.result.cnt);
-        logText->append(tr("DDOC failide konverteerimine lõppes edukalt"));
-        logText->append(tr("DDOC faile leitud: ") + totalCnt);
-        logText->append(tr("DDOC faile konverteeritud: ") + totalCnt);
-        logText->append(tr("Täpsema aruande vaatamiseks vajuta ") + "TODO");
+    if (!processor.result) return;
+
+    QTextCharFormat format = logText->currentCharFormat();
+    format.setAnchor(false);
+    format.setAnchorHref(QString());
+    format.setFontUnderline(false);
+    logText->setCurrentCharFormat(format);
+
+    logText->append(tr("DDOC failide konverteerimine lõppes"));
+    logText->append(tr("DDOC faile leitud: %1").arg(QString::number(processor.result->cnt)));
+    logText->append(tr("DDOC faile konverteeritud: %1").arg(QString::number(processor.result->progressSuccess)));
+    if (processor.result->progressFailed > 0) {
+        logText->append(tr("Ebaõnnestunud konverteerimisi: %1").arg(QString::number(processor.result->progressFailed)));
     }
-    else {
-        logText->append(tr("Error: ") + processor.result.error);
+
+    if (processor.logfile) {
+        logText->append(tr("Täpsema aruande vaatamiseks vajuta "));
+
+        QString filepath = processor.logfile->filePath();
+        QTextCursor cursor = logText->textCursor();
+        format.setAnchor(true);
+        format.setAnchorHref(filepath);
+        format.setFontUnderline(true);
+
+        cursor.movePosition(QTextCursor::End, QTextCursor::MoveAnchor);
+        cursor.insertText(tr("SIIA"), format);
+    }
+}
+
+void TeraMainWin::showLog(QUrl const& link) {
+    if (!QDesktopServices::openUrl(link)) {
+        QMessageBox::warning(this, this->windowTitle(), tr("Couldn't open timestamping log: ") + link.toDisplayString());
     }
 }
 
@@ -379,37 +475,6 @@ bool TeraMainWin::isCancelled() { // TODO
 
 bool TeraMainWin::isCancelled(int jobid) {
     return cancel != 0 || jobid != jobId;
-}
-
-GuiProcessingMonitor::GuiProcessingMonitor(TeraMainWin& mainWindow) : gui(mainWindow) {}
-
-bool GuiProcessingMonitor::processingPath(QString const& path, double progress_percent) {
-gui.logText->append(QObject::tr("Searching") + " " + path); // TODO
-gui.progressBar->setValue((int)(PP_TS_TEST + progress_percent * PP_SEARCH));
-gui.progressBar->setFormat(QObject::tr("Searching") + " " + path + "...");
-    gui.processEvents();
-    return !gui.isCancelled();
-}
-
-bool GuiProcessingMonitor::excludingPath(QString const& path) {
-// TODO    gui.logText->append("   " + QObject::tr("Excluding") + " " + path);
-    gui.processEvents();
-    return !gui.isCancelled();
-}
-
-bool GuiProcessingMonitor::foundFile(QString const& path) { // TODO delete
-
-// TODO    gui.logText->append("   " + QObject::tr("Found") + " " + path);
-    gui.processEvents();
-    return !gui.isCancelled();
-}
-
-bool GuiProcessingMonitor::processingFile(QString const& pathIn, QString const& pathOut, int nr, int totalCnt) {
-// TODO    gui.logText->append(QObject::tr("Timestamping") + " (" + QString::number(nr+1) + "/" + QString::number(totalCnt) + ") " + pathIn + " -> " + pathOut);
-gui.progressBar->setValue((int)(PP_TS_TEST + PP_SEARCH + (double) nr / totalCnt * PP_TS));
-gui.progressBar->setFormat(QObject::tr("Timestamping") + " (" + QString::number(nr + 1) + "/" + QString::number(totalCnt) + ") " + pathIn /*+ " -> " + pathOut*/);
-    gui.processEvents();
-    return !gui.isCancelled();
 }
 
 }

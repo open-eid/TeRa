@@ -34,6 +34,10 @@
   <property name="windowTitle">
    <string>TeRa client</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../images/images.qrc">
+    <normaloff>:/images/tera_icon_128x128.png</normaloff>:/images/tera_icon_128x128.png</iconset>
+  </property>
   <property name="styleSheet">
    <string notr="true">#background { background-image: url(&quot;:/images/background.png&quot;); }</string>
   </property>
@@ -599,7 +603,7 @@ p, li { white-space: pre-wrap; }
             </sizepolicy>
            </property>
            <property name="currentIndex">
-            <number>2</number>
+            <number>1</number>
            </property>
            <widget class="QWidget" name="page_start">
             <layout class="QGridLayout" name="gridLayout_3">
@@ -981,7 +985,7 @@ font-weight: bold;
                </property>
                <property name="minimumSize">
                 <size>
-                 <width>102</width>
+                 <width>91</width>
                  <height>100</height>
                 </size>
                </property>
@@ -1284,7 +1288,7 @@ font-weight: bold;
                </property>
               </widget>
              </item>
-             <item row="2" column="2">
+             <item row="3" column="2">
               <spacer name="verticalSpacer_4">
                <property name="orientation">
                 <enum>Qt::Vertical</enum>
@@ -1297,7 +1301,7 @@ font-weight: bold;
                </property>
               </spacer>
              </item>
-             <item row="1" column="1" colspan="3">
+             <item row="2" column="1" colspan="3">
               <widget class="QProgressBar" name="progressBar">
                <property name="value">
                 <number>24</number>
@@ -1310,6 +1314,13 @@ font-weight: bold;
                </property>
                <property name="format">
                 <string>TeRa</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1" colspan="3">
+              <widget class="QLabel" name="progressText">
+               <property name="text">
+                <string>TextLabel</string>
                </property>
               </widget>
              </item>
@@ -1356,7 +1367,7 @@ font-weight: bold;
                </property>
                <property name="minimumSize">
                 <size>
-                 <width>102</width>
+                 <width>91</width>
                  <height>100</height>
                 </size>
                </property>
@@ -1678,7 +1689,7 @@ font-weight: bold;
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="QTextEdit" name="logText">
+                 <widget class="QTextBrowser" name="logText">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                     <horstretch>0</horstretch>
@@ -1856,6 +1867,12 @@ font-weight: bold;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Arial'; font-size:9pt; font-weight:600; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; color:#00355f;&quot;&gt;DONE&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="openExternalLinks">
+                   <bool>true</bool>
+                  </property>
+                  <property name="openLinks">
+                   <bool>false</bool>
                   </property>
                  </widget>
                 </item>

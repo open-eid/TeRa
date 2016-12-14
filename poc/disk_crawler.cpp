@@ -55,7 +55,6 @@ QStringList DiskCrawler::crawl() {
         if (!name.endsWith(separator)) name += separator;
 
         excldir.append(name);
-qDebug() << "Excl-dir: " << name;
     }
 
     QStringList nameFilter;

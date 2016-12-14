@@ -13,6 +13,7 @@
 #include <QCryptographicHash>
 #include <QCoreApplication>
 #include <QNetworkReply>
+#include <QThreadPool>
 
 #include <zip.h>
 
@@ -52,7 +53,7 @@ bool TimeStamperData_impl::createAsicsContainer(QString const& outpath, QString 
     QString fileMimetypeName = "mimetype";
     QByteArray fileMimetypeContent = "application/vnd.etsi.asic-s+zip";
     if (!addFile(fileMimetypeName, fileMimetypeContent)) {
-        std::cout << "could not add '" << fileMimetypeName.toUtf8().constData() << "' to ddoc" << std::endl;
+        std::cout << "could not add '" << fileMimetypeName.toUtf8().constData() << "' to ddoc" << std::endl; // TODO
         return false;
     }
 
@@ -82,7 +83,12 @@ bool TimeStamperData_impl::createAsicsContainer(QString const& outpath, QString 
         return false;
     }
 
-    zip_close(zip);
+    error = zip_close(zip);
+    if (0 != error) {
+        std::cout << "could not finalize '" << outpath.toUtf8().constData() << "'" << std::endl;
+        return false;
+    }
+
     return true;
 }
 
@@ -213,6 +219,8 @@ void TimeStamper::tsReplyFinished(QNetworkReply *reply) {
     QString fileName = file.fileName();
 
     BOOST_LOG_TRIVIAL(trace) << "Writing output file: " << outputFilePath.toUtf8().constData();
+    //CreateAsicsJob* crawlJob = new CreateAsicsJob(++jobId, testRequest, outputFilePath, inputFilePath, timestamp);
+    //QThreadPool::globalInstance()->start(crawlJob);
     if (!data->createAsicsContainer(outputFilePath, inputFilePath, timestamp)) {
         QString error;
         error.push_back("Couldn't create output file '");
@@ -223,6 +231,14 @@ void TimeStamper::tsReplyFinished(QNetworkReply *reply) {
     } else {
         notifyClientOnTimestampingFinished(testRequest, true, "");
     }
+}
+
+CreateAsicsJob::CreateAsicsJob() {
+    ;
+}
+
+void CreateAsicsJob::run() {
+    ;
 }
 
 void TimeStamper::notifyClientOnTimestampingFinished(bool test, bool success, QString errString, QByteArray resp) {
@@ -290,8 +306,8 @@ void OutputNameGenerator::setFixedOutFile(QString const& in_file, QString const&
 }
 
 
-BatchStamper::BatchStamper(ProcessingMonitorCallback& mon, OutputNameGenerator& ng) :
-        monitor(mon), namegen(ng), pos(-1)
+BatchStamper::BatchStamper(StampingMonitorCallback& mon, OutputNameGenerator& ng, bool end_on_first_fail) :
+    monitor(mon), namegen(ng), instaFail(end_on_first_fail), pos(-1)
 {
     QObject::connect(this, SIGNAL(triggerNext()),
                      this, SLOT(processNext()));
@@ -317,17 +333,21 @@ void BatchStamper::processNext() {
         return;
     }
     ++pos;
-    QString infile = input[pos];
-    QString outfile = namegen.getOutFile(infile);
-    if (!monitor.processingFile(infile, outfile, pos, input.size())) {
+    curIn = input[pos];
+    curOut = namegen.getOutFile(curIn);
+    if (!monitor.processingFile(curIn, curOut, pos, input.size())) {
         emit timestampingFinished(false, tr("Operation cancelled by user...")); // TODO const text see main_window.cpp
         return;
     }
-    ts.startTimestamping(timeServerUrl, infile, outfile);
+    ts.startTimestamping(timeServerUrl, curIn, curOut);
 }
 
 void BatchStamper::timestampFinished(bool success, QString errString) {
-    if (!success) {
+    if (!monitor.processingFileDone(curIn, curOut, pos, input.size(), success, errString)) {
+        emit timestampingFinished(false, tr("Operation cancelled by user...")); // TODO const text see main_window.cpp
+        return;
+    }
+    if (!success && instaFail) {
         timestampingFinished(success, errString);
     } else {
         emit triggerNext();

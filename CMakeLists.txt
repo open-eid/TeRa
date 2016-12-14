@@ -39,14 +39,16 @@ MESSAGE("Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}")
 MESSAGE("Boost_LIBRARY_DIRS: ${Boost_LIBRARY_DIRS}")  
 MESSAGE("Boost Libraries: ${Boost_LIBRARIES}") 
 
-find_package(ZLib)
-
 IF (WIN32)
+    find_package(ZLib)
     include_directories("$ENV{TERA_LIBZIP_DIR}/include")
     find_library(libzip NAMES zip.lib PATHS "$ENV{TERA_LIBZIP_DIR}/lib")
+    MESSAGE(${ZLIB_LIBRARIES})
+    SET (ZIP_LIBRARIES "C:/Program Files (x86)/libzip/lib/zip.lib")
 ELSE ()
     include_directories(/usr/local/lib/libzip/include/)
     find_library(libzip NAMES libzip.so PATHS /usr/local/lib/)
+    SET (ZIP_LIBRARIES /home/s/Downloads/libzip-1.1.3/lib/.libs/libzip.a /home/s/cmake_builds/zlib/libz.a)
 ENDIF()
 
 # include openssl
@@ -57,9 +59,6 @@ include_directories( ${OPENSSL_INCLUDE_DIR} )
 # TODO find_library(crypto NAMES libcrypto.so PATHS /home/s/Downloads/openssl-1.1.0b)
 
 #add_library(zip STATIC /home/s/Downloads/libzip-1.1.3/lib/libzip.la)
-
-#set(libzip_DIR 'C:\\Program Files\\libzip')
-#find_package(libzip PATHS )
 
 # C++11
 set(CMAKE_CXX_STANDARD 14)
@@ -82,9 +81,14 @@ SET (TERA_GUI_SRC
         poc/config.h poc/config.cpp
      )
 
-SET (TRANS translations/et.ts translations/en.ts) #  translations/ru.ts
+SET (TRANS translations/et.ts translations/en.ts translations/ru.ts)
 
-# qt5_create_translation( QM ${TERA_GUI_UI} ${TERA_GUI_SRC} ${TRANS})  ##### TODO 
+##### TODO To update translation files (see https://itk.org/Wiki/CMake:How_To_Build_Qt4_Software)
+# * Uncomment qt5_create_translation
+# * Build configuration with cmake
+# * Build with cmake
+# * NB! Comment qt5_create_translation out again when not needed anymore and build new configuration with cmake
+#qt5_create_translation( QM ${TERA_GUI_UI} ${TERA_GUI_SRC} ${TRANS})
 
 qt5_add_translation( QM ${TRANS} )
 qt5_add_resources( SOURCES images/images.qrc translations/tr.qrc )
@@ -92,6 +96,7 @@ qt5_wrap_ui( UI_HEADERS ${TERA_GUI_UI} )
 
 # TeRaPOC
 add_executable(TeRaPOC
+        poc/teragui.rc
         poc/terapoc.cpp
         poc/utils.h poc/utils.cpp
         poc/openssl_utils.h poc/openssl_utils.cpp
@@ -104,19 +109,19 @@ add_executable(TeRaPOC
 # ${Boost_FILESYSTEM_LIBRARY} ${Boost_LOG_LIBRARY}
 #target_link_libraries(TeRaPOC /home/s/Downloads/libzip-1.1.3/lib/.libs/libzip.a /home/s/cmake_builds/zlib/libz.a ssl crypto ${Boost_LIBRARIES} )
 ##### TODO zip
-target_link_libraries(TeRaPOC "C:/Program Files (x86)/libzip/lib/zip.lib" ${OPENSSL_LIBRARIES} ${Boost_LIBRARIES} ${ZLIB_LIBRARIES} )
+target_link_libraries(TeRaPOC ${ZIP_LIBRARIES} ${OPENSSL_LIBRARIES} ${Boost_LIBRARIES} ${ZLIB_LIBRARIES} )
 qt5_use_modules(TeRaPOC Core Concurrent Network)
 
-MESSAGE(${ZLIB_LIBRARIES})
-add_executable(Tera WIN32 MACOSX_BUNDLE
+add_executable(Tera #WIN32 MACOSX_BUNDLE
+        poc/teragui.rc
         ${UI_HEADERS}
         ${TERA_GUI_UI}
         ${TERA_GUI_SRC}
-        images/images.qrc translations/tr.qrc #${SOURCES}
+        images/images.qrc translations/tr.qrc ${SOURCES}
         ${QM}
         ${TRANS}
         )
 ##### TODO zip
-target_link_libraries(Tera "C:/Program Files (x86)/libzip/lib/zip.lib" ${OPENSSL_LIBRARIES} ${Boost_LIBRARIES} ${ZLIB_LIBRARIES} )
+target_link_libraries(Tera ${ZIP_LIBRARIES} ${OPENSSL_LIBRARIES} ${Boost_LIBRARIES} ${ZLIB_LIBRARIES} )
 qt5_use_modules(Tera Core Concurrent Network Widgets Gui)
 target_link_libraries(Tera Qt5::Widgets)

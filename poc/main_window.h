@@ -31,18 +31,6 @@ namespace ria_tera {
 
 class TeraMainWin;
 
-class GuiProcessingMonitor : public ProcessingMonitorCallback
-{
-public:
-    GuiProcessingMonitor(TeraMainWin& mainWindow);
-    bool processingPath(QString const& path, double progress_percent);
-    bool excludingPath(QString const& path);
-    bool foundFile(QString const& path);
-    bool processingFile(QString const& pathIn, QString const& pathOut, int nr, int totalCnt);
-private:
-    TeraMainWin& gui;
-};
-
 class CrawlDiskJob : public QObject, public QRunnable, public DiscCrawlMonitorCallback
 {
     Q_OBJECT
@@ -67,7 +55,7 @@ private:
     DiskCrawler dc;
 };
 
-class TeraMainWin: public QWidget, public Ui::MainWindow
+class TeraMainWin : public QWidget, public Ui::MainWindow, public StampingMonitorCallback
 {
     Q_OBJECT
 
@@ -92,6 +80,10 @@ public slots:
 
     void doFindingFilesDone();
     void startStampingFiles(); // TODO better name
+private:
+    bool processingFile(QString const& pathIn, QString const& pathOut, int nr, int totalCnt);
+    bool processingFileDone(QString const& pathIn, QString const& pathOut, int nr, int totalCnt, bool success, QString const& errString);
+public slots:
     void timestampingFinished(bool success, QString errString);
 
     // GUI related slots
@@ -104,10 +96,12 @@ public slots:
     void slotLanguageChanged(int i);
     void slotLanguageChanged(QAction* action);
 
+    void showLog(QUrl const& link);
 protected:
     virtual void closeEvent(QCloseEvent *event);
     virtual void changeEvent(QEvent *event);
 
+    void fillProgressBar();
     void fillDoneLog();
 private:
     void doUserCancel();
@@ -118,7 +112,6 @@ private:
     QAtomicInt jobId;
 
     GuiTimestamperProcessor processor;
-    GuiProcessingMonitor monitor;
     OutputNameGenerator nameGen;
     BatchStamper stamper;
 

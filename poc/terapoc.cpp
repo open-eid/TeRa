@@ -36,7 +36,7 @@ QString const ts_url_param("ts_url");
 class TeRaMonitor : public ria_tera::ProcessingMonitorCallback {
 public:
     // TODO logging
-    bool processingPath(QString const& path) {
+    bool processingPath(QString const& path, double progress_percent) {
         TERA_COUT("Searching " << path.toUtf8().constData());
         return true;
     };
@@ -53,6 +53,7 @@ public:
                 " -> " << pathOut.toUtf8().constData());
         return true;
     };
+    bool processingFileDone(QString const& pathIn, QString const& pathOut, int nr, int totalCnt, bool success, QString const& errString) {return true;};
 };
 
 }

@@ -10,6 +10,7 @@
 #include <QObject>
 #include <QByteArray>
 #include <QMap>
+#include <QRunnable>
 #include <QScopedPointer>
 #include <QString>
 
@@ -22,7 +23,15 @@ namespace ria_tera {
 
 class TimeStamperData_impl;
 
-class TimeStamper: public QObject {
+class CreateAsicsJob : public QObject, public QRunnable
+{
+    Q_OBJECT
+public:
+    CreateAsicsJob();
+    void run();
+};
+
+class TimeStamper : public QObject {
     Q_OBJECT
 public:
     TimeStamper();
@@ -68,7 +77,7 @@ private:
 class BatchStamper : public QObject {
     Q_OBJECT
 public:
-    BatchStamper(ProcessingMonitorCallback& mon, OutputNameGenerator& ng);
+    BatchStamper(StampingMonitorCallback& mon, OutputNameGenerator& ng, bool end_on_first_fail = true);
     void startTimestamping(QString const& tsUrl, QStringList const& inputFiles);
     TimeStamper& getTimestamper();
 signals:
@@ -78,9 +87,12 @@ private slots:
     void processNext();
     void timestampFinished(bool success, QString errString);
 private:
-    ProcessingMonitorCallback& monitor;
+    StampingMonitorCallback& monitor;
     OutputNameGenerator& namegen;
+    bool instaFail;
     int pos;
+    QString curIn;
+    QString curOut;
     QStringList input;
     QString timeServerUrl;
     TimeStamper ts;

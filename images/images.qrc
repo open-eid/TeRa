@@ -2,7 +2,7 @@
     <qresource prefix="/images" >
         <file>background.png</file>
         <file>EL_Regionaalareng_horisontaal.png</file>
-        <file>digidoc_icon_128x128.png</file>
+        <file>tera_icon_128x128.png</file>
         <file>flag-estonia.png</file>
         <file>flag-russia.png</file>
         <file>flag-united-kingdom.png</file>

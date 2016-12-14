@@ -26,14 +26,18 @@ public slots:
 
 class DiscCrawlMonitorCallback {
 public:
-    virtual bool processingPath(QString const& path, double progress_percent) { return true; };
-    virtual bool excludingPath(QString const& path) { return true; };
-    virtual bool foundFile(QString const& path) { return true; };
+    virtual bool processingPath(QString const& path, double progress_percent) = 0;
+    virtual bool excludingPath(QString const& path) = 0;
+    virtual bool foundFile(QString const& path) = 0;
 };
 
-class ProcessingMonitorCallback : public DiscCrawlMonitorCallback {
+class StampingMonitorCallback {
 public:
-    virtual bool processingFile(QString const& pathIn, QString const& pathOut, int nr, int totalCnt) {return true;};
+    virtual bool processingFile(QString const& pathIn, QString const& pathOut, int nr, int totalCnt) = 0;
+    virtual bool processingFileDone(QString const& pathIn, QString const& pathOut, int nr, int totalCnt, bool success, QString const& errString) = 0;
+};
+
+class ProcessingMonitorCallback : public DiscCrawlMonitorCallback, public StampingMonitorCallback {
 };
 
 class DirIterator {
@@ -43,28 +47,6 @@ public:
         bool recursive;
         QString path;
     };
-    DirIterator(ProcessingMonitorCallback& mon, QList<InDir> const& inDirs, QStringList const& excl);
-    bool hasNext();
-    QString next();
-private:
-    class StackEntry {
-    public:
-        StackEntry(){};
-        StackEntry(QString const& p, bool r, QStringList const& d) : parentCanonical(p), recursive(r), dirs(d) {}
-        QString parentCanonical;
-        bool recursive;
-        QStringList dirs;
-    };
-    ProcessingMonitorCallback& monitor;
-    QString nextPath;
-    QSet<QString> pathsInStack;
-    QStack<StackEntry> stack; // TODO copying
-    QSet<QString> exclPaths;
-
-    void processInDirs(QList<InDir> const& inDirs);
-    void addInputDirs(bool recursive, QSet<QString> const& dirs);
-    /// fills next path
-    void findNext();
 };
 
 }
