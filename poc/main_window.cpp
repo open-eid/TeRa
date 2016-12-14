@@ -20,9 +20,9 @@
 #include "settings_window.h"
 
 namespace {
-	static int PP_TS_TEST = 100;
-	static int PP_SEARCH = 500;
-	static int PP_TS = 400;
+    static int PP_TS_TEST = 100;
+    static int PP_SEARCH = 500;
+    static int PP_TS = 400;
 }
 
 namespace ria_tera {
@@ -232,7 +232,8 @@ void TeraMainWin::processExcludingPath(int jobid, QString path) {
 void TeraMainWin::processFoundFile(int jobid, QString path) {
     if (isCancelled(jobid)) return;
     if (!processor.foundFiles.contains(path)) {
-        processor.foundFiles.insert(path);
+        GuiTimestamperProcessor::InFileData ifd(path);
+        processor.foundFiles.insert(path, ifd);
         processor.inFiles.append(path);
     }
     fillProgressBar();
@@ -307,14 +308,16 @@ bool TeraMainWin::processingFileDone(QString const& pathIn, QString const& pathO
 }
 
 void TeraMainWin::timestampingFinished(bool success, QString errString) {
-    if (success) {
-        processor.result->success = true;
-        processor.result->cnt = processor.inFiles.size(); // TODO
-    }
-    else {
-        processor.result->success = false;
-        processor.result->error = errString;
-        logText->clear();
+    if (processor.result) {
+        if (success) {
+            processor.result->success = true;
+            processor.result->cnt = processor.inFiles.size(); // TODO
+        }
+        else {
+            processor.result->success = false;
+            processor.result->error = errString;
+            logText->clear();
+        }
     }
     fillProgressBar();
     fillDoneLog();

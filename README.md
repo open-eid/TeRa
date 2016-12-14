@@ -73,11 +73,9 @@ Ubuntu & OSX
 In Windows
 
     cd c:\cmake_builds\libzip
-    "C:\Program Files\CMake\bin\cmake" -DCMAKE_INSTALL_PREFIX=c:\cmake_builds\libzip_bin -G "Visual Studio 12 2013" C:\Downloads\libzip-1.1.3 -DCMAKE_PREFIX_PATH="C:\Program Files (x86)\zlib"
+    "C:\Program Files\CMake\bin\cmake" -DCMAKE_INSTALL_PREFIX=c:\cmake_builds\libzip_bin -G "Visual Studio 12 2013" C:\Downloads\libzip-1.1.3 -DCMAKE_PREFIX_PATH="C:\cmake_builds\zlib_bin"
     "C:\Program Files\CMake\bin\cmake" --build .
     msbuild INSTALL.vcxproj
-
-If zipconf.h can't be found under C:\Program Files (x86)\libzip and it's sub-directories, then copy  C:\cmake_builds\libzip\zipconf.h to C:\Program Files (x86)\libzip\include
 
 #### Install openssl
 https://www.openssl.org/source/openssl-1.1.0b.tar.gz See https://wiki.openssl.org/index.php/Compilation_and_Installation for details.
@@ -89,12 +87,15 @@ Short version for Ubuntu & OSX.
     make test
     sudo make install
 
-In Windows extract to C:\cmake_builds\openssl-1.1.0b. And install http://www.activestate.com/ActivePerl first. Then it is possible to build OpenSSL itself
+In Windows extract to C:\cmake_builds\openssl-1.1.0b. And install http://www.activestate.com/ActivePerl first. On casual windows command prompt dmake has to be installed for perl
+
+    ppm install dmake
+
+Then it is possible to build OpenSSL itself in Visual Studio command line (if 64-bit perl is used then first command may be 'set "PATH=%PATH%;C:\Perl64\bin"' instead)
     
     set "PATH=%PATH%;C:\Perl\bin"
-    ppm install dmake
     cd C:\cmake_builds\openssl-1.1.0b
-    perl Configure VC-WIN32 no-asm --prefix=C:\cmake_builds\openssl-1.1.0b-bin
+    perl Configure VC-WIN32 no-asm --prefix=C:\cmake_builds\openssl-1.1.0b-bin --openssldir=C:\cmake_builds\openssl-1.1.0b-openssl
     nmake
     nmake install
 

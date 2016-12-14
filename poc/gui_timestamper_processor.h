@@ -9,6 +9,8 @@
 
 #include <QObject>
 #include <QFile>
+#include <QFileInfo>
+#include <QMap>
 #include <QScopedPointer>
 #include <QTextStream>
 
@@ -23,6 +25,15 @@ namespace ria_tera {
 class GuiTimestamperProcessor : public QObject {
     Q_OBJECT
 public:
+    class InFileData {
+    public:
+        InFileData(QString const& path) {
+            QFileInfo fi(path);
+            filesize = fi.size();
+        }
+        qint64 filesize;
+    };
+
     class Result {
     public:
         enum e_ProgressStage {
@@ -71,7 +82,7 @@ public:
     QSet<QString> inclDirs;
     bool previewFiles;
 
-    QSet<QString> foundFiles;
+    QMap<QString, InFileData> foundFiles;
     QStringList inFiles;
 
     QScopedPointer<Result> result;
