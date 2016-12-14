@@ -55,33 +55,27 @@ Ubuntu & OSX
 In Windows
 
     cd c:\cmake_builds\zlib
-    "C:\Program Files\CMake\bin\cmake" -G "Visual Studio 12 2013" C:\Downloads\zlib-1.2.8
+    "C:\Program Files\CMake\bin\cmake" -DCMAKE_INSTALL_PREFIX=c:\cmake_builds\zlib_bin -G "Visual Studio 12 2013" C:\Downloads\zlib-1.2.8
     "C:\Program Files\CMake\bin\cmake" --build .
-    nmake install
+    msbuild INSTALL.vcxproj
 
 #### Install libzip
 
 https://nih.at/libzip/libzip-1.1.3.tar.gz
+
+Ubuntu & OSX
 
     mkdir -p /home/s/cmake_builds/libzip & cd /home/s/cmake_builds/libzip
     cmake -G "Unix Makefiles" /home/s/Downloads/libzip-1.1.3
     cmake --build .
     sudo make install
 
-In Windows first zconf.h file in libzip source has to be changed as in Windows <io.h> needs to be used instead of <unistd.h>. So replace line 454 in zconf.h ("#    include <unistd.h>") with 
-
-    #ifdef _WIN32
-    #include <io.h>
-    #else
-    #include <unistd.h>
-    #endif
-
-Next
+In Windows
 
     cd c:\cmake_builds\libzip
-    "C:\Program Files\CMake\bin\cmake" -G "Visual Studio 12 2013" C:\Downloads\libzip-1.1.3 -DCMAKE_PREFIX_PATH="C:\Program Files (x86)\zlib"
+    "C:\Program Files\CMake\bin\cmake" -DCMAKE_INSTALL_PREFIX=c:\cmake_builds\libzip_bin -G "Visual Studio 12 2013" C:\Downloads\libzip-1.1.3 -DCMAKE_PREFIX_PATH="C:\Program Files (x86)\zlib"
     "C:\Program Files\CMake\bin\cmake" --build .
-    nmake install
+    msbuild INSTALL.vcxproj
 
 If zipconf.h can't be found under C:\Program Files (x86)\libzip and it's sub-directories, then copy  C:\cmake_builds\libzip\zipconf.h to C:\Program Files (x86)\libzip\include
 
@@ -133,9 +127,9 @@ In Unbuntu & OSX
 In Windows
 
     cd C:\cmake_builds\tera
-    set "TERA_LIBZIP_DIR=C:\Program Files (x86)\libzip"
+    set "TERA_LIBZIP_DIR=C:\cmake_builds\libzip_bin"
     set "TERA_OPENSSL_DIR=C:\cmake_builds\openssl-1.1.0b-bin"
-    set "CMAKE_PREFIX_PATH=C:\Qt5.7.0VS\5.7\msvc2013\lib\cmake;C:\cmake_builds\boost_1_62_0;C:\Program Files (x86)\zlib;%TERA_LIBZIP_DIR%;%TERA_OPENSSL_DIR%"
+    set "CMAKE_PREFIX_PATH=C:\Qt5.7.0VS\5.7\msvc2013\lib\cmake;C:\cmake_builds\boost_1_62_0;C:\cmake_builds\zlib_bin;%TERA_LIBZIP_DIR%;%TERA_OPENSSL_DIR%"
     "C:\Program Files\CMake\bin\cmake" -G "Visual Studio 12 2013" C:\Downloads\git\TeRa
 
 ### 3. Build

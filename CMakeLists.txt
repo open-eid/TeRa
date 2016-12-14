@@ -41,10 +41,10 @@ MESSAGE("Boost Libraries: ${Boost_LIBRARIES}")
 
 IF (WIN32)
     find_package(ZLib)
-    include_directories("$ENV{TERA_LIBZIP_DIR}/include")
-    find_library(libzip NAMES zip.lib PATHS "$ENV{TERA_LIBZIP_DIR}/lib")
+    include_directories("$ENV{TERA_LIBZIP_DIR}/include" "$ENV{TERA_LIBZIP_DIR}/lib/libzip/include")
+    #find_library(libzip NAMES zip.lib PATHS "$ENV{TERA_LIBZIP_DIR}/lib")
+    SET (ZIP_LIBRARIES "$ENV{TERA_LIBZIP_DIR}/lib/zip.lib")
     MESSAGE(${ZLIB_LIBRARIES})
-    SET (ZIP_LIBRARIES "C:/Program Files (x86)/libzip/lib/zip.lib")
 ELSE ()
     include_directories(/usr/local/lib/libzip/include/)
     find_library(libzip NAMES libzip.so PATHS /usr/local/lib/)
@@ -117,7 +117,7 @@ add_executable(Tera #WIN32 MACOSX_BUNDLE
         ${UI_HEADERS}
         ${TERA_GUI_UI}
         ${TERA_GUI_SRC}
-        images/images.qrc translations/tr.qrc ${SOURCES}
+        ${SOURCES}
         ${QM}
         ${TRANS}
         )

@@ -592,7 +592,7 @@ p, li { white-space: pre-wrap; }
           <number>20</number>
          </property>
          <property name="bottomMargin">
-          <number>9</number>
+          <number>0</number>
          </property>
          <item row="0" column="0">
           <widget class="QStackedWidget" name="stackedCntrlWidget">
@@ -603,7 +603,7 @@ p, li { white-space: pre-wrap; }
             </sizepolicy>
            </property>
            <property name="currentIndex">
-            <number>1</number>
+            <number>2</number>
            </property>
            <widget class="QWidget" name="page_start">
             <layout class="QGridLayout" name="gridLayout_3">
@@ -1329,6 +1329,9 @@ font-weight: bold;
            <widget class="QWidget" name="page_end">
             <layout class="QGridLayout" name="gridLayout_5">
              <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
               <number>0</number>
              </property>
              <item row="1" column="2">
