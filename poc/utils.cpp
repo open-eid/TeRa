@@ -49,4 +49,23 @@ QString fix_path(QString const& path) {
     return path;
 }
 
+QString hrPath(QString const& path) {
+    return QString(path).replace("/", "\\");
+}
+
+QString hrSize(qint64 bytes) {
+    static const int K = 1024;
+    if (bytes < K) return QString::number(bytes) + " bytes";
+
+    double size = bytes;
+    size = size / K;
+    if (size < K) return QString::number(size, 'f', 1) + " KB";
+
+    size = size / K;
+    if (size < K) return QString::number(size, 'f', 1) + " MB";
+
+    size = size / K;
+    return QString::number(size, 'f', 1) + " GB";
+}
+
 }

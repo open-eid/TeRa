@@ -112,7 +112,7 @@ add_executable(TeRaPOC
 target_link_libraries(TeRaPOC ${ZIP_LIBRARIES} ${OPENSSL_LIBRARIES} ${Boost_LIBRARIES} ${ZLIB_LIBRARIES} )
 qt5_use_modules(TeRaPOC Core Concurrent Network)
 
-add_executable(Tera #WIN32 MACOSX_BUNDLE
+add_executable(Tera WIN32 MACOSX_BUNDLE
         poc/teragui.rc
         ${UI_HEADERS}
         ${TERA_GUI_UI}

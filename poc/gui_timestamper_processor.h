@@ -11,7 +11,9 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QMap>
+#include <QFileInfo>
 #include <QScopedPointer>
+#include <QStorageInfo>
 #include <QTextStream>
 
 #include "config.h"
@@ -30,8 +32,11 @@ public:
         InFileData(QString const& path) {
             QFileInfo fi(path);
             filesize = fi.size();
+            QStorageInfo si(path);
+            partitionPath = si.rootPath();
         }
         qint64 filesize;
+        QString partitionPath;
     };
 
     class Result {

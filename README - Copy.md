@@ -118,8 +118,7 @@ pacman -S mingw-w64-i686-cmake
     "C:\Program Files\CMake\bin\cmake" -G "Visual Studio 12 2013" C:\work\TeRa\lugemist\zlib-1.2.8
     "C:\Program Files\CMake\bin\cmake" --build .
 
-    msbuild INSTALL.vcxproj
-                //// /P:Configuration=Release 
+    msbuild INSTALL.vcxproj /P:Configuration=Release 
 
     http://stackoverflow.com/questions/10507893/libzip-with-visual-studio-2010
     "C:\Program Files\CMake\bin\cmake" -G "Visual Studio 12 2013" C:\work\TeRa\lugemist\libzip-1.1.3 -DCMAKE_PREFIX_PATH="C:\Program Files (x86)\zlib"

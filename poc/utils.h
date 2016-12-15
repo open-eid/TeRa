@@ -17,6 +17,8 @@ namespace ria_tera {
 
 bool isSubfolder(QString const& path, QSet<QString> const& refDirs);
 QString fix_path(QString const& path);
+QString hrPath(QString const& path);
+QString hrSize(qint64 bytes);
 
 class ExitProgram : public QObject {
     Q_OBJECT

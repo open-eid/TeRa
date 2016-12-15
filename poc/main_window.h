@@ -104,7 +104,7 @@ protected:
     void fillProgressBar();
     void fillDoneLog();
 private:
-    void doUserCancel();
+    void doUserCancel(QString msg = QString());
     void loadTranslation(QString const& language_short);
 private:
     bool timestapmping;

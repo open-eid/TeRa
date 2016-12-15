@@ -25,7 +25,7 @@ In Unutu and OSX building tools are available straight from terminal. In Windows
 
 #### Install Qt5
 
-https://www.qt.io/download-open-source/ (for Windows VS 2013 version is needed)
+https://www.qt.io/download-open-source/ (for Windows VS 2013 x86 version is needed)
 
 #### Install cmake
 
@@ -125,7 +125,7 @@ In Unbuntu & OSX
     export CMAKE_PREFIX_PATH=/home/s/Qt/5.7/gcc_64/lib/cmake/
     cmake -G "Unix Makefiles" /home/s/git/TeRa
 
-In Windows
+In Windows (put in your Qt path in "set "CMAKE_PREFIX_PATH=...")
 
     cd C:\cmake_builds\tera
     set "TERA_LIBZIP_DIR=C:\cmake_builds\libzip_bin"

@@ -269,6 +269,48 @@ void TeraMainWin::doFindingFilesDone() {
 
 void TeraMainWin::startStampingFiles() {
     // TODO comment what callbacks follow in this process
+    // TODO separate thread for size estimates
+    {
+        QMap<QString,qint64> filesizesPerPartitition;
+        for (int i = 0; i < processor.inFiles.size(); ++i) {
+            QString filePath = processor.inFiles.at(i);
+            auto it = processor.foundFiles.find(filePath);
+            if (processor.foundFiles.end() != it) {
+                auto& data(it.value());
+                auto& filesizeOnPart(filesizesPerPartitition[data.partitionPath]);
+                filesizeOnPart += data.filesize;
+                qDebug() << "X " << filePath << " " << data.partitionPath << " " << data.filesize;
+            }
+        }
+
+        bool spaceIssue = false;
+        QString sizeInfo;
+        for (auto it = filesizesPerPartitition.begin(); it != filesizesPerPartitition.end(); ++it) {
+            QString partition = it.key();
+            qint64 filesTotalSize = it.value();
+            qint64 partitionAvailableSize = QStorageInfo(partition).bytesAvailable();
+            if (filesTotalSize > partitionAvailableSize) {
+                spaceIssue = true;
+                sizeInfo = QString(tr(" * '%1': vaba ruumi %2, ruumi vaja %3 (hinnanguline)\n")).
+                    arg(hrPath(partition), hrSize(partitionAvailableSize), hrSize(filesTotalSize));
+            }
+        }
+
+        if (spaceIssue) {
+            QString errorMsg = QString() +
+                tr("Leitud DDOC failide kogumaht ületab kettal oleva vaba ruumi:\n\n") +
+                sizeInfo +
+                tr("\nÜletembeldatud failid ei pruugi kettale ära mahtuda.");
+            QString message = errorMsg + tr("\n\nKatkestada tembeldamine?");
+
+            QMessageBox::StandardButtons button = QMessageBox::warning(this, this->windowTitle(), message, QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+            if (QMessageBox::Yes == button) {
+                doUserCancel(errorMsg);
+            }
+            return;
+        }
+    }
+
     stamper.startTimestamping(processor.timeServerUrl, processor.inFiles);
 }
 
@@ -382,6 +424,12 @@ void TeraMainWin::fillDoneLog() {
     format.setFontUnderline(false);
     logText->setCurrentCharFormat(format);
 
+    if (!processor.result->success) {
+        logText->append(tr("Viga:"));
+        logText->append(processor.result->error);
+        return;
+    }
+
     logText->append(tr("DDOC failide konverteerimine lõppes"));
     logText->append(tr("DDOC faile leitud: %1").arg(QString::number(processor.result->cnt)));
     logText->append(tr("DDOC faile konverteeritud: %1").arg(QString::number(processor.result->progressSuccess)));
@@ -433,9 +481,13 @@ void TeraMainWin::handleCancelProcess() {
     doUserCancel();
 }
 
-void TeraMainWin::doUserCancel() {
+void TeraMainWin::doUserCancel(QString msg) {
     cancel = true;
-    timestampingFinished(false, tr("Operation cancelled by user..."));
+    QString message = msg;
+    if (message.isNull()) {
+        message = tr("Operation cancelled by user...");
+    }
+    timestampingFinished(false, message);
 }
 
 void TeraMainWin::handleReadyButton() {
