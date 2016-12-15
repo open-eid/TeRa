@@ -17,17 +17,17 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/MainWindow.ui" line="236"/>
+        <location filename="../poc/MainWindow.ui" line="240"/>
         <source>Settings</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/MainWindow.ui" line="262"/>
+        <location filename="../poc/MainWindow.ui" line="266"/>
         <source>Help</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/MainWindow.ui" line="549"/>
+        <location filename="../poc/MainWindow.ui" line="553"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -39,22 +39,27 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/MainWindow.ui" line="918"/>
+        <location filename="../poc/MainWindow.ui" line="922"/>
         <source>Start</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/MainWindow.ui" line="1312"/>
+        <location filename="../poc/MainWindow.ui" line="1316"/>
         <source>TeRa</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/MainWindow.ui" line="1658"/>
+        <location filename="../poc/MainWindow.ui" line="1323"/>
+        <source>TextLabel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../poc/MainWindow.ui" line="1672"/>
         <source>Valmis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/MainWindow.ui" line="1854"/>
+        <location filename="../poc/MainWindow.ui" line="1868"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -63,17 +68,17 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/MainWindow.ui" line="1948"/>
+        <location filename="../poc/MainWindow.ui" line="1968"/>
         <source>TeRa klient 0.4.0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/MainWindow.ui" line="294"/>
+        <location filename="../poc/MainWindow.ui" line="298"/>
         <source>Languages</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/MainWindow.ui" line="1283"/>
+        <location filename="../poc/MainWindow.ui" line="1287"/>
         <source>Cancel</source>
         <translation></translation>
     </message>
@@ -81,16 +86,8 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../poc/main_window.cpp" line="216"/>
-        <location filename="../poc/main_window.cpp" line="218"/>
-        <location filename="../poc/main_window.cpp" line="387"/>
-        <location filename="../poc/main_window.cpp" line="389"/>
+        <location filename="../poc/main_window.cpp" line="226"/>
         <source>Searching</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../poc/main_window.cpp" line="410"/>
-        <source>Timestamping</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -183,86 +180,149 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ria_tera::BatchStamper</name>
     <message>
-        <location filename="../poc/timestamper.cpp" line="323"/>
+        <location filename="../poc/timestamper.cpp" line="339"/>
+        <location filename="../poc/timestamper.cpp" line="347"/>
         <source>Operation cancelled by user...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ria_tera::GuiTimestamperProcessor</name>
+    <message>
+        <location filename="../poc/gui_timestamper_processor.cpp" line="129"/>
+        <source>Error opening log file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../poc/gui_timestamper_processor.cpp" line="131"/>
+        <source>No permissions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../poc/gui_timestamper_processor.cpp" line="133"/>
+        <source>Out of resources</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ria_tera::TeraMainWin</name>
     <message>
-        <location filename="../poc/main_window.cpp" line="96"/>
+        <location filename="../poc/main_window.cpp" line="139"/>
         <source>No input directory selected.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="96"/>
-        <location filename="../poc/main_window.cpp" line="102"/>
-        <location filename="../poc/main_window.cpp" line="119"/>
+        <location filename="../poc/main_window.cpp" line="139"/>
+        <location filename="../poc/main_window.cpp" line="145"/>
+        <location filename="../poc/main_window.cpp" line="162"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="102"/>
+        <location filename="../poc/main_window.cpp" line="145"/>
         <source>Time server URL is empty.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="119"/>
+        <location filename="../poc/main_window.cpp" line="162"/>
         <source>The following input folders don&apos;t exist (or are files). Cancelling:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="132"/>
-        <location filename="../poc/main_window.cpp" line="138"/>
-        <location filename="../poc/main_window.cpp" line="198"/>
-        <source>Testing Time Server...</source>
+        <location filename="../poc/main_window.cpp" line="294"/>
+        <source> * &apos;%1&apos;: vaba ruumi %2, ruumi vaja %3 (hinnanguline)
+</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="136"/>
-        <source>Starting...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../poc/main_window.cpp" line="187"/>
-        <source>Test request to Time Server failed. </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../poc/main_window.cpp" line="278"/>
-        <source>Timestamping is not finished. Are you sure?
+        <location filename="../poc/main_window.cpp" line="301"/>
+        <source>Leitud DDOC failide kogumaht ületab kettal oleva vaba ruumi:
+
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="303"/>
-        <source>DDOC failide konverteerimine lõppes edukalt</source>
+        <source>
+Ületembeldatud failid ei pruugi kettale ära mahtuda.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="304"/>
-        <source>DDOC faile leitud: </source>
+        <source>
+
+Katkestada tembeldamine?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="305"/>
-        <source>DDOC faile konverteeritud: </source>
+        <location filename="../poc/main_window.cpp" line="407"/>
+        <source>Testing Time Server...</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../poc/main_window.cpp" line="409"/>
+        <source>Searching DDOC files. %1 found so far...</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../poc/main_window.cpp" line="411"/>
+        <source>Found %1 DDOC files. %2 left to be converted...</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../poc/main_window.cpp" line="428"/>
+        <source>Viga:</source>
+        <translation>Error:</translation>
+    </message>
+    <message>
+        <location filename="../poc/main_window.cpp" line="433"/>
+        <source>DDOC failide konverteerimine lõppes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="306"/>
+        <location filename="../poc/main_window.cpp" line="434"/>
+        <source>DDOC faile leitud: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../poc/main_window.cpp" line="435"/>
+        <source>DDOC faile konverteeritud: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../poc/main_window.cpp" line="437"/>
+        <source>Ebaõnnestunud konverteerimisi: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../poc/main_window.cpp" line="194"/>
+        <source>Test request to Time Server failed. </source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../poc/main_window.cpp" line="380"/>
+        <source>Timestamping is not finished. Are you sure?
+</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../poc/main_window.cpp" line="441"/>
         <source>Täpsema aruande vaatamiseks vajuta </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="339"/>
-        <source>Operation cancelled by user...</source>
+        <location filename="../poc/main_window.cpp" line="450"/>
+        <source>SIIA</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="309"/>
-        <source>Error: </source>
+        <location filename="../poc/main_window.cpp" line="456"/>
+        <source>Couldn&apos;t open timestamping log: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../poc/main_window.cpp" line="488"/>
+        <source>Operation cancelled by user...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

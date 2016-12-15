@@ -31,8 +31,8 @@ void initLogging()
     boost::log::register_simple_formatter_factory< boost::log::trivial::severity_level, char >("Severity");
     boost::log::add_console_log(
             std::cout,
-            boost::log::keywords::format = "[%TimeStamp%] (%Severity%) : %Message%",
-            boost::log::keywords::filter = "%Severity% >= boost::log::trivial::info"
+            boost::log::keywords::format = "[%TimeStamp%] (%Severity%) : %Message%"
+//            boost::log::keywords::filter = "%Severity% >= boost::log::trivial::info"
 //            [](const boost::log::attribute_value_set& attr_set) {
 //                return attr_set["Severity"].extract<boost::log::trivial::severity_level>() >= boost::log::trivial::info;
 //            }

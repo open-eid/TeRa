@@ -30,8 +30,8 @@ QString const ts_url_param("ts_url");
 
 #define TERA_COUT(xxx) {\
     BOOST_LOG_TRIVIAL(info) << xxx;\
-    std::cout << xxx << std::endl;\
     };
+//std::cout << xxx << std::endl;\
 
 class TeRaMonitor : public ria_tera::ProcessingMonitorCallback {
 public:
@@ -75,7 +75,10 @@ int main(int argc, char *argv[]) {
                     "file to be time-stamped", file_in_param));
     parser.addOption(
             QCommandLineOption(dir_in_param,
-                    "input directory (*." + ria_tera::Config::EXTENSION_IN + " files are searched for recursively)", dir_in_param));
+                    "input directory (*." + ria_tera::Config::EXTENSION_IN + " recursiveness can be determined with option '" + in_dir_recursive_param + "')", dir_in_param));
+    parser.addOption(
+            QCommandLineOption(in_dir_recursive_param,
+                    "if set then input directories are searched recursively"));
     parser.addOption(
             QCommandLineOption(ts_url_param,
                     "time server url ex. http://demo.sk.ee/tsa", ts_url_param));
@@ -213,7 +216,11 @@ int main(int argc, char *argv[]) {
         TERA_COUT("Parameter - input-file: " << QSTR_TO_CCHAR(in_file));
     }
     if (!in_dir.isEmpty()) {
-        TERA_COUT("Parameter - input-directory: " << QSTR_TO_CCHAR(in_dir));
+        if (in_dir_recursive) {
+            TERA_COUT("Parameter - input-directory (recursive): " << QSTR_TO_CCHAR(in_dir));
+        } else {
+            TERA_COUT("Parameter - input-directory (non-recursive): " << QSTR_TO_CCHAR(in_dir));
+        }
     }
     TERA_COUT("Parameter - time-server url: " << QSTR_TO_CCHAR(time_server_url));
 
