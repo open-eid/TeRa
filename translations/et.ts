@@ -213,14 +213,14 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../poc/main_window.cpp" line="139"/>
         <source>No input directory selected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ühtegi sisendkataloogi pole valitud</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="139"/>
         <location filename="../poc/main_window.cpp" line="145"/>
         <location filename="../poc/main_window.cpp" line="162"/>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Viga</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="145"/>
@@ -307,12 +307,12 @@ Katkestada tembeldamine?</source>
         <location filename="../poc/main_window.cpp" line="380"/>
         <source>Timestamping is not finished. Are you sure?
 </source>
-        <translation type="unfinished">Tembeldamine pole lõppenud. DDDDDDDDDDDDDDDDDDDD</translation>
+        <translation>Tembeldamine pole lõppenud. Katkestada protsess?</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="441"/>
         <source>Täpsema aruande vaatamiseks vajuta </source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="450"/>

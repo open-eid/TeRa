@@ -70,7 +70,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../poc/MainWindow.ui" line="1968"/>
         <source>TeRa klient 0.4.0</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">TeRa клиент 0.4.0</translation>
     </message>
     <message>
         <source>About</source>
