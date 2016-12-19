@@ -154,11 +154,26 @@ In Windows
     Release\TeRaPOC
 
     cd Release
-    set QT_QPA_PLATFORM_PLUGIN_PATH=.
     TeRa.exe
 
 PS The following dll's need to be copied to Release directory
 Qt5Core.dll, Qt5Gui.dll, Qt5Network.dll, Qt5Widgets.dll, d3dcompiler_47.dll, libEGL.dll, libGLESv2.dll, opengl32sw.dll (C:\Qt5.7.0VS\5.7\msvc2013\bin),
-qminimal.dll, qoffscreen.dll, qwindows.dll (C:\Qt5.7.0VS\5.7\msvc2013\plugins\platforms),
-msvcp120.dll, msvcp120_clr0400.dll, msvcp120d.dll, msvcr120.dll, msvcr120_clr0400.dll, msvcr120d.dll (C:\Windows\SysWOW64),
-libcrypto-1_1.dll, libssl-1_1.dll, libzip.dll, libzlib.dll, zip.dll and zlibd.dll
+qwindows.dll (C:\Qt5.7.0VS\5.7\msvc2013\plugins\platforms),
+msvcp120.dll, msvcr120.dll (C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\redist\x86\Microsoft.VC120.CRT\),
+libcrypto-1_1.dll, libssl-1_1.dll, zip.dll and zlibd.dll
+[ msvcp120_clr0400.dll, msvcr120_clr0400.dll, msvcp120d.dll, msvcr120d.dll? (C:\Windows\SysWOW64 / C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\redist\Debug_NonRedist\x86\Microsoft.VC120.DebugCRT\ ]
+
+
+## Installer
+
+Windows
+
+    * Wix is needed to create .msi (http://wixtoolset.org/releases/ - following commands assume binaries are downloaded and extracted so that C:\Downloads\wix310-binaries\bin\candle.exe points to valid executable)
+
+Commands to build .msi (check QT path)
+
+    cd C:\Downloads\git\TeRa
+    set "WIX=C:\Downloads\wix310-binaries"
+    set "TERA_BUILD_DIR=C:\cmake_builds\tera"
+    "%WIX%\bin\candle.exe" tera.wxs -dMSI_VERSION=0.0.4 -dcmake_builds_path="C:\cmake_builds" -dqt_path=C:\Qt5.7.0VS\5.7\msvc2013 -dclient_path=%TERA_BUILD_DIR%\Release\Tera.exe
+    "%WIX%\bin\light.exe" -out TeRa.msi tera.wixobj -v -ext WixUIExtension

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+Depends package: Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi
+msiexec /a Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi /qn TARGETDIR=C:\target
+
+"%WIX%\bin\heat.exe dir "C:\target\Estonian ID Card Development\libdigidocpp\certs"
+ -cg Certs -gg -scom -sreg -sfrag -srd -dr CertsFolder -var var.certsLocation -out CertsFragment.wxs
+
+"%WIX%\bin\candle.exe" tera.wxs -dMSI_VERSION=0.0.4
+ -dlibs_path="C:\target\Estonian ID Card Development\libdigidocpp\x86"
+ -dqt_path=C:\Qt5.7.0VS\5.7\msvc2013
+ -dclient_path=Release\Tera.exe
+
+"%WIX%\bin\light.exe" -out qdigidoc.msi qdigidoc.wixobj CertsFragment.wixobj -v -ext WixUIExtension
+-->
+
+<?ifndef Platform ?>
+<?define Platform="x86" ?>
+<?endif ?>
+
+<?if $(var.Platform) = x64 ?>
+  <?define PlatformProgramFilesFolder = "ProgramFiles64Folder" ?>
+<?else ?>
+  <?define PlatformProgramFilesFolder = "ProgramFilesFolder" ?>
+<?endif ?>
+
+<!--?if $(env.VCINSTALLDIR) = "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\" ?>
+<?define VCVER = "140" ?>
+<?define VCRT = "vcruntime" ?>
+<?else?>
+<?define VCVER = "120" ?>
+<?define VCRT = "msvcr" ?>
+<?endif?-->
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Name="TeRa Client" UpgradeCode="67932072-aa9e-45e3-b697-d825349f27ff"
+      Id="*" Language="1033" Version="$(var.MSI_VERSION)" Codepage="1251" Manufacturer="RIA"> <!-- TODO UpgradeCode -->
+    <Package Platform="$(var.Platform)" Keywords="Installer" InstallerVersion="405" Compressed="yes" InstallScope="perMachine"/>
+    <MediaTemplate EmbedCab="yes" CompressionLevel="high"/>
+    <Icon Id="Tera.exe" SourceFile="$(var.client_path)"/>
+    <Property Id="ARPPRODUCTICON" Value="Tera.exe"/>
+    <Property Id="DESKTOP_SHORTCUT" Value="0"/>
+    <MajorUpgrade AllowSameVersionUpgrades="yes" Schedule="afterInstallInitialize" DowngradeErrorMessage=
+      "A newer version of [ProductName] is already installed. If you are trying to downgrade, please uninstall the newer version first."/>
+    <Condition Message="[ProductName] requires Windows 7 or higher.">
+      <![CDATA[Installed OR (VersionNT >= 601)]]>
+    </Condition>
+    <UIRef Id="WixUI_Minimal" />
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <!-- Program Menu shortcut -->
+      <Directory Id="ProgramMenuFolder">
+        <!--Directory Id="ProgramMenuDir" Name="!(loc.idcardLabel)"-->
+        <Directory Id="ProgramMenuDir" Name="TeRa Client">
+          <Component Id="ProgramMenuDir" Guid="5d26b9c2-cc87-452e-8132-76f0fc8f3eff"> <!-- TODO Guid -->
+            <RemoveFolder Id="ProgramMenuDir" On="uninstall" />
+            <!--RegistryValue Root='HKMU' Key='Software\[Manufacturer]\[ProductName]' Type='string' Value='' KeyPath='yes' /-->
+          </Component>
+        </Directory>
+      </Directory>
+
+      <Directory Id='$(var.PlatformProgramFilesFolder)'>
+        <Directory Id="APPLICATIONFOLDER" Name="TeRa Client">
+          <Component Id="Application" Guid="810cbd57-b24d-49ee-939a-a1fc38dda4ff"> <!-- TODO Guid -->
+            <File Source="$(var.client_path)" KeyPath='yes'>
+<!-- Icon="TeRa.exe" Name... -->
+              <Shortcut Id="TeRaClientStartMenu" Advertise="yes" Name="TeRa Client"
+                Directory="ProgramMenuDir" WorkingDirectory="APPLICATIONFOLDER"/>
+            </File>
+
+            <File Source="misc\terapoc.ini"/>
+
+            <File Source="$(var.cmake_builds_path)\openssl-1.1.0b-bin\bin\libcrypto-1_1.dll"/>
+            <File Source="$(var.cmake_builds_path)\openssl-1.1.0b-bin\bin\libssl-1_1.dll"/>
+            <File Source="$(var.cmake_builds_path)\libzip_bin\bin\zip.dll"/>
+            <File Source="$(var.cmake_builds_path)\zlib_bin\bin\zlibd.dll"/>
+<?ifdef var.qt_path ?>
+            <File Source="C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\redist\x86\Microsoft.VC120.CRT\msvcp120.dll"/>
+            <File Source="C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\redist\x86\Microsoft.VC120.CRT\msvcr120.dll"/>
+            <!-- TODO debug dll's -->
+            <File Source="C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\redist\Debug_NonRedist\x86\Microsoft.VC120.DebugCRT\msvcp120d.dll"/>
+            <File Source="C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\redist\Debug_NonRedist\x86\Microsoft.VC120.DebugCRT\msvcr120d.dll"/>
+
+            <File Source="$(var.qt_path)\bin\Qt5Core.dll"/>
+            <File Source="$(var.qt_path)\bin\Qt5Gui.dll"/>
+            <File Source="$(var.qt_path)\bin\Qt5Network.dll"/>
+            <File Source="$(var.qt_path)\bin\Qt5Widgets.dll"/>
+            <File Source="$(var.qt_path)\bin\libEGL.dll"/>
+            <File Source="$(var.qt_path)\bin\libGLESv2.dll"/>
+            <File Source="$(var.qt_path)\bin\D3DCompiler_47.dll"/>
+            <File Source="$(var.qt_path)\bin\opengl32sw.dll" />
+
+            <File Source="$(var.qt_path)\plugins\platforms\qwindows.dll" />
+<?endif?>
+          </Component>
+        </Directory>
+      </Directory>
+    </Directory>
+
+    <Feature Id="InstallTeRa" Level="1" Title="TeRa Client" Display="expand" ConfigurableDirectory="APPLICATIONFOLDER">
+      <ComponentRef Id='ProgramMenuDir' />
+      <ComponentRef Id="Application"/>
+    </Feature>
+  </Product>
+</Wix>

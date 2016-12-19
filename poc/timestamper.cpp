@@ -48,14 +48,14 @@ bool TimeStamperData_impl::createAsicsContainer(QString const& outpath, QString 
         return false;
     }
 
-    insertInputFile(infile); // TODO
-
     QString fileMimetypeName = "mimetype";
     QByteArray fileMimetypeContent = "application/vnd.etsi.asic-s+zip";
     if (!addFile(fileMimetypeName, fileMimetypeContent)) {
         std::cout << "could not add '" << fileMimetypeName.toUtf8().constData() << "' to ddoc" << std::endl; // TODO
         return false;
     }
+
+    insertInputFile(infile); // TODO
 
     QString metaDirName = "META-INF";
     if (zip_dir_add(zip, metaDirName.toUtf8().constData(), ZIP_FL_ENC_UTF_8) < 0) {

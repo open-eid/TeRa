@@ -12,8 +12,12 @@
 #include "utils.h"
 
 int main(int argc, char *argv[]) {
+    //QGuiApplication::setAttribute(Qt::AA_Use96Dpi, true);
+    //QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling, false);
+    //QGuiApplication::setAttribute(Qt::AA_DisableHighDpiScaling, false);
+    //QApplication::setDesktopSettingsAware(false);
     QLoggingCategory::setFilterRules("qt.network.ssl.warning=false");
-    qApp->addLibraryPath(".");
+    qputenv("QT_QPA_PLATFORM_PLUGIN_PATH", ".");
     QApplication a(argc, argv);
 
     ria_tera::TeraMainWin w;

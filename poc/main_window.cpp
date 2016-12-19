@@ -12,6 +12,7 @@
 #include <QDesktopServices>
 #include <QDirIterator>
 #include <QFile>
+#include <QGraphicsProxyWidget>
 #include <QMessageBox>
 #include <QRegion>
 #include <QThreadPool>
@@ -35,6 +36,7 @@ TeraMainWin::TeraMainWin(QWidget *parent) :
     appTranslator(this)
 {
     setupUi(this);
+
     setStyleSheet("background-image: url(:/images/background.png);");
     settings->setStyleSheet("QPushButton:disabled"
             "{ color: gray }");
