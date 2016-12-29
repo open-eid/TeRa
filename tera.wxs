@@ -33,12 +33,18 @@ msiexec /a Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi /qn TARGETDIR
 <?define VCRT = "msvcr" ?>
 <?endif?-->
 
+
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+
+
+
+
   <Product Name="TeRa Client" UpgradeCode="67932072-aa9e-45e3-b697-d825349f27ff"
       Id="*" Language="1033" Version="$(var.MSI_VERSION)" Codepage="1251" Manufacturer="RIA"> <!-- TODO UpgradeCode -->
     <Package Platform="$(var.Platform)" Keywords="Installer" InstallerVersion="405" Compressed="yes" InstallScope="perMachine"/>
     <MediaTemplate EmbedCab="yes" CompressionLevel="high"/>
-    <Icon Id="Tera.exe" SourceFile="$(var.client_path)"/>
+    <Icon Id="TeRa.exe" SourceFile="$(var.client_path)"/>
     <Property Id="ARPPRODUCTICON" Value="Tera.exe"/>
     <Property Id="DESKTOP_SHORTCUT" Value="0"/>
     <MajorUpgrade AllowSameVersionUpgrades="yes" Schedule="afterInstallInitialize" DowngradeErrorMessage=
@@ -46,7 +52,17 @@ msiexec /a Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi /qn TARGETDIR
     <Condition Message="[ProductName] requires Windows 7 or higher.">
       <![CDATA[Installed OR (VersionNT >= 601)]]>
     </Condition>
-    <UIRef Id="WixUI_Minimal" />
+
+    <WixVariable Id="WixUIBannerBmp" Value="banner.bmp" />
+    <WixVariable Id="WixUIDialogBmp" Value="dlgbmp.bmp" />
+
+    <!--UIRef Id="WixUI_Minimal" http://wixtoolset.org/documentation/manual/v3/wixui/wixui_customizations.html /-->
+<!--UI Id='xxx'>
+    <UIRef Id="WixUI_FeatureTree"/>
+    <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="CustomizeDlg" Order="3">1</Publish>
+    <Publish Dialog="CustomizeDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg" Order="3">1</Publish>
+</UI-->
+    <UIRef Id="WixUI_MondoNoLicense" />
 
     <Directory Id="TARGETDIR" Name="SourceDir">
       <!-- Program Menu shortcut -->
@@ -64,23 +80,18 @@ msiexec /a Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi /qn TARGETDIR
         <Directory Id="APPLICATIONFOLDER" Name="TeRa Client">
           <Component Id="Application" Guid="810cbd57-b24d-49ee-939a-a1fc38dda4ff"> <!-- TODO Guid -->
             <File Source="$(var.client_path)" KeyPath='yes'>
-<!-- Icon="TeRa.exe" Name... -->
-              <Shortcut Id="TeRaClientStartMenu" Advertise="yes" Name="TeRa Client"
+              <Shortcut Id="TeRaClientStartMenu" Advertise="yes" Icon="TeRa.exe" Name="TeRa Client"
                 Directory="ProgramMenuDir" WorkingDirectory="APPLICATIONFOLDER"/>
             </File>
 
             <File Source="misc\terapoc.ini"/>
 
-            <File Source="$(var.cmake_builds_path)\openssl-1.1.0b-bin\bin\libcrypto-1_1.dll"/>
-            <File Source="$(var.cmake_builds_path)\openssl-1.1.0b-bin\bin\libssl-1_1.dll"/>
-            <File Source="$(var.cmake_builds_path)\libzip_bin\bin\zip.dll"/>
-            <File Source="$(var.cmake_builds_path)\zlib_bin\bin\zlibd.dll"/>
 <?ifdef var.qt_path ?>
             <File Source="C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\redist\x86\Microsoft.VC120.CRT\msvcp120.dll"/>
             <File Source="C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\redist\x86\Microsoft.VC120.CRT\msvcr120.dll"/>
             <!-- TODO debug dll's -->
-            <File Source="C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\redist\Debug_NonRedist\x86\Microsoft.VC120.DebugCRT\msvcp120d.dll"/>
-            <File Source="C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\redist\Debug_NonRedist\x86\Microsoft.VC120.DebugCRT\msvcr120d.dll"/>
+            <!--File Source="C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\redist\Debug_NonRedist\x86\Microsoft.VC120.DebugCRT\msvcp120d.dll"/>
+            <File Source="C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\redist\Debug_NonRedist\x86\Microsoft.VC120.DebugCRT\msvcr120d.dll"/-->
 
             <File Source="$(var.qt_path)\bin\Qt5Core.dll"/>
             <File Source="$(var.qt_path)\bin\Qt5Gui.dll"/>
@@ -90,10 +101,16 @@ msiexec /a Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi /qn TARGETDIR
             <File Source="$(var.qt_path)\bin\libGLESv2.dll"/>
             <File Source="$(var.qt_path)\bin\D3DCompiler_47.dll"/>
             <File Source="$(var.qt_path)\bin\opengl32sw.dll" />
-
-            <File Source="$(var.qt_path)\plugins\platforms\qwindows.dll" />
 <?endif?>
+
           </Component>
+<?ifdef var.qt_path ?>
+          <Directory Id="platforms" Name="platforms">
+            <Component Id="qwindows.dll">
+              <File Source="$(var.qt_path)\plugins\platforms\qwindows.dll"/>
+            </Component>
+          </Directory>
+<?endif?>
         </Directory>
       </Directory>
     </Directory>
@@ -101,6 +118,61 @@ msiexec /a Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi /qn TARGETDIR
     <Feature Id="InstallTeRa" Level="1" Title="TeRa Client" Display="expand" ConfigurableDirectory="APPLICATIONFOLDER">
       <ComponentRef Id='ProgramMenuDir' />
       <ComponentRef Id="Application"/>
+<?ifdef var.qt_path ?>
+      <ComponentRef Id="qwindows.dll" />
+<?endif?>
     </Feature>
   </Product>
+
+  <!-- http://neilsleightholm.blogspot.com.ee/2008/08/customised-uis-for-wix.html -->
+  <Fragment>
+    <UI Id="WixUI_MondoNoLicense">
+      <TextStyle Id="WixUI_Font_Normal" FaceName="Tahoma" Size="8" />
+      <TextStyle Id="WixUI_Font_Bigger" FaceName="Tahoma" Size="12" />
+      <TextStyle Id="WixUI_Font_Title" FaceName="Tahoma" Size="9" Bold="yes" />
+
+      <Property Id="DefaultUIFont" Value="WixUI_Font_Normal" />
+      <Property Id="WixUI_Mode" Value="Mondo" />
+
+      <DialogRef Id="ErrorDlg" />
+      <DialogRef Id="FatalError" />
+      <DialogRef Id="FilesInUse" />
+      <DialogRef Id="MsiRMFilesInUse" />
+      <DialogRef Id="PrepareDlg" />
+      <DialogRef Id="ProgressDlg" />
+      <DialogRef Id="ResumeDlg" />
+      <DialogRef Id="UserExit" />
+
+      <Publish Dialog="ExitDialog" Control="Finish" Event="EndDialog" Value="Return" Order="999">1</Publish>
+
+      <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
+
+      <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg" 
+               Order="1">WixUI_InstallMode = "InstallCustom"</Publish>
+      <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg" 
+               Order="2">WixUI_InstallMode = "InstallTypical" OR WixUI_InstallMode = "InstallComplete"</Publish>
+      <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg" 
+               Order="3">WixUI_InstallMode = "Change"</Publish>
+      <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="MaintenanceTypeDlg" 
+               Order="4">WixUI_InstallMode = "Repair" OR WixUI_InstallMode = "Remove"</Publish>
+      <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg" 
+               Order="5"/>
+
+      <Publish Dialog="MaintenanceWelcomeDlg" Control="Next" Event="NewDialog" 
+               Value="MaintenanceTypeDlg">1</Publish>
+
+      <Publish Dialog="MaintenanceTypeDlg" Control="RepairButton" Event="NewDialog" 
+               Value="VerifyReadyDlg">1</Publish>
+      <Publish Dialog="MaintenanceTypeDlg" Control="RemoveButton" Event="NewDialog" 
+               Value="VerifyReadyDlg">1</Publish>
+      <Publish Dialog="MaintenanceTypeDlg" Control="Back" Event="NewDialog" 
+               Value="MaintenanceWelcomeDlg">1</Publish>
+    </UI>
+
+    <UIRef Id="WixUI_Common" />
+  </Fragment>
+  
+  
+  
+  
 </Wix>

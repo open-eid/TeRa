@@ -4,6 +4,8 @@
  *  Created on: Nov 21, 2016
  */
 
+#include <QDebug>
+
 #include "files_window.h"
 
 namespace ria_tera {
@@ -35,9 +37,55 @@ FileListWindow::FileListWindow(QWidget *parent) : QDialog(parent) {
 
     connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
     connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+
+    connect(btnSelectAll, SIGNAL(clicked()), this, SLOT(handleSelectAll()));
+    connect(btnSelectNone, SIGNAL(clicked()), this, SLOT(handleSelectNone()));
 }
 
-FileListWindow::~FileListWindow() {}
+FileListWindow::~FileListWindow() {
+    delete model;
+}
 
+void FileListWindow::setFileList(QStringList const& files) {
+    model->clear();
+    for (int i = 0; i < files.size(); ++i) {
+        QString path = files.at(i);
+        QStandardItem* item = new QStandardItem(path);
+        item->setCheckable(true);
+        item->setCheckState(Qt::Checked);
+        model->appendRow(item);
+    }
+}
+
+QStringList FileListWindow::extractSelectedFileList() {
+    QStringList selectedFiles;
+
+    for (int i = 0; i < model->rowCount(); ++i) {
+        QStandardItem* item = model->item(i);
+        if (NULL == item) continue;
+        if (Qt::Checked == item->checkState()) {
+            QString filePath = item->text();
+            selectedFiles.append(filePath);
+        }
+    }
+
+    model->clear();
+    return selectedFiles;
+}
+
+void FileListWindow::handleSelectAll() {
+    setCheckStateForAll(Qt::CheckState::Checked);
+}
+
+void FileListWindow::handleSelectNone() {
+    setCheckStateForAll(Qt::CheckState::Unchecked);
+}
+
+void FileListWindow::setCheckStateForAll(Qt::CheckState state) {
+    for (int i = 0; i < model->rowCount(); ++i) {
+        QStandardItem* item = model->item(i);
+        item->setCheckState(state);
+    }
+}
 
 }

@@ -46,10 +46,6 @@ void GuiTimestamperProcessor::initializeSettingsWindow(TeraSettingsWin& sw) {
     // time server url
     sw.lineTSURL->setText(timeServerUrl);
 
-    // format
-    if (Config::EXTENSION_ASICS == outExt) sw.typeASIC->setChecked(true);
-    else sw.typeBDoc->setChecked(true);
-
     // exclude dirs
     QSet2GUI(exclDirs, *sw.modelExclDir);
 
@@ -67,9 +63,6 @@ void GUI2QSet(QStringListModel const& model, QSet<QString>& set) {
 void GuiTimestamperProcessor::readSettings(TeraSettingsWin& sw) {
     timeServerUrl = sw.lineTSURL->text().trimmed();
 
-    if (sw.typeASIC->isChecked()) outExt = Config::EXTENSION_ASICS;
-    else outExt = Config::EXTENSION_BDOC;
-
     GUI2QSet(*sw.modelExclDir, exclDirs);
     GUI2QSet(*sw.modelInclDir, inclDirs);
 
@@ -77,34 +70,11 @@ void GuiTimestamperProcessor::readSettings(TeraSettingsWin& sw) {
 }
 
 void GuiTimestamperProcessor::initializeFilePreviewWindow(FileListWindow& fw) {
-    QList<QStandardItem*> list;
-    for (int i = 0; i < inFiles.size(); ++i) {
-        QString path = inFiles.at(i);
-        QStandardItem* item = new QStandardItem(path);
-        item->setCheckable(true);
-        item->setCheckState(Qt::Checked);
-        list.append(item);
-    }
-    fw.model->clear();
-    for (int i = 0; i < list.size(); ++i) {
-        fw.model->appendRow(list[i]);
-    }
+    fw.setFileList(inFiles);
 }
 
 void GuiTimestamperProcessor::copySelectedFiles(FileListWindow& fw) {
-    QStringList selectedFiles;
-
-    for (int i = 0; i < fw.model->rowCount(); ++i) {
-        QStandardItem* item = fw.model->item(i);
-        if (NULL == item) continue;
-        if (Qt::Checked == item->checkState()) {
-            QString filePath = item->text();
-            selectedFiles.append(filePath);
-        }
-    }
-
-    fw.model->clear();
-    inFiles = selectedFiles;
+    inFiles = fw.extractSelectedFileList();
 }
 
 bool GuiTimestamperProcessor::openLogFile(QString& errorText) {

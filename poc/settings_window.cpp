@@ -17,6 +17,7 @@ TeraSettingsWin::TeraSettingsWin(QWidget *parent) :
         QDialog(parent)
 {
     setupUi(this);
+    tabWidget->setCurrentIndex(0);
 
     modelExclDir = new QStringListModel(); // TODO delete?
     listExclDir->setModel(modelExclDir);

@@ -96,6 +96,8 @@ public slots:
     void slotLanguageChanged(int i);
     void slotLanguageChanged(QAction* action);
 
+    void handleHelp();
+
     void showLog(QUrl const& link);
 protected:
     virtual void closeEvent(QCloseEvent *event);

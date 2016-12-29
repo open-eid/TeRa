@@ -24,6 +24,27 @@ namespace {
     static int PP_TS_TEST = 100;
     static int PP_SEARCH = 500;
     static int PP_TS = 400;
+
+    void fixFontSize(QWidget* w) {
+        QFont font = w->font();
+        font.setPointSizeF(font.pointSizeF() * 96 / w->logicalDpiX());
+        w->setFont(font);
+    }
+
+    void fixFontSizeInStyleSheet(QWidget* w) {
+        QRegExp reg(".*font-size: *([0-9]+(.[0-9]+)?)pt;.*");
+        QString stylesheet = w->styleSheet();
+        reg.exactMatch(stylesheet);
+        int pos = reg.pos(1);
+        if (pos >= 0) {
+            QString match = reg.cap(1);
+            qreal fontsize = match.toFloat();
+            qreal fontsizeNew = fontsize * 96 / w->logicalDpiX();
+            QString replacement = QString::number(fontsizeNew, 'f', 2);
+            stylesheet.replace(pos, match.size(), replacement);
+            w->setStyleSheet(stylesheet);
+        }
+    }
 }
 
 namespace ria_tera {
@@ -36,6 +57,10 @@ TeraMainWin::TeraMainWin(QWidget *parent) :
     appTranslator(this)
 {
     setupUi(this);
+    fixFontSizeInStyleSheet(btnStamp);
+    fixFontSizeInStyleSheet(cancelProcess);
+    fixFontSizeInStyleSheet(btnReady);
+    fixFontSize(logText);
 
     setStyleSheet("background-image: url(:/images/background.png);");
     settings->setStyleSheet("QPushButton:disabled"
@@ -44,7 +69,8 @@ TeraMainWin::TeraMainWin(QWidget *parent) :
     stackedCntrlWidget->setCurrentIndex(0);
 
     connect(btnStamp, SIGNAL (clicked()), this, SLOT (handleStartStamping()));
-    connect(settings, SIGNAL (clicked()), this, SLOT (handleSettings()));
+    connect(settings, SIGNAL(clicked()), this, SLOT(handleSettings()));
+    connect(help, SIGNAL(clicked()), this, SLOT(handleHelp()));
     connect(cancelProcess, SIGNAL(clicked()), this, SLOT(handleCancelProcess()));
     connect(btnReady, SIGNAL(clicked()), this, SLOT(handleReadyButton()));
 
@@ -450,6 +476,13 @@ void TeraMainWin::fillDoneLog() {
 
         cursor.movePosition(QTextCursor::End, QTextCursor::MoveAnchor);
         cursor.insertText(tr("SIIA"), format);
+    }
+}
+
+void TeraMainWin::handleHelp() {
+    QString url = tr("HTTP_HELP");
+    if (!QDesktopServices::openUrl(url)) {
+        QMessageBox::warning(this, this->windowTitle(), tr("Couldn't open help URL: ") + url);
     }
 }
 

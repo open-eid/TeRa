@@ -15,10 +15,20 @@
 namespace ria_tera {
 
 class FileListWindow: public QDialog, public Ui::FileListDialog {
+    Q_OBJECT
+
 public:
     explicit FileListWindow(QWidget *parent = 0);
     ~FileListWindow();
-public:
+
+    void setFileList(QStringList const& files);
+    QStringList extractSelectedFileList();
+public slots:
+    void handleSelectAll();
+    void handleSelectNone();
+private:
+    void setCheckStateForAll(Qt::CheckState state);
+
     QStandardItemModel* model;
 };
 

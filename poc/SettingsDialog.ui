@@ -23,7 +23,7 @@
       <bool>true</bool>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tabInput">
       <attribute name="title">
@@ -211,69 +211,7 @@
        <string>Other</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout">
-       <item row="0" column="0">
-        <widget class="QWidget" name="widget" native="true">
-         <layout class="QGridLayout" name="gridLayout_4">
-          <item row="0" column="0" colspan="2">
-           <widget class="QLabel" name="typeLabel_3">
-            <property name="text">
-             <string>Output file type:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QRadioButton" name="typeBDoc">
-            <property name="accessibleName">
-             <string>Default file type BDOC</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QLabel" name="typeBDocLabel_3">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-              <horstretch>1</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>BDOC – default digital signature format in Estonia.</string>
-            </property>
-            <property name="wordWrap">
-             <bool>true</bool>
-            </property>
-            <property name="buddy">
-             <cstring>typeBDoc</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QRadioButton" name="typeASIC">
-            <property name="accessibleName">
-             <string>Default file type ASiC-E</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QLabel" name="typeASICLabel_3">
-            <property name="text">
-             <string>ASiC-E – international digital signature format that will be used across European countries.</string>
-            </property>
-            <property name="wordWrap">
-             <bool>true</bool>
-            </property>
-            <property name="buddy">
-             <cstring>typeASIC</cstring>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="6" column="0">
+       <item row="4" column="0">
         <spacer name="verticalSpacer_3">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -287,13 +225,13 @@
         </spacer>
        </item>
        <item row="1" column="0">
-        <widget class="Line" name="line">
+        <widget class="Line" name="line_2">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
         </widget>
        </item>
-       <item row="4" column="0">
+       <item row="2" column="0">
         <widget class="QWidget" name="widget_3" native="true">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -305,7 +243,7 @@
           <item row="0" column="0">
            <widget class="QLabel" name="typeLabel_4">
             <property name="text">
-             <string>Time Server URL (http://demo.sk.ee/tsa):</string>
+             <string>Time Server URL (ex. http://demo.sk.ee/tsa):</string>
             </property>
            </widget>
           </item>
@@ -315,7 +253,7 @@
          </layout>
         </widget>
        </item>
-       <item row="2" column="0">
+       <item row="0" column="0">
         <widget class="QWidget" name="widget_5" native="true">
          <layout class="QHBoxLayout" name="horizontalLayout_3">
           <item>
@@ -326,13 +264,6 @@
            </widget>
           </item>
          </layout>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <widget class="Line" name="line_2">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
         </widget>
        </item>
       </layout>
@@ -360,8 +291,6 @@
   <tabstop>btnExclDirSearch</tabstop>
   <tabstop>btnDelExclDir</tabstop>
   <tabstop>btnAddExclDir</tabstop>
-  <tabstop>typeBDoc</tabstop>
-  <tabstop>typeASIC</tabstop>
   <tabstop>cbPreviewFiles</tabstop>
   <tabstop>lineTSURL</tabstop>
  </tabstops>
