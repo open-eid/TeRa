@@ -47,7 +47,7 @@ public:
         Result() :
             progressStage(TESTING_TIME_SERVER), progressConverted(0),
             progressSuccess(0), progressFailed(0),
-            success(false), cnt(-1) {}
+            success(false), cnt(-1), cntFound(-1) {}
         e_ProgressStage progressStage;
         int progressConverted;
         int progressSuccess;
@@ -55,6 +55,7 @@ public:
         bool success;
         QString error;
         int cnt;
+        int cntFound;
     };
 
     class LogFile {
@@ -78,6 +79,10 @@ public:
     void copySelectedFiles(FileListWindow& fw);
 
     bool openLogFile(QString& errorText);
+
+    bool checkInDirListWithMessagebox(QWidget* parent);
+    static bool checkInDirListWithMessagebox(QWidget* parent, QStringListModel const& inDirs);
+    static bool checkInDirListWithMessagebox(QWidget* parent, QSet<QString> const& inDirs);
 public:
     Config config;
 

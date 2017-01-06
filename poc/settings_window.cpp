@@ -8,16 +8,18 @@
 
 #include <iostream>
 #include <QFileDialog>
+#include <QMessageBox>
 
+#include "gui_timestamper_processor.h"
 #include "utils.h"
 
 namespace ria_tera {
 
 TeraSettingsWin::TeraSettingsWin(QWidget *parent) :
-        QDialog(parent)
+    QDialog(parent, Qt::WindowTitleHint | Qt::WindowSystemMenuHint | Qt::WindowCloseButtonHint)
 {
     setupUi(this);
-    tabWidget->setCurrentIndex(0);
+    gotoInputDirTab();
 
     modelExclDir = new QStringListModel(); // TODO delete?
     listExclDir->setModel(modelExclDir);
@@ -25,21 +27,26 @@ TeraSettingsWin::TeraSettingsWin(QWidget *parent) :
     modelInclDir = new QStringListModel(); // TODO delete?
     listInclDir->setModel(modelInclDir);
 
-    connect(btnAddExclDir, SIGNAL (clicked()), this, SLOT (handleAddExclDir()), Qt::QueuedConnection);
-    connect(btnDelExclDir, SIGNAL (clicked()), this, SLOT (handleDelExclDir()), Qt::QueuedConnection);
-    connect(btnExclDirSearch, SIGNAL (clicked()), this, SLOT (handleExclDirSearch()), Qt::QueuedConnection);
+    connect(btnAddExclDir, SIGNAL (clicked()), this, SLOT (handleAddExclDir()), Qt::QueuedConnection); // TODO remove queued connection
+    connect(btnDelExclDir, SIGNAL (clicked()), this, SLOT (handleDelExclDir()));
+    connect(btnExclDirSearch, SIGNAL (clicked()), this, SLOT (handleExclDirSearch()));
 
-    connect(btnAddInclDir, SIGNAL (clicked()), this, SLOT (handleAddInclDir()), Qt::QueuedConnection);
-    connect(btnDelInclDir, SIGNAL (clicked()), this, SLOT (handleDelInclDir()), Qt::QueuedConnection);
-    connect(btnInclDirSearch, SIGNAL (clicked()), this, SLOT (handleInclDirSearch()), Qt::QueuedConnection);
+    connect(btnAddInclDir, SIGNAL (clicked()), this, SLOT (handleAddInclDir()));
+    connect(btnDelInclDir, SIGNAL (clicked()), this, SLOT (handleDelInclDir()));
+    connect(btnInclDirSearch, SIGNAL (clicked()), this, SLOT (handleInclDirSearch()));
 
-    connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
+    connect(buttonBox, SIGNAL(accepted()), this, SLOT(handleTryAccept()));
     connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
 }
 
 TeraSettingsWin::~TeraSettingsWin() {
     ;
 }
+
+void TeraSettingsWin::gotoInputDirTab() {
+    tabWidget->setCurrentIndex(0);
+}
+
 
 void TeraSettingsWin::handleAddExclDir() {
     addDirToList(lineExclDir, modelExclDir);
@@ -50,7 +57,7 @@ void TeraSettingsWin::handleDelExclDir() {
 }
 
 void TeraSettingsWin::handleExclDirSearch() {
-    searchDir(this, lineExclDir);
+    searchDir(this, lineExclDir, modelExclDir);
 }
 
 void TeraSettingsWin::handleAddInclDir() {
@@ -62,26 +69,35 @@ void TeraSettingsWin::handleDelInclDir() {
 }
 
 void TeraSettingsWin::handleInclDirSearch() {
-    searchDir(this, lineInclDir);
+    searchDir(this, lineInclDir, modelInclDir);
 }
 
-void TeraSettingsWin::addDirToList(QLineEdit* line, QStringListModel* model) {
-    QString newPath = line->text().trimmed();
-    if (newPath.isEmpty()) return; // TODO
+void TeraSettingsWin::addDirToList(QString const& line, QStringListModel* model) {
+    QString newPath = line.trimmed();
+    if (newPath.isEmpty()) return;
+
+    QDir dir(newPath);
+    
+    if (!dir.exists()) {
+        QMessageBox::critical(this, tr("Error"), tr("Can't add '%1'. Directory does not exist.").arg(newPath));
+        return;
+    }
 
     int row = 0;
     while (row < model->rowCount()) {
         QModelIndex index = model->index(row);
         QString data = model->data(index, Qt::DisplayRole).toString();
-        if (data == newPath) return; // TODO
+        if (data == newPath) return;
         if (data > newPath) break;
         ++row;
     }
     model->insertRow(row);
     QModelIndex index = model->index(row);
     model->setData(index, newPath);
+}
 
-    line->setText("");
+void TeraSettingsWin::addDirToList(QLineEdit* line, QStringListModel* model) {
+    addDirToList(line->text(), model);
 }
 
 void TeraSettingsWin::deleteSelected(QListView* lv) {
@@ -92,12 +108,21 @@ void TeraSettingsWin::deleteSelected(QListView* lv) {
     }
 }
 
-void TeraSettingsWin::searchDir(QWidget* w, QLineEdit* line) {
+void TeraSettingsWin::searchDir(QWidget* w, QLineEdit* line, QStringListModel* model) {
     QString path = line->text().trimmed();
     QString newPath = QFileDialog::getExistingDirectory(w, "", path, // TODO text
             QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks); // TODO
     if (!newPath.isEmpty()) {
         line->setText(newPath);
+        addDirToList(newPath, model);
+    }
+}
+
+void TeraSettingsWin::handleTryAccept() {
+    if (GuiTimestamperProcessor::checkInDirListWithMessagebox(this, *modelInclDir)) {
+        accept();
+    } else {
+        gotoInputDirTab();
     }
 }
 

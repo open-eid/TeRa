@@ -82,7 +82,7 @@ QSet<QString> Config::getDefaultInclDirs() {
     QSet<QString> res;
 #ifdef Q_OS_WIN32
     const QByteArray LOCAL_PREFIX("\\\\?\\");
-    // res.insert(ria_tera::fix_path("~")); // TODO
+    //res.insert(ria_tera::fix_path("~")); // TODO
     QList<QStorageInfo> vols = QStorageInfo::mountedVolumes();
     for (int i = 0; i < vols.length(); ++i) {
         QStorageInfo vol = vols.at(i);

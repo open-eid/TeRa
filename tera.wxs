@@ -44,9 +44,9 @@ msiexec /a Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi /qn TARGETDIR
       Id="*" Language="1033" Version="$(var.MSI_VERSION)" Codepage="1251" Manufacturer="RIA"> <!-- TODO UpgradeCode -->
     <Package Platform="$(var.Platform)" Keywords="Installer" InstallerVersion="405" Compressed="yes" InstallScope="perMachine"/>
     <MediaTemplate EmbedCab="yes" CompressionLevel="high"/>
-    <Icon Id="TeRa.exe" SourceFile="$(var.client_path)"/>
+    <Icon Id="TeRa.exe" SourceFile="$(var.client_path)\TeRa.exe"/>
     <Property Id="ARPPRODUCTICON" Value="Tera.exe"/>
-    <Property Id="DESKTOP_SHORTCUT" Value="0"/>
+    <Property Id="DESKTOP_SHORTCUT" Value="1"/>
     <MajorUpgrade AllowSameVersionUpgrades="yes" Schedule="afterInstallInitialize" DowngradeErrorMessage=
       "A newer version of [ProductName] is already installed. If you are trying to downgrade, please uninstall the newer version first."/>
     <Condition Message="[ProductName] requires Windows 7 or higher.">
@@ -76,13 +76,25 @@ msiexec /a Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi /qn TARGETDIR
         </Directory>
       </Directory>
 
+      <!-- Desktop shortcut -->
+      <Directory Id="DesktopFolder">
+        <Component Id="DesktopShortcut" Guid="412b4616-001f-49ec-a9be-c942eb165fff" Transitive="yes">
+          <Condition>DESKTOP_SHORTCUT = 1</Condition> <!-- TODO use 0 instead -->
+          <!-- Name="!(loc.qdigidocclientLabel)" -->
+          <Shortcut Id="TeraDesktopShortcut" Name="TeRa Client"
+                    Target="[!TeRa.exe]" WorkingDirectory="APPLICATIONFOLDER"/>
+          <!--RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Name="DesktopShortcut" Value="1" Type="integer" KeyPath="yes"/-->
+        </Component>
+      </Directory>
+
       <Directory Id='$(var.PlatformProgramFilesFolder)'>
         <Directory Id="APPLICATIONFOLDER" Name="TeRa Client">
           <Component Id="Application" Guid="810cbd57-b24d-49ee-939a-a1fc38dda4ff"> <!-- TODO Guid -->
-            <File Source="$(var.client_path)" KeyPath='yes'>
+            <File Source="$(var.client_path)\TeRa.exe" KeyPath='yes'>
               <Shortcut Id="TeRaClientStartMenu" Advertise="yes" Icon="TeRa.exe" Name="TeRa Client"
                 Directory="ProgramMenuDir" WorkingDirectory="APPLICATIONFOLDER"/>
             </File>
+            <File Source="$(var.client_path)\TeRaTool.exe"/>
 
             <File Source="misc\terapoc.ini"/>
 
@@ -116,8 +128,9 @@ msiexec /a Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi /qn TARGETDIR
     </Directory>
 
     <Feature Id="InstallTeRa" Level="1" Title="TeRa Client" Display="expand" ConfigurableDirectory="APPLICATIONFOLDER">
-      <ComponentRef Id='ProgramMenuDir' />
       <ComponentRef Id="Application"/>
+      <ComponentRef Id='ProgramMenuDir' />
+      <ComponentRef Id="DesktopShortcut" />
 <?ifdef var.qt_path ?>
       <ComponentRef Id="qwindows.dll" />
 <?endif?>

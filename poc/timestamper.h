@@ -19,16 +19,27 @@
 
 #include "utils.h"
 
+struct zip;
+
 namespace ria_tera {
 
-class TimeStamperData_impl;
-
-class CreateAsicsJob : public QObject, public QRunnable
-{
+class TeraCreateAsicsJob : public QObject, public QRunnable {
     Q_OBJECT
 public:
-    CreateAsicsJob();
+    TeraCreateAsicsJob(qint64 id, QString const& out, QString const& in, QByteArray const& ts);
+signals:
+    void finished(qint64 jobId, bool asicsSuccess, QString error);
+public:
     void run();
+    bool createAsicsContainer(QString& errorStr);
+private:
+    bool fillTmpAsicsContainer(zip* zip, QString& errorStr);
+    bool insertInputFile(zip* zip, QString const& path, QString& errorStr);
+    bool addFile(zip* zip, QString const& name, QByteArray const& data, QString& errorStr);
+    qint64 jobId;
+    QString outpath;
+    QString infile;
+    QByteArray timestamp;
 };
 
 class TimeStamper : public QObject {
@@ -40,15 +51,17 @@ public:
     bool getTimestampRequest(QByteArray& tsrequest, QString& error);
     QByteArray getTimestampRequest4Sha256(QByteArray& sha256); // TODO redesign
     void sendTSRequest(QByteArray const& timestampRequest, bool test = false); // TODO redesign
-    bool createAsicsContainer(QByteArray const& tsresponse);
 public slots:
     void tsReplyFinished(QNetworkReply *reply);
+    void createAsicsContainerFinished(qint64 jobId, bool, QString err);
 signals:
     void timestampingFinished(bool success, QString errString);
     void timestampingTestFinished(bool success, QByteArray resp, QString errString);
+    void signalAsicsContainerFinished(bool);
 private:
     void notifyClientOnTimestampingFinished(bool test, bool success, QString errString, QByteArray resp = QByteArray());
 
+    qint64 jobId;
     QString inputFilePath;
 public:
     QString timeserverUrl;
@@ -59,8 +72,6 @@ private:
     QNetworkRequest request;
 
     QSet<QNetworkReply*> testReplies;
-
-    TimeStamperData_impl* data;
 };
 
 class OutputNameGenerator {

@@ -169,7 +169,8 @@ In Windows
     Release\TeRaPOC
 
     cd Release
-    TeRa.exe
+    TeRa.exe        // for GUI
+    TeRaTool.exe    // for command line
 
 PS The following dll's need to be copied to Release directory
 Qt5Core.dll, Qt5Gui.dll, Qt5Network.dll, Qt5Widgets.dll, d3dcompiler_47.dll, libEGL.dll, libGLESv2.dll, opengl32sw.dll (C:\Qt5.7.0VS\5.7\msvc2013\bin),
@@ -187,5 +188,5 @@ Commands to build .msi (check QT path)
     cd C:\Downloads\git\TeRa
     set "WIX=C:\Downloads\wix310-binaries"
     set "TERA_BUILD_DIR=C:\cmake_builds\tera%TERA_ARCH%"
-    "%WIX%\bin\candle.exe" tera.wxs -dMSI_VERSION=0.0.4 -dcmake_builds_path="C:\cmake_builds" -dqt_path=C:\Qt\Qt5.5.1%TERA_ARCH%\5.5\msvc2013%TERA_ARCH% -dclient_path=%TERA_BUILD_DIR%\Release\Tera.exe
+    "%WIX%\bin\candle.exe" tera.wxs -dMSI_VERSION=0.0.4 -dcmake_builds_path="C:\cmake_builds" -dqt_path=C:\Qt\Qt5.5.1%TERA_ARCH%\5.5\msvc2013%TERA_ARCH% -dclient_path=%TERA_BUILD_DIR%\Release
     "%WIX%\bin\light.exe" -out TeRa%TERA_ARCH%.msi tera.wixobj -v -ext WixUIExtension

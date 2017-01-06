@@ -25,6 +25,8 @@ public:
     QStringListModel* modelExclDir;
     QStringListModel* modelInclDir;
 private slots:
+    void handleTryAccept();
+
     void handleAddExclDir();
     void handleDelExclDir();
     void handleExclDirSearch();
@@ -33,9 +35,11 @@ private slots:
     void handleDelInclDir();
     void handleInclDirSearch();
 private:
-    static void addDirToList(QLineEdit* line, QStringListModel* model);
+    void gotoInputDirTab();
+    void addDirToList(QString const& line, QStringListModel* model);
+    void addDirToList(QLineEdit* line, QStringListModel* model);
     static void deleteSelected(QListView* lv);
-    static void searchDir(QWidget* w, QLineEdit* line);
+    void searchDir(QWidget* w, QLineEdit* line, QStringListModel* model);
 };
 
 }

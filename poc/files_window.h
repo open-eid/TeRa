@@ -24,9 +24,14 @@ public:
     void setFileList(QStringList const& files);
     QStringList extractSelectedFileList();
 public slots:
+    void handleSelect();
+    void handleDeselect();
     void handleSelectAll();
     void handleSelectNone();
+private slots:
+    void viewTypeToggled(bool listView);
 private:
+    void setCheckStateForSelection(Qt::CheckState state);
     void setCheckStateForAll(Qt::CheckState state);
 
     QStandardItemModel* model;

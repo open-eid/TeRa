@@ -66,7 +66,7 @@ TeraMainWin::TeraMainWin(QWidget *parent) :
     settings->setStyleSheet("QPushButton:disabled"
             "{ color: gray }");
 
-    stackedCntrlWidget->setCurrentIndex(0);
+    setPage(PAGE::START);
 
     connect(btnStamp, SIGNAL (clicked()), this, SLOT (handleStartStamping()));
     connect(settings, SIGNAL(clicked()), this, SLOT(handleSettings()));
@@ -114,15 +114,6 @@ TeraMainWin::~TeraMainWin()
 {
 }
 
-QString toBulletedList(QList<QString> list) { // TODO rename
-    QString res;
-    for (int i = 0; i < list.size(); ++i) {
-        if (0 == i) res = " * " + list[i];
-        else res += "\n * " + list[i];
-    }
-    return res;
-}
-
 CrawlDiskJob::CrawlDiskJob(TeraMainWin& mainWindow, int jobid, GuiTimestamperProcessor const & processor) :
 gui(mainWindow), jobId(jobid), dc(*this, Config::EXTENSION_IN)
 {
@@ -163,33 +154,13 @@ bool CrawlDiskJob::foundFile(QString const& path) {
 }
 
 void TeraMainWin::handleStartStamping() {
-    if (0 == processor.inclDirs.size()) {
-        QMessageBox::critical(this, tr("Error"), tr("No input directory selected."));
-        return;
-    }
-
     processor.timeServerUrl = processor.timeServerUrl.trimmed(); // TODO
     if (processor.timeServerUrl.isEmpty()) {
-        QMessageBox::critical(this, tr("Error"), tr("Time server URL is empty."));
+        QMessageBox::critical(this, tr("Error"), tr("Time server URL is empty.")); // Error only onve
         return;
     }
 
-    QList<QString> inDirList = processor.inclDirs.toList(); // TODO make checking better
-    QList<QString> doesntExist;
-    for (int i = 0; i < inDirList.size(); ++i) {
-        QString dir = inDirList.at(i);
-        QFileInfo fi(dir);
-
-        if (!fi.exists() || !fi.isDir()) {
-            doesntExist.append(dir);
-        }
-    }
-
-    if (!doesntExist.empty()) {
-        QString dirlist = toBulletedList(doesntExist);
-        QMessageBox::critical(this, tr("Error"), tr("The following input folders don't exist (or are files). Cancelling:") + "\n" + dirlist);
-        return;
-    }
+    if (!processor.checkInDirListWithMessagebox(this)) return;
 
     //
     cancel = false;
@@ -205,7 +176,7 @@ void TeraMainWin::handleStartStamping() {
         mb.exec();
     }
 
-    stackedCntrlWidget->setCurrentIndex(1); // TODO
+    setPage(PAGE::PROCESS);
     settings->setEnabled(false);
     progressBar->setMaximum(PP_TS_TEST + PP_SEARCH + PP_TS);
     progressBar->setValue(0);
@@ -285,6 +256,7 @@ void TeraMainWin::doFindingFilesDone() {
     progressBar->setValue(PP_TS_TEST + PP_SEARCH);
     progressBar->setFormat("");
     processor.result->progressStage = GuiTimestamperProcessor::Result::CONVERTING_FILES;
+    processor.result->cntFound = processor.inFiles.size();
     fillProgressBar();
 
     if (processor.inFiles.size() > 0 && processor.previewFiles) {
@@ -307,7 +279,6 @@ void TeraMainWin::startStampingFiles() {
                 auto& data(it.value());
                 auto& filesizeOnPart(filesizesPerPartitition[data.partitionPath]);
                 filesizeOnPart += data.filesize;
-                qDebug() << "X " << filePath << " " << data.partitionPath << " " << data.filesize;
             }
         }
 
@@ -396,7 +367,8 @@ void TeraMainWin::timestampingFinished(bool success, QString errString) {
 
     processor.inFiles.clear();
     timestapmping = false;
-    stackedCntrlWidget->setCurrentIndex(2);
+    if (cancel) setPage(PAGE::START);
+    else setPage(PAGE::READY);
     settings->setEnabled(true);
 }
 
@@ -459,7 +431,9 @@ void TeraMainWin::fillDoneLog() {
     }
 
     logText->append(tr("DDOC failide konverteerimine lõppes"));
-    logText->append(tr("DDOC faile leitud: %1").arg(QString::number(processor.result->cnt)));
+    logText->append(tr("DDOC faile leitud: %1").arg(QString::number(processor.result->cntFound)));
+    if (processor.result->cntFound != processor.result->cnt)
+        logText->append(tr("   millest tembeldamiseks valisite: %1").arg(QString::number(processor.result->cnt)));
     logText->append(tr("DDOC faile konverteeritud: %1").arg(QString::number(processor.result->progressSuccess)));
     if (processor.result->progressFailed > 0) {
         logText->append(tr("Ebaõnnestunud konverteerimisi: %1").arg(QString::number(processor.result->progressFailed)));
@@ -512,6 +486,19 @@ void TeraMainWin::loadTranslation(QString const& language_short) {
     // TODO retranslate other GUIs as well?
 }
 
+void TeraMainWin::setPage(PAGE p) {
+    if (PAGE::START == p) {
+        stackedMainWidget->setCurrentIndex(0);
+        stackedBtnWidget->setCurrentIndex(0);
+        logText->setFocus();
+    } else if (PAGE::PROCESS == p) {
+        stackedMainWidget->setCurrentIndex(1);
+    } else if (PAGE::READY == p) {
+        stackedMainWidget->setCurrentIndex(0);
+        stackedBtnWidget->setCurrentIndex(1);
+    }
+}
+
 void TeraMainWin::handleCancelProcess() {
     doUserCancel();
 }
@@ -526,7 +513,8 @@ void TeraMainWin::doUserCancel(QString msg) {
 }
 
 void TeraMainWin::handleReadyButton() {
-    stackedCntrlWidget->setCurrentIndex(0);
+    setPage(PAGE::START);
+    logText->clear();
 }
 
 void TeraMainWin::handleSettings() {

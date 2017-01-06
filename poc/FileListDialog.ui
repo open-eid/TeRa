@@ -37,7 +37,11 @@
         <number>0</number>
        </property>
        <item>
-        <widget class="QListView" name="listView"/>
+        <widget class="QListView" name="listView">
+         <property name="selectionMode">
+          <enum>QAbstractItemView::ContiguousSelection</enum>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -77,21 +81,21 @@
       <property name="bottomMargin">
        <number>0</number>
       </property>
-      <item row="0" column="2">
+      <item row="0" column="6">
        <widget class="QPushButton" name="btnSelectNone">
         <property name="text">
-         <string>Select None</string>
+         <string>Deselect All</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
+      <item row="0" column="5">
        <widget class="QPushButton" name="btnSelectAll">
         <property name="text">
          <string>Select All</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="0">
+      <item row="0" column="2">
        <spacer name="horizontalSpacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -103,6 +107,40 @@
          </size>
         </property>
        </spacer>
+      </item>
+      <item row="0" column="3">
+       <widget class="QPushButton" name="btnSelect">
+        <property name="text">
+         <string>Select</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QRadioButton" name="rbList">
+        <property name="text">
+         <string>list view</string>
+        </property>
+        <attribute name="buttonGroup">
+         <string notr="true">viewTypeGroup</string>
+        </attribute>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QRadioButton" name="rbTree">
+        <property name="text">
+         <string>tree view</string>
+        </property>
+        <attribute name="buttonGroup">
+         <string notr="true">viewTypeGroup</string>
+        </attribute>
+       </widget>
+      </item>
+      <item row="0" column="4">
+       <widget class="QPushButton" name="btnDeselect">
+        <property name="text">
+         <string>Deselect</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -129,4 +167,7 @@
   <slot>save()</slot>
   <slot>validateP12Cert()</slot>
  </slots>
+ <buttongroups>
+  <buttongroup name="viewTypeGroup"/>
+ </buttongroups>
 </ui>

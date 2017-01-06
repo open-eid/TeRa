@@ -106,6 +106,8 @@ protected:
     void fillProgressBar();
     void fillDoneLog();
 private:
+    enum PAGE {START, PROCESS, READY};
+    void setPage(PAGE p);
     void doUserCancel(QString msg = QString());
     void loadTranslation(QString const& language_short);
 private:

@@ -108,8 +108,8 @@ qt5_add_translation( QM ${TRANS} )
 qt5_add_resources( SOURCES images/images.qrc translations/tr.qrc )
 qt5_wrap_ui( UI_HEADERS ${TERA_GUI_UI} )
 
-# TeRaPOC
-add_executable(TeRaPOC
+# TeRaTool
+add_executable(TeRaTool
         poc/teragui.rc
         poc/terapoc.cpp
         poc/utils.h poc/utils.cpp
@@ -119,10 +119,10 @@ add_executable(TeRaPOC
         poc/timestamper.h poc/timestamper.cpp
         poc/config.h poc/config.cpp
         )
-target_link_libraries(TeRaPOC ${ZIP_LIBRARIES} ${OPENSSL_LIBRARIES} ${FOR_OPENSSL_STATIC} ${Boost_LIBRARIES} ${ZLIB_LIBRARIES} )
-qt5_use_modules(TeRaPOC Core Concurrent Network)
+target_link_libraries(TeRaTool ${ZIP_LIBRARIES} ${OPENSSL_LIBRARIES} ${FOR_OPENSSL_STATIC} ${Boost_LIBRARIES} ${ZLIB_LIBRARIES} )
+qt5_use_modules(TeRaTool Core Concurrent Network)
 
-add_executable(Tera WIN32 MACOSX_BUNDLE
+add_executable(TeRa WIN32 MACOSX_BUNDLE
         poc/teragui.rc
         ${UI_HEADERS}
         ${TERA_GUI_UI}
@@ -131,6 +131,6 @@ add_executable(Tera WIN32 MACOSX_BUNDLE
         ${QM}
         ${TRANS}
         )
-target_link_libraries(Tera ${ZIP_LIBRARIES} ${OPENSSL_LIBRARIES} ${FOR_OPENSSL_STATIC} ${Boost_LIBRARIES} ${ZLIB_LIBRARIES} )
-qt5_use_modules(Tera Core Concurrent Network Widgets Gui)
-target_link_libraries(Tera Qt5::Widgets)
+target_link_libraries(TeRa ${ZIP_LIBRARIES} ${OPENSSL_LIBRARIES} ${FOR_OPENSSL_STATIC} ${Boost_LIBRARIES} ${ZLIB_LIBRARIES} )
+qt5_use_modules(TeRa Core Concurrent Network Widgets Gui)
+target_link_libraries(TeRa Qt5::Widgets)
