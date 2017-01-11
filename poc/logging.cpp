@@ -8,7 +8,7 @@
 
 namespace ria_tera {
 
-static TeraLogger logger;
+TeraLogger logger;
 
 //============================== LogFile ==============================
 
@@ -26,8 +26,7 @@ LogFile::~LogFile() {
 QString LogFile::filePath() {
     if (logFile) {
         return logFile->fileName();
-    }
-    else {
+    } else {
         return QString();
     }
 }

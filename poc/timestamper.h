@@ -33,12 +33,15 @@ public:
     void run();
     bool createAsicsContainer(QString& errorStr);
 private:
-    bool fillTmpAsicsContainer(zip* zip, QString& errorStr);
+    bool fillTmpAsicsContainer(zip* zip, QByteArray const& mimeCont, QByteArray const& manifestCont, QString& errorStr);
     bool insertInputFile(zip* zip, QString const& path, QString& errorStr);
     bool addFile(zip* zip, QString const& name, QByteArray const& data, QString& errorStr);
     qint64 jobId;
     QString outpath;
     QString infile;
+
+    // This byte arrays needs to remain untouched after they are added to zip...
+    // see https://nih.at/libzip/zip_source_buffer.html
     QByteArray timestamp;
 };
 

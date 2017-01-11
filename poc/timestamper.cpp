@@ -45,13 +45,25 @@ bool TeraCreateAsicsJob::createAsicsContainer(QString& errorStr) {
     }
 
     // create zip file
-    bool res = fillTmpAsicsContainer(zip, errorStr);
+    QByteArray fileMimetypeContent = "application/vnd.etsi.asic-s+zip";
+
+    QByteArray manifestContent;
+    manifestContent.append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?>\n");
+    manifestContent.append("<manifest:manifest xmlns:manifest=\"urn:oasis:names:tc:opendocument:xmlns:manifest:1.0\" manifest:version=\"1.2\">\n");
+    manifestContent.append("  <manifest:file-entry manifest:full-path=\"/\" manifest:media-type=\"application/vnd.etsi.asic-e+zip\"/>\n");
+    manifestContent.append("  <manifest:file-entry manifest:full-path=\"");
+    manifestContent.append(QFileInfo(infile).fileName().toUtf8());
+    manifestContent.append("\" manifest:media-type=\"application/octet-stream\"/>\n");
+    manifestContent.append("</manifest:manifest>\n");
+
+    bool res = fillTmpAsicsContainer(zip, fileMimetypeContent, manifestContent, errorStr);
 
     // close zip file
     if (res) {
         error = zip_close(zip);
         if (0 != error) {
             errorStr = QString("Could not finalize '%1'").arg(outpath);
+            zip_discard(zip);
             return false;
         }
     } else {
@@ -63,14 +75,10 @@ bool TeraCreateAsicsJob::createAsicsContainer(QString& errorStr) {
     return true;
 }
 
-bool TeraCreateAsicsJob::fillTmpAsicsContainer(zip* zip, QString& errorStr) {
-    QFileInfo fileinfo(infile);
-    QString fileName = fileinfo.fileName();
-
+bool TeraCreateAsicsJob::fillTmpAsicsContainer(zip* zip, QByteArray const& mimeCont, QByteArray const& manifestCont, QString& errorStr) {
     int error = 0;
 
-    QByteArray fileMimetypeContent = "application/vnd.etsi.asic-s+zip";
-    if (!addFile(zip, "mimetype", fileMimetypeContent, errorStr)) return false;
+    if (!addFile(zip, "mimetype", mimeCont, errorStr)) return false;
 
     if (!insertInputFile(zip, infile, errorStr)) return false;
 
@@ -80,15 +88,7 @@ bool TeraCreateAsicsJob::fillTmpAsicsContainer(zip* zip, QString& errorStr) {
         return false;
     }
 
-    QByteArray manifestContent;
-    manifestContent.append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?>\n");
-    manifestContent.append("<manifest:manifest xmlns:manifest=\"urn:oasis:names:tc:opendocument:xmlns:manifest:1.0\" manifest:version=\"1.2\">\n");
-    manifestContent.append("  <manifest:file-entry manifest:full-path=\"/\" manifest:media-type=\"application/vnd.etsi.asic-e+zip\"/>\n");
-    manifestContent.append("  <manifest:file-entry manifest:full-path=\"");
-    manifestContent.append(fileName.toUtf8());
-    manifestContent.append("\" manifest:media-type=\"application/octet-stream\"/>\n");
-    manifestContent.append("</manifest:manifest>\n");
-    if (!addFile(zip, "META-INF/manifest.xml", manifestContent, errorStr)) return false;
+    if (!addFile(zip, "META-INF/manifest.xml", manifestCont, errorStr)) return false;
 
     if (!addFile(zip, "META-INF/timestamp.tst", timestamp, errorStr)) return false;
 
@@ -98,8 +98,15 @@ bool TeraCreateAsicsJob::fillTmpAsicsContainer(zip* zip, QString& errorStr) {
 bool TeraCreateAsicsJob::insertInputFile(zip_t* zip, QString const& path, QString& errorStr) {
     // https://nih.at/libzip/zip_source_function.html
     zip_source *source = zip_source_file(zip, path.toUtf8().constData(), 0, -1); // TODO proper cancelling
+    if (source == NULL)
+    {
+        errorStr = QString("could not add '%1' to ddoc - failed to create source file. %2").arg(path, zip_strerror(zip));
+        return false;
+    }
+
     QFileInfo fileinfo(path);
     int index = (int)zip_file_add(zip, fileinfo.fileName().toUtf8().constData(), source, ZIP_FL_OVERWRITE | ZIP_FL_ENC_UTF_8);
+// TODO    zip_source_free(source);
     if(index < 0)
     {
         errorStr = QString("failed to add file '%1' to archive - %2").arg(path, zip_strerror(zip));
@@ -109,7 +116,6 @@ bool TeraCreateAsicsJob::insertInputFile(zip_t* zip, QString const& path, QStrin
 }
 
 bool TeraCreateAsicsJob::addFile(zip_t* zip, QString const& name, QByteArray const& data, QString& errorStr) {
-    // TODO null
     zip_source *source = zip_source_buffer(zip, data.constData(), data.length(), 0);
     if(source == NULL)
     {
@@ -118,6 +124,7 @@ bool TeraCreateAsicsJob::addFile(zip_t* zip, QString const& name, QByteArray con
     }
 
     int index = (int)zip_file_add(zip, name.toUtf8().constData(), source, ZIP_FL_OVERWRITE | ZIP_FL_ENC_UTF_8);
+// TODO    zip_source_free(source);
     if(index < 0)
     {
         errorStr = QString("could not add '%1' to ddoc - failed to add file to archive. %2").arg(name, zip_strerror(zip));
