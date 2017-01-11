@@ -484,6 +484,7 @@ void TeraMainWin::loadTranslation(QString const& language_short) {
 
     retranslateUi(this);
     // TODO retranslate other GUIs as well?
+    versionLabel->setText(versionLabel->text().arg(qApp->applicationVersion()));
 }
 
 void TeraMainWin::setPage(PAGE p) {

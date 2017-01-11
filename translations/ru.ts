@@ -8,6 +8,36 @@
         <source>Files</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../poc/FileListDialog.ui" line="87"/>
+        <source>Deselect All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../poc/FileListDialog.ui" line="94"/>
+        <source>Select All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../poc/FileListDialog.ui" line="114"/>
+        <source>Select</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../poc/FileListDialog.ui" line="121"/>
+        <source>list view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../poc/FileListDialog.ui" line="131"/>
+        <source>tree view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../poc/FileListDialog.ui" line="141"/>
+        <source>Deselect</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MainWindow</name>
@@ -17,49 +47,50 @@
         <translation>TeRa клиент</translation>
     </message>
     <message>
-        <location filename="../poc/MainWindow.ui" line="240"/>
+        <location filename="../poc/MainWindow.ui" line="252"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../poc/MainWindow.ui" line="266"/>
+        <location filename="../poc/MainWindow.ui" line="278"/>
         <source>Help</source>
         <translation>Помощь</translation>
     </message>
     <message>
-        <location filename="../poc/MainWindow.ui" line="553"/>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Arial&apos;; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:600; color:#00355f;&quot;&gt;DDOC failide automaatseks paketeerimiseks BDOC formaati vajuta Alusta nuppu.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:600; color:#00355f;&quot;&gt;Kui on soov seadistada paketeerimisega seotud parameetreid, siis nende&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:600; color:#00355f;&quot;&gt;seadistamiseks ava Seaded menüüpunkt. Konverteeritud uued dokumendid&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:600; color:#00355f;&quot;&gt;paigaldatakse süsteemis algfailiga samasse kataloogi.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <location filename="../poc/MainWindow.ui" line="1833"/>
+        <source>TeRa klient %1</source>
+        <extracomment>%1 is for version number</extracomment>
+        <translation>TeRa клиент %1</translation>
     </message>
     <message>
-        <location filename="../poc/MainWindow.ui" line="922"/>
+        <location filename="../poc/MainWindow.ui" line="834"/>
         <source>Start</source>
         <translation type="unfinished">RU Start</translation>
     </message>
     <message>
-        <location filename="../poc/MainWindow.ui" line="1316"/>
+        <location filename="../poc/MainWindow.ui" line="1776"/>
         <source>TeRa</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/MainWindow.ui" line="1323"/>
+        <location filename="../poc/MainWindow.ui" line="1783"/>
         <source>TextLabel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/MainWindow.ui" line="1672"/>
+        <location filename="../poc/MainWindow.ui" line="1160"/>
         <source>Valmis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/MainWindow.ui" line="1868"/>
+        <location filename="../poc/MainWindow.ui" line="402"/>
+        <source>Teie digiallkirjastatud DDOC failidele lisatakse ajatempel, et kaitsta teid võimalike tulevaste turvanõrkuste eest. Ajatempliga failid on ASICS laiendiga ja asuvad samas kataloogis.
+
+Vaikimisi ajatembeldatakse ainult arvutis asuvaid DDOC faile. Kui soovite võrguketastel asuvaid faile tembeldada või muid seadeid muuta, avage &quot;Seaded&quot; menüü.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../poc/MainWindow.ui" line="1385"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -68,21 +99,20 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/MainWindow.ui" line="1968"/>
         <source>TeRa klient 0.4.0</source>
-        <translation type="unfinished">TeRa клиент 0.4.0</translation>
+        <translation type="obsolete">TeRa клиент 0.4.0</translation>
     </message>
     <message>
         <source>About</source>
         <translation type="vanished">Информация</translation>
     </message>
     <message>
-        <location filename="../poc/MainWindow.ui" line="298"/>
+        <location filename="../poc/MainWindow.ui" line="310"/>
         <source>Languages</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/MainWindow.ui" line="1287"/>
+        <location filename="../poc/MainWindow.ui" line="1747"/>
         <source>Cancel</source>
         <translation type="unfinished">RU Cancel</translation>
     </message>
@@ -90,7 +120,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../poc/main_window.cpp" line="226"/>
+        <location filename="../poc/main_window.cpp" line="225"/>
         <source>Searching</source>
         <translation type="unfinished"></translation>
     </message>
@@ -146,37 +176,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/SettingsDialog.ui" line="220"/>
-        <source>Output file type:</source>
+        <location filename="../poc/SettingsDialog.ui" line="246"/>
+        <source>Time Server URL (ex. http://demo.sk.ee/tsa):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/SettingsDialog.ui" line="227"/>
-        <source>Default file type BDOC</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../poc/SettingsDialog.ui" line="243"/>
-        <source>BDOC – default digital signature format in Estonia.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../poc/SettingsDialog.ui" line="256"/>
-        <source>Default file type ASiC-E</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../poc/SettingsDialog.ui" line="263"/>
-        <source>ASiC-E – international digital signature format that will be used across European countries.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../poc/SettingsDialog.ui" line="308"/>
-        <source>Time Server URL (http://demo.sk.ee/tsa):</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../poc/SettingsDialog.ui" line="324"/>
+        <location filename="../poc/SettingsDialog.ui" line="262"/>
         <source>Preview file list</source>
         <translation type="unfinished"></translation>
     </message>
@@ -184,8 +189,8 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ria_tera::BatchStamper</name>
     <message>
-        <location filename="../poc/timestamper.cpp" line="339"/>
-        <location filename="../poc/timestamper.cpp" line="347"/>
+        <location filename="../poc/timestamper.cpp" line="337"/>
+        <location filename="../poc/timestamper.cpp" line="345"/>
         <source>Operation cancelled by user...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -193,66 +198,55 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ria_tera::GuiTimestamperProcessor</name>
     <message>
-        <location filename="../poc/gui_timestamper_processor.cpp" line="129"/>
-        <source>Error opening log file</source>
+        <location filename="../poc/gui_timestamper_processor.cpp" line="127"/>
+        <location filename="../poc/gui_timestamper_processor.cpp" line="143"/>
+        <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/gui_timestamper_processor.cpp" line="131"/>
-        <source>No permissions</source>
+        <location filename="../poc/gui_timestamper_processor.cpp" line="127"/>
+        <source>No input directory selected.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/gui_timestamper_processor.cpp" line="133"/>
-        <source>Out of resources</source>
+        <location filename="../poc/gui_timestamper_processor.cpp" line="143"/>
+        <source>The following input folders don&apos;t exist (or are files). Please fix the list under &quot;Settings&quot; window:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ria_tera::TeraMainWin</name>
     <message>
-        <location filename="../poc/main_window.cpp" line="139"/>
-        <source>No input directory selected.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../poc/main_window.cpp" line="139"/>
-        <location filename="../poc/main_window.cpp" line="145"/>
-        <location filename="../poc/main_window.cpp" line="162"/>
+        <location filename="../poc/main_window.cpp" line="159"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="145"/>
+        <location filename="../poc/main_window.cpp" line="159"/>
         <source>Time server URL is empty.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="162"/>
-        <source>The following input folders don&apos;t exist (or are files). Cancelling:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../poc/main_window.cpp" line="294"/>
+        <location filename="../poc/main_window.cpp" line="293"/>
         <source> * &apos;%1&apos;: vaba ruumi %2, ruumi vaja %3 (hinnanguline)
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="301"/>
+        <location filename="../poc/main_window.cpp" line="300"/>
         <source>Leitud DDOC failide kogumaht ületab kettal oleva vaba ruumi:
 
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="303"/>
+        <location filename="../poc/main_window.cpp" line="302"/>
         <source>
 Ületembeldatud failid ei pruugi kettale ära mahtuda.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="304"/>
+        <location filename="../poc/main_window.cpp" line="303"/>
         <source>
 
 Katkestada tembeldamine?</source>
@@ -289,17 +283,22 @@ Katkestada tembeldamine?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="435"/>
-        <source>DDOC faile konverteeritud: %1</source>
+        <location filename="../poc/main_window.cpp" line="436"/>
+        <source>   millest tembeldamiseks valisite: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="437"/>
+        <source>DDOC faile konverteeritud: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../poc/main_window.cpp" line="439"/>
         <source>Ebaõnnestunud konverteerimisi: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="194"/>
+        <location filename="../poc/main_window.cpp" line="193"/>
         <source>Test request to Time Server failed. </source>
         <translation type="unfinished"></translation>
     </message>
@@ -310,23 +309,46 @@ Katkestada tembeldamine?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="441"/>
+        <location filename="../poc/main_window.cpp" line="443"/>
         <source>Täpsema aruande vaatamiseks vajuta </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="450"/>
+        <location filename="../poc/main_window.cpp" line="452"/>
         <source>SIIA</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="456"/>
+        <location filename="../poc/main_window.cpp" line="457"/>
+        <source>HTTP_HELP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../poc/main_window.cpp" line="459"/>
+        <source>Couldn&apos;t open help URL: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../poc/main_window.cpp" line="465"/>
         <source>Couldn&apos;t open timestamping log: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="488"/>
+        <location filename="../poc/main_window.cpp" line="511"/>
         <source>Operation cancelled by user...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ria_tera::TeraSettingsWin</name>
+    <message>
+        <location filename="../poc/settings_window.cpp" line="82"/>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../poc/settings_window.cpp" line="82"/>
+        <source>Can&apos;t add &apos;%1&apos;. Directory does not exist.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

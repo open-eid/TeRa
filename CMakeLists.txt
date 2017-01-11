@@ -1,14 +1,21 @@
+# === To update translation files ===
+# (for further reading see https://itk.org/Wiki/CMake:How_To_Build_Qt4_Software)
+# * Uncomment "SET (UPDATE_TRANSLATIONS 1)"
+# * Build configuration with cmake
+# * Build with cmake
+# * NB! Comment "SET (UPDATE_TRANSLATIONS 1)" out again when not needed anymore and build new configuration with cmake
+# (* Open&translate translations/*.ts with "Qt Linquist")
+# (* at the end "File -> Release All" to generate binary versions that are compiled into executables)
+# (* Build with cmake)
+#SET (UPDATE_TRANSLATIONS 1)
+
 cmake_minimum_required (VERSION 2.6)
 cmake_policy(SET CMP0020 NEW)
 if(POLICY CMP0043)
     cmake_policy(SET CMP0043 NEW)
 endif()
 
-#project (TeRa)
-#IF (WIN32)
-#ELSE()
-#    set(CMAKE_CXX_FLAGS "-std=c++11" CACHE STRING "compile flags" FORCE)
-#ENDIF()
+project (TeRa)
 
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -16,8 +23,6 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 SET(CMAKE_AUTOUIC ON) 
 SET(CMAKE_AUTORCC ON)
-
-########### SET(UPDATE_TRANSLATIONS ON)
 
 # Find Qt libraries
 find_package(Qt5Core)
@@ -55,11 +60,6 @@ set(OPENSSL_USE_STATIC_LIBS TRUE)
 set(OPENSSL_MSVC_STATIC_RT TRUE)
 find_package(OpenSSL)
 include_directories( ${OPENSSL_INCLUDE_DIR} )
-# TODO include_directories(/usr/local/include)
-# TODO find_library(ssl NAMES libssl.so  PATHS /home/s/Downloads/openssl-1.1.0b)
-# TODO find_library(crypto NAMES libcrypto.so PATHS /home/s/Downloads/openssl-1.1.0b)
-
-#add_library(zip STATIC /home/s/Downloads/libzip-1.1.3/lib/libzip.la)
 
 # C++11
 set(CMAKE_CXX_STANDARD 14)
@@ -68,6 +68,10 @@ IF (WIN32)
 ELSE()
     SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -pthread" )
 ENDIF()
+
+SET (TERA_COMMON_SRC
+      src/version.h
+     )
 
 SET (TERA_GUI_UI poc/MainWindow.ui poc/SettingsDialog.ui poc/FileListDialog.ui)
 SET (TERA_GUI_SRC
@@ -87,19 +91,16 @@ SET (TERA_GUI_SRC
 
 SET (TRANS translations/et.ts translations/en.ts translations/ru.ts)
 
-##### TODO To update translation files (see https://itk.org/Wiki/CMake:How_To_Build_Qt4_Software)
-# * Uncomment qt5_create_translation
-# * Build configuration with cmake
-# * Build with cmake
-# * NB! Comment qt5_create_translation out again when not needed anymore and build new configuration with cmake
-#qt5_create_translation( QM ${TERA_GUI_UI} ${TERA_GUI_SRC} ${TRANS})
-
+if (UPDATE_TRANSLATIONS)
+    qt5_create_translation( QM ${TERA_GUI_UI} ${TERA_GUI_SRC} ${TRANS})
+ENDIF()
 qt5_add_translation( QM ${TRANS} )
 qt5_add_resources( SOURCES images/images.qrc translations/tr.qrc )
 qt5_wrap_ui( UI_HEADERS ${TERA_GUI_UI} )
 
 # TeRaTool
 add_executable(TeRaTool
+        ${TERA_COMMON_SRC}
         poc/teragui.rc
         poc/terapoc.cpp
         poc/utils.h poc/utils.cpp
@@ -113,6 +114,7 @@ target_link_libraries(TeRaTool ${ZIP_LIBRARIES} ${OPENSSL_LIBRARIES} ${FOR_OPENS
 qt5_use_modules(TeRaTool Core Concurrent Network)
 
 add_executable(TeRa WIN32 MACOSX_BUNDLE
+        ${TERA_COMMON_SRC}
         poc/teragui.rc
         ${UI_HEADERS}
         ${TERA_GUI_UI}

@@ -1810,7 +1810,7 @@ font-weight: bold;
           <number>0</number>
          </property>
          <item row="0" column="0" colspan="2">
-          <widget class="QLabel" name="version">
+          <widget class="QLabel" name="versionLabel">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
              <horstretch>0</horstretch>
@@ -1830,7 +1830,7 @@ font-weight: bold;
             </size>
            </property>
            <property name="text">
-            <string>TeRa klient 0.6.0</string>
+            <string extracomment="%1 is for version number">TeRa klient %1</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>

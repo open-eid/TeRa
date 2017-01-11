@@ -8,6 +8,8 @@
 #include <QLoggingCategory>
 #include <QThreadPool>
 
+#include "../src/version.h"
+
 #include "main_window.h"
 #include "utils.h"
 
@@ -19,6 +21,7 @@ int main(int argc, char *argv[]) {
     QLoggingCategory::setFilterRules("qt.network.ssl.warning=false");
     qputenv("QT_QPA_PLATFORM_PLUGIN_PATH", ".");
     QApplication a(argc, argv);
+    a.setApplicationVersion(ria_tera::TERA_CLIENT_VERSION);
 
     ria_tera::TeraMainWin w;
     w.show();
