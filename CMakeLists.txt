@@ -32,16 +32,6 @@ include_directories(${Qt5Widgets_INCLUDE_DIRS})
 
 FIND_PACKAGE(Qt5LinguistTools)
 
-SET(Boost_USE_STATIC_LIBS ON)
-SET(Boost_USE_MULTITHREADED ON)
-find_package(Boost COMPONENTS log_setup log thread date_time filesystem system REQUIRED)
-include_directories(${Boost_INCLUDE_DIRS})
-LINK_DIRECTORIES(${Boost_LIBRARY_DIR})
-MESSAGE("Boost information")  
-MESSAGE("Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}")  
-MESSAGE("Boost_LIBRARY_DIRS: ${Boost_LIBRARY_DIRS}")  
-MESSAGE("Boost Libraries: ${Boost_LIBRARIES}") 
-
 IF (WIN32)
     #find_package(ZLib)
     SET (ZLIB_INCLUDE_DIRS "$ENV{TERA_ZLIB_DIR}/include")
@@ -119,7 +109,7 @@ add_executable(TeRaTool
         poc/timestamper.h poc/timestamper.cpp
         poc/config.h poc/config.cpp
         )
-target_link_libraries(TeRaTool ${ZIP_LIBRARIES} ${OPENSSL_LIBRARIES} ${FOR_OPENSSL_STATIC} ${Boost_LIBRARIES} ${ZLIB_LIBRARIES} )
+target_link_libraries(TeRaTool ${ZIP_LIBRARIES} ${OPENSSL_LIBRARIES} ${FOR_OPENSSL_STATIC} ${ZLIB_LIBRARIES} )
 qt5_use_modules(TeRaTool Core Concurrent Network)
 
 add_executable(TeRa WIN32 MACOSX_BUNDLE
@@ -131,6 +121,6 @@ add_executable(TeRa WIN32 MACOSX_BUNDLE
         ${QM}
         ${TRANS}
         )
-target_link_libraries(TeRa ${ZIP_LIBRARIES} ${OPENSSL_LIBRARIES} ${FOR_OPENSSL_STATIC} ${Boost_LIBRARIES} ${ZLIB_LIBRARIES} )
+target_link_libraries(TeRa ${ZIP_LIBRARIES} ${OPENSSL_LIBRARIES} ${FOR_OPENSSL_STATIC} ${ZLIB_LIBRARIES} )
 qt5_use_modules(TeRa Core Concurrent Network Widgets Gui)
 target_link_libraries(TeRa Qt5::Widgets)

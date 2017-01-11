@@ -20,12 +20,6 @@ QString fix_path(QString const& path);
 QString hrPath(QString const& path);
 QString hrSize(qint64 bytes);
 
-class ExitProgram : public QObject {
-    Q_OBJECT
-public slots:
-    void exitOnFinished(bool success, QString errString);
-};
-
 class DiscCrawlMonitorCallback {
 public:
     virtual bool processingPath(QString const& path, double progress_percent) = 0;

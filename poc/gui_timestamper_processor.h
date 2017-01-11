@@ -17,6 +17,7 @@
 #include <QTextStream>
 
 #include "config.h"
+#include "logging.h"
 #include "utils.h"
 
 #include "files_window.h"
@@ -56,18 +57,6 @@ public:
         QString error;
         int cnt;
         int cntFound;
-    };
-
-    class LogFile {
-    public:
-        LogFile(QFile* file);
-        virtual ~LogFile();
-        QString filePath();
-        QTextStream& getStream() { return logStream; };
-        void close();
-    private:
-        QScopedPointer<QFile> logFile;
-        QTextStream logStream;
     };
 
     GuiTimestamperProcessor();

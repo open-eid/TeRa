@@ -17,9 +17,7 @@
 
 #include <zip.h>
 
-#include <boost/log/core.hpp>
-#include <boost/log/trivial.hpp>
-
+#include "logging.h"
 #include "openssl_utils.h"
 
 namespace ria_tera {
@@ -27,16 +25,12 @@ namespace ria_tera {
     TeraCreateAsicsJob::TeraCreateAsicsJob(qint64 id, QString const& out, QString const& in, QByteArray const& ts)
     : jobId(id), outpath(out), infile(in), timestamp(ts)
 {
-    qDebug() << "TeraCreateAsicsJob::run";
 }
 
 void TeraCreateAsicsJob::run() {
-qDebug() << "TeraCreateAsicsJob::run";
     QString errorStr;
     bool res = createAsicsContainer(errorStr);
-qDebug() << "TeraCreateAsicsJob::run close to end";
     emit finished(jobId, res, errorStr);
-qDebug() << "TeraCreateAsicsJob::run end";
 }
 
 bool TeraCreateAsicsJob::createAsicsContainer(QString& errorStr) {
@@ -176,8 +170,8 @@ QByteArray TimeStamper::getTimestampRequest4Sha256(QByteArray& sha256) { // TODO
 
 void TimeStamper::sendTSRequest(QByteArray const& timestampRequest, bool test)
 {
-    BOOST_LOG_TRIVIAL(info) << "Connecting to time-server: " << timeserverUrl.toUtf8().constData();
-    BOOST_LOG_TRIVIAL(trace) << "Request (in Hex):\n" << timestampRequest.toHex().constData();
+    TERA_LOG(debug) << "Connecting to time-server: " << timeserverUrl.toUtf8().constData();
+    TERA_LOG(trace) << "Request (in Hex):\n" << timestampRequest.toHex().constData();
 
     QUrl url(timeserverUrl);
     request.setUrl(url);
@@ -205,7 +199,7 @@ void TimeStamper::tsReplyFinished(QNetworkReply *reply) {
     }
 
     QByteArray timeserverResponse = reply->readAll();
-    BOOST_LOG_TRIVIAL(trace) << "Time-server response (in Hex):\n" << timeserverResponse.toHex().constData();
+    TERA_LOG(trace) << "Time-server response (in Hex):\n" << timeserverResponse.toHex().constData();
 
 // TODO verify response against certificate
 
@@ -216,7 +210,7 @@ void TimeStamper::tsReplyFinished(QNetworkReply *reply) {
         return;
     }
 
-    BOOST_LOG_TRIVIAL(trace) << "Time-stamp (in Hex):\n" << timestamp.toHex().constData();
+    TERA_LOG(trace) << "Time-stamp (in Hex):\n" << timestamp.toHex().constData();
 
     if (testRequest) {
         notifyClientOnTimestampingFinished(testRequest, true, "");
@@ -226,14 +220,13 @@ void TimeStamper::tsReplyFinished(QNetworkReply *reply) {
     QFile file(inputFilePath);
     QString fileName = file.fileName();
 
-    BOOST_LOG_TRIVIAL(trace) << "Writing output file: " << outputFilePath.toUtf8().constData();
+    TERA_LOG(trace) << "Writing output file: " << outputFilePath.toUtf8().constData();
     TeraCreateAsicsJob* createAsicsJob = new TeraCreateAsicsJob(++jobId, outputFilePath, inputFilePath, timestamp);
     QObject::connect(createAsicsJob, &TeraCreateAsicsJob::finished, this, &TimeStamper::createAsicsContainerFinished);
     QThreadPool::globalInstance()->start(createAsicsJob);
 }
 
 void TimeStamper::createAsicsContainerFinished(qint64 doneJobId, bool asicsSuccess, QString err) {
-qDebug() << " fin " << jobId << " " << doneJobId;
     if (jobId != doneJobId) return;
 
     QString error;

@@ -1830,7 +1830,7 @@ font-weight: bold;
             </size>
            </property>
            <property name="text">
-            <string>TeRa klient 0.4.0</string>
+            <string>TeRa klient 0.6.0</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>

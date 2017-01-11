@@ -43,7 +43,7 @@ GuiTimestamperProcessor::GuiTimestamperProcessor() {
 
     inclDirs.unite(config.getDefaultInclDirs());
 
-    previewFiles = false; // TODO
+    previewFiles = false;
 }
 
 void QSet2GUI(QSet<QString> const& set, QStringListModel& model) {
@@ -98,51 +98,15 @@ bool GuiTimestamperProcessor::openLogFile(QString& errorText) {
     QString file_prefix = "tera_" + QDateTime::currentDateTime().toString("yyyyMMdd_HHmmss_zzz");
     QString file_sufix = ".log";
 
-    QFileInfo fileinfo(dir, file_prefix + file_sufix);
-    int nr = 0;
-    while (fileinfo.exists()) {
-        fileinfo.setFile(dir, file_prefix + "(" + QString::number(++nr) + ")" + file_sufix);
-    }
+    QString error;
+    LogFile* log = LogFile::openLogFile(dir, file_prefix, file_sufix, error);
 
-    QScopedPointer<QFile> file(new QFile(fileinfo.absoluteFilePath()));
-    if (file->open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Unbuffered)) {
-        logfile.reset(new LogFile(file.take()));
+    if (log) {
+        logfile.reset(log);
         return true;
     } else {
-        QString path = fileinfo.absoluteFilePath();
-        errorText = tr("Error opening log file") + " '" + path + "'";
-        if (QFileDevice::PermissionsError == file->error()) {
-            errorText += ": " + tr("No permissions");
-        } else if (QFileDevice::ResourceError == file->error()) {
-            errorText += ": " + tr("Out of resources");
-        }
+        errorText = error;
         return false;
-    }
-}
-
-GuiTimestamperProcessor::LogFile::LogFile(QFile* file) {
-    logFile.reset(file);
-
-    logStream.setCodec("UTF-8");
-    logStream.setDevice(logFile.data());
-}
-
-GuiTimestamperProcessor::LogFile::~LogFile() {
-    close();
-}
-
-QString GuiTimestamperProcessor::LogFile::filePath() {
-    if (logFile) {
-        return logFile->fileName();
-    } else {
-        return QString();
-    }
-}
-
-void GuiTimestamperProcessor::LogFile::close() {
-    logStream.flush();
-    if (logFile.data()) {
-        logFile->close();
     }
 }
 

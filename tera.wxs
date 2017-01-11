@@ -99,11 +99,13 @@ msiexec /a Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi /qn TARGETDIR
             <File Source="misc\terapoc.ini"/>
 
 <?ifdef var.qt_path ?>
-            <File Source="C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\redist\x86\Microsoft.VC120.CRT\msvcp120.dll"/>
-            <File Source="C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\redist\x86\Microsoft.VC120.CRT\msvcr120.dll"/>
-            <!-- TODO debug dll's -->
-            <!--File Source="C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\redist\Debug_NonRedist\x86\Microsoft.VC120.DebugCRT\msvcp120d.dll"/>
-            <File Source="C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\redist\Debug_NonRedist\x86\Microsoft.VC120.DebugCRT\msvcr120d.dll"/-->
+            <?if $(var.Platform) = x64 ?>
+                <File Source="C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\redist\x64\Microsoft.VC120.CRT\msvcp120.dll"/>
+                <File Source="C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\redist\x64\Microsoft.VC120.CRT\msvcr120.dll"/>
+            <?else ?>
+                <File Source="C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\redist\x86\Microsoft.VC120.CRT\msvcp120.dll"/>
+                <File Source="C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\redist\x86\Microsoft.VC120.CRT\msvcr120.dll"/>
+            <?endif ?>
 
             <File Source="$(var.qt_path)\bin\Qt5Core.dll"/>
             <File Source="$(var.qt_path)\bin\Qt5Gui.dll"/>

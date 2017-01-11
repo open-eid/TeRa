@@ -15,17 +15,6 @@
 
 namespace ria_tera {
 
-void ExitProgram::exitOnFinished(bool success, QString errString) {
-    if (success) {
-        BOOST_LOG_TRIVIAL(info) << "Timestamping finished successfully :)";
-        std::cout << "Finished successfully" << std::endl;
-        QCoreApplication::exit(0);
-    } else {
-        BOOST_LOG_TRIVIAL(error) << "Error: " << errString.toUtf8().constData();
-        QCoreApplication::exit(1);
-    }
-}
-
 bool isSubfolder(QString const& path, QSet<QString> const& refDirs) {
     QString p = path;
     while (true) {

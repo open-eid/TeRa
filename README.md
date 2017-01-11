@@ -23,10 +23,16 @@ In Ubuntu and OSX it is assumed that user s is used for building and downloaded 
 
 In Unutu and OSX building tools are available straight from terminal. In Windows use command prompt that opens from "VS2013 x86 Native Tools Command Prompt" from "Start"-menu -> "Visual Studio 2013" -> "Visual Studio Tools".
 
+    set "TERA_ARCH_C=12 2013"
+    set "TERA_ARCH=_32"
+    set "TERA_QT_CMAKE_DIR=C:\Qt\Qt5.5.1\5.5\msvc2013"
+    
+
 PS For x64 builds "VS2013 x64 Cross..." and 'cmake -G "Visual Studio 12 2013 Win64" ...' need to be used instead
 
-set "TERA_ARCH_C= Win64"
-set "TERA_ARCH=_64"
+    set "TERA_ARCH_C=12 2013 Win64"
+    set "TERA_ARCH=_64"
+    set "TERA_QT_CMAKE_DIR=C:\Qt\Qt5.5.1_64\5.5\msvc2013_64"
 
 #### Install Qt5
 
@@ -61,7 +67,7 @@ In Windows
 
     mkdir c:\cmake_builds\zlib%TERA_ARCH%
     cd c:\cmake_builds\zlib%TERA_ARCH%
-    "C:\Program Files\CMake\bin\cmake" -DCMAKE_INSTALL_PREFIX=c:\cmake_builds\zlib_bin%TERA_ARCH% -G "Visual Studio 12 2013%TERA_ARCH_C%" C:\Downloads\zlib-1.2.8
+    "C:\Program Files\CMake\bin\cmake" -DCMAKE_INSTALL_PREFIX=c:\cmake_builds\zlib_bin%TERA_ARCH% -G "Visual Studio %TERA_ARCH_C%" C:\Downloads\zlib-1.2.8
     "C:\Program Files\CMake\bin\cmake" --build . --config Release
     msbuild INSTALL.vcxproj /property:Configuration=Release
 
@@ -80,7 +86,7 @@ In Windows. For static build of libzip open C:\Downloads\libzip-1.1.3\lib\CMakeL
 
     mkdir c:\cmake_builds\libzip%TERA_ARCH%
     cd c:\cmake_builds\libzip%TERA_ARCH%
-    "C:\Program Files\CMake\bin\cmake" -DCMAKE_INSTALL_PREFIX=c:\cmake_builds\libzip_bin%TERA_ARCH% -G "Visual Studio 12 2013%TERA_ARCH_C%" C:\Downloads\libzip-1.1.3 -DCMAKE_PREFIX_PATH="C:\cmake_builds\zlib_bin%TERA_ARCH%"
+    "C:\Program Files\CMake\bin\cmake" -DCMAKE_INSTALL_PREFIX=c:\cmake_builds\libzip_bin%TERA_ARCH% -G "Visual Studio %TERA_ARCH_C%" C:\Downloads\libzip-1.1.3 -DCMAKE_PREFIX_PATH="C:\cmake_builds\zlib_bin%TERA_ARCH%"
     "C:\Program Files\CMake\bin\cmake" --build . --config Release
     msbuild INSTALL.vcxproj /property:Configuration=Release
 
@@ -94,7 +100,7 @@ Short version for Ubuntu & OSX.
     make test
     sudo make install
 
-In Windows extract to C:\cmake_builds\openssl-1.1.0b(_64). And install http://www.activestate.com/ActivePerl first. On casual windows command prompt dmake has to be installed for perl
+In Windows extract to C:\cmake_builds\openssl-1.1.0b(_32/_64). And install http://www.activestate.com/ActivePerl first. On casual windows command prompt dmake has to be installed for perl
 
     ppm install dmake
 
@@ -102,31 +108,11 @@ Then it is possible to build OpenSSL itself in Visual Studio command line (if 64
     
     set "PATH=%PATH%;C:\Perl\bin"
     cd C:\cmake_builds\openssl-1.1.0b%TERA_ARCH%
-    perl Configure VC-WIN32 no-asm no-shared --prefix=C:\cmake_builds\openssl-1.1.0b-bin --openssldir=C:\cmake_builds\openssl-1.1.0b-openssl
+    perl Configure VC-WIN32 no-asm no-shared --prefix=C:\cmake_builds\openssl-1.1.0b-bin%TERA_ARCH% --openssldir=C:\cmake_builds\openssl-1.1.0b-openssl%TERA_ARCH%
       or for 64 bit...
     perl Configure VC-WIN64A no-asm no-shared --prefix=C:\cmake_builds\openssl-1.1.0b-bin%TERA_ARCH% --openssldir=C:\cmake_builds\openssl-1.1.0b-openssl%TERA_ARCH%
     nmake
     nmake install
-
-#### Install boost
-
-In Ubuntu
-
-    sudo apt-get install libboost-all-dev
-
-In OSX. Building from source http://www.boost.org/users/download/
-
-    sudo apt-get install libdrm-dev
-    ./bootstrap
-    ./b2
-
-In Windows. Building from source http://www.boost.org/users/download/. Extract source to C:\cmake_builds\boost_1_62_0(_64) (version number may vary)
-
-    cd C:\cmake_builds\boost_1_62_0%TERA_ARCH%
-    bootstrap.bat
-        for 64 bit build
-            bjam address-model=64 architecture=ia64
-    b2
 
 ### 2. Configure
 
@@ -140,13 +126,12 @@ In Windows (put in your Qt path in "set "CMAKE_PREFIX_PATH=...")
 
     mkdir C:\cmake_builds\tera%TERA_ARCH%
     cd C:\cmake_builds\tera%TERA_ARCH%
-    set "TERA_QT_CMAKE_DIR=C:\Qt\Qt5.5.1%TERA_ARCH%"\5.5\msvc2013%TERA_ARCH%"\lib\cmake"
     set "TERA_BOOST_DIR=C:\cmake_builds\boost_1_62_0%TERA_ARCH%"
     set "TERA_LIBZIP_DIR=C:\cmake_builds\libzip_bin%TERA_ARCH%"
     set "TERA_ZLIB_DIR=C:\cmake_builds\zlib_bin%TERA_ARCH%"
     set "TERA_OPENSSL_DIR=C:\cmake_builds\openssl-1.1.0b-bin%TERA_ARCH%"
-    set "CMAKE_PREFIX_PATH=%TERA_QT_CMAKE_DIR%;%TERA_BOOST_DIR%;%TERA_ZLIB_DIR%;%TERA_LIBZIP_DIR%;%TERA_OPENSSL_DIR%"
-    "C:\Program Files\CMake\bin\cmake" -G "Visual Studio 12 2013%TERA_ARCH_C%" C:\Downloads\git\TeRa
+    set "CMAKE_PREFIX_PATH=%TERA_QT_CMAKE_DIR%\lib\cmake;%TERA_BOOST_DIR%;%TERA_ZLIB_DIR%;%TERA_LIBZIP_DIR%;%TERA_OPENSSL_DIR%"
+    "C:\Program Files\CMake\bin\cmake" -G "Visual Studio %TERA_ARCH_C%" C:\Downloads\git\TeRa
 
 ### 3. Build
 
@@ -185,8 +170,13 @@ Windows
 
 Commands to build .msi (check QT path)
 
+    Same set of "set"-commands as given under "Build tools", plus...
+        set TERA_WIX_PLATFORM=x86
+    or
+        set TERA_WIX_PLATFORM=x64
+
     cd C:\Downloads\git\TeRa
     set "WIX=C:\Downloads\wix310-binaries"
     set "TERA_BUILD_DIR=C:\cmake_builds\tera%TERA_ARCH%"
-    "%WIX%\bin\candle.exe" tera.wxs -dMSI_VERSION=0.0.4 -dcmake_builds_path="C:\cmake_builds" -dqt_path=C:\Qt\Qt5.5.1%TERA_ARCH%\5.5\msvc2013%TERA_ARCH% -dclient_path=%TERA_BUILD_DIR%\Release
+    "%WIX%\bin\candle.exe" tera.wxs -dMSI_VERSION=0.0.4 -dcmake_builds_path="C:\cmake_builds" -dqt_path=%TERA_QT_CMAKE_DIR% -dclient_path=%TERA_BUILD_DIR%\Release -dPlatform=%TERA_WIX_PLATFORM%
     "%WIX%\bin\light.exe" -out TeRa%TERA_ARCH%.msi tera.wixobj -v -ext WixUIExtension

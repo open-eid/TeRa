@@ -88,7 +88,7 @@ private:
 class BatchStamper : public QObject {
     Q_OBJECT
 public:
-    BatchStamper(StampingMonitorCallback& mon, OutputNameGenerator& ng, bool end_on_first_fail = true);
+    BatchStamper(StampingMonitorCallback& mon, OutputNameGenerator& ng, bool end_on_first_fail);
     void startTimestamping(QString const& tsUrl, QStringList const& inputFiles);
     TimeStamper& getTimestamper();
 signals:
