@@ -130,17 +130,12 @@ void TeraLoggerLine::append(char const* text) { message += text; }
 
 void TeraLoggerLine::setConsoleOnly() { consoleOnly = true; };
 
-
-TeraLoggerLine& operator<<(TeraLoggerLine& log, char const* text) {
-    log.append(text);
-    return log;
+TeraLoggerLine& TeraLoggerLine::operator<<(char const* text) {
+    append(text);
+    return *this;
 }
 
-TeraLoggerLine& operator<<(TeraLoggerLine& log, int nr) {
-    log << QString::number(nr).toUtf8().constData();
-    return log;
-}
-
+TeraLoggerLine& TeraLoggerLine::operator<<(int nr) {    *this << QString::number(nr).toUtf8().constData();    return *this;}
 void initLogging()
 {
     logger.addConsoleLog(log_level::info);

@@ -46,14 +46,13 @@ public:
     ~TeraLoggerLine();
     void append(char const* text);
     void setConsoleOnly();
+    TeraLoggerLine& operator<<(char const* text);
+    TeraLoggerLine& operator<<(int nr);
 private:
     bool consoleOnly;
     log_level level;
     QString message;
 };
-
-TeraLoggerLine& operator<<(TeraLoggerLine& log, char const* text);
-TeraLoggerLine& operator<<(TeraLoggerLine& log, int nr);
 
 extern TeraLogger logger;
 

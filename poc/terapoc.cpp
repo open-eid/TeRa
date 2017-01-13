@@ -9,6 +9,8 @@
 #include <QRegExp>
 #include <QSettings>
 
+#include "../src/version.h"
+
 #include "utils.h"
 #include "config.h"
 #include "logging.h"
@@ -29,13 +31,32 @@ QString const no_ini_excl_dirs_param("no_ini_excl_dirs");
 QString const ts_url_param("ts_url");
 
 #define TERA_COUT(xxx) {\
-    BOOST_LOG_TRIVIAL(info) << xxx;\
+    TERA_LOG(info) << xxx;\
     };
-//std::cout << xxx << std::endl;\
 
-class TeRaMonitor : public ria_tera::ProcessingMonitorCallback {
+class TeRaMonitor : public QObject, public ria_tera::ProcessingMonitorCallback {
+    Q_OBJECT
+public slots:
+    void exitOnFinished(bool success, QString errString) {
+        if (success && 0 == failedCnt && succeededCnt == foundCnt) {
+            TERA_COUT("Timestamping finished successfully :)");
+            QCoreApplication::exit(0);
+        } else {
+            TERA_LOG(error) << "Timestamping finished with some errors :(";
+            TERA_LOG(error) << "   Successfully converted: " << succeededCnt;
+            TERA_LOG(error) << "   Number of failed coversions: " << failedCnt;
+            int skipped = foundCnt - succeededCnt - failedCnt;
+            if (0 != skipped) {
+                TERA_LOG(error) << "   Number of DDOCs skipped: " << skipped;
+            }
+            if (!success) {
+                TERA_LOG(error) << "Error: " << errString.toUtf8().constData();
+            }
+            QCoreApplication::exit(1);
+        }
+    }
 public:
-    // TODO logging
+    TeRaMonitor() : foundCnt(0), succeededCnt(0), failedCnt(0) {}
     bool processingPath(QString const& path, double progress_percent) {
         TERA_COUT("Searching " << path.toUtf8().constData());
         return true;
@@ -53,22 +74,68 @@ public:
                 " -> " << pathOut.toUtf8().constData());
         return true;
     };
-    bool processingFileDone(QString const& pathIn, QString const& pathOut, int nr, int totalCnt, bool success, QString const& errString) {return true;};
+    bool processingFileDone(QString const& pathIn, QString const& pathOut, int nr, int totalCnt, bool success, QString const& errString) {
+        foundCnt = totalCnt;
+        if (success) {
+            succeededCnt++;
+        } else {
+            failedCnt++;
+            TERA_LOG(error) << "   Error converting " << pathIn.toUtf8().constData() << ": " << errString.toUtf8().constData();
+        }
+        return true;
+    };
+private:
+    int foundCnt;
+    int succeededCnt;
+    int failedCnt;
 };
+
+#include "terapoc.moc"
 
 }
 
+void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+{
+    static QString NW_BUG_TEXT("QObject::connect: Cannot connect (null)::stateChanged(QNetworkSession::State) to QNetworkReplyHttpImpl::_q_networkSessionStateChanged(QNetworkSession::State)");
+    if (QtWarningMsg == type && NW_BUG_TEXT == msg) return;
+
+    QByteArray localMsg = msg.toLocal8Bit();
+    switch (type) {
+    case QtDebugMsg:
+        fprintf(stderr, "Debug: %s (%s:%u, %s)\n", localMsg.constData(), context.file, context.line, context.function);
+        break;
+    case QtInfoMsg:
+        fprintf(stderr, "Info: %s (%s:%u, %s)\n", localMsg.constData(), context.file, context.line, context.function);
+        break;
+    case QtWarningMsg:
+        fprintf(stderr, "Warning: %s (%s:%u, %s)\n", localMsg.constData(), context.file, context.line, context.function);
+        break;
+    case QtCriticalMsg:
+        fprintf(stderr, "Critical: %s (%s:%u, %s)\n", localMsg.constData(), context.file, context.line, context.function);
+        break;
+    case QtFatalMsg:
+        fprintf(stderr, "Fatal: %s (%s:%u, %s)\n", localMsg.constData(), context.file, context.line, context.function);
+        abort();
+    }
+}
+
 int main(int argc, char *argv[]) {
+    qInstallMessageHandler(myMessageOutput);
     QLoggingCategory::setFilterRules("qt.network.ssl.warning=false");
 
     QCoreApplication a(argc, argv);
-    ria_tera::initLogging();
+    a.setApplicationVersion(ria_tera::TERA_TOOL_VERSION);
 
     QCommandLineParser parser;
 
+    parser.addVersionOption();
     parser.addHelpOption();
-    parser.setApplicationDescription(QString() +
-            "Input can be either single file (--" + file_in_param + ") or whole directory (--" + dir_in_param +  ")");
+    parser.setApplicationDescription(
+        QString("Input can be either single file (--%1) or whole directory (--%2)\n\n%3 %4").
+            arg(file_in_param,
+                dir_in_param,
+                a.applicationName(),
+                a.applicationVersion()));
     // TODO description of .ini file
     parser.addOption(
             QCommandLineOption(file_in_param,
@@ -157,6 +224,8 @@ int main(int argc, char *argv[]) {
         parser.showHelp(EXIT_CODE_WRONG_ARGUMENTS);
     }
 
+    ria_tera::initLogging();
+
     ria_tera::Config config;
     QSettings& settings(config.getInternalSettings());
     QStringList settingsKeys = settings.allKeys();
@@ -200,7 +269,6 @@ int main(int argc, char *argv[]) {
         return EXIT_CODE_WRONG_ARGUMENTS;
     }
 
-    QStringList excl_dirs;
     QSet<QString> excl_dirs_set;
 
     QStringList ex= parser.values(excl_dir_param);
@@ -227,6 +295,7 @@ int main(int argc, char *argv[]) {
     if (!file_out.isEmpty()) {
         TERA_COUT("Parameter - Output file: " << file_out.toUtf8().constData());
     }
+    QStringList excl_dirs = excl_dirs_set.values();
     for (int i = 0; i < excl_dirs.size(); ++i) {
         TERA_COUT("Parameter - exclude-directory: " << excl_dirs[i].toUtf8().constData());
     }
@@ -235,7 +304,6 @@ int main(int argc, char *argv[]) {
 
     TeRaMonitor monitor;
 
-    ria_tera::ExitProgram x;
     ria_tera::OutputNameGenerator namegen(ria_tera::Config::EXTENSION_IN, out_extension);
 
     QStringList inFiles;
@@ -244,7 +312,6 @@ int main(int argc, char *argv[]) {
         dc.addExcludeDirs(excl_dirs);
         dc.addInputDir(in_dir, in_dir_recursive);
         inFiles = dc.crawl();
-        // TODO if empty
     } else {
         inFiles.append(in_file);
         namegen.setFixedOutFile(in_file, file_out);
@@ -253,10 +320,10 @@ int main(int argc, char *argv[]) {
     if (0 == inFiles.size()) {
         TERA_COUT("No *." << QSTR_TO_CCHAR(ria_tera::Config::EXTENSION_IN) << " files found.");
     }
-    ria_tera::BatchStamper stamper(monitor, namegen);
+    ria_tera::BatchStamper stamper(monitor, namegen, false);
 
     QObject::connect(&stamper, SIGNAL(timestampingFinished(bool,QString)),
-                     &x, SLOT(exitOnFinished(bool,QString)), Qt::QueuedConnection);
+                     &monitor, SLOT(exitOnFinished(bool,QString)), Qt::QueuedConnection);
 
     stamper.startTimestamping(time_server_url, inFiles); // TODO error to XXX when network is down for example
 

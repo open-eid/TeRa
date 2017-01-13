@@ -75,6 +75,8 @@ In Windows
 
 https://nih.at/libzip/libzip-1.1.3.tar.gz
 
+For OSX and Windows enable static build of libzip open C:\Downloads\libzip-1.1.3\lib\CMakeList.txt and uncommend lines at the end of the file (starting from "#ADD_LIBRARY(zipstatic STATIC ...").
+
 Ubuntu & OSX
 
     mkdir -p /home/s/cmake_builds/libzip & cd /home/s/cmake_builds/libzip
@@ -82,7 +84,7 @@ Ubuntu & OSX
     cmake --build .
     sudo make install
 
-In Windows. For static build of libzip open C:\Downloads\libzip-1.1.3\lib\CMakeList.txt and uncommend lines at the end of the file (starting from "#ADD_LIBRARY(zipstatic STATIC ...")
+In Windows
 
     mkdir c:\cmake_builds\libzip%TERA_ARCH%
     cd c:\cmake_builds\libzip%TERA_ARCH%
@@ -138,6 +140,10 @@ In Windows (put in your Qt path in "set "CMAKE_PREFIX_PATH=...")
 In Ubuntu & OSX
 
     cmake --build .
+
+For OSX to include Qt libraries to TeRa.app
+
+    ~/Qt5.7.0/5.7/clang_64/bin/macdeployqt TeRa.app/
 
 In Windows
 
