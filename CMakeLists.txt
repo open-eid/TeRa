@@ -47,6 +47,7 @@ IF (WIN32)
     MESSAGE(${ZLIB_INCLUDE_DIRS})
     MESSAGE(${ZLIB_LIBRARIES})
     # libzip
+    ADD_DEFINITIONS(-DZIP_STATIC)
     include_directories("$ENV{TERA_LIBZIP_DIR}/include" "$ENV{TERA_LIBZIP_DIR}/lib/libzip/include")
     SET (ZIP_LIBRARIES "$ENV{TERA_LIBZIP_DIR}/lib/zipstatic.lib")
     # for static openssl
