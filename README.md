@@ -9,9 +9,14 @@
 
 #### Build tools
 
+Ubuntu
+
+    sudo apt-get install libdrm-dev build-essential libgl1-mesa-dev git-all
+
 OSX
 
-    sudo apt-get install libdrm-dev build-essential libgl1-mesa-dev
+    install xcode
+    TODO git
 
 Windows
 
@@ -54,14 +59,14 @@ For Windows install the latest .msi from https://cmake.org/download/
 
 #### Install zlib
 
-Download http://zlib.net/zlib-1.2.8.tar.gz
+Download latest zlib from http://zlib.net/ and untar it to ~/Downloads (ex. http://zlib.net/zlib-1.2.11.tar.gz)
 
 Ubuntu & OSX
 
-    mkdir -p /home/s/cmake_builds/zlib & cd /home/s/cmake_builds/zlib
-    cmake -G "Unix Makefiles" /home/s/Downloads/zlib-1.2.8
+    mkdir -p ~/cmake_builds/zlib && cd ~/cmake_builds/zlib
+    cmake -DCMAKE_INSTALL_PREFIX=~/cmake_builds/zlib_bin -G "Unix Makefiles" ~/Downloads/zlib-1.2.11
     cmake --build .
-    sudo make install
+    make install
 
 In Windows
 
@@ -79,10 +84,11 @@ For OSX and Windows enable static build of libzip open C:\Downloads\libzip-1.1.3
 
 Ubuntu & OSX
 
-    mkdir -p /home/s/cmake_builds/libzip & cd /home/s/cmake_builds/libzip
-    cmake -G "Unix Makefiles" /home/s/Downloads/libzip-1.1.3
+    mkdir -p ~/cmake_builds/libzip && cd ~/cmake_builds/libzip
+    export CMAKE_PREFIX_PATH=$HOME/cmake_builds/zlib_bin
+    cmake -DCMAKE_INSTALL_PREFIX=~/cmake_builds/libzip_bin -G "Unix Makefiles" ~/Downloads/libzip-1.1.3
     cmake --build .
-    sudo make install
+    make install
 
 In Windows
 
@@ -95,9 +101,12 @@ In Windows
 #### Install openssl
 https://www.openssl.org/source/openssl-1.1.0b.tar.gz See https://wiki.openssl.org/index.php/Compilation_and_Installation for details.
 
-Short version for Ubuntu & OSX.
+Short version for Ubuntu & OSX. Untar tar.gz to ~/cmake_builds
 
-    ./config --openssldir=/usr/local/ssl
+    cd ~/cmake_builds
+    tar xzvf ~/Downloads/openssl-1.1.0b.tar.gz
+    cd openssl-1.1.0b
+    ./config
     make
     make test
     sudo make install
@@ -120,9 +129,12 @@ Then it is possible to build OpenSSL itself in Visual Studio command line (if 64
 
 In Unbuntu & OSX
 
-    mkdir -p /home/s/cmake_builds/tera & cd /home/s/cmake_builds/tera
-    export CMAKE_PREFIX_PATH=/home/s/Qt/5.7/gcc_64/lib/cmake/
-    cmake -G "Unix Makefiles" /home/s/git/TeRa
+    mkdir -p ~/cmake_builds/tera_src && cd ~/cmake_builds/tera_src
+    git clone https://github.com/open-eid/TeRa.git
+
+    mkdir -p ~/cmake_builds/tera && cd ~/cmake_builds/tera
+    export CMAKE_PREFIX_PATH=$HOME/Qt5.7.1/5.7/gcc_64/lib/cmake:$HOME/cmake_builds/zlib_bin:$HOME/cmake_builds/libzip_bin
+    cmake -G "Unix Makefiles" ~/cmake_builds/tera_src/TeRa
 
 In Windows (put in your Qt path in "set "CMAKE_PREFIX_PATH=...")
 
