@@ -140,7 +140,6 @@ In Windows (put in your Qt path in "set "CMAKE_PREFIX_PATH=...")
 
     mkdir C:\cmake_builds\tera%TERA_ARCH%
     cd C:\cmake_builds\tera%TERA_ARCH%
-    set "TERA_BOOST_DIR=C:\cmake_builds\boost_1_62_0%TERA_ARCH%"
     set "TERA_LIBZIP_DIR=C:\cmake_builds\libzip_bin%TERA_ARCH%"
     set "TERA_ZLIB_DIR=C:\cmake_builds\zlib_bin%TERA_ARCH%"
     set "TERA_OPENSSL_DIR=C:\cmake_builds\openssl-1.1.0b-bin%TERA_ARCH%"
@@ -196,5 +195,5 @@ Commands to build .msi (check QT path)
     cd C:\Downloads\git\TeRa
     set "WIX=C:\Downloads\wix310-binaries"
     set "TERA_BUILD_DIR=C:\cmake_builds\tera%TERA_ARCH%"
-    "%WIX%\bin\candle.exe" tera.wxs -dMSI_VERSION=0.0.4 -dcmake_builds_path="C:\cmake_builds" -dqt_path=%TERA_QT_CMAKE_DIR% -dclient_path=%TERA_BUILD_DIR%\Release -dPlatform=%TERA_WIX_PLATFORM%
-    "%WIX%\bin\light.exe" -out TeRa%TERA_ARCH%.msi tera.wixobj -v -ext WixUIExtension
+    "%WIX%\candle.exe" tera.wxs -dMSI_VERSION=0.7.0 -dcmake_builds_path="C:\cmake_builds" -dqt_path=%TERA_QT_CMAKE_DIR% -dclient_path=%TERA_BUILD_DIR%\Release -dPlatform=%TERA_WIX_PLATFORM%
+    "%WIX%\light.exe" -out TeRa%TERA_ARCH%.msi tera.wixobj -v -ext WixUIExtension
