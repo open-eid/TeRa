@@ -17,6 +17,8 @@
  *
  */
 
+#include <QComboBox>
+
 #pragma once
 
 #include <QtWidgets/QComboBox>

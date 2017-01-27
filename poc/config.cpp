@@ -9,34 +9,51 @@
 #include <iostream>
 
 #include <QDebug>
+#include <QDirIterator> // TODO
 #include <QStorageInfo>
 
 #include "utils.h"
 
 namespace ria_tera {
 
-QString const Config::INI_FILE_NAME("terapoc.ini");
+QString const Config::INI_FILE_DEFAULTS(":/tera.ini");
+
 QString const Config::INI_GROUP("tera");
 QString const Config::INI_GROUP_ = INI_GROUP + "/";
+
+QString const Config::INI_PARAM_TIME_SERVER_URL = Config::INI_GROUP_ + "time_server.url";
+QString const Config::INI_PARAM_OUTPUT_FORMAT = Config::INI_GROUP_ + "output_format";
+QString const Config::INI_PARAM_EXCL_DIRS = Config::INI_GROUP_ + "excl_dir";
+QString const Config::INI_PARAM_EXCL_DIRS_EXCEPTIONS = Config::INI_GROUP_ + "central_excl_dirs_removed_by_user.no_need_to_changed_manully";
 
 QString const Config::EXTENSION_IN = "ddoc";
 QString const Config::EXTENSION_BDOC = "bdoc";
 QString const Config::EXTENSION_ASICS = "asics";
-QString const Config::DEFAULT_OUT_EXTENSION = Config::EXTENSION_ASICS;
+QString const Config::DEFAULT_OUT_EXTENSION = Config::EXTENSION_ASICS; // TODO move away from here? or private?
 
-Config::Config() : settings(INI_FILE_NAME, QSettings::IniFormat)
+Config::Config()
 {
-    settingsKeys = settings.allKeys();
+    outExtension = DEFAULT_OUT_EXTENSION;
+    appendIniFile(INI_FILE_DEFAULTS);
+    timeServerURLDefault = timeServerURL;
 }
 
 Config::~Config() {
     ;
 }
 
-QSet<QString> Config::readExclDirs() {
+void Config::appendIniFile(QString const& ini_path) {
+    QSettings settings(ini_path, QSettings::IniFormat);
+    timeServerURL = settings.value(INI_PARAM_TIME_SERVER_URL, timeServerURL).toString().trimmed();
+    outExtension  = settings.value(INI_PARAM_OUTPUT_FORMAT,   outExtension).toString().trimmed();
+    exclDirs.unite(readExclDirs(INI_PARAM_EXCL_DIRS, settings));
+    exclDirExclusions.unite(readExclDirs(INI_PARAM_EXCL_DIRS_EXCEPTIONS, settings));
+}
+
+QSet<QString> Config::readExclDirs(QString const& key, QSettings const& settings) {
+    QStringList settingsKeys = settings.allKeys();
     QSet<QString> excl_dirs_set;
 
-    QString const key = INI_GROUP_ + "excl_dir";
     if (settings.contains(key)) {
         QString val = settings.value(key).toString();
         append_excl_dirs(val, excl_dirs_set);
@@ -54,21 +71,28 @@ QSet<QString> Config::readExclDirs() {
     return excl_dirs_set;
 }
 
-QString Config::readTimeServerURL() {
-    return settings.value(ria_tera::Config::INI_GROUP_ + "time_server.url").toString().trimmed();
+QString Config::getDefaultTimeServerURL() {
+    return timeServerURLDefault;
 }
 
-QString Config::readOutExtension() {
-    return settings.value("output_format", DEFAULT_OUT_EXTENSION).toString();
+QString Config::getTimeServerURL() {
+    return timeServerURL;
+}
+
+QString Config::getOutExtension() {
+    return outExtension;
+}
+
+QSet<QString> Config::getExclDirsXXXXXXXX() {
+    return exclDirs;
+}
+
+QSet<QString> Config::getExclDirExclusions() {
+    return exclDirExclusions;
 }
 
 
 void Config::append_excl_dirs(QString const& val, QSet<QString>& excl_dirs_set) { // TODO should be in disk_crawler or smth
-#ifdef Q_OS_WIN32
-    QString const PATH_LIST_SEPARATOR = ";";
-#else
-    QString const PATH_LIST_SEPARATOR = ":";
-#endif
     QStringList paths = val.split(PATH_LIST_SEPARATOR, QString::SkipEmptyParts);
     for (int i = 0; i < paths.size(); ++i) {
         QString path = ria_tera::fix_path(paths.at(i));

@@ -13,6 +13,7 @@
 #include <QMap>
 #include <QFileInfo>
 #include <QScopedPointer>
+#include <QSettings>
 #include <QStorageInfo>
 #include <QTextStream>
 
@@ -61,8 +62,16 @@ public:
 
     GuiTimestamperProcessor();
 
+    bool isShowIntroPage();
+    void saveShowIntro(bool show);
+
+    void processGlobalConfiguration();
+
     void initializeSettingsWindow(TeraSettingsWin& sw);
     void readSettings(TeraSettingsWin& sw);
+
+    void readSettings();
+    void saveSettings();
 
     void initializeFilePreviewWindow(FileListWindow& fw);
     void copySelectedFiles(FileListWindow& fw);
@@ -70,13 +79,24 @@ public:
     bool openLogFile(QString& errorText);
 
     bool checkInDirListWithMessagebox(QWidget* parent);
+
+    QString const INI_PARAM_PREVIEW_FILES;
+
     static bool checkInDirListWithMessagebox(QWidget* parent, QStringListModel const& inDirs);
     static bool checkInDirListWithMessagebox(QWidget* parent, QSet<QString> const& inDirs);
-public:
-    Config config;
 
+    static QString const& JSON_TERA_DEFAULT_OUT_EXT;
+    static QString const& JSON_TERA_EXCL_DIRS_; // "TERA-EXCL-DIRS-"
+public: // TODO
+    Config config;
+    QSettings settings; // register
+    QString iniPath; // user changes
+
+    bool showIntro;
     QString timeServerUrl;
     QString outExt;
+    QSet<QString> centralExclDirs;
+    QSet<QString> centralExclDirsDisabledByUser;
     QSet<QString> exclDirs;
     QSet<QString> inclDirs;
     bool previewFiles;

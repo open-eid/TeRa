@@ -40,6 +40,11 @@ include_directories(${Qt5Widgets_INCLUDE_DIRS})
 
 FIND_PACKAGE(Qt5LinguistTools)
 
+#find_package(qdigidoccommon)
+#SET (QTCOMMON_INCLUDE_DIRS "C:/Downloads/git/qt-common")
+#SET (QTCOMMON_LIBRARIES "C:/cmake_builds/qt-common_64/Release/qdigidoccommon.lib")
+#include_directories(${QTCOMMON_INCLUDE_DIRS})
+
 IF (WIN32)
     #find_package(ZLib)
     SET (ZLIB_INCLUDE_DIRS "$ENV{TERA_ZLIB_DIR}/include")
@@ -94,6 +99,10 @@ SET (TERA_COMMON_SRC
       src/version.h
      )
 
+SET (TERA_LIBDIGIDOC_SRC
+        src/libdigidoc/Configuration.h src/libdigidoc/Configuration.cpp
+        src/libdigidoc/Settings.h)
+
 SET (TERA_GUI_UI poc/MainWindow.ui poc/SettingsDialog.ui poc/FileListDialog.ui)
 SET (TERA_GUI_SRC
         poc/xxx.cpp
@@ -116,6 +125,7 @@ if (UPDATE_TRANSLATIONS)
     qt5_create_translation( QM ${TERA_GUI_UI} ${TERA_GUI_SRC} ${TRANS})
 ENDIF()
 qt5_add_translation( QM ${TRANS} )
+qt5_add_resources( CONFIG_SOURCES res/config.qrc )
 qt5_add_resources( SOURCES images/images.qrc translations/tr.qrc )
 qt5_wrap_ui( UI_HEADERS ${TERA_GUI_UI} )
 
@@ -130,6 +140,7 @@ add_executable(TeRaTool
         poc/logging.h poc/logging.cpp
         poc/timestamper.h poc/timestamper.cpp
         poc/config.h poc/config.cpp
+        ${CONFIG_SOURCES}
         )
 target_link_libraries(TeRaTool ${ZIP_LIBRARIES} ${OPENSSL_LIBRARIES} ${FOR_OPENSSL_STATIC} ${ZLIB_LIBRARIES} )
 qt5_use_modules(TeRaTool Core Concurrent Network)
@@ -141,9 +152,11 @@ add_executable(TeRa WIN32 MACOSX_BUNDLE
         ${TERA_GUI_UI}
         ${TERA_GUI_SRC}
         ${SOURCES}
+        ${TERA_LIBDIGIDOC_SRC}
+        ${CONFIG_SOURCES}
         ${QM}
         ${TRANS}
         )
-target_link_libraries(TeRa ${ZIP_LIBRARIES} ${OPENSSL_LIBRARIES} ${FOR_OPENSSL_STATIC} ${ZLIB_LIBRARIES} )
+target_link_libraries(TeRa ${ZIP_LIBRARIES} ${OPENSSL_LIBRARIES} ${FOR_OPENSSL_STATIC} ${ZLIB_LIBRARIES})
 qt5_use_modules(TeRa Core Concurrent Network Widgets Gui)
 target_link_libraries(TeRa Qt5::Widgets)

@@ -15,6 +15,18 @@
 
 namespace ria_tera {
 
+#ifdef Q_OS_WIN32
+QString const PATH_LIST_SEPARATOR(";");
+QString const OS_SHORT("WIN");
+#else
+QString const PATH_LIST_SEPARATOR = ":";
+  #ifdef Q_OS_OSX
+  QString const OS_SHORT("OSX");
+  #else
+  QString const OS_SHORT("UBUNTU");
+  #endif
+#endif
+
 bool isSubfolder(QString const& path, QSet<QString> const& refDirs) {
     QString p = path;
     while (true) {

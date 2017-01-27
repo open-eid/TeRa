@@ -15,6 +15,9 @@
 
 namespace ria_tera {
 
+extern QString const OS_SHORT;
+extern QString const PATH_LIST_SEPARATOR;
+
 bool isSubfolder(QString const& path, QSet<QString> const& refDirs);
 QString fix_path(QString const& path);
 QString hrPath(QString const& path);

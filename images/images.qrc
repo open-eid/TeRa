@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/images" >
         <file>background.png</file>
+        <file>background.clean.png</file>
         <file>EL_Regionaalareng_horisontaal.png</file>
         <file>tera_icon_128x128.png</file>
         <file>flag-estonia.png</file>

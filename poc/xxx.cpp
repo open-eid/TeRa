@@ -19,8 +19,10 @@ int main(int argc, char *argv[]) {
     //QGuiApplication::setAttribute(Qt::AA_DisableHighDpiScaling, false);
     //QApplication::setDesktopSettingsAware(false);
     QLoggingCategory::setFilterRules("qt.network.ssl.warning=false");
-    qputenv("QT_QPA_PLATFORM_PLUGIN_PATH", ".");
+    //qputenv("QT_QPA_PLATFORM_PLUGIN_PATH", ".");
     QApplication a(argc, argv);
+    a.setOrganizationName("RIA");
+    a.setApplicationName("tera");
     a.setApplicationVersion(ria_tera::TERA_CLIENT_VERSION);
 
     ria_tera::TeraMainWin w;

@@ -86,7 +86,12 @@ private:
 public slots:
     void timestampingFinished(bool success, QString errString);
 
+    void globalConfFinished(bool changed, const QString &error);
+
     // GUI related slots
+    void introAccept();
+    void introReject();
+
     void handleSettings();
     void handleSettingsAccepted();
 
@@ -96,6 +101,7 @@ public slots:
     void slotLanguageChanged(int i);
     void slotLanguageChanged(QAction* action);
 
+    void handleAbout();
     void handleHelp();
 
     void showLog(QUrl const& link);
@@ -106,11 +112,14 @@ protected:
     void fillProgressBar();
     void fillDoneLog();
 private:
-    enum PAGE {START, PROCESS, READY};
+    enum PAGE {START, PROCESS, READY, INTRO};
     void setPage(PAGE p);
+    void setBackgroundImg(QString path);
     void doUserCancel(QString msg = QString());
     void loadTranslation(QString const& language_short);
 private:
+    bool initDone;
+    bool showingIntro;
     bool timestapmping;
     QAtomicInt cancel;
     QAtomicInt jobId;
@@ -125,6 +134,11 @@ private:
     QString lang;
     QStringList langs;
     QTranslator appTranslator;
+
+    QPushButton* btnIntroAccept;
+    QPushButton* btnIntroReject;
+
+    QString backgroundImg;
 };
 
 }

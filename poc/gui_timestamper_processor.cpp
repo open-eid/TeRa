@@ -12,11 +12,15 @@
 #include <QDateTime>
 #include <QDir>
 #include <QDebug>
+#include <QFileInfo>
+#include <QJsonObject>
 #include <QMessageBox>
 #include <QStringListModel>
+#include <QStandardPaths>
 #include <QTemporaryFile>
 
 #include "utils.h"
+#include "../src/libdigidoc/Configuration.h"
 
 namespace {
 
@@ -33,17 +37,30 @@ QString toBulletedList(QList<QString> list) {
 
 namespace ria_tera {
 
-GuiTimestamperProcessor::GuiTimestamperProcessor() {
-    timeServerUrl = config.readTimeServerURL();
+static char const* REG_PARAM_SHOW_INTRO = "ShowIntro";
+QString const& GuiTimestamperProcessor::JSON_TERA_DEFAULT_OUT_EXT("TERA-DEFAULT-OUT-EXTENSION");
+QString const& GuiTimestamperProcessor::JSON_TERA_EXCL_DIRS_("TERA-EXCL-DIRS-");
 
-    outExt = config.readOutExtension();
-    if (outExt != Config::EXTENSION_BDOC) outExt = Config::EXTENSION_ASICS;
+GuiTimestamperProcessor::GuiTimestamperProcessor() :
+    INI_PARAM_PREVIEW_FILES(Config::INI_GROUP_ + "preview_files"),
+    settings("Estonian ID Card", qApp->applicationName())
+{
+    QDir iniDir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
+    iniDir.mkpath(iniDir.path());
+    iniPath = QFileInfo(iniDir, "tera_client.ini").filePath();
 
-    exclDirs.unite(config.readExclDirs());
+    config.appendIniFile(iniPath);
+    readSettings();
+}
 
-    inclDirs.unite(config.getDefaultInclDirs());
+bool GuiTimestamperProcessor::isShowIntroPage() {
+    return showIntro;
+}
 
-    previewFiles = false;
+void GuiTimestamperProcessor::saveShowIntro(bool show) {
+    showIntro = show;
+    settings.setValue(REG_PARAM_SHOW_INTRO, QVariant(showIntro));
+    settings.sync();
 }
 
 void QSet2GUI(QSet<QString> const& set, QStringListModel& model) {
@@ -52,10 +69,32 @@ void QSet2GUI(QSet<QString> const& set, QStringListModel& model) {
     model.setStringList(l);
 }
 
+void GuiTimestamperProcessor::processGlobalConfiguration() {
+    QJsonObject o = Configuration::instance().object();
+    QString excl = o.value(JSON_TERA_EXCL_DIRS_ + OS_SHORT).toString();
+    centralExclDirs.clear();
+    Config::append_excl_dirs(excl, centralExclDirs);
+
+    QSet<QString> toBeAdded(centralExclDirs);
+    toBeAdded.subtract(centralExclDirsDisabledByUser);
+
+    exclDirs.unite(toBeAdded);
+
+    QString jsonOutExt = o.value(JSON_TERA_DEFAULT_OUT_EXT).toString();
+    qDebug() << "<<<< " << jsonOutExt;
+    if (!jsonOutExt.isNull()) {
+        outExt = jsonOutExt;
+    }
+    qDebug() << "<<<<2 " << outExt;
+}
+
 void GuiTimestamperProcessor::initializeSettingsWindow(TeraSettingsWin& sw) {
     while (sw.tabWidget->count() > 3) {
         sw.tabWidget->removeTab(3);
     }
+
+    // show intro flag
+    sw.cbShowIntro->setChecked(showIntro);
 
     // time server url
     sw.lineTSURL->setText(timeServerUrl);
@@ -81,6 +120,8 @@ void GuiTimestamperProcessor::readSettings(TeraSettingsWin& sw) {
     GUI2QSet(*sw.modelInclDir, inclDirs);
 
     previewFiles = sw.cbPreviewFiles->isChecked();
+
+    showIntro = sw.cbShowIntro->isChecked();
 }
 
 void GuiTimestamperProcessor::initializeFilePreviewWindow(FileListWindow& fw) {
@@ -145,6 +186,55 @@ bool GuiTimestamperProcessor::checkInDirListWithMessagebox(QWidget* parent, QSet
     }
 
     return true;
+}
+
+void GuiTimestamperProcessor::readSettings() {
+    QSettings ini(iniPath, QSettings::IniFormat);
+    qDebug() << "status " << ini.status() << ini.fileName();
+
+    timeServerUrl = ini.value(Config::INI_PARAM_TIME_SERVER_URL, config.getTimeServerURL()).toString();
+    outExt = config.getOutExtension();
+    previewFiles = ini.value(INI_PARAM_PREVIEW_FILES, false).toBool();
+
+    exclDirs.unite(config.getExclDirsXXXXXXXX());
+    centralExclDirsDisabledByUser.unite(config.getExclDirExclusions());
+
+    inclDirs.unite(config.getDefaultInclDirs());
+
+    showIntro = settings.value(REG_PARAM_SHOW_INTRO, QVariant(true)).toBool();
+}
+
+QString asPathList(QSet<QString> set) {
+    QList<QString> list(set.toList());
+    QString res;
+    for (auto it = list.begin(); it != list.end(); ++it) {
+        if (res.length() > 0) res += PATH_LIST_SEPARATOR;
+        res += *it;
+    }
+    return res;
+}
+
+void GuiTimestamperProcessor::saveSettings() {
+    QSettings ini(iniPath, QSettings::IniFormat);
+
+    if (timeServerUrl != config.getDefaultTimeServerURL()) {
+        ini.setValue(Config::INI_PARAM_TIME_SERVER_URL, timeServerUrl);
+    } else {
+        ini.remove(Config::INI_PARAM_TIME_SERVER_URL);
+    }
+    // don't store extension at the moment
+    ini.setValue(INI_PARAM_PREVIEW_FILES, previewFiles);
+
+    ini.setValue(Config::INI_PARAM_EXCL_DIRS, asPathList(exclDirs));
+
+    QSet<QString> exclDirExcls(centralExclDirs);
+    exclDirExcls.subtract(exclDirs);
+    if (exclDirExcls.isEmpty()) ini.remove(Config::INI_PARAM_EXCL_DIRS_EXCEPTIONS);
+    else ini.setValue(Config::INI_PARAM_EXCL_DIRS_EXCEPTIONS, asPathList(exclDirExcls));
+
+    // save
+    ini.sync();
+    saveShowIntro(showIntro);
 }
 
 }

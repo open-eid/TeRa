@@ -310,6 +310,9 @@ void OutputNameGenerator::setFixedOutFile(QString const& in_file, QString const&
     fixedConversion[in_file] = file_out;
 }
 
+void OutputNameGenerator::setOutExt(QString const& oe) {
+    outExtension = oe;
+}
 
 BatchStamper::BatchStamper(StampingMonitorCallback& mon, OutputNameGenerator& ng, bool end_on_first_fail) :
     monitor(mon), namegen(ng), instaFail(end_on_first_fail), pos(-1)

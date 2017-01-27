@@ -255,7 +255,14 @@
        </item>
        <item row="0" column="0">
         <widget class="QWidget" name="widget_5" native="true">
-         <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <widget class="QCheckBox" name="cbShowIntro">
+            <property name="text">
+             <string>Show intro</string>
+            </property>
+           </widget>
+          </item>
           <item>
            <widget class="QCheckBox" name="cbPreviewFiles">
             <property name="text">

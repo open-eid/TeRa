@@ -126,6 +126,8 @@ int main(int argc, char *argv[]) {
     QCoreApplication a(argc, argv);
     a.setApplicationVersion(ria_tera::TERA_TOOL_VERSION);
 
+    ria_tera::Config config;
+
     QCommandLineParser parser;
 
     parser.addVersionOption();
@@ -146,9 +148,11 @@ int main(int argc, char *argv[]) {
     parser.addOption(
             QCommandLineOption(in_dir_recursive_param,
                     "if set then input directories are searched recursively"));
+    QString parTSDefault = (config.getTimeServerURL().isEmpty() ? "ex. http://demo.sk.ee/tsa" : QString("(default %1)").arg(config.getTimeServerURL())); // TODO
     parser.addOption(
             QCommandLineOption(ts_url_param,
-                    "time server url ex. http://demo.sk.ee/tsa", ts_url_param));
+                    QString("time server url %1").arg(parTSDefault),
+                    ts_url_param));
     parser.addOption(
             QCommandLineOption(ext_out_param,
                     "extension for output file (default '" + ria_tera::Config::DEFAULT_OUT_EXTENSION + "')", ext_out_param));
@@ -226,11 +230,6 @@ int main(int argc, char *argv[]) {
 
     ria_tera::initLogging();
 
-    ria_tera::Config config;
-    QSettings& settings(config.getInternalSettings());
-    QStringList settingsKeys = settings.allKeys();
-    // TODO check unused parameters parameters
-
     QString out_extension("");
     if (parser.isSet(ext_out_param)) {
         out_extension = parser.value(ext_out_param);
@@ -239,7 +238,7 @@ int main(int argc, char *argv[]) {
             return EXIT_CODE_WRONG_ARGUMENTS;
         }
     } else {
-        out_extension = config.readOutExtension();
+        out_extension = config.getOutExtension();
         if (!QRegExp("[a-zA-Z\\d._]+").exactMatch(out_extension)) {
             std::cout << "Illegal output file extension set in configuration file '" << QSTR_TO_CCHAR(out_extension) << "'" << std::endl;
             return EXIT_CODE_WRONG_ARGUMENTS;
@@ -260,7 +259,7 @@ int main(int argc, char *argv[]) {
     if (parser.isSet(ts_url_param)) {
         time_server_url = parser.value(ts_url_param);
     } else {
-        time_server_url = config.readTimeServerURL();
+        time_server_url = config.getTimeServerURL();
     }
     time_server_url = time_server_url.trimmed();
 
@@ -276,7 +275,7 @@ int main(int argc, char *argv[]) {
         ria_tera::Config::append_excl_dirs(ex.at(i), excl_dirs_set);
 
     if (!parser.isSet(no_ini_excl_dirs_param)) {
-        excl_dirs_set.unite(config.readExclDirs());
+        excl_dirs_set.unite(config.getExclDirsXXXXXXXX());
     }
 
     // log output

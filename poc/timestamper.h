@@ -82,6 +82,7 @@ public:
     OutputNameGenerator(QString const& inExt, QString const& outExt);
     QString getOutFile(QString const& filePath);
     void setFixedOutFile(QString const& in_file, QString const& file_out);
+    void setOutExt(QString const& oe);
 private:
     QString inExtension;
     QString outExtension;

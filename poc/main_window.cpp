@@ -17,8 +17,11 @@
 #include <QRegion>
 #include <QThreadPool>
 
+//#include <AboutDialog.h>
+
 #include "disk_crawler.h"
 #include "settings_window.h"
+#include "../src/libdigidoc/Configuration.h"
 
 namespace {
     static int PP_TS_TEST = 100;
@@ -51,10 +54,14 @@ namespace ria_tera {
 
 TeraMainWin::TeraMainWin(QWidget *parent) :
     QWidget(parent),
+    initDone(false),
+    showingIntro(false),
     nameGen("ddoc", "asics"), // TODO consts
     stamper(*this, nameGen, false),
     settingsWin(NULL),
-    appTranslator(this)
+    appTranslator(this),
+    btnIntroAccept(NULL),
+    btnIntroReject(NULL)
 {
     setupUi(this);
     fixFontSizeInStyleSheet(btnStamp);
@@ -62,14 +69,22 @@ TeraMainWin::TeraMainWin(QWidget *parent) :
     fixFontSizeInStyleSheet(btnReady);
     fixFontSize(logText);
 
-    setStyleSheet("background-image: url(:/images/background.png);");
     settings->setStyleSheet("QPushButton:disabled"
             "{ color: gray }");
 
-    setPage(PAGE::START);
+    introButtonBox->setStandardButtons(QDialogButtonBox::NoButton);
+    btnIntroAccept = introButtonBox->addButton(QString(), QDialogButtonBox::AcceptRole);
+    btnIntroReject = introButtonBox->addButton(QString(), QDialogButtonBox::RejectRole);
+
+    if (processor.isShowIntroPage()) setPage(PAGE::INTRO);
+    else setPage(PAGE::START);
+
+    connect(introButtonBox, SIGNAL(accepted()), this, SLOT(introAccept()));
+    connect(introButtonBox, SIGNAL(rejected()), this, SLOT(introReject()));
 
     connect(btnStamp, SIGNAL (clicked()), this, SLOT (handleStartStamping()));
     connect(settings, SIGNAL(clicked()), this, SLOT(handleSettings()));
+    connect(about, SIGNAL(clicked()), this, SLOT(handleAbout()));
     connect(help, SIGNAL(clicked()), this, SLOT(handleHelp()));
     connect(cancelProcess, SIGNAL(clicked()), this, SLOT(handleCancelProcess()));
     connect(btnReady, SIGNAL(clicked()), this, SLOT(handleReadyButton()));
@@ -108,6 +123,10 @@ TeraMainWin::TeraMainWin(QWidget *parent) :
     loadTranslation("et");
 
     timestapmping = false;
+
+    ///
+    connect(&Configuration::instance(), SIGNAL(finished(bool, const QString&)), this, SLOT(globalConfFinished(bool, const QString&)));
+    Configuration::instance().update();
 }
 
 TeraMainWin::~TeraMainWin()
@@ -310,6 +329,7 @@ void TeraMainWin::startStampingFiles() {
         }
     }
 
+    nameGen.setOutExt(processor.outExt); // TODO threading issues?
     stamper.startTimestamping(processor.timeServerUrl, processor.inFiles);
 }
 
@@ -346,6 +366,13 @@ bool TeraMainWin::processingFileDone(QString const& pathIn, QString const& pathO
     progressBar->setFormat("");
     fillProgressBar();
     return true;
+}
+
+void TeraMainWin::globalConfFinished(bool changed, const QString &error) {
+    initDone = true;
+    progressBarDnldConf->setValue(100);
+    if (!showingIntro) setPage(PAGE::START);
+    processor.processGlobalConfiguration();
 }
 
 void TeraMainWin::timestampingFinished(bool success, QString errString) {
@@ -453,6 +480,12 @@ void TeraMainWin::fillDoneLog() {
     }
 }
 
+void TeraMainWin::handleAbout() {
+    //AboutDialog *a = new AboutDialog(this);
+    //a->addAction(d->closeAction);
+    //a->open();
+}
+
 void TeraMainWin::handleHelp() {
     QString url = tr("HTTP_HELP");
     if (!QDesktopServices::openUrl(url)) {
@@ -484,20 +517,47 @@ void TeraMainWin::loadTranslation(QString const& language_short) {
 
     retranslateUi(this);
     // TODO retranslate other GUIs as well?
+
     versionLabel->setText(versionLabel->text().arg(qApp->applicationVersion()));
+    btnIntroAccept->setText(tr("I agree"));
+    btnIntroReject->setText(tr("Cancel"));
 }
 
 void TeraMainWin::setPage(PAGE p) {
+    if (PAGE::INTRO == p) {
+        setBackgroundImg(":/images/background.clean.png");
+        introStackedWidget->setCurrentIndex(1);
+        showingIntro = true;
+        return;
+    }
+
+    showingIntro = false;
+    setBackgroundImg(":/images/background.png");
+    introStackedWidget->setCurrentIndex(0);
     if (PAGE::START == p) {
-        stackedMainWidget->setCurrentIndex(0);
-        stackedBtnWidget->setCurrentIndex(0);
-        logText->setFocus();
+        if (initDone) {
+            stackedMainWidget->setCurrentIndex(0);
+            stackedBtnWidget->setCurrentIndex(0);
+            logText->setFocus();
+        } else {
+            stackedMainWidget->setCurrentIndex(2);
+        }
     } else if (PAGE::PROCESS == p) {
         stackedMainWidget->setCurrentIndex(1);
     } else if (PAGE::READY == p) {
         stackedMainWidget->setCurrentIndex(0);
         stackedBtnWidget->setCurrentIndex(1);
     }
+}
+
+void TeraMainWin::setBackgroundImg(QString path) {
+    if (path == backgroundImg) return;
+    
+    backgroundImg = path;
+    QPixmap bkgnd(backgroundImg);
+    QPalette palette;
+    palette.setBrush(QPalette::Background, bkgnd);
+    this->setPalette(palette);
 }
 
 void TeraMainWin::handleCancelProcess() {
@@ -518,6 +578,15 @@ void TeraMainWin::handleReadyButton() {
     logText->clear();
 }
 
+void TeraMainWin::introAccept() {
+    processor.saveShowIntro(!introSkipCheckBox->isChecked());
+    setPage(PAGE::START);
+}
+
+void TeraMainWin::introReject() {
+    close();
+}
+
 void TeraMainWin::handleSettings() {
     processor.initializeSettingsWindow(*settingsWin);
     settingsWin->open();
@@ -525,6 +594,7 @@ void TeraMainWin::handleSettings() {
 
 void TeraMainWin::handleSettingsAccepted() {
     processor.readSettings(*settingsWin);
+    processor.saveSettings();
 }
 
 void TeraMainWin::processEvents() {
