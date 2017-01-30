@@ -273,9 +273,9 @@ void TimeStamper::startTimestamping(QString const& tsUrl, QString const& infile,
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 OutputNameGenerator::OutputNameGenerator(QString const& inExt, QString const& outExt)
-    : inExtension(inExt), outExtension(outExt) {
+    : inExtension(inExt) {
     if (!inExtension.startsWith(".")) inExtension = "." + inExtension;
-    if (!outExtension.startsWith(".")) outExtension = "." + outExtension;
+    setOutExt(outExt);
 }
 
 QString OutputNameGenerator::getOutFile(QString const& filePath) {
@@ -312,6 +312,7 @@ void OutputNameGenerator::setFixedOutFile(QString const& in_file, QString const&
 
 void OutputNameGenerator::setOutExt(QString const& oe) {
     outExtension = oe;
+    if (!outExtension.startsWith(".")) outExtension = "." + outExtension;
 }
 
 BatchStamper::BatchStamper(StampingMonitorCallback& mon, OutputNameGenerator& ng, bool end_on_first_fail) :

@@ -195,5 +195,5 @@ Commands to build .msi (check QT path)
     cd C:\Downloads\git\TeRa
     set "WIX=C:\Downloads\wix310-binaries"
     set "TERA_BUILD_DIR=C:\cmake_builds\tera%TERA_ARCH%"
-    "%WIX%\candle.exe" tera.wxs -dMSI_VERSION=0.7.0 -dcmake_builds_path="C:\cmake_builds" -dqt_path=%TERA_QT_CMAKE_DIR% -dclient_path=%TERA_BUILD_DIR%\Release -dPlatform=%TERA_WIX_PLATFORM%
+    "%WIX%\candle.exe" tera.wxs -dMSI_VERSION=0.7.0 -dqt_path=%TERA_QT_CMAKE_DIR% -dclient_path=%TERA_BUILD_DIR%\Release -dPlatform=%TERA_WIX_PLATFORM%
     "%WIX%\light.exe" -out TeRa%TERA_ARCH%.msi tera.wixobj -v -ext WixUIExtension
