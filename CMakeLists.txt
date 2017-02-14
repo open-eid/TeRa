@@ -56,12 +56,14 @@ IF (WIN32)
     include_directories("$ENV{TERA_LIBZIP_DIR}/include" "$ENV{TERA_LIBZIP_DIR}/lib/libzip/include")
     SET (ZIP_LIBRARIES "$ENV{TERA_LIBZIP_DIR}/lib/zipstatic.lib")
     # for static openssl
-    SET (FOR_OPENSSL_STATIC crypt32.lib ws2_32.lib) # GDI64.LIB ADVAPI64.LIB USER64.LIB)
+    # SET (FOR_OPENSSL_STATIC crypt32.lib ws2_32.lib) # GDI64.LIB ADVAPI64.LIB USER64.LIB)
 ELSE()
-    include_directories(/usr/local/lib/libzip/include/)
+    # ???? include_directories(/usr/local/lib/libzip/include/)
     IF (APPLE)
-        SET (ZLIB_LIBRARIES $ENV{HOME}/cmake_builds/zlib/libz.a)
-        SET (ZIP_LIBRARIES $ENV{HOME}/cmake_builds/libzip/lib/libzipstatic.a)
+        SET (ZLIB_LIBRARIES $ENV{TERA_ZLIB_DIR}/lib/libz.a)
+        SET (ZIP_LIBRARIES $ENV{TERA_LIBZIP_DIR}/lib/libzipstatic.a)
+        SET (ZIP_INCLUDE_DIR $ENV{TERA_LIBZIP_DIR}/include $ENV{TERA_LIBZIP_DIR}/lib/libzip/include/)
+        include_directories( ${ZIP_INCLUDE_DIR} )
     ELSE()
         SET (ZLIB_LIBRARIES $ENV{HOME}/cmake_builds/zlib/libz.a)
         SET (ZIP_INCLUDE_DIR $ENV{HOME}/cmake_builds/libzip_bin/include $ENV{HOME}/cmake_builds/libzip_bin/lib/libzip/include/)
@@ -72,10 +74,12 @@ ELSE()
 ENDIF()
 
 # include openssl
-set(OPENSSL_USE_STATIC_LIBS TRUE)
-set(OPENSSL_MSVC_STATIC_RT TRUE)
+# set(OPENSSL_USE_STATIC_LIBS TRUE)
+# set(OPENSSL_MSVC_STATIC_RT TRUE)
 find_package(OpenSSL)
 include_directories( ${OPENSSL_INCLUDE_DIR} )
+#include_directories( C:/OpenSSL-Win64/include )
+
 
 message(STATUS "ZLIB_LIBRARIES:      " ${ZLIB_LIBRARIES})
 message(STATUS "ZIP_LIBRARIES:       " ${ZIP_LIBRARIES})
@@ -95,6 +99,16 @@ ELSE()
     ENDIF()
 ENDIF()
 
+SET (TERA_COMMON_LIB_SRC
+     common/QPCSC.h common/QPCSC.cpp common/QPCSC_p.h
+     common/QSmartCard.h common/QSmartCard.cpp common/QSmartCard_p.h
+     common/SslCertificate.h common/SslCertificate.cpp
+     common/qasn1element_p.h common/qasn1element.cpp
+     common/IKValidator.h common/IKValidator.cpp
+     common/PinDialog.h common/PinDialog.cpp
+     common/TokenData.h common/TokenData.cpp
+     )
+
 SET (TERA_COMMON_SRC
       src/version.h
      )
@@ -103,13 +117,14 @@ SET (TERA_LIBDIGIDOC_SRC
         src/libdigidoc/Configuration.h src/libdigidoc/Configuration.cpp
         src/libdigidoc/Settings.h)
 
-SET (TERA_GUI_UI poc/MainWindow.ui poc/SettingsDialog.ui poc/FileListDialog.ui)
+SET (TERA_GUI_UI poc/MainWindow.ui poc/SettingsDialog.ui poc/FileListDialog.ui poc/IDCardSelectionDialog.ui )
 SET (TERA_GUI_SRC
         poc/xxx.cpp
         poc/main_window.h poc/main_window.cpp ComboBox.h ComboBox.cpp
         poc/gui_timestamper_processor.h poc/gui_timestamper_processor.cpp
         poc/settings_window.h poc/settings_window.cpp
         poc/files_window.h poc/files_window.cpp
+        poc/id_card_select_dialog.h poc/id_card_select_dialog.cpp
 
         poc/utils.h poc/utils.cpp
         poc/openssl_utils.h poc/openssl_utils.cpp
@@ -145,7 +160,8 @@ add_executable(TeRaTool
 target_link_libraries(TeRaTool ${ZIP_LIBRARIES} ${OPENSSL_LIBRARIES} ${FOR_OPENSSL_STATIC} ${ZLIB_LIBRARIES} )
 qt5_use_modules(TeRaTool Core Concurrent Network)
 
-add_executable(TeRa WIN32 MACOSX_BUNDLE
+SET (TERA_GUI_NAME TeRa)
+add_executable(${TERA_GUI_NAME} #WIN32 MACOSX_BUNDLE
         ${TERA_COMMON_SRC}
         poc/teragui.rc
         ${UI_HEADERS}
@@ -156,7 +172,28 @@ add_executable(TeRa WIN32 MACOSX_BUNDLE
         ${CONFIG_SOURCES}
         ${QM}
         ${TRANS}
+        ${TERA_COMMON_LIB_SRC}
         )
-target_link_libraries(TeRa ${ZIP_LIBRARIES} ${OPENSSL_LIBRARIES} ${FOR_OPENSSL_STATIC} ${ZLIB_LIBRARIES})
-qt5_use_modules(TeRa Core Concurrent Network Widgets Gui)
-target_link_libraries(TeRa Qt5::Widgets)
+target_link_libraries(${TERA_GUI_NAME} ${ZIP_LIBRARIES} ${OPENSSL_LIBRARIES} ${FOR_OPENSSL_STATIC} ${ZLIB_LIBRARIES} Version SetupApi winscard )
+qt5_use_modules(${TERA_GUI_NAME} Core Concurrent Network Widgets Gui)
+########### target_link_libraries(${TERA_GUI_NAME} Qt5::Widgets)
+
+if( APPLE )
+    add_custom_target( codesign DEPENDS ${TERA_GUI_NAME}
+        COMMAND codesign -f -s \"$$SIGNCERT\"
+            $<TARGET_FILE_DIR:${TERA_GUI_NAME}>/*.*
+            $<TARGET_FILE_DIR:${TERA_GUI_NAME}>/../Frameworks/digidocpp.framework/Libraries/*
+            $<TARGET_FILE_DIR:${TERA_GUI_NAME}>/../Frameworks/*
+            $<TARGET_FILE_DIR:${TERA_GUI_NAME}>/../PlugIns/*/*
+            $<TARGET_FILE_DIR:${TERA_GUI_NAME}>/../Library/QuickLook/DigiDocQL.qlgenerator
+        COMMAND codesign -f -v -s \"$$SIGNCERT\" $<TARGET_FILE_DIR:${TERA_GUI_NAME}>/../..
+            --entitlements ${CMAKE_SOURCE_DIR}/${TERA_GUI_NAME}.entitlements
+    )
+    add_custom_target( zip DEPENDS ${TERA_GUI_NAME}
+        COMMAND zip --symlinks -r -D ${CMAKE_BINARY_DIR}/TeRa_${VERSION}$ENV{VER_SUFFIX}.zip ${TERA_GUI_NAME}.app
+    )
+    add_custom_target( productbuild DEPENDS ${TERA_GUI_NAME}
+        COMMAND productbuild --component ${CMAKE_CURRENT_BINARY_DIR}/${TERA_GUI_NAME}.app /Applications
+            --sign \"$$INSTCERT\" ${CMAKE_BINARY_DIR}/TeRa-store_${VERSION}$ENV{VER_SUFFIX}.pkg
+    )
+endif()
