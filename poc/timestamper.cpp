@@ -134,9 +134,29 @@ bool TeraCreateAsicsJob::addFile(zip_t* zip, QString const& name, QByteArray con
 }
 
 
-TimeStamper::TimeStamper() : jobId(0)
+TimeStamper::TimeStamper() : jobId(0), sslConf(nullptr)
 {
     QObject::connect(&nam, SIGNAL(finished(QNetworkReply*)), this, SLOT(tsReplyFinished(QNetworkReply*)));
+    QObject::connect(&nam, &QNetworkAccessManager::sslErrors, this, [=](QNetworkReply *reply, const QList<QSslError> &errors){
+        QList<QSslError> ignore;
+        for (const QSslError &error : errors)
+        {
+            qDebug() << "      SSL error" << error.error();
+            switch (error.error())
+            {
+            case QSslError::UnableToGetLocalIssuerCertificate:
+            case QSslError::CertificateUntrusted:
+                //				if(trusted.contains(reply->sslConfiguration().peerCertificate()))
+                ignore << error;
+qDebug() << "Ignoring QSslError::CertificateUntrusted";
+//                qDebug() << "      SSL error X " << trusted.contains(reply->sslConfiguration().peerCertificate());
+
+                break;
+            default: break;
+            }
+        }
+        reply->ignoreSslErrors(ignore);
+    });
 }
 
 static bool calculateSha256(QString const& filePath, QByteArray& sha256, QString& error) {
@@ -181,8 +201,14 @@ void TimeStamper::sendTSRequest(QByteArray const& timestampRequest, bool test)
     TERA_LOG(trace) << "Request (in Hex):\n" << timestampRequest.toHex().constData();
 
     QUrl url(timeserverUrl);
+    QNetworkRequest request;
     request.setUrl(url);
     request.setRawHeader(QByteArray("Content-Type"), QByteArray("application/timestamp-query"));
+
+    if (nullptr != sslConf) {
+        sslConf->configureRequest(request);
+    }
+
     QNetworkReply* r = nam.post(request, timestampRequest);
 
     if (test) {
@@ -255,8 +281,15 @@ void TimeStamper::notifyClientOnTimestampingFinished(bool test, bool success, QS
     }
 }
 
+
+void TimeStamper::setTimeserverUrl(QString const& url, TimeStamperRequestConfigurationFactory* configurator) {
+    sslConf = configurator;
+    timeserverUrl = url;
+}
+
 void TimeStamper::startTimestamping(QString const& tsUrl, QString const& infile, QString const& outfile) {
     QString errorMsg;
+    //if (timeserverUrl != tsUrl) sslConf = NULL; // TODO ???
     timeserverUrl = tsUrl;
     inputFilePath = infile;
     outputFilePath = outfile;

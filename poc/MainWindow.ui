@@ -568,7 +568,7 @@ Vaikimisi ajatembeldatakse ainult arvutis asuvaid DDOC faile. Kui soovite võrgu
                    </size>
                   </property>
                   <property name="currentIndex">
-                   <number>2</number>
+                   <number>0</number>
                   </property>
                   <widget class="QWidget" name="page_start">
                    <layout class="QGridLayout" name="gridLayout_3">
@@ -609,7 +609,7 @@ Vaikimisi ajatembeldatakse ainult arvutis asuvaid DDOC faile. Kui soovite võrgu
                        </sizepolicy>
                       </property>
                       <property name="currentIndex">
-                       <number>1</number>
+                       <number>0</number>
                       </property>
                       <widget class="QWidget" name="page">
                        <layout class="QGridLayout" name="gridLayout_7">

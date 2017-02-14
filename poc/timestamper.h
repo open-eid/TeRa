@@ -11,6 +11,7 @@
 #include <QByteArray>
 #include <QMap>
 #include <QRunnable>
+#include <QPointer>
 #include <QScopedPointer>
 #include <QString>
 
@@ -45,11 +46,18 @@ private:
     QByteArray timestamp;
 };
 
+
+class TimeStamperRequestConfigurationFactory {
+public:
+    virtual void configureRequest(QNetworkRequest& request) = 0;
+};
+
 class TimeStamper : public QObject {
     Q_OBJECT
 public:
     TimeStamper();
 
+    void setTimeserverUrl(QString const& url, TimeStamperRequestConfigurationFactory* configurator = NULL); // TODO xxx
     void startTimestamping(QString const& tsUrl, QString const& infile, QString const& outfile);
     bool getTimestampRequest(QByteArray& tsrequest, QString& error);
     QByteArray getTimestampRequest4Sha256(QByteArray& sha256); // TODO redesign
@@ -66,13 +74,12 @@ private:
 
     qint64 jobId;
     QString inputFilePath;
-public:
     QString timeserverUrl;
-private:
     QString outputFilePath;
 
+    TimeStamperRequestConfigurationFactory* sslConf;
+
     QNetworkAccessManager nam;
-    QNetworkRequest request;
 
     QSet<QNetworkReply*> testReplies;
 };

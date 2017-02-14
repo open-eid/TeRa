@@ -17,7 +17,21 @@
 #include <QRegion>
 #include <QThreadPool>
 
+
+
+
+
+
+
+
+#include <openssl/evp.h>
+#include <openssl/rsa.h>
+#include <QSslKey>
+#include "common/QPCSC.h"
+#include "common/SslCertificate.h"
 //#include <AboutDialog.h>
+
+
 
 #include "disk_crawler.h"
 #include "settings_window.h"
@@ -97,14 +111,14 @@ TeraMainWin::TeraMainWin(QWidget *parent) :
     connect(logText, SIGNAL(anchorClicked(const QUrl&)),
             this, SLOT(showLog(QUrl const&)));
 
-    settingsWin = new TeraSettingsWin(this);
-    connect(settingsWin, SIGNAL(accepted()),
+    settingsWin.reset(new TeraSettingsWin(this));
+    connect(settingsWin.data(), SIGNAL(accepted()),
             this, SLOT(handleSettingsAccepted()));
 
-    filesWin = new FileListWindow(this);
-    connect(filesWin, SIGNAL(accepted()),
+    filesWin.reset(new FileListWindow(this));
+    connect(filesWin.data(), SIGNAL(accepted()),
             this, SLOT(handleFilesAccepted()));
-    connect(filesWin, SIGNAL(rejected()),
+    connect(filesWin.data(), SIGNAL(rejected()),
             this, SLOT(handleFilesRejected()));
 
     // Translations
@@ -172,7 +186,51 @@ bool CrawlDiskJob::foundFile(QString const& path) {
     return true;
 }
 
+
+void TeraMainWin::configureRequest(QNetworkRequest& request) {
+    qDebug() << "TeraMainWin::configureRequest start";
+    QSslCertificate cert = cardSelectDialog->smartCardData.authCert();
+
+    QSslConfiguration ssl = QSslConfiguration::defaultConfiguration();
+    QList<QSslCertificate> trusted;
+    //        for (const QJsonValue &cert : Configuration::instance().object().value("CERT-BUNDLE").toArray())
+    //            trusted << QSslCertificate(QByteArray::fromBase64(cert.toString().toLatin1()), QSsl::Der);
+    ssl.setCaCertificates(QList<QSslCertificate>());
+    ssl.setProtocol(QSsl::TlsV1_0);
+    Qt::HANDLE key = cardSelectDialog->smartCard->key();
+    if (key)
+    {
+        qDebug() << "key added <<<<<< ";
+        ssl.setPrivateKey(QSslKey(key));
+        ssl.setLocalCertificate(cert);
+    }
+    request.setSslConfiguration(ssl);
+    qDebug() << "TeraMainWin::configureRequest end";
+}
+
 void TeraMainWin::handleStartStamping() {
+    doPin1Authentication();
+}
+
+void TeraMainWin::doPin1Authentication() {
+    QPCSC& instance = QPCSC::instance();
+    QStringList drivers = instance.drivers();
+    QStringList readers = instance.readers();
+
+
+    cardSelectDialog.reset(new IDCardSelectDialog(this));
+    connect(cardSelectDialog.data(), SIGNAL(accepted()), this, SLOT(pin1AuthenticaionDone()));
+    cardSelectDialog->setVisible(true);
+}
+
+void TeraMainWin::pin1AuthenticaionDone() {
+qDebug() << "### TeraMainWin::pin1AuthenticaionDone";
+    QString reader = cardSelectDialog->smartCardData.reader();
+    doTestStamp();
+}
+
+void TeraMainWin::doTestStamp() {
+    qDebug() << "### TeraMainWin::doTestStamp";
     processor.timeServerUrl = processor.timeServerUrl.trimmed(); // TODO
     if (processor.timeServerUrl.isEmpty()) {
         QMessageBox::critical(this, tr("Error"), tr("Time server URL is empty.")); // Error only onve
@@ -187,7 +245,7 @@ void TeraMainWin::handleStartStamping() {
     processor.inFiles.clear();
     timestapmping = true;
 
-    // create file
+    // create log file
     QString error;
     processor.result.reset(new GuiTimestamperProcessor::Result());
     if (!processor.openLogFile(error)) { // TODO  finish message box
@@ -203,13 +261,13 @@ void TeraMainWin::handleStartStamping() {
 
     QByteArray pseudosha256(256/8, '\0');
     QByteArray req = stamper.getTimestamper().getTimestampRequest4Sha256(pseudosha256);
-    stamper.getTimestamper().timeserverUrl = processor.timeServerUrl; // TODO
+    stamper.getTimestamper().setTimeserverUrl(processor.timeServerUrl, this); // TODO true = ask PIN1 XXXXXXXXXXXXXXXXXXXXXXXXXXXXX
     stamper.getTimestamper().sendTSRequest(req, true); // TODO api is rubbish
 }
 
 void TeraMainWin::timestampingTestFinished(bool success, QByteArray resp, QString errString) {
     if (!success) {
-        timestampingFinished(false, tr("Test request to Time Server failed. ") + errString);
+        timestampingFinished(false, tr("Test request to Time Server failed. ") + "\n" + errString);
         return;
     }
 

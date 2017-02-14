@@ -23,6 +23,7 @@
 #include "gui_timestamper_processor.h"
 #include "timestamper.h"
 #include "utils.h"
+#include "id_card_select_dialog.h"
 
 namespace ria_tera {
 
@@ -56,6 +57,7 @@ private:
 };
 
 class TeraMainWin : public QWidget, public Ui::MainWindow, public StampingMonitorCallback
+    , public TimeStamperRequestConfigurationFactory   // TODO XXXXXX
 {
     Q_OBJECT
 
@@ -65,12 +67,18 @@ public:
     void processEvents();
     bool isCancelled();
     bool isCancelled(int jobid);
+
+    void configureRequest(QNetworkRequest& request); /////////////////////////////
+
 public slots:
     // flow control slots
     void handleStartStamping();
     void handleCancelProcess();
     void handleReadyButton();
 
+    void doPin1Authentication();
+    void pin1AuthenticaionDone();
+    void doTestStamp();
     void timestampingTestFinished(bool success, QByteArray resp, QString errString);
 
     void processProcessingPath(int jobid, QString path, double progress_percent);
@@ -128,8 +136,9 @@ private:
     OutputNameGenerator nameGen;
     BatchStamper stamper;
 
-    TeraSettingsWin* settingsWin;
-    FileListWindow* filesWin;
+    QSharedPointer<TeraSettingsWin> settingsWin;
+    QSharedPointer<FileListWindow> filesWin;
+    QSharedPointer<IDCardSelectDialog> cardSelectDialog;
 
     QString lang;
     QStringList langs;

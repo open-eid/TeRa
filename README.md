@@ -37,7 +37,7 @@ PS For x64 builds "VS2013 x64 Cross..." and 'cmake -G "Visual Studio 12 2013 Win
 
     set "TERA_ARCH_C=12 2013 Win64"
     set "TERA_ARCH=_64"
-    set "TERA_QT_CMAKE_DIR=C:\Qt\Qt5.5.1_64\5.5\msvc2013_64"
+    set "TERA_QT_CMAKE_DIR=C:\Qt\Qt5.8.0_64\5.8\msvc2013_64"
 
 #### Install Qt5
 
@@ -105,11 +105,11 @@ Short version for Ubuntu & OSX. Untar tar.gz to ~/cmake_builds
 
     cd ~/cmake_builds
     tar xzvf ~/Downloads/openssl-1.1.0b.tar.gz
-    cd openssl-1.1.0b
-    ./config
+    cd openssl-1.1.0b 
+    ./config --prefix=$HOME/cmake_builds/openssl-1.1.0b-bin --openssldir=$HOME/cmake_builds/openssl-1.1.0b-openssl
     make
     make test
-    sudo make install
+    make install
 
 In Windows extract to C:\cmake_builds\openssl-1.1.0b(_32/_64). And install http://www.activestate.com/ActivePerl first. On casual windows command prompt dmake has to be installed for perl
 
@@ -119,11 +119,56 @@ Then it is possible to build OpenSSL itself in Visual Studio command line (if 64
     
     set "PATH=%PATH%;C:\Perl\bin"
     cd C:\cmake_builds\openssl-1.1.0b%TERA_ARCH%
-    perl Configure VC-WIN32 no-asm no-shared --prefix=C:\cmake_builds\openssl-1.1.0b-bin%TERA_ARCH% --openssldir=C:\cmake_builds\openssl-1.1.0b-openssl%TERA_ARCH%
+  cd C:\cmake_builds\openssl-1.0.2h%TERA_ARCH%
+    //perl Configure VC-WIN32 no-asm no-shared --prefix=C:\cmake_builds\openssl-1.1.0b-bin%TERA_ARCH% --openssldir=C:\cmake_builds\openssl-1.1.0b-openssl%TERA_ARCH%
       or for 64 bit...
-    perl Configure VC-WIN64A no-asm no-shared --prefix=C:\cmake_builds\openssl-1.1.0b-bin%TERA_ARCH% --openssldir=C:\cmake_builds\openssl-1.1.0b-openssl%TERA_ARCH%
+       perl Configure VC-WIN64A no-asm no-shared --prefix=C:\cmake_builds\openssl-1.1.0b-bin%TERA_ARCH% --openssldir=C:\cmake_builds\openssl-1.1.0b-openssl%TERA_ARCH%
+  perl Configure VC-WIN64A no-asm --prefix=C:\cmake_builds\openssl-1.0.2h-bin-dll%TERA_ARCH%
+     // --openssldir=C:\cmake_builds\openssl-1.0.2h-openssl%TERA_ARCH%
     nmake
     nmake install
+
+
+http://www.microsoft.com/msdownload/platformsdk/sdkupdate/
+
+perl Configure VC-WIN64A no-asm --prefix=C:\cmake_builds\openssl-1.0.2h-bin-dll%TERA_ARCH%
+perl Configure VC-WIN64A --prefix=C:\cmake_builds\openssl-1.0.2h-bin-dll%TERA_ARCH%
+ms\do_ms
+nmake -f ms\ntdll.mak
+
+   
+   
+        link /nologo /subsystem:console /opt:ref /debug /dll /out:out32dll\libeay32.dll /def:ms/LIBEAY32.def @C:\Users\TAMMEO~1\AppData\Local\Temp\nm261F.tmp
+LINK : fatal error LNK1181: cannot open input file 'unicows.lib'
+NMAKE : fatal error U1077: '"C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\BIN\x86_amd64\link.EXE"' : return code '0x49d'
+   C:\Program Files (x86)\Microsoft SDKs\Windows\v7.1A\Lib
+
+SET "LIB=%LIB%;C:\Program Files (x86)\Microsoft SDKs\Windows\v7.1A\Lib"
+
+
+http://www.colinkraft.com/mame/mame.php
+
+
+nmake -f ms\ntdll.mak test
+nmake -f ms\ntdll.mak install
+
+
+
+
+
+
+perl Configure VC-WIN64A --prefix=C:\cmake_builds\openssl-1.0.2h-bin-dll%TERA_ARCH%
+ms\do_win64a
+nmake -f ms\ntdll.mak
+cd out32dll
+..\ms\test
+cd ..
+nmake -f ms\ntdll.mak install
+
+
+
+
+
 
 ### 2. Configure
 
@@ -142,8 +187,8 @@ In Windows (put in your Qt path in "set "CMAKE_PREFIX_PATH=...")
     cd C:\cmake_builds\tera%TERA_ARCH%
     set "TERA_LIBZIP_DIR=C:\cmake_builds\libzip_bin%TERA_ARCH%"
     set "TERA_ZLIB_DIR=C:\cmake_builds\zlib_bin%TERA_ARCH%"
-    set "TERA_OPENSSL_DIR=C:\cmake_builds\openssl-1.1.0b-bin%TERA_ARCH%"
-    set "CMAKE_PREFIX_PATH=%TERA_QT_CMAKE_DIR%\lib\cmake;%TERA_BOOST_DIR%;%TERA_ZLIB_DIR%;%TERA_LIBZIP_DIR%;%TERA_OPENSSL_DIR%"
+    set "TERA_OPENSSL_DIR=C:\cmake_builds\openssl-1.0.2h-bin-dll%TERA_ARCH%"
+    set "CMAKE_PREFIX_PATH=%TERA_QT_CMAKE_DIR%\lib\cmake;%TERA_ZLIB_DIR%;%TERA_LIBZIP_DIR%;%TERA_OPENSSL_DIR%"
     "C:\Program Files\CMake\bin\cmake" -G "Visual Studio %TERA_ARCH_C%" C:\Downloads\git\TeRa
 
 ### 3. Build

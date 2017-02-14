@@ -311,7 +311,7 @@ Katkestada tembeldamine?</source>
     <message>
         <location filename="../poc/main_window.cpp" line="203"/>
         <source>Test request to Time Server failed. </source>
-        <translation>Aja-serveri kontroll-päring ebaõnnestus</translation>
+        <translation>Aja-serveri kontroll-päring ebaõnnestus. </translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="390"/>
