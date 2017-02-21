@@ -19,6 +19,8 @@
 #include <QtNetwork/QNetworkReply>
 #include <QtWidgets/QMessageBox>
 
+#include <QProcess>
+
 #include <openssl/err.h>
 #include <openssl/pem.h>
 

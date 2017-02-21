@@ -20,6 +20,7 @@ IF (UNIX)
     set(CMAKE_CXX_FLAGS "-std=c++11" CACHE STRING "compile flags" FORCE)
 ENDIF()
 
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Instruct CMake to run moc automatically when needed.
@@ -28,14 +29,14 @@ SET(CMAKE_AUTOUIC ON)
 SET(CMAKE_AUTORCC ON)
 
 # Find Qt libraries
-find_package(Qt5Core)
+find_package(Qt5Core REQUIRED)
 include_directories(${Qt5Core_INCLUDE_DIRS})
-find_package(Qt5Network)
+find_package(Qt5Network REQUIRED)
 include_directories(${Qt5Network_INCLUDE_DIRS})
-find_package(Qt5Concurrent)
+find_package(Qt5Concurrent REQUIRED)
 include_directories(${Qt5Concurrent_INCLUDE_DIRS})
-find_package(Qt5Gui)
-find_package(Qt5Widgets) 
+find_package(Qt5Gui REQUIRED)
+find_package(Qt5Widgets REQUIRED)
 include_directories(${Qt5Widgets_INCLUDE_DIRS})
 
 FIND_PACKAGE(Qt5LinguistTools)
@@ -59,28 +60,42 @@ IF (WIN32)
     # SET (FOR_OPENSSL_STATIC crypt32.lib ws2_32.lib) # GDI64.LIB ADVAPI64.LIB USER64.LIB)
 ELSE()
     # ???? include_directories(/usr/local/lib/libzip/include/)
+    SET (OPENSSL_INCLUDE_DIR $ENV{TERA_OPENSSL_DIR}/include/)
+    SET (OPENSSL_LIBRARIES $ENV{TERA_OPENSSL_DIR}/lib/libcrypto.dylib $ENV{TERA_OPENSSL_DIR}/lib/libssl.dylib)
     IF (APPLE)
         SET (ZLIB_LIBRARIES $ENV{TERA_ZLIB_DIR}/lib/libz.a)
         SET (ZIP_LIBRARIES $ENV{TERA_LIBZIP_DIR}/lib/libzipstatic.a)
         SET (ZIP_INCLUDE_DIR $ENV{TERA_LIBZIP_DIR}/include $ENV{TERA_LIBZIP_DIR}/lib/libzip/include/)
         include_directories( ${ZIP_INCLUDE_DIR} )
     ELSE()
-        SET (ZLIB_LIBRARIES $ENV{HOME}/cmake_builds/zlib/libz.a)
-        SET (ZIP_INCLUDE_DIR $ENV{HOME}/cmake_builds/libzip_bin/include $ENV{HOME}/cmake_builds/libzip_bin/lib/libzip/include/)
-        include_directories( ${ZIP_INCLUDE_DIR} )
-        SET (ZIP_LIBRARIES $ENV{HOME}/cmake_builds/libzip/lib/libzipstatic.a)
+        IF (DEFINED ENV{TERA_UNIX_CUSTOM_LIBS})
+            SET (ZLIB_LIBRARIES $ENV{HOME}/cmake_builds/zlib/libz.a)
+            SET (ZIP_INCLUDE_DIR $ENV{HOME}/cmake_builds/libzip_bin/include $ENV{HOME}/cmake_builds/libzip_bin/lib/libzip/include/)
+            include_directories( ${ZIP_INCLUDE_DIR} )
+            SET (ZIP_LIBRARIES $ENV{HOME}/cmake_builds/libzip/lib/libzipstatic.a)
+        ELSE()
+           # find_package(LIBZIP REQUIRED)
+           find_path(ZIP_INCLUDE_DIR NAMES zip.h)
+           find_library(ZIP_LIBRARIES NAMES zip)
+           include_directories( ${ZIP_INCLUDE_DIR} )
+
+           find_package(ZLIB REQUIRED)
+           find_package(OpenSSL REQUIRED)
+        ENDIF()
     ENDIF()
-    SET (FOR_OPENSSL_STATIC)
+    # SET (FOR_OPENSSL_STATIC)
 ENDIF()
 
 # include openssl
 # set(OPENSSL_USE_STATIC_LIBS TRUE)
 # set(OPENSSL_MSVC_STATIC_RT TRUE)
-find_package(OpenSSL)
+# find_package(OpenSSL)
 include_directories( ${OPENSSL_INCLUDE_DIR} )
 #include_directories( C:/OpenSSL-Win64/include )
 
 
+message(STATUS "Qt5Core version:     " ${Qt5Core_VERSION})
+message(STATUS "ZLIB_INCLUDE:        " ${ZLIB_INCLUDE})
 message(STATUS "ZLIB_LIBRARIES:      " ${ZLIB_LIBRARIES})
 message(STATUS "ZIP_LIBRARIES:       " ${ZIP_LIBRARIES})
 message(STATUS "ZIP_INCLUDE_DIR:     " ${ZIP_INCLUDE_DIR})
@@ -98,6 +113,28 @@ ELSE()
         set (CMAKE_CXX_LINK_EXECUTABLE "${CMAKE_CXX_LINK_EXECUTABLE} -ldl")
     ENDIF()
 ENDIF()
+
+if( WIN32 )
+#    list( APPEND SOURCES Diagnostics_win.cpp )
+    set( TERA_SCARD_LIBRARIES Version SetupApi winscard )
+#    add_definitions( -DUNICODE -DWIN32_LEAN_AND_MEAN )
+#else()
+#    list( APPEND SOURCES Diagnostics_unix.cpp )
+endif()
+
+if( APPLE )
+#    list( APPEND SOURCES MacMenuBar.cpp )
+#    set_source_files_properties( Application_mac.mm PROPERTIES COMPILE_FLAGS "-fobjc-arc" )
+#    set_source_files_properties( Configuration.cpp SslCertificate.cpp
+#        PROPERTIES COMPILE_FLAGS "-Wno-deprecated-declarations" )
+    set( TERA_SCARD_LIBRARIES "-framework Cocoa -framework PCSC -fobjc-arc" )
+endif()
+
+if( UNIX AND NOT APPLE )
+    find_package(PCSCLite REQUIRED)
+    include_directories( ${PCSCLITE_INCLUDE_DIR} )
+    set( TERA_SCARD_LIBRARIES ${PCSCLITE_LIBRARY} )
+endif()
 
 SET (TERA_COMMON_LIB_SRC
      common/QPCSC.h common/QPCSC.cpp common/QPCSC_p.h
@@ -157,11 +194,11 @@ add_executable(TeRaTool
         poc/config.h poc/config.cpp
         ${CONFIG_SOURCES}
         )
-target_link_libraries(TeRaTool ${ZIP_LIBRARIES} ${OPENSSL_LIBRARIES} ${FOR_OPENSSL_STATIC} ${ZLIB_LIBRARIES} )
+target_link_libraries(TeRaTool ${ZIP_LIBRARIES} ${OPENSSL_LIBRARIES} ${FOR_OPENSSL_STATIC} ${ZLIB_LIBRARIES} ${TERA_SCARD_LIBRARIES} )
 qt5_use_modules(TeRaTool Core Concurrent Network)
 
 SET (TERA_GUI_NAME TeRa)
-add_executable(${TERA_GUI_NAME} #WIN32 MACOSX_BUNDLE
+add_executable(${TERA_GUI_NAME} WIN32 MACOSX_BUNDLE
         ${TERA_COMMON_SRC}
         poc/teragui.rc
         ${UI_HEADERS}
@@ -174,7 +211,7 @@ add_executable(${TERA_GUI_NAME} #WIN32 MACOSX_BUNDLE
         ${TRANS}
         ${TERA_COMMON_LIB_SRC}
         )
-target_link_libraries(${TERA_GUI_NAME} ${ZIP_LIBRARIES} ${OPENSSL_LIBRARIES} ${FOR_OPENSSL_STATIC} ${ZLIB_LIBRARIES} Version SetupApi winscard )
+target_link_libraries(${TERA_GUI_NAME} ${ZIP_LIBRARIES} ${OPENSSL_LIBRARIES} ${FOR_OPENSSL_STATIC} ${ZLIB_LIBRARIES} ${TERA_SCARD_LIBRARIES} )
 qt5_use_modules(${TERA_GUI_NAME} Core Concurrent Network Widgets Gui)
 ########### target_link_libraries(${TERA_GUI_NAME} Qt5::Widgets)
 

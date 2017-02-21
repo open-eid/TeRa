@@ -232,7 +232,7 @@ static int reply_command(CONF *conf, const char *section, const char *engine,
 //resp.write(in);
 //resp.close();
 
-    in_bio = BIO_new_mem_buf(in.constData(), in.length());//BIO_new(BIO_s_mem());
+    in_bio = BIO_new_mem_buf(const_cast<char*>(in.constData()), in.length());//BIO_new(BIO_s_mem());
 //    in_bio = BIO_new_file("response.tsr", "rb");
 //    in_bio = BIO_new_file("xresp.tsr", "rb");
 //        if (token_in) {
