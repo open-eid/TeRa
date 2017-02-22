@@ -156,13 +156,17 @@ Install OpenSSL from https://www.openssl.org/source/openssl-1.0.2h.tar.gz (for d
     export TERA_ZLIB_DIR=$HOME/cmake_builds/zlib_bin
     export TERA_OPENSSL_DIR=$HOME/cmake_builds/openssl-1.0.2h.bin
     export CMAKE_PREFIX_PATH=$HOME/Qt5.8.0-OpenSSL/lib/cmake:$TERA_ZLIB_DIR:$TERA_LIBZIP_DIR:$TERA_OPENSSL_DIR
-    cmake -G "Unix Makefiles" ~/cmake_builds/tera_src/TeRa -DOPENSSL_ROOT_DIR=$TERA_OPENSSL_DIR
+    cmake -G "Unix Makefiles" ~/cmake_builds/github/TeRa
 
 #### 4. Configure
 
     cmake --build .
 
 #### 5. TODO Install
+
+To include Qt libraries to TeRa.app
+
+    ~/Qt5.8.0-OpenSSL/bin/macdeployqt TeRa.app/
 
 #### 6. TODO Execute
 
