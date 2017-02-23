@@ -124,11 +124,14 @@ Install OpenSSL from https://www.openssl.org/source/openssl-1.0.2h.tar.gz (for d
 
 ###### f) Qt with OpenSSL support
 
+
+    export C_INCLUDE_PATH=$HOME/cmake_builds/openssl-1.0.2h.bin/include/
     export OPENSSL_PATH="$HOME/cmake_builds/openssl-1.0.2h.bin/"
     export OPENSSL_LIBS="-L$HOME/cmake_builds/openssl-1.0.2h.bin/lib/ -lssl -lcrypto"
     curl -O -L http://download.qt.io/official_releases/qt/5.8/5.8.0/submodules/qtbase-opensource-src-5.8.0.tar.gz
     tar xf qtbase-opensource-src-5.8.0.tar.gz
     cd qtbase-opensource-src-5.8.0
+./configure -prefix ~/Qt5.8.0-OpenSSL-dyn -openssl -opensource -nomake tests -nomake examples -no-securetransport -confirm-license
     ./configure -prefix ~/Qt5.8.0-OpenSSL -openssl-linked -opensource -nomake tests -nomake examples -no-securetransport -confirm-license
     make
     sudo make install
@@ -138,7 +141,7 @@ Install OpenSSL from https://www.openssl.org/source/openssl-1.0.2h.tar.gz (for d
     curl -O -L http://download.qt.io/official_releases/qt/5.8/5.8.0/submodules/qttools-opensource-src-5.8.0.tar.gz
     tar xf qttools-opensource-src-5.8.0.tar.gz
     cd qttools-opensource-src-5.8.0
-    /Developer/Qt-5.8.0/bin/qmake
+    ~/Qt5.8.0-OpenSSL/bin/qmake
     make
     sudo make install
     cd ..
@@ -152,10 +155,11 @@ Install OpenSSL from https://www.openssl.org/source/openssl-1.0.2h.tar.gz (for d
 #### 3. Configure
 
     mkdir -p ~/cmake_builds/tera && cd ~/cmake_builds/tera
+    export TERA_QT_DIR=$HOME/Qt5.8.0-OpenSSL
     export TERA_LIBZIP_DIR=$HOME/cmake_builds/libzip_bin
     export TERA_ZLIB_DIR=$HOME/cmake_builds/zlib_bin
     export TERA_OPENSSL_DIR=$HOME/cmake_builds/openssl-1.0.2h.bin
-    export CMAKE_PREFIX_PATH=$HOME/Qt5.8.0-OpenSSL/lib/cmake:$TERA_ZLIB_DIR:$TERA_LIBZIP_DIR:$TERA_OPENSSL_DIR
+    export CMAKE_PREFIX_PATH=$TERA_QT_DIR/lib/cmake:$TERA_ZLIB_DIR:$TERA_LIBZIP_DIR:$TERA_OPENSSL_DIR
     cmake -G "Unix Makefiles" ~/cmake_builds/github/TeRa
 
 #### 4. Configure

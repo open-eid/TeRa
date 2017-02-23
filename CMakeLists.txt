@@ -224,6 +224,9 @@ qt5_use_modules(${TERA_GUI_NAME} Core Concurrent Network Widgets Gui)
 ########### target_link_libraries(${TERA_GUI_NAME} Qt5::Widgets)
 
 if( APPLE )
+    add_custom_target( macdeployqt DEPENDS ${PROGNAME}
+        COMMAND $ENV{TERA_QT_DIR}/bin/macdeployqt ${CMAKE_CURRENT_BINARY_DIR}/${PROGNAME}.app
+    )
     add_custom_target( codesign DEPENDS ${TERA_GUI_NAME}
         COMMAND codesign -f -s \"$$SIGNCERT\"
             $<TARGET_FILE_DIR:${TERA_GUI_NAME}>/*.*

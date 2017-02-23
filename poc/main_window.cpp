@@ -15,6 +15,7 @@
 #include <QGraphicsProxyWidget>
 #include <QMessageBox>
 #include <QRegion>
+#include <QProcess>
 #include <QThreadPool>
 
 
@@ -552,7 +553,15 @@ void TeraMainWin::handleHelp() {
 }
 
 void TeraMainWin::showLog(QUrl const& link) {
-    if (!QDesktopServices::openUrl(link)) {
+    bool success = QDesktopServices::openUrl(link);
+
+#if defined(Q_OS_MAC)
+    if (!success) {
+        success = QProcess::startDetached("open", QStringList()  << link.toLocalFile());
+    }
+#endif
+
+    if (!success) {
         QMessageBox::warning(this, this->windowTitle(), tr("Couldn't open timestamping log: ") + link.toDisplayString());
     }
 }
