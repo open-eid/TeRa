@@ -57,6 +57,9 @@ IF (WIN32)
     include_directories("$ENV{TERA_LIBZIP_DIR}/include" "$ENV{TERA_LIBZIP_DIR}/lib/libzip/include")
     SET (ZIP_LIBRARIES "$ENV{TERA_LIBZIP_DIR}/lib/zipstatic.lib")
     # for static openssl
+    set(OPENSSL_USE_STATIC_LIBS TRUE)
+    # set(OPENSSL_MSVC_STATIC_RT TRUE)
+    find_package(OpenSSL)
     # SET (FOR_OPENSSL_STATIC crypt32.lib ws2_32.lib) # GDI64.LIB ADVAPI64.LIB USER64.LIB)
 ELSE()
     # ???? include_directories(/usr/local/lib/libzip/include/)
@@ -103,7 +106,7 @@ include_directories( ${OPENSSL_INCLUDE_DIR} )
 
 
 message(STATUS "Qt5Core version:     " ${Qt5Core_VERSION})
-message(STATUS "ZLIB_INCLUDE:        " ${ZLIB_INCLUDE})
+message(STATUS "ZLIB_INCLUDE_DIRS:   " ${ZLIB_INCLUDE_DIRS})
 message(STATUS "ZLIB_LIBRARIES:      " ${ZLIB_LIBRARIES})
 message(STATUS "ZIP_LIBRARIES:       " ${ZIP_LIBRARIES})
 message(STATUS "ZIP_INCLUDE_DIR:     " ${ZIP_INCLUDE_DIR})
