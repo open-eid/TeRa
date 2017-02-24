@@ -20,6 +20,7 @@
 #pragma once
 
 #include <QThread>
+#include <QMutex> // TODO
 
 #include <QSharedDataPointer>
 
