@@ -45,7 +45,11 @@ GuiTimestamperProcessor::GuiTimestamperProcessor() :
     INI_PARAM_PREVIEW_FILES(Config::INI_GROUP_ + "preview_files"),
     settings("Estonian ID Card", qApp->applicationName())
 {
+#if QT_VERSION < QT_VERSION_CHECK(5, 4, 0)
+    QDir iniDir(QStandardPaths::writableLocation(QStandardPaths::DataLocation));
+#else
     QDir iniDir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
+#endif
     iniDir.mkpath(iniDir.path());
     iniPath = QFileInfo(iniDir, "tera_client.ini").filePath();
 

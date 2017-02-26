@@ -10,7 +10,10 @@
 
 #include <QDebug>
 #include <QDirIterator> // TODO
-#include <QStorageInfo>
+
+#ifndef TERA_USE_UNIX_STORAGE_INFO
+    #include <QStorageInfo>
+#endif
 
 #include "utils.h"
 

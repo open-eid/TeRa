@@ -283,7 +283,8 @@ void TeraMainWin::timestampingTestFinished(bool success, QByteArray resp, QStrin
     processor.inFiles.clear();
     fillProgressBar();
 
-    CrawlDiskJob* crawlJob = new CrawlDiskJob(*this, ++jobId, processor);
+    int newJobId = jobId.fetchAndAddOrdered(1);
+    CrawlDiskJob* crawlJob = new CrawlDiskJob(*this, newJobId, processor);
     connect(crawlJob, SIGNAL(signalProcessingPath(int, QString, double)),
         this, SLOT(processProcessingPath(int, QString, double)));
     connect(crawlJob, SIGNAL(signalExcludingPath(int, QString)),
@@ -362,6 +363,8 @@ void TeraMainWin::startStampingFiles() {
 
         bool spaceIssue = false;
         QString sizeInfo;
+#ifdef TERA_USE_UNIX_STORAGE_INFO
+#else
         for (auto it = filesizesPerPartitition.begin(); it != filesizesPerPartitition.end(); ++it) {
             QString partition = it.key();
             qint64 filesTotalSize = it.value();
@@ -372,6 +375,7 @@ void TeraMainWin::startStampingFiles() {
                     arg(hrPath(partition), hrSize(partitionAvailableSize), hrSize(filesTotalSize));
             }
         }
+#endif
 
         if (spaceIssue) {
             QString errorMsg = QString() +
@@ -453,7 +457,7 @@ void TeraMainWin::timestampingFinished(bool success, QString errString) {
 
     processor.inFiles.clear();
     timestapmping = false;
-    if (cancel) setPage(PAGE::START);
+    if (cancel.load()) setPage(PAGE::START);
     else setPage(PAGE::READY);
     settings->setEnabled(true);
 }
@@ -686,11 +690,11 @@ void TeraMainWin::slotLanguageChanged(QAction* a) {
 }
 
 bool TeraMainWin::isCancelled() { // TODO
-    return cancel != 0;
+    return cancel.load() != 0;
 }
 
 bool TeraMainWin::isCancelled(int jobid) {
-    return cancel != 0 || jobid != jobId;
+    return cancel.load() != 0 || jobid != jobId.load();
 }
 
 }

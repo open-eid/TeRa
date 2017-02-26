@@ -14,8 +14,11 @@
 #include <QFileInfo>
 #include <QScopedPointer>
 #include <QSettings>
-#include <QStorageInfo>
 #include <QTextStream>
+
+#ifndef TERA_USE_UNIX_STORAGE_INFO
+    #include <QStorageInfo>
+#endif
 
 #include "config.h"
 #include "logging.h"
@@ -34,8 +37,12 @@ public:
         InFileData(QString const& path) {
             QFileInfo fi(path);
             filesize = fi.size();
+#ifdef TERA_USE_UNIX_STORAGE_INFO
+            partitionPath = "/";
+#else
             QStorageInfo si(path);
             partitionPath = si.rootPath();
+#endif
         }
         qint64 filesize;
         QString partitionPath;
