@@ -28,8 +28,13 @@
 #include <QtCore/QVariant>
 
 #include <openssl/rsa.h>
+#include <openssl/ossl_typ.h>
 
 #define APDU QByteArray::fromHex
+
+#if (OPENSSL_VERSION_NUMBER & 0xFFFF00000) == 0x010000000
+#define TERA_OLD_OPENSSL
+#endif
 
 class QSmartCardPrivate
 {
@@ -47,7 +52,11 @@ public:
 	QMutex			m;
 	QSmartCardData	t;
 	volatile bool	terminate = false;
-	RSA_METHOD		method = *RSA_get_default_method();
+#ifdef TERA_OLD_OPENSSL
+    RSA_METHOD*		method = new RSA_METHOD(*RSA_get_default_method());
+#else
+    RSA_METHOD*		method = RSA_meth_dup(RSA_get_default_method());
+#endif
 	QTextCodec		*codec = QTextCodec::codecForName("Windows-1252");
 
 	const QByteArray AID30 = APDU("00A40400 10 D2330000010000010000000000000000");

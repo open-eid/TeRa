@@ -9,6 +9,11 @@
 
 #include <iostream>
 
+
+#if (OPENSSL_VERSION_NUMBER & 0xFFFF00000) == 0x010000000
+    #define TERA_OLD_OPENSSL
+#endif
+
 namespace ria_tera {
 
     // apps/ts.c    TODO
@@ -49,93 +54,68 @@ std::cout << "could not create nonce\n" << std::endl;
 	return NULL;
 }
 
-//static int create_digest(BIO *input, const char *digest, const EVP_MD *md,
-//						 unsigned char **md_value)
-//{
-//	int md_value_len;
-//	int rv = 0;
-//	EVP_MD_CTX *md_ctx = NULL;
-//
-//	md_value_len = EVP_MD_size(md);
-//	if (md_value_len < 0)
-//		return 0;
-//
-//	if (input) {
-//		unsigned char buffer[4096];
-//		int length;
-//
-//		md_ctx = EVP_MD_CTX_new();
-//		if (md_ctx == NULL)
-//			return 0;
-//std::cout << "md_value_len= " << md_value_len << std::endl;
-//		*md_value = new unsigned char[md_value_len]; //app_malloc(md_value_len, "digest buffer");
-//		if (!EVP_DigestInit(md_ctx, md))
-//			goto err;
-//		while ((length = BIO_read(input, buffer, sizeof(buffer))) > 0) {
-//			if (!EVP_DigestUpdate(md_ctx, buffer, length))
-//				goto err;
-//		}
-//		if (!EVP_DigestFinal(md_ctx, *md_value, NULL))
-//			goto err;
-//		md_value_len = EVP_MD_size(md);
-//	} else {
-//		long digest_len;
-//		*md_value = OPENSSL_hexstr2buf(digest, &digest_len);
-//		if (!*md_value || md_value_len != digest_len) {
-//			OPENSSL_free(*md_value);
-//			*md_value = NULL;
-//std::cout << "could not create query aa\n" << std::endl;
-////            BIO_printf(bio_err, "bad digest, %d bytes "
-////                       "must be specified\n", md_value_len);
-//			return 0;
-//		}
-//	}
-//	rv = md_value_len;
-// err:
-//	EVP_MD_CTX_free(md_ctx);
-//	return rv;
-//}
-
-static int create_digest(BIO *input, char const*digest, const EVP_MD *md,
+static int create_digest(BIO *input, const char *digest, const EVP_MD *md,
     unsigned char **md_value)
 {
     int md_value_len;
+    int rv = 0;
+#ifdef TERA_OLD_OPENSSL
+#else
+    EVP_MD_CTX *md_ctx = NULL;
+#endif
 
     md_value_len = EVP_MD_size(md);
     if (md_value_len < 0)
-        goto err;
+        return 0;
+
     if (input) {
+#ifdef TERA_OLD_OPENSSL
         /* Digest must be computed from an input file. */
-        EVP_MD_CTX md_ctx;
+        EVP_MD_CTX md_ctx__obj;
+        EVP_MD_CTX* md_ctx = &md_ctx__obj;
+#else
+        md_ctx = EVP_MD_CTX_new();
+        if (md_ctx == NULL)
+            return 0;
+#endif
         unsigned char buffer[4096];
         int length;
 
-        *md_value = reinterpret_cast<unsigned char *>(OPENSSL_malloc(md_value_len));
-        if (*md_value == 0)
+// TODO freed later...
+        *md_value = new unsigned char[md_value_len]; //app_malloc(md_value_len, "digest buffer");
+        if (!EVP_DigestInit(md_ctx, md))
             goto err;
-
-        EVP_DigestInit(&md_ctx, md);
         while ((length = BIO_read(input, buffer, sizeof(buffer))) > 0) {
-            EVP_DigestUpdate(&md_ctx, buffer, length);
+            if (!EVP_DigestUpdate(md_ctx, buffer, length))
+                goto err;
         }
-        EVP_DigestFinal(&md_ctx, *md_value, NULL);
+        if (!EVP_DigestFinal(md_ctx, *md_value, NULL))
+            goto err;
+        md_value_len = EVP_MD_size(md);
     }
     else {
-        /* Digest bytes are specified with digest. */
         long digest_len;
+#ifdef TERA_OLD_OPENSSL
         *md_value = string_to_hex(digest, &digest_len);
+#else
+        *md_value = OPENSSL_hexstr2buf(digest, &digest_len);
+#endif
         if (!*md_value || md_value_len != digest_len) {
             OPENSSL_free(*md_value);
             *md_value = NULL;
-// TODO            BIO_printf(bio_err, "bad digest, %d bytes "
-//                "must be specified\n", md_value_len);
+            std::cout << "could not create query aa\n" << std::endl;
+            //            BIO_printf(bio_err, "bad digest, %d bytes "
+            //                       "must be specified\n", md_value_len);
             goto err;
         }
     }
-
-    return md_value_len;
+    rv = md_value_len;
 err:
-    return 0;
+#ifdef TERA_OLD_OPENSSL
+#else
+    EVP_MD_CTX_free(md_ctx);
+#endif
+    return rv;
 }
 
 static TS_REQ *create_query(BIO *data_bio, const char *digest, const EVP_MD *md,
@@ -326,41 +306,6 @@ bool extract_timestamp_from_ts_response(QByteArray const& timeserverResponse, QB
 }
 
 
-//static TS_RESP *read_PKCS7(BIO *in_bio)
-//{
-//    int ret = 0;
-//    PKCS7 *token = NULL;
-//    TS_TST_INFO *tst_info = NULL;
-//    TS_RESP *resp = NULL;
-//    TS_STATUS_INFO *si = NULL;
-//
-//    if ((token = d2i_PKCS7_bio(in_bio, NULL)) == NULL)
-//        return resp; // goto end;
-//    if ((tst_info = PKCS7_to_TS_TST_INFO(token)) == NULL)
-//        return resp; // goto end;
-//    if ((resp = TS_RESP_new()) == NULL)
-//        return resp; // goto end;
-//    if ((si = TS_STATUS_INFO_new()) == NULL)
-//        return resp; // goto end;
-//    if (!TS_STATUS_INFO_set_status(si, TS_STATUS_GRANTED))
-//        return resp; // goto end;
-//    if (!TS_RESP_set_status_info(resp, si))
-//        return resp; // goto end;
-//    TS_RESP_set_tst_info(resp, token, tst_info);
-//    token = NULL;               /* Ownership is lost. */
-//    tst_info = NULL;            /* Ownership is lost. */
-//    ret = 1;
-////
-//// end:
-////    PKCS7_free(token);
-////    TS_TST_INFO_free(tst_info);
-////    if (!ret) {
-////        TS_RESP_free(resp);
-////        resp = NULL;
-////    }
-////    TS_STATUS_INFO_free(si);
-//    return resp;
-//}
 /* Reads a PKCS7 token and adds default 'granted' status info to it. */
 static TS_RESP *read_PKCS7(BIO *in_bio)
 {
@@ -370,10 +315,9 @@ static TS_RESP *read_PKCS7(BIO *in_bio)
     TS_RESP *resp = NULL;
     TS_STATUS_INFO *si = NULL;
 
-    /* Read PKCS7 object and extract the signed time stamp info. */
-    if (!(token = d2i_PKCS7_bio(in_bio, NULL)))
+    if ((token = d2i_PKCS7_bio(in_bio, NULL)) == NULL)
         goto end;
-    if (!(tst_info = PKCS7_to_TS_TST_INFO(token)))
+    if ((tst_info = PKCS7_to_TS_TST_INFO(token)) == NULL)
         goto end;
 
     /* Creating response object. */
@@ -381,10 +325,15 @@ static TS_RESP *read_PKCS7(BIO *in_bio)
         goto end;
 
     /* Create granted status info. */
-    if (!(si = TS_STATUS_INFO_new()))
+    if ((si = TS_STATUS_INFO_new()) == NULL)
         goto end;
+#ifdef TERA_OLD_OPENSSL
     if (!(ASN1_INTEGER_set(si->status, TS_STATUS_GRANTED)))
         goto end;
+#else
+    if (!TS_STATUS_INFO_set_status(si, TS_STATUS_GRANTED))
+        return resp; // goto end;
+#endif
     if (!TS_RESP_set_status_info(resp, si))
         goto end;
 
@@ -394,6 +343,7 @@ static TS_RESP *read_PKCS7(BIO *in_bio)
     tst_info = NULL;            /* Ownership is lost. */
 
     ret = 1;
+
 end:
     PKCS7_free(token);
     TS_TST_INFO_free(tst_info);
@@ -404,7 +354,6 @@ end:
     TS_STATUS_INFO_free(si);
     return resp;
 }
-
 
 QByteArray create_timestamp_request(QByteArray const& sha256) // TODO check size
 {

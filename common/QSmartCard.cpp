@@ -216,8 +216,13 @@ QSmartCard::QSmartCard(QObject *parent)
 :	QThread(parent)
 ,	d(new QSmartCardPrivate)
 {
-	d->method.name = "QSmartCard";
-	d->method.rsa_sign = QSmartCardPrivate::rsa_sign;
+#ifdef TERA_OLD_OPENSSL
+    d->method->name = "QSmartCard";
+    d->method->rsa_sign = QSmartCardPrivate::rsa_sign;
+#else
+    RSA_meth_set1_name(d->method, "QSmartCard");
+    RSA_meth_set_sign(d->method, QSmartCardPrivate::rsa_sign);
+#endif
 	d->t.d->readers = QPCSC::instance().readers();
 	d->t.d->cards = QStringList() << "loading";
 	d->t.d->card = "loading";
@@ -274,8 +279,10 @@ Qt::HANDLE QSmartCard::key()
 	if (!rsa)
 		return 0;
 
-	RSA_set_method(rsa, &d->method);
+	RSA_set_method(rsa, d->method);
+#ifdef TERA_OLD_OPENSSL
 	rsa->flags |= RSA_FLAG_SIGN_VER;
+#endif
 	RSA_set_app_data(rsa, d);
 	EVP_PKEY *key = EVP_PKEY_new();
 	EVP_PKEY_set1_RSA(key, rsa);

@@ -33,6 +33,10 @@
 #include <openssl/x509v3.h>
 #include <openssl/pkcs12.h>
 
+#if (OPENSSL_VERSION_NUMBER & 0xFFFF00000) == 0x010000000
+#define TERA_OLD_OPENSSL
+#endif
+
 uint qHash( const SslCertificate &cert ) { return qHash( cert.digest() ); }
 
 SslCertificate::SslCertificate()
@@ -129,6 +133,29 @@ bool SslCertificate::isCA() const
 	return result;
 }
 
+static const BIGNUM* get_RSA_D(RSA *rsa) {
+#ifdef TERA_OLD_OPENSSL
+    return rsa->d;
+#else
+    const BIGNUM *n = NULL;
+    const BIGNUM *e = NULL;
+    const BIGNUM *d = NULL;
+    RSA_get0_key(rsa, &n, &e, &d);
+    return d;
+#endif
+}
+
+static const BIGNUM* get_DSA_private_key(const DSA *dsa) {
+#ifdef TERA_OLD_OPENSSL
+    return dsa->priv_key;
+#else
+    const BIGNUM *pub_key = NULL;
+    const BIGNUM *priv_key = NULL;
+    DSA_get0_key(dsa, &pub_key, &priv_key);
+    return priv_key;
+#endif
+}
+
 QSslKey SslCertificate::keyFromEVP( Qt::HANDLE evp )
 {
 	EVP_PKEY *key = (EVP_PKEY*)evp;
@@ -137,14 +164,22 @@ QSslKey SslCertificate::keyFromEVP( Qt::HANDLE evp )
 	QSsl::KeyAlgorithm alg;
 	QSsl::KeyType type;
 
+    // https://www.openssl.org/docs/man1.1.0/crypto/EVP_PKEY_type.html
+    // Previous versions of this document suggested using EVP_PKEY_type(pkey->type)
+    // to determine the type of a key. Since EVP_PKEY is now opaque this is no longer
+    // possible: the equivalent is EVP_PKEY_base_id(pkey).
+#ifdef TERA_OLD_OPENSSL
 	switch( EVP_PKEY_type( key->type ) )
+#else
+    switch (EVP_PKEY_base_id(key))
+#endif
 	{
 	case EVP_PKEY_RSA:
 	{
 		RSA *rsa = EVP_PKEY_get1_RSA( key );
 		alg = QSsl::Rsa;
-		type = rsa->d ? QSsl::PrivateKey : QSsl::PublicKey;
-		len = rsa->d ? i2d_RSAPrivateKey( rsa, &data ) : i2d_RSAPublicKey( rsa, &data );
+        type = get_RSA_D(rsa) ? QSsl::PrivateKey : QSsl::PublicKey;
+        len = get_RSA_D(rsa) ? i2d_RSAPrivateKey(rsa, &data) : i2d_RSAPublicKey(rsa, &data);
 		RSA_free( rsa );
 		break;
 	}
@@ -152,8 +187,8 @@ QSslKey SslCertificate::keyFromEVP( Qt::HANDLE evp )
 	{
 		DSA *dsa = EVP_PKEY_get1_DSA( key );
 		alg = QSsl::Dsa;
-		type = dsa->priv_key ? QSsl::PrivateKey : QSsl::PublicKey;
-		len = dsa->priv_key ? i2d_DSAPrivateKey( dsa, &data ) : i2d_DSAPublicKey( dsa, &data );
+        type = get_DSA_private_key(dsa) ? QSsl::PrivateKey : QSsl::PublicKey;
+        len = get_DSA_private_key(dsa) ? i2d_DSAPrivateKey(dsa, &data) : i2d_DSAPublicKey(dsa, &data);
 		DSA_free( dsa );
 		break;
 	}
@@ -168,14 +203,30 @@ QSslKey SslCertificate::keyFromEVP( Qt::HANDLE evp )
 	return k;
 }
 
+static X509_PUBKEY* get_X509_pubkey(X509 *c) {
+#ifdef TERA_OLD_OPENSSL
+    return c->cert_info->key;
+#else
+    return X509_get_X509_PUBKEY(c);
+#endif
+}
+
 QString SslCertificate::keyName() const
 {
 	X509 *c = (X509*)handle();
 	if(!c)
 		return QString();
-	EVP_PKEY *key = X509_PUBKEY_get( c->cert_info->key );
+    EVP_PKEY *key = X509_PUBKEY_get( get_X509_pubkey(c) );
 	QString name = tr("Unknown");
-	switch( EVP_PKEY_type( key->type ) )
+    // https://www.openssl.org/docs/man1.1.0/crypto/EVP_PKEY_type.html
+    // Previous versions of this document suggested using EVP_PKEY_type(pkey->type)
+    // to determine the type of a key. Since EVP_PKEY is now opaque this is no longer
+    // possible: the equivalent is EVP_PKEY_base_id(pkey).
+#ifdef TERA_OLD_OPENSSL
+    switch (EVP_PKEY_type(key->type))
+#else
+    switch (EVP_PKEY_base_id(key))
+#endif
 	{
 	case EVP_PKEY_DSA:
 		name = QString("DSA (%1)").arg( publicKey().length() );
@@ -286,9 +337,17 @@ QString SslCertificate::publicKeyHex() const
 	X509 *x = static_cast<X509*>(handle());
 	if(!x)
 		return QString();
-	EVP_PKEY *key = X509_PUBKEY_get( x->cert_info->key );
+    EVP_PKEY *key = X509_PUBKEY_get( get_X509_pubkey(x) );
 	QString hex;
-	switch( EVP_PKEY_type( key->type ) )
+    // https://www.openssl.org/docs/man1.1.0/crypto/EVP_PKEY_type.html
+    // Previous versions of this document suggested using EVP_PKEY_type(pkey->type)
+    // to determine the type of a key. Since EVP_PKEY is now opaque this is no longer
+    // possible: the equivalent is EVP_PKEY_base_id(pkey).
+#ifdef TERA_OLD_OPENSSL
+    switch (EVP_PKEY_type(key->type))
+#else
+    switch (EVP_PKEY_base_id(key))
+#endif
 	{
 #ifndef OPENSSL_NO_ECDSA
 	case EVP_PKEY_EC:
@@ -331,6 +390,15 @@ QByteArray SslCertificate::serialNumber( bool hex ) const
 bool SslCertificate::showCN() const
 { return subjectInfo( "GN" ).isEmpty() && subjectInfo( "SN" ).isEmpty(); }
 
+static const X509_ALGOR* get_X509_cert_signature(const X509* x) {
+#ifdef TERA_OLD_OPENSSL
+    return x->cert_info->signature;
+#else
+    // see include/openssl/x509.h crypto/x509/x509_set.c
+    return X509_get0_tbs_sigalg(x);
+#endif
+}
+
 QString SslCertificate::signatureAlgorithm() const
 {
 	if( isNull() )
@@ -338,7 +406,7 @@ QString SslCertificate::signatureAlgorithm() const
 
 	char buf[50];
 	memset( buf, 0, 50 );
-	i2t_ASN1_OBJECT( buf, 50, ((X509*)handle())->cert_info->signature->algorithm );
+	i2t_ASN1_OBJECT( buf, 50, get_X509_cert_signature((X509*)handle())->algorithm );
 	return buf;
 }
 
