@@ -371,18 +371,18 @@ void TeraMainWin::startStampingFiles() {
             qint64 partitionAvailableSize = QStorageInfo(partition).bytesAvailable();
             if (filesTotalSize > partitionAvailableSize) {
                 spaceIssue = true;
-                sizeInfo = QString(tr(" * '%1': vaba ruumi %2, ruumi vaja %3 (hinnanguline)\n")).
-                    arg(hrPath(partition), hrSize(partitionAvailableSize), hrSize(filesTotalSize));
+                sizeInfo = QString(tr("* %1: free space %2, space needed %3 (approximately)")).
+                    arg(hrPath(partition), hrSize(partitionAvailableSize), hrSize(filesTotalSize)) + "\n";
             }
         }
 #endif
 
         if (spaceIssue) {
             QString errorMsg = QString() +
-                tr("Leitud DDOC failide kogumaht ületab kettal oleva vaba ruumi:\n\n") +
+                tr("The space needed to timestamp all the DDOC files found exceeds the amount of free space found:\n\n") +
                 sizeInfo +
-                tr("\nÜletembeldatud failid ei pruugi kettale ära mahtuda.");
-            QString message = errorMsg + tr("\n\nKatkestada tembeldamine?");
+                tr("\nTimestamped files might not fit on disk.");
+            QString message = errorMsg + "\n\n" + tr("Abort timestamping?");
 
             QMessageBox::StandardButtons button = QMessageBox::warning(this, this->windowTitle(), message, QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
             if (QMessageBox::Yes == button) {
@@ -515,22 +515,22 @@ void TeraMainWin::fillDoneLog() {
     logText->setCurrentCharFormat(format);
 
     if (!processor.result->success) {
-        logText->append(tr("Viga:"));
+        logText->append(tr("Error:"));
         logText->append(processor.result->error);
         return;
     }
 
-    logText->append(tr("DDOC failide konverteerimine lõppes"));
-    logText->append(tr("DDOC faile leitud: %1").arg(QString::number(processor.result->cntFound)));
+    logText->append(tr("Finished timestamping DDOC files"));
+    logText->append(tr("DDOC files found: %1").arg(QString::number(processor.result->cntFound)));
     if (processor.result->cntFound != processor.result->cnt)
-        logText->append(tr("   millest tembeldamiseks valisite: %1").arg(QString::number(processor.result->cnt)));
-    logText->append(tr("DDOC faile konverteeritud: %1").arg(QString::number(processor.result->progressSuccess)));
+        logText->append(tr("   of which %1 where chosen for timestamping").arg(QString::number(processor.result->cnt)));
+    logText->append(tr("DDOC files timestamped: %1").arg(QString::number(processor.result->progressSuccess)));
     if (processor.result->progressFailed > 0) {
-        logText->append(tr("Ebaõnnestunud konverteerimisi: %1").arg(QString::number(processor.result->progressFailed)));
+        logText->append(tr("Failed timestampings: %1").arg(QString::number(processor.result->progressFailed)));
     }
 
     if (processor.logfile) {
-        logText->append(tr("Täpsema aruande vaatamiseks vajuta "));
+        logText->append(tr("For detailed report click "));
 
         QString filepath = processor.logfile->filePath();
         QTextCursor cursor = logText->textCursor();
@@ -539,7 +539,7 @@ void TeraMainWin::fillDoneLog() {
         format.setFontUnderline(true);
 
         cursor.movePosition(QTextCursor::End, QTextCursor::MoveAnchor);
-        cursor.insertText(tr("SIIA"), format);
+        cursor.insertText(tr("HERE"), format);
     }
 }
 
