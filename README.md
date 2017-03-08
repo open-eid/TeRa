@@ -168,7 +168,7 @@ Install OpenSSL from https://www.openssl.org/source/openssl-1.0.2h.tar.gz (for d
     export CMAKE_PREFIX_PATH=$TERA_QT_DIR/lib/cmake:$TERA_ZLIB_DIR:$TERA_LIBZIP_DIR:$TERA_OPENSSL_DIR
     cmake -G "Unix Makefiles" ~/cmake_builds/github/TeRa
 
-#### 4. Configure
+#### 4. Build
 
     cmake --build .
 
@@ -312,26 +312,6 @@ In Windows
 #### Install openssl
 https://www.openssl.org/source/openssl-1.0.2h.tar.gz See https://wiki.openssl.org/index.php/Compilation_and_Installation for details.
 
-Short version for Ubuntu & OSX. Untar tar.gz to ~/cmake_builds
-
-    # cd ~/cmake_builds
-    # tar xzvf ~/Downloads/openssl-1.1.0b.tar.gz
-    # cd openssl-1.1.0b 
-    # ./config --prefix=$HOME/cmake_builds/openssl-1.1.0b-bin --openssldir=$HOME/cmake_builds/openssl-1.1.0b-openssl
-    # make
-    # make test
-    # make install
-
-
-MacOS (for details, see https://wiki.openssl.org/index.php/Compilation_and_Installation#OS_X)
-
-    tar xxx
-    ./Configure darwin64-x86_64-cc shared --openssldir=$HOME/cmake_builds/openssl-1.0.2h.bin
-    make depend
-    make install
-    make test
-
-
 In Windows extract to C:\cmake_builds\openssl-1.1.0b(_32/_64). And install http://www.activestate.com/ActivePerl first. On casual windows command prompt dmake has to be installed for perl
 
     ppm install dmake
@@ -356,18 +336,6 @@ Then it is possible to build OpenSSL itself in Visual Studio command line (if 64
     nmake -f ms\ntdll.mak install
 
 ### 2. Configure
-
-In OSX
-
-    mkdir -p ~/cmake_builds/tera_src && cd ~/cmake_builds/tera_src
-    git clone https://github.com/open-eid/TeRa.git
-
-    mkdir -p ~/cmake_builds/tera && cd ~/cmake_builds/tera
-    export TERA_LIBZIP_DIR=$HOME/cmake_builds/libzip_bin
-    export TERA_ZLIB_DIR=$HOME/cmake_builds/zlib_bin
-    export TERA_OPENSSL_DIR=$HOME/cmake_builds/openssl-1.0.2h.bin
-    export CMAKE_PREFIX_PATH=$HOME/Qt5.7.0/5.7/clang_64/lib/cmake:$TERA_ZLIB_DIR:$TERA_LIBZIP_DIR:$TERA_OPENSSL_DIR
-    cmake -G "Unix Makefiles" ~/cmake_builds/tera_src/TeRa -DOPENSSL_ROOT_DIR=$TERA_OPENSSL_DIR
 
 In Windows (put in your Qt path in "set "CMAKE_PREFIX_PATH=...")
 

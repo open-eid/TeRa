@@ -561,7 +561,8 @@ void TeraMainWin::showLog(QUrl const& link) {
 
 #if defined(Q_OS_MAC)
     if (!success) {
-        success = QProcess::startDetached("open", QStringList()  << link.toLocalFile());
+        qDebug() << "Opening log-file " << link.url();
+        success = QProcess::startDetached("open", QStringList()  << link.url());
     }
 #endif
 

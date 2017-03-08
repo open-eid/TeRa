@@ -1,0 +1,37 @@
+Source: qestidutil-tera
+Section: utils
+Priority: extra
+Maintainer: RIA <info@ria.ee>
+Build-Depends:
+ cdbs,
+ cmake,
+ libpcsclite-dev,
+ libssl-dev,
+ qtbase5-dev,
+ qttools5-dev,
+ qttools5-dev-tools,
+ zlib1g,
+ zlib1g-dev
+Standards-Version: 0.7.0
+Homepage: https://github.com/open-eid/tera
+
+Package: qestidutil-tera
+Architecture: any
+Depends:
+ fonts-liberation,
+ pcscd (>=1.5),
+ ${misc:Depends},
+ ${shlibs:Depends}
+Description: Estonian DDOC re-timestamping utility
+ TeRa is a part of Estonian national ID-card software developed by
+ CGI on behalf of governmental institution - Estonian
+ Information System’s Authority.
+ .
+ TeRa utility allows you to search local *.ddoc files and timestamp
+ them into *.asics container.
+ *.ddoc files used SHA-1 hash that might soon be attacable. TeRa
+ timestamps found *.ddoc files using SHA-256 and encapsulates them 
+ into *.asics container ensuring its validity. No signature is
+ added to the container so signature information has to be
+ retreived from the encapsulated *.ddoc file (original *.ddoc
+ file is copied into *.asics untouched).

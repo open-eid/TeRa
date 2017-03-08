@@ -62,9 +62,6 @@ IF (WIN32)
     find_package(OpenSSL)
     # SET (FOR_OPENSSL_STATIC crypt32.lib ws2_32.lib) # GDI64.LIB ADVAPI64.LIB USER64.LIB)
 ELSE()
-    # ???? include_directories(/usr/local/lib/libzip/include/)
-#    SET (OPENSSL_INCLUDE_DIR $ENV{TERA_OPENSSL_DIR}/include/)
-#    SET (OPENSSL_LIBRARIES $ENV{TERA_OPENSSL_DIR}/lib/libcrypto.dylib $ENV{TERA_OPENSSL_DIR}/lib/libssl.dylib)
     IF (APPLE)
         SET (ZLIB_LIBRARIES $ENV{TERA_ZLIB_DIR}/lib/libz.a)
         SET (ZIP_LIBRARIES $ENV{TERA_LIBZIP_DIR}/lib/libzipstatic.a)
@@ -73,11 +70,7 @@ ELSE()
         # OpenSSL...
         SET (OPENSSL_INCLUDE_DIR $ENV{TERA_OPENSSL_DIR}/include/)
         # prefer static libs is they exist
-        IF (EXISTS "$ENV{TERA_OPENSSL_DIR}/lib/libcrypto.a")
-            SET (OPENSSL_LIBRARIES $ENV{TERA_OPENSSL_DIR}/lib/libcrypto.a     $ENV{TERA_OPENSSL_DIR}/lib/libssl.a)
-        ELSE()
-            SET (OPENSSL_LIBRARIES $ENV{TERA_OPENSSL_DIR}/lib/libcrypto.dylib $ENV{TERA_OPENSSL_DIR}/lib/libssl.dylib)
-        ENDIF()
+        SET (OPENSSL_LIBRARIES $ENV{TERA_OPENSSL_DIR}/lib/libcrypto.dylib $ENV{TERA_OPENSSL_DIR}/lib/libssl.dylib)
     ELSE()
         IF (DEFINED ENV{TERA_USE_UNIX_STORAGE_INFO})
             add_definitions(-DTERA_USE_UNIX_STORAGE_INFO)
@@ -87,14 +80,6 @@ ELSE()
             SET (ZIP_LIBRARIES $ENV{TERA_LIBZIP_DIR}/lib/libzipstatic.a)
             SET (ZIP_INCLUDE_DIR $ENV{TERA_LIBZIP_DIR}/include $ENV{TERA_LIBZIP_DIR}/lib/libzip/include/)
             include_directories( ${ZIP_INCLUDE_DIR} )
-            # OpenSSL...
-            SET (OPENSSL_INCLUDE_DIR $ENV{TERA_OPENSSL_DIR}/include/)
-            # prefer static libs is they exist
-            IF (EXISTS "$ENV{TERA_OPENSSL_DIR}/lib/libcrypto.a")
-                SET (OPENSSL_LIBRARIES $ENV{TERA_OPENSSL_DIR}/lib/libcrypto.a     $ENV{TERA_OPENSSL_DIR}/lib/libssl.a)
-            ELSE()
-                SET (OPENSSL_LIBRARIES $ENV{TERA_OPENSSL_DIR}/lib/libcrypto.so $ENV{TERA_OPENSSL_DIR}/lib/libssl.so)
-            ENDIF()
         ELSE()
            # find_package(LIBZIP REQUIRED)
            find_path(ZIP_INCLUDE_DIR__ZIP_H NAMES zip.h)
@@ -104,6 +89,17 @@ ELSE()
            include_directories( ${ZIP_INCLUDE_DIR} )
 
            find_package(ZLIB REQUIRED)
+        ENDIF()
+        # OpenSSL...
+        IF (DEFINED ENV{TERA_OPENSSL_DIR})
+            SET (OPENSSL_INCLUDE_DIR $ENV{TERA_OPENSSL_DIR}/include/)
+            # prefer static libs is they exist
+            IF (EXISTS "$ENV{TERA_OPENSSL_DIR}/lib/libcrypto.a")
+                SET (OPENSSL_LIBRARIES $ENV{TERA_OPENSSL_DIR}/lib/libcrypto.a     $ENV{TERA_OPENSSL_DIR}/lib/libssl.a)
+            ELSE()
+                SET (OPENSSL_LIBRARIES $ENV{TERA_OPENSSL_DIR}/lib/libcrypto.so $ENV{TERA_OPENSSL_DIR}/lib/libssl.so)
+            ENDIF()
+        ELSE()
            find_package(OpenSSL REQUIRED)
         ENDIF()
     ENDIF()
@@ -206,20 +202,20 @@ qt5_add_resources( SOURCES images/images.qrc translations/tr.qrc )
 qt5_wrap_ui( UI_HEADERS ${TERA_GUI_UI} )
 
 # TeRaTool
-add_executable(TeRaTool
-        ${TERA_COMMON_SRC}
-        poc/teragui.rc
-        poc/terapoc.cpp
-        poc/utils.h poc/utils.cpp
-        poc/openssl_utils.h poc/openssl_utils.cpp
-        poc/disk_crawler.h poc/disk_crawler.cpp
-        poc/logging.h poc/logging.cpp
-        poc/timestamper.h poc/timestamper.cpp
-        poc/config.h poc/config.cpp
-        ${CONFIG_SOURCES}
-        )
-target_link_libraries(TeRaTool ${ZIP_LIBRARIES} ${OPENSSL_LIBRARIES} ${FOR_OPENSSL_STATIC} ${ZLIB_LIBRARIES} ${TERA_SCARD_LIBRARIES})
-qt5_use_modules(TeRaTool Core Concurrent Network)
+# add_executable(TeRaTool
+        # ${TERA_COMMON_SRC}
+        # poc/teragui.rc
+        # poc/terapoc.cpp
+        # poc/utils.h poc/utils.cpp
+        # poc/openssl_utils.h poc/openssl_utils.cpp
+        # poc/disk_crawler.h poc/disk_crawler.cpp
+        # poc/logging.h poc/logging.cpp
+        # poc/timestamper.h poc/timestamper.cpp
+        # poc/config.h poc/config.cpp
+        # ${CONFIG_SOURCES}
+        # )
+# target_link_libraries(TeRaTool ${ZIP_LIBRARIES} ${OPENSSL_LIBRARIES} ${FOR_OPENSSL_STATIC} ${ZLIB_LIBRARIES} ${TERA_SCARD_LIBRARIES})
+# qt5_use_modules(TeRaTool Core Concurrent Network)
 
 SET (TERA_GUI_NAME TeRa)
 add_executable(${TERA_GUI_NAME} WIN32 MACOSX_BUNDLE
@@ -239,7 +235,8 @@ target_link_libraries(${TERA_GUI_NAME} ${ZIP_LIBRARIES} ${OPENSSL_LIBRARIES} ${F
 qt5_use_modules(${TERA_GUI_NAME} Core Concurrent Network Widgets Gui)
 ########### target_link_libraries(${TERA_GUI_NAME} Qt5::Widgets)
 
-if( APPLE )
+if( WIN32 )
+elseif( APPLE )
     add_custom_target( macdeployqt DEPENDS ${TERA_GUI_NAME}
         COMMAND $ENV{TERA_QT_DIR}/bin/macdeployqt ${CMAKE_CURRENT_BINARY_DIR}/${TERA_GUI_NAME}.app
     )
@@ -260,4 +257,8 @@ if( APPLE )
         COMMAND productbuild --component ${CMAKE_CURRENT_BINARY_DIR}/${TERA_GUI_NAME}.app /Applications
             --sign \"$$INSTCERT\" ${CMAKE_BINARY_DIR}/TeRa-store_${VERSION}$ENV{VER_SUFFIX}.pkg
     )
+else()
+    include( GNUInstallDirs )
+    # configure_file( qesteidutil.1.cmake qesteidutil.1 )
+    install( TARGETS ${TERA_GUI_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR} )
 endif()
