@@ -15,37 +15,8 @@
 
 #### 1. Install dependencies
 
-###### a) Build tools
-
     sudo apt-get update
-    sudo apt-get install libdrm-dev build-essential libgl1-mesa-dev git-all cmake zlib1g zlib1g-dev libpcsclite-dev libssl-dev
-
-###### b) Qt 5.6+.
-
-Download and install Qt from https://www.qt.io/download-open-source/
-
-    wget http://download.qt.io/official_releases/qt/5.8/5.8.0/qt-opensource-linux-x64-5.8.0.run
-    chmod +x qt-opensource-linux-x64-5.8.0.run
-    ./qt-opensource-linux-x64-5.8.0.run
-
-###### c) libzip 1.1.x+.
-
-Download and install from https://nih.at/libzip/ (only latest wersion is kept on the page, if the link does not exist find newer link to download "Distfiles: ..., libzip-X.X.X.tar.gz")
-
-    mkdir -p ~/cmake_builds && cd ~/cmake_builds
-    wget https://nih.at/libzip/libzip-1.1.3.tar.gz
-    tar xzvf libzip-1.1.3.tar.gz
-
-Build:
-
-    mkdir -p ~/cmake_builds/libzip && cd ~/cmake_builds/libzip
-    cmake -DCMAKE_INSTALL_PREFIX=~/cmake_builds/libzip_bin -G "Unix Makefiles" ../libzip-1.1.3
-    cmake --build .
-    make install
-
-###### d) ID-card software for drivers
-
-https://installer.id.ee/?lang=est
+    sudo apt-get install libdrm-dev build-essential libgl1-mesa-dev git cmake zlib1g zlib1g-dev libpcsclite-dev libssl-dev qtbase5-dev qttools5-dev qttools5-dev-tools libzip-dev pcscd
 
 #### 2. Fetch the source
 
@@ -55,18 +26,25 @@ https://installer.id.ee/?lang=est
 #### 3. Configure
 
     mkdir -p ~/cmake_builds/tera_build && cd ~/cmake_builds/tera_build
-    export CMAKE_PREFIX_PATH=$HOME/Qt5.8.0/5.8/gcc_64/lib/cmake:$HOME/cmake_builds/libzip_bin
     cmake -G "Unix Makefiles" ~/cmake_builds/github/TeRa
 
 #### 4. Configure
 
     cmake --build .
 
-#### 5. TODO Install
+#### 5. Install
 
-#### 6. TODO Execute
+    sudo make install
 
-    TODO ./TeRaPOC
+#### 6. Execute
+
+Command line tool:
+
+    /usr/local/bin/qesteidutil-tera
+
+GUI:
+
+    /usr/local/bin/qesteidutil-tera-gui
 
 
 

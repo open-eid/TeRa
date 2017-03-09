@@ -202,9 +202,15 @@ qt5_add_resources( SOURCES images/images.qrc translations/tr.qrc )
 qt5_wrap_ui( UI_HEADERS ${TERA_GUI_UI} )
 
 # TeRaTool
+if( UNIX AND NOT APPLE )
+    SET (TERA_CMD_NAME qesteidutil-tera)
+else()
+    SET (TERA_CMD_NAME TeRaTool)
+endif()
+
 if( APPLE )
 else()
-add_executable(TeRaTool
+add_executable(${TERA_CMD_NAME}
         ${TERA_COMMON_SRC}
         poc/teragui.rc
         poc/terapoc.cpp
@@ -216,11 +222,16 @@ add_executable(TeRaTool
         poc/config.h poc/config.cpp
         ${CONFIG_SOURCES}
         )
-target_link_libraries(TeRaTool ${ZIP_LIBRARIES} ${OPENSSL_LIBRARIES} ${FOR_OPENSSL_STATIC} ${ZLIB_LIBRARIES} ${TERA_SCARD_LIBRARIES})
-qt5_use_modules(TeRaTool Core Concurrent Network)
+target_link_libraries(${TERA_CMD_NAME} ${ZIP_LIBRARIES} ${OPENSSL_LIBRARIES} ${FOR_OPENSSL_STATIC} ${ZLIB_LIBRARIES} ${TERA_SCARD_LIBRARIES})
+qt5_use_modules(${TERA_CMD_NAME} Core Concurrent Network)
 endif()
 
-SET (TERA_GUI_NAME TeRa)
+# TeRa GUI
+if( UNIX AND NOT APPLE )
+    SET (TERA_GUI_NAME qesteidutil-tera-gui)
+else()
+    SET (TERA_GUI_NAME TeRa)
+endif()
 add_executable(${TERA_GUI_NAME} WIN32 MACOSX_BUNDLE
         ${TERA_COMMON_SRC}
         poc/teragui.rc
@@ -263,5 +274,6 @@ elseif( APPLE )
 else()
     include( GNUInstallDirs )
     # configure_file( qesteidutil.1.cmake qesteidutil.1 )
+    install( TARGETS ${TERA_CMD_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR} )
     install( TARGETS ${TERA_GUI_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR} )
 endif()
