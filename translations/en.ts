@@ -40,6 +40,29 @@
     </message>
 </context>
 <context>
+    <name>IDCardSelectionDialog</name>
+    <message>
+        <location filename="../poc/IDCardSelectionDialog.ui" line="14"/>
+        <source>Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../poc/IDCardSelectionDialog.ui" line="26"/>
+        <source>TextLabel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../poc/IDCardSelectionDialog.ui" line="94"/>
+        <source>Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../poc/IDCardSelectionDialog.ui" line="101"/>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>MainWindow</name>
     <message>
         <location filename="../poc/MainWindow.ui" line="35"/>
@@ -57,12 +80,27 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/MainWindow.ui" line="1896"/>
+        <location filename="../poc/MainWindow.ui" line="304"/>
+        <source>About</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../poc/MainWindow.ui" line="1894"/>
+        <source>Downloading configuration updates...</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../poc/MainWindow.ui" line="1969"/>
+        <source>TextLabel TeRa Intro</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../poc/MainWindow.ui" line="1982"/>
         <source>Skip this intro</source>
         <translation>Skip this intro</translation>
     </message>
     <message>
-        <location filename="../poc/MainWindow.ui" line="1950"/>
+        <location filename="../poc/MainWindow.ui" line="2036"/>
         <source>TeRa client %1</source>
         <extracomment>%1 is for version number</extracomment>
         <translation>TeRa client %1</translation>
@@ -86,35 +124,24 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:600; color:#00355f;&quot;&gt;paigaldatakse süsteemis algfailiga samasse kataloogi.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../poc/MainWindow.ui" line="898"/>
+        <location filename="../poc/MainWindow.ui" line="931"/>
         <source>Start</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/MainWindow.ui" line="1840"/>
-        <source>TeRa</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../poc/MainWindow.ui" line="1847"/>
-        <location filename="../poc/MainWindow.ui" line="1883"/>
-        <source>TextLabel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../poc/MainWindow.ui" line="1224"/>
+        <location filename="../poc/MainWindow.ui" line="1257"/>
         <source>Ready</source>
         <translation>Ready</translation>
     </message>
     <message>
-        <location filename="../poc/MainWindow.ui" line="466"/>
+        <location filename="../poc/MainWindow.ui" line="499"/>
         <source>To protect you from possible future security issues your digitally signed DDOC files will be timestamped. Timestamped files will have a .asics extention and will be placed in the same folder with the original DDOC files.
 
 By default only files on local drives will be timestamped. If you wish to also timestamp files from network drives or change other settings please open the &quot;Settings&quot; menu.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/MainWindow.ui" line="1449"/>
+        <location filename="../poc/MainWindow.ui" line="1482"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -127,12 +154,12 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">TeRa client 0.4.0</translation>
     </message>
     <message>
-        <location filename="../poc/MainWindow.ui" line="310"/>
+        <location filename="../poc/MainWindow.ui" line="333"/>
         <source>Languages</source>
         <translation>Languages</translation>
     </message>
     <message>
-        <location filename="../poc/MainWindow.ui" line="1811"/>
+        <location filename="../poc/MainWindow.ui" line="1844"/>
         <source>Cancel</source>
         <translation></translation>
     </message>
@@ -140,7 +167,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../poc/main_window.cpp" line="235"/>
+        <location filename="../poc/main_window.cpp" line="304"/>
         <source>Searching</source>
         <translation>Searching</translation>
     </message>
@@ -214,8 +241,8 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ria_tera::BatchStamper</name>
     <message>
-        <location filename="../poc/timestamper.cpp" line="344"/>
-        <location filename="../poc/timestamper.cpp" line="352"/>
+        <location filename="../poc/timestamper.cpp" line="381"/>
+        <location filename="../poc/timestamper.cpp" line="389"/>
         <source>Operation cancelled by user...</source>
         <translation>Operation cancelled by user...</translation>
     </message>
@@ -223,150 +250,202 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ria_tera::GuiTimestamperProcessor</name>
     <message>
-        <location filename="../poc/gui_timestamper_processor.cpp" line="140"/>
-        <location filename="../poc/gui_timestamper_processor.cpp" line="156"/>
+        <location filename="../poc/gui_timestamper_processor.cpp" line="172"/>
+        <location filename="../poc/gui_timestamper_processor.cpp" line="188"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../poc/gui_timestamper_processor.cpp" line="140"/>
+        <location filename="../poc/gui_timestamper_processor.cpp" line="172"/>
         <source>No input directory selected.</source>
         <translation>No input directory selected.</translation>
     </message>
     <message>
-        <location filename="../poc/gui_timestamper_processor.cpp" line="156"/>
+        <location filename="../poc/gui_timestamper_processor.cpp" line="188"/>
         <source>The following input folders don&apos;t exist (or are files). Please fix the list under &quot;Settings&quot; window:</source>
         <translation>The following input folders don&apos;t exist (or are files). Please fix the list in the &quot;Settings&quot; window:</translation>
     </message>
 </context>
 <context>
+    <name>ria_tera::IDCardSelectDialog</name>
+    <message>
+        <location filename="../poc/id_card_select_dialog.cpp" line="35"/>
+        <source>Error: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../poc/id_card_select_dialog.cpp" line="77"/>
+        <source>Card in reader</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../poc/id_card_select_dialog.cpp" line="80"/>
+        <source>This is</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../poc/id_card_select_dialog.cpp" line="82"/>
+        <source>valid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../poc/id_card_select_dialog.cpp" line="84"/>
+        <source>expired</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../poc/id_card_select_dialog.cpp" line="85"/>
+        <source>document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../poc/id_card_select_dialog.cpp" line="87"/>
+        <source>You&apos;re using Digital identity card</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../poc/id_card_select_dialog.cpp" line="89"/>
+        <source>Card is valid till</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ria_tera::TeraMainWin</name>
     <message>
-        <location filename="../poc/main_window.cpp" line="169"/>
+        <location filename="../poc/main_window.cpp" line="237"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="169"/>
+        <location filename="../poc/main_window.cpp" line="237"/>
         <source>Time server URL is empty.</source>
         <translation>Time server URL is empty.</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="303"/>
         <source> * &apos;%1&apos;: free space %2, space needed %3 (approximately)</source>
-        <translation> * %1: free space %2, space needed %3 (approximately)</translation>
+        <translation type="vanished"> * %1: free space %2, space needed %3 (approximately)</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="310"/>
+        <location filename="../poc/main_window.cpp" line="382"/>
         <source>The space needed to timestamp all the DDOC files found exceeds the amount of free space found:
 
 </source>
         <translation>The space needed to timestamp all the DDOC files found exceeds the amount of free space found:</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="312"/>
         <source>Timestamped files might not fit on disk.</source>
-        <translation>Timestamped files might not fit on disk.</translation>
+        <translation type="vanished">Timestamped files might not fit on disk.</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="313"/>
+        <location filename="../poc/main_window.cpp" line="385"/>
         <source>Abort timestamping?</source>
         <translation>Abort timestamping?</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="417"/>
+        <location filename="../poc/main_window.cpp" line="497"/>
         <source>Testing Time Server...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="419"/>
+        <location filename="../poc/main_window.cpp" line="499"/>
         <source>Searching DDOC files. %1 found so far...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="421"/>
+        <location filename="../poc/main_window.cpp" line="501"/>
         <source>Found %1 DDOC files. %2 left to be converted...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="438"/>
+        <location filename="../poc/main_window.cpp" line="518"/>
         <source>Error:</source>
         <translation>Error:</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="443"/>
+        <location filename="../poc/main_window.cpp" line="523"/>
         <source>Finished timestamping DDOC files</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="444"/>
+        <location filename="../poc/main_window.cpp" line="524"/>
         <source>DDOC files found: %1</source>
         <translation>DDOC files found: %1</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="446"/>
+        <location filename="../poc/main_window.cpp" line="526"/>
         <source>   of which %1 where chosen for timestamping</source>
         <translation>   of which %1 where chosen for timestamping</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="447"/>
+        <location filename="../poc/main_window.cpp" line="527"/>
         <source>DDOC files timestamped: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="449"/>
+        <location filename="../poc/main_window.cpp" line="529"/>
         <source>Failed timestampings: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="203"/>
+        <location filename="../poc/main_window.cpp" line="271"/>
         <source>Test request to Time Server failed. </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="390"/>
+        <location filename="../poc/main_window.cpp" line="374"/>
+        <source>* %1: free space %2, space needed %3 (approximately)</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../poc/main_window.cpp" line="384"/>
+        <source>
+Timestamped files might not fit on disk.</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../poc/main_window.cpp" line="470"/>
         <source>Timestamping is not finished. Are you sure?
 </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="453"/>
+        <location filename="../poc/main_window.cpp" line="533"/>
         <source>For detailed report click </source>
         <translation>For detailed report click </translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="462"/>
+        <location filename="../poc/main_window.cpp" line="542"/>
         <source>HERE</source>
         <translation>HERE</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="467"/>
+        <location filename="../poc/main_window.cpp" line="553"/>
         <source>HTTP_HELP</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="469"/>
+        <location filename="../poc/main_window.cpp" line="555"/>
         <source>Couldn&apos;t open help URL: </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="475"/>
+        <location filename="../poc/main_window.cpp" line="570"/>
         <source>Couldn&apos;t open timestamping log: </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="499"/>
+        <location filename="../poc/main_window.cpp" line="594"/>
         <source>I agree</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="500"/>
+        <location filename="../poc/main_window.cpp" line="595"/>
         <source>Cancel</source>
         <translatorcomment>reject button text for &quot;Intro text&quot;</translatorcomment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="532"/>
+        <location filename="../poc/main_window.cpp" line="643"/>
         <source>Operation cancelled by user...</source>
         <translation></translation>
     </message>
