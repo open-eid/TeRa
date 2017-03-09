@@ -363,7 +363,7 @@ void TeraMainWin::startStampingFiles() {
 
         bool spaceIssue = false;
         QString sizeInfo;
-#ifdef TERA_USE_UNIX_STORAGE_INFO
+#if QT_VERSION < QT_VERSION_CHECK(5, 4, 0)
 #else
         for (auto it = filesizesPerPartitition.begin(); it != filesizesPerPartitition.end(); ++it) {
             QString partition = it.key();

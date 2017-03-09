@@ -9,6 +9,7 @@
 #include <iostream>
 
 #include <QDir>
+#include <QFile>
 #include <QFileInfo>
 #include <QCryptographicHash>
 #include <QCoreApplication>
@@ -17,12 +18,27 @@
 
 #include <zip.h>
 
+#if LIBZIP_VERSION_MAJOR == 0 && LIBZIP_VERSION_MINOR <= 10
+	typedef struct zip zip_t;
+	typedef struct zip_source zip_source_t;
+
+	#define ZIP_TRUNCATE 0
+
+	#define OLD_LIBZIP_NO_ZIP_DISCARD
+
+	#define ZIP_FL_ENC_UTF_8 0
+	ZIP_EXTERN zip_int64_t zip_dir_add(zip_t *za, const char *name, int) {return zip_add_dir(za, name);};
+
+	#define ZIP_FL_OVERWRITE 0
+	ZIP_EXTERN zip_int64_t zip_file_add(zip_t *za, const char *name, zip_source_t *s, int) {return zip_add(za, name,s);};
+#endif
+
 #include "logging.h"
 #include "openssl_utils.h"
 
 namespace ria_tera {
 
-    TeraCreateAsicsJob::TeraCreateAsicsJob(qint64 id, QString const& out, QString const& in, QByteArray const& ts)
+TeraCreateAsicsJob::TeraCreateAsicsJob(qint64 id, QString const& out, QString const& in, QByteArray const& ts)
     : jobId(id), outpath(out), infile(in), timestamp(ts)
 {
 }
@@ -38,7 +54,7 @@ bool TeraCreateAsicsJob::createAsicsContainer(QString& errorStr) {
 
     // open tmp zip file
     // https://nih.at/libzip/zip_open.html
-    zip_t* zip = zip_open(outpath.toUtf8().constData(), ZIP_CREATE | ZIP_TRUNCATE, &error);
+    zip_t* zip = zip_open(outpath.toUtf8().constData(), ZIP_CREATE | ZIP_EXCL, &error);
     if (error || NULL == zip) {
         errorStr = QString("Could not create/open archive %1").arg(outpath);
         return false;
@@ -63,12 +79,19 @@ bool TeraCreateAsicsJob::createAsicsContainer(QString& errorStr) {
         error = zip_close(zip);
         if (0 != error) {
             errorStr = QString("Could not finalize '%1'").arg(outpath);
+#ifndef OLD_LIBZIP_NO_ZIP_DISCARD
             zip_discard(zip);
+#endif
             return false;
         }
     } else {
         errorStr = QString("Error while creating '%1': %2").arg(outpath, errorStr);
+#ifndef OLD_LIBZIP_NO_ZIP_DISCARD
         zip_discard(zip);
+#else
+        zip_unchange_archive(zip);
+        zip_close(zip); // TODO what to do with failed zip-file
+#endif
         return false;
     }
 
@@ -152,7 +175,7 @@ qDebug() << "Ignoring QSslError::CertificateUntrusted";
 //                qDebug() << "      SSL error X " << trusted.contains(reply->sslConfiguration().peerCertificate());
 
                 break;
-            default: break;
+            default: ignore << error; qDebug() << "Ignoring"; break;
             }
         }
         reply->ignoreSslErrors(ignore);

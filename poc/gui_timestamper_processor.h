@@ -16,7 +16,8 @@
 #include <QSettings>
 #include <QTextStream>
 
-#ifndef TERA_USE_UNIX_STORAGE_INFO
+#if QT_VERSION < QT_VERSION_CHECK(5, 4, 0)
+#else
     #include <QStorageInfo>
 #endif
 
@@ -37,7 +38,7 @@ public:
         InFileData(QString const& path) {
             QFileInfo fi(path);
             filesize = fi.size();
-#ifdef TERA_USE_UNIX_STORAGE_INFO
+#if QT_VERSION < QT_VERSION_CHECK(5, 4, 0)
             partitionPath = "/";
 #else
             QStorageInfo si(path);

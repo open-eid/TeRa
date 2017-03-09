@@ -11,7 +11,8 @@
 #include <QDebug>
 #include <QDirIterator> // TODO
 
-#ifndef TERA_USE_UNIX_STORAGE_INFO
+#if QT_VERSION < QT_VERSION_CHECK(5, 4, 0)
+#else
     #include <QStorageInfo>
 #endif
 
