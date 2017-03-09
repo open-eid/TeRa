@@ -6,37 +6,37 @@
     <message>
         <location filename="../poc/FileListDialog.ui" line="17"/>
         <source>Files</source>
-        <translation type="unfinished"></translation>
+        <translation>Failid</translation>
     </message>
     <message>
         <location filename="../poc/FileListDialog.ui" line="87"/>
         <source>Deselect All</source>
-        <translation type="unfinished"></translation>
+        <translation>Ära vali ühtki</translation>
     </message>
     <message>
         <location filename="../poc/FileListDialog.ui" line="94"/>
         <source>Select All</source>
-        <translation type="unfinished"></translation>
+        <translation>Vali kõik</translation>
     </message>
     <message>
         <location filename="../poc/FileListDialog.ui" line="114"/>
         <source>Select</source>
-        <translation type="unfinished"></translation>
+        <translation>Vali</translation>
     </message>
     <message>
         <location filename="../poc/FileListDialog.ui" line="121"/>
         <source>list view</source>
-        <translation type="unfinished"></translation>
+        <translation>Nimekiri</translation>
     </message>
     <message>
         <location filename="../poc/FileListDialog.ui" line="131"/>
         <source>tree view</source>
-        <translation type="unfinished"></translation>
+        <translation>Puu vaade</translation>
     </message>
     <message>
         <location filename="../poc/FileListDialog.ui" line="141"/>
         <source>Deselect</source>
-        <translation type="unfinished"></translation>
+        <translation>Ära vali</translation>
     </message>
 </context>
 <context>
@@ -85,15 +85,17 @@
     </message>
     <message>
         <location filename="../poc/MainWindow.ui" line="1224"/>
-        <source>Valmis</source>
-        <translation type="unfinished"></translation>
+        <source>Ready</source>
+        <translation>Valmis</translation>
     </message>
     <message>
         <location filename="../poc/MainWindow.ui" line="466"/>
-        <source>Teie digiallkirjastatud DDOC failidele lisatakse ajatempel, et kaitsta teid võimalike tulevaste turvanõrkuste eest. Ajatempliga failid on ASICS laiendiga ja asuvad samas kataloogis.
+        <source>To protect you from possible future security issues your digitally signed DDOC files will be timestamped. Timestamped files will have a .asics extention and will be placed in the same folder with the original DDOC files.
 
-Vaikimisi ajatembeldatakse ainult arvutis asuvaid DDOC faile. Kui soovite võrguketastel asuvaid faile tembeldada või muid seadeid muuta, avage &quot;Seaded&quot; menüü.</source>
-        <translation type="unfinished"></translation>
+By default only files on local drives will be timestamped. If you wish to also timestamp files from network drives or change other settings please open the &quot;Settings&quot; menu.</source>
+        <translation>Teie digiallkirjastatud DDOC failidele lisatakse ajatempel, et kaitsta teid võimalike tulevaste turvanõrkuste eest. Ajatempliga failid on ASICS laiendiga ja asuvad samas kataloogis.
+
+Vaikimisi ajatembeldatakse ainult arvutis asuvaid DDOC faile. Kui soovite võrguketastel asuvaid faile tembeldada või muid seadeid muuta, avage &quot;Seaded&quot; menüü.</translation>
     </message>
     <message>
         <location filename="../poc/MainWindow.ui" line="1449"/>
@@ -111,7 +113,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../poc/MainWindow.ui" line="310"/>
         <source>Languages</source>
-        <translation type="unfinished"></translation>
+        <translation>Keeled</translation>
     </message>
     <message>
         <location filename="../poc/MainWindow.ui" line="1811"/>
@@ -124,7 +126,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../poc/main_window.cpp" line="235"/>
         <source>Searching</source>
-        <translation type="unfinished"></translation>
+        <translation>Otsimine</translation>
     </message>
 </context>
 <context>
@@ -132,65 +134,65 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../poc/SettingsDialog.ui" line="17"/>
         <source>Settings</source>
-        <translation type="unfinished">Seaded</translation>
+        <translation>Seaded</translation>
     </message>
     <message>
         <location filename="../poc/SettingsDialog.ui" line="30"/>
         <source>Input</source>
-        <translation type="unfinished"></translation>
+        <translation>Sisend seaded</translation>
     </message>
     <message>
         <location filename="../poc/SettingsDialog.ui" line="36"/>
         <location filename="../poc/SettingsDialog.ui" line="159"/>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>Lisa</translation>
     </message>
     <message>
         <location filename="../poc/SettingsDialog.ui" line="43"/>
         <location filename="../poc/SettingsDialog.ui" line="152"/>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Kustuta</translation>
     </message>
     <message>
         <location filename="../poc/SettingsDialog.ui" line="50"/>
         <source>Input directories:</source>
-        <translation type="unfinished"></translation>
+        <translation>Otsingu kataloogid:</translation>
     </message>
     <message>
         <location filename="../poc/SettingsDialog.ui" line="108"/>
         <location filename="../poc/SettingsDialog.ui" line="200"/>
         <source>...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../poc/SettingsDialog.ui" line="119"/>
         <source>Exclude</source>
-        <translation type="unfinished"></translation>
+        <translation>Välistus seaded</translation>
     </message>
     <message>
         <location filename="../poc/SettingsDialog.ui" line="125"/>
         <source>Exclude directories:</source>
-        <translation type="unfinished"></translation>
+        <translation>Välistatud kataloogid:</translation>
     </message>
     <message>
         <location filename="../poc/SettingsDialog.ui" line="211"/>
         <source>Other</source>
-        <translation type="unfinished"></translation>
+        <translation>Muud seaded</translation>
     </message>
     <message>
         <location filename="../poc/SettingsDialog.ui" line="246"/>
         <source>Time Server URL (ex. http://demo.sk.ee/tsa):</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajatempli serveri URL (ex http://demo.sk.ee/tsa):</translation>
     </message>
     <message>
         <location filename="../poc/SettingsDialog.ui" line="262"/>
         <source>Show intro</source>
-        <translation type="unfinished"></translation>
+        <translation>Näita sissejuhatust</translation>
     </message>
     <message>
         <location filename="../poc/SettingsDialog.ui" line="269"/>
         <source>Preview file list</source>
-        <translation type="unfinished"></translation>
+        <translation>Kuva leitud failide nimekiri</translation>
     </message>
 </context>
 <context>
@@ -199,7 +201,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../poc/timestamper.cpp" line="344"/>
         <location filename="../poc/timestamper.cpp" line="352"/>
         <source>Operation cancelled by user...</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutaja katkestas...</translation>
     </message>
 </context>
 <context>
@@ -208,17 +210,17 @@ p, li { white-space: pre-wrap; }
         <location filename="../poc/gui_timestamper_processor.cpp" line="140"/>
         <location filename="../poc/gui_timestamper_processor.cpp" line="156"/>
         <source>Error</source>
-        <translation type="unfinished">Viga</translation>
+        <translation>Viga</translation>
     </message>
     <message>
         <location filename="../poc/gui_timestamper_processor.cpp" line="140"/>
         <source>No input directory selected.</source>
-        <translation>Ühtegi sisendkataloogi pole valitud</translation>
+        <translation>Ühtegi sisendkataloogi pole valitud.</translation>
     </message>
     <message>
         <location filename="../poc/gui_timestamper_processor.cpp" line="156"/>
         <source>The following input folders don&apos;t exist (or are files). Please fix the list under &quot;Settings&quot; window:</source>
-        <translation type="unfinished"></translation>
+        <translation>Järgmised sisendkataloogid ei eksisteeri (või on tegu failidega). Palun korrasta sisendkataloogide nimistut &quot;Seaded&quot; vaates:</translation>
     </message>
 </context>
 <context>
@@ -230,38 +232,34 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../poc/main_window.cpp" line="169"/>
         <source>Error</source>
-        <translation type="unfinished">Viga</translation>
+        <translation>Viga</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="169"/>
         <source>Time server URL is empty.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajatempliserveri URL on tühi.</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="303"/>
-        <source> * &apos;%1&apos;: vaba ruumi %2, ruumi vaja %3 (hinnanguline)
-</source>
-        <translation type="unfinished"></translation>
+        <source> * &apos;%1&apos;: free space %2, space needed %3 (approximately)</source>
+        <translation> * &apos;%1&apos;: vaba ruumi %2, vajalik ruum (ligikaudu) %3</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="310"/>
-        <source>Leitud DDOC failide kogumaht ületab kettal oleva vaba ruumi:
+        <source>The space needed to timestamp all the DDOC files found exceeds the amount of free space found:
 
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Kõigi DDOC failide ajatembeldamiseks vajalik kettaruum on suurem kui saadaolev vaba ruum:</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="312"/>
-        <source>
-Ületembeldatud failid ei pruugi kettale ära mahtuda.</source>
-        <translation type="unfinished"></translation>
+        <source>Timestamped files might not fit on disk.</source>
+        <translation>Ajatembeldatud failid ei pruugi kettale mahtuda.</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="313"/>
-        <source>
-
-Katkestada tembeldamine?</source>
-        <translation type="unfinished"></translation>
+        <source>Abort timestamping?</source>
+        <translation>Katkesta tembeldamine?</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="417"/>
@@ -280,33 +278,33 @@ Katkestada tembeldamine?</source>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="438"/>
-        <source>Viga:</source>
-        <translation></translation>
+        <source>Error:</source>
+        <translation>Viga:</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="443"/>
-        <source>DDOC failide konverteerimine lõppes</source>
-        <translation type="unfinished"></translation>
+        <source>Finished timestamping DDOC files</source>
+        <translation>DDOC failide tembeldamine on lõppenud</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="444"/>
-        <source>DDOC faile leitud: %1</source>
-        <translation type="unfinished"></translation>
+        <source>DDOC files found: %1</source>
+        <translation>DDOC faile leitud: %1</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="446"/>
-        <source>   millest tembeldamiseks valisite: %1</source>
-        <translation type="unfinished"></translation>
+        <source>   of which %1 where chosen for timestamping</source>
+        <translation>  milles %1 olid valitud tembeldamiseks</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="447"/>
-        <source>DDOC faile konverteeritud: %1</source>
-        <translation type="unfinished"></translation>
+        <source>DDOC files timestamped: %1</source>
+        <translation>DDOC faile tembeldatud: %1</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="449"/>
-        <source>Ebaõnnestunud konverteerimisi: %1</source>
-        <translation type="unfinished"></translation>
+        <source>Failed timestampings: %1</source>
+        <translation>Ebaõnnestunud tembeldamisi: %1</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="203"/>
@@ -321,13 +319,13 @@ Katkestada tembeldamine?</source>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="453"/>
-        <source>Täpsema aruande vaatamiseks vajuta </source>
-        <translation></translation>
+        <source>For detailed report click </source>
+        <translation>Täpsema aruande vaatamiseks vajuta </translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="462"/>
-        <source>SIIA</source>
-        <translation type="unfinished"></translation>
+        <source>HERE</source>
+        <translation>SIIN</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="467"/>
@@ -337,12 +335,12 @@ Katkestada tembeldamine?</source>
     <message>
         <location filename="../poc/main_window.cpp" line="469"/>
         <source>Couldn&apos;t open help URL: </source>
-        <translation type="unfinished"></translation>
+        <translation>Abi URL&apos;i avamine ebaõnnestus:</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="475"/>
         <source>Couldn&apos;t open timestamping log: </source>
-        <translation type="unfinished"></translation>
+        <translation>Tembeldamise logi avamine ebaõnnestus:</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="499"/>
@@ -357,7 +355,7 @@ Katkestada tembeldamine?</source>
     <message>
         <location filename="../poc/main_window.cpp" line="532"/>
         <source>Operation cancelled by user...</source>
-        <translation type="unfinished"></translation>
+        <translation>Tühistatud kasutaja poolt</translation>
     </message>
 </context>
 <context>
@@ -365,12 +363,12 @@ Katkestada tembeldamine?</source>
     <message>
         <location filename="../poc/settings_window.cpp" line="82"/>
         <source>Error</source>
-        <translation type="unfinished">Viga</translation>
+        <translation>Viga</translation>
     </message>
     <message>
         <location filename="../poc/settings_window.cpp" line="82"/>
         <source>Can&apos;t add &apos;%1&apos;. Directory does not exist.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lisamine ebaõnnestus. &apos;%1&apos; ei ole olemas</translation>
     </message>
 </context>
 </TS>

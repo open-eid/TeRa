@@ -496,9 +496,9 @@ padding: 5px;
                 <item row="2" column="0">
                  <widget class="QLabel" name="label_2">
                   <property name="text">
-                   <string>Teie digiallkirjastatud DDOC failidele lisatakse ajatempel, et kaitsta teid võimalike tulevaste turvanõrkuste eest. Ajatempliga failid on ASICS laiendiga ja asuvad samas kataloogis.
+                   <string>To protect you from possible future security issues your digitally signed DDOC files will be timestamped. Timestamped files will have a .asics extention and will be placed in the same folder with the original DDOC files.
 
-Vaikimisi ajatembeldatakse ainult arvutis asuvaid DDOC faile. Kui soovite võrguketastel asuvaid faile tembeldada või muid seadeid muuta, avage &quot;Seaded&quot; menüü.</string>
+By default only files on local drives will be timestamped. If you wish to also timestamp files from network drives or change other settings please open the &quot;Settings&quot; menu.</string>
                   </property>
                   <property name="wordWrap">
                    <bool>true</bool>
@@ -1254,7 +1254,7 @@ font-weight: bold;
 </string>
                           </property>
                           <property name="text">
-                           <string>Valmis</string>
+                           <string>Ready</string>
                           </property>
                          </widget>
                         </item>
@@ -2033,7 +2033,7 @@ font-weight: bold;
             </size>
            </property>
            <property name="text">
-            <string extracomment="%1 is for version number">TeRa klient %1</string>
+            <string extracomment="%1 is for version number">TeRa client %1</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
