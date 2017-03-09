@@ -180,10 +180,10 @@ std::cout << "could not create query\n" << std::endl;
 //        ERR_print_errors(bio_err);
 	}
 	TS_MSG_IMPRINT_free(msg_imprint);
-	X509_ALGOR_free(algo);
-	OPENSSL_free(data);
-	ASN1_OBJECT_free(policy_obj);
-	ASN1_INTEGER_free(nonce_asn1);
+//TODO	X509_ALGOR_free(algo);
+//TODO	OPENSSL_free(data);
+//TODO	ASN1_OBJECT_free(policy_obj);
+//TODO	ASN1_INTEGER_free(nonce_asn1);
 	return ts_req;
 }
 /////////////////////////////

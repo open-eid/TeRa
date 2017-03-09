@@ -283,7 +283,7 @@ void TeraMainWin::timestampingTestFinished(bool success, QByteArray resp, QStrin
     processor.inFiles.clear();
     fillProgressBar();
 
-    int newJobId = jobId.fetchAndAddOrdered(1);
+    int newJobId = jobId.fetchAndAddOrdered(1)+1;
     CrawlDiskJob* crawlJob = new CrawlDiskJob(*this, newJobId, processor);
     connect(crawlJob, SIGNAL(signalProcessingPath(int, QString, double)),
         this, SLOT(processProcessingPath(int, QString, double)));
@@ -695,7 +695,9 @@ bool TeraMainWin::isCancelled() { // TODO
 }
 
 bool TeraMainWin::isCancelled(int jobid) {
-    return cancel.load() != 0 || jobid != jobId.load();
+    int cancel_val = cancel.load();
+    int jobid_val = jobId.load();
+    return cancel_val != 0 || jobid != jobid_val;
 }
 
 }

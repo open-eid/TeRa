@@ -80,7 +80,7 @@ QStringList DiskCrawler::crawl() {
                 continue;
             }
 
-            monitor.foundFile(filePath);
+            monitor.foundFile(filePath);  // TODO cancel returns false
             res << filePath;
         }
     }
