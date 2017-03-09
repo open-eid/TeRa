@@ -63,14 +63,14 @@
     </message>
     <message>
         <location filename="../poc/MainWindow.ui" line="1950"/>
-        <source>TeRa klient %1</source>
+        <source>TeRa client %1</source>
         <extracomment>%1 is for version number</extracomment>
         <translation>TeRa клиент %1</translation>
     </message>
     <message>
         <location filename="../poc/MainWindow.ui" line="898"/>
         <source>Start</source>
-        <translation type="unfinished">RU Start</translation>
+        <translation>RU Start</translation>
     </message>
     <message>
         <location filename="../poc/MainWindow.ui" line="1840"/>
@@ -85,14 +85,14 @@
     </message>
     <message>
         <location filename="../poc/MainWindow.ui" line="1224"/>
-        <source>Valmis</source>
+        <source>Ready</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../poc/MainWindow.ui" line="466"/>
-        <source>Teie digiallkirjastatud DDOC failidele lisatakse ajatempel, et kaitsta teid võimalike tulevaste turvanõrkuste eest. Ajatempliga failid on ASICS laiendiga ja asuvad samas kataloogis.
+        <source>To protect you from possible future security issues your digitally signed DDOC files will be timestamped. Timestamped files will have a .asics extention and will be placed in the same folder with the original DDOC files.
 
-Vaikimisi ajatembeldatakse ainult arvutis asuvaid DDOC faile. Kui soovite võrguketastel asuvaid faile tembeldada või muid seadeid muuta, avage &quot;Seaded&quot; menüü.</source>
+By default only files on local drives will be timestamped. If you wish to also timestamp files from network drives or change other settings please open the &quot;Settings&quot; menu.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -105,7 +105,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>TeRa klient 0.4.0</source>
+        <source>TeRa client 0.4.0</source>
         <translation type="obsolete">TeRa клиент 0.4.0</translation>
     </message>
     <message>
@@ -239,28 +239,24 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="303"/>
-        <source> * &apos;%1&apos;: vaba ruumi %2, ruumi vaja %3 (hinnanguline)
-</source>
+        <source> * &apos;%1&apos;: free space %2, space needed %3 (approximately)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="310"/>
-        <source>Leitud DDOC failide kogumaht ületab kettal oleva vaba ruumi:
+        <source>The space needed to timestamp all the DDOC files found exceeds the amount of free space found:
 
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="312"/>
-        <source>
-Ületembeldatud failid ei pruugi kettale ära mahtuda.</source>
+        <source>Timestamped files might not fit on disk.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="313"/>
-        <source>
-
-Katkestada tembeldamine?</source>
+        <source>Abort timestamping?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -280,32 +276,32 @@ Katkestada tembeldamine?</source>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="438"/>
-        <source>Viga:</source>
+        <source>Error:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="443"/>
-        <source>DDOC failide konverteerimine lõppes</source>
+        <source>Finished timestamping DDOC files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="444"/>
-        <source>DDOC faile leitud: %1</source>
+        <source>DDOC files found: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="446"/>
-        <source>   millest tembeldamiseks valisite: %1</source>
+        <source>   of which %1 where chosen for timestamping</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="447"/>
-        <source>DDOC faile konverteeritud: %1</source>
+        <source>DDOC files timestamped: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="449"/>
-        <source>Ebaõnnestunud konverteerimisi: %1</source>
+        <source>Failed timestampings: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -321,12 +317,12 @@ Katkestada tembeldamine?</source>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="453"/>
-        <source>Täpsema aruande vaatamiseks vajuta </source>
+        <source>For detailed report click </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="462"/>
-        <source>SIIA</source>
+        <source>HERE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
