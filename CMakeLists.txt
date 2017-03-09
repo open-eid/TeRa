@@ -202,20 +202,23 @@ qt5_add_resources( SOURCES images/images.qrc translations/tr.qrc )
 qt5_wrap_ui( UI_HEADERS ${TERA_GUI_UI} )
 
 # TeRaTool
-# add_executable(TeRaTool
-        # ${TERA_COMMON_SRC}
-        # poc/teragui.rc
-        # poc/terapoc.cpp
-        # poc/utils.h poc/utils.cpp
-        # poc/openssl_utils.h poc/openssl_utils.cpp
-        # poc/disk_crawler.h poc/disk_crawler.cpp
-        # poc/logging.h poc/logging.cpp
-        # poc/timestamper.h poc/timestamper.cpp
-        # poc/config.h poc/config.cpp
-        # ${CONFIG_SOURCES}
-        # )
-# target_link_libraries(TeRaTool ${ZIP_LIBRARIES} ${OPENSSL_LIBRARIES} ${FOR_OPENSSL_STATIC} ${ZLIB_LIBRARIES} ${TERA_SCARD_LIBRARIES})
-# qt5_use_modules(TeRaTool Core Concurrent Network)
+if( APPLE )
+else()
+add_executable(TeRaTool
+        ${TERA_COMMON_SRC}
+        poc/teragui.rc
+        poc/terapoc.cpp
+        poc/utils.h poc/utils.cpp
+        poc/openssl_utils.h poc/openssl_utils.cpp
+        poc/disk_crawler.h poc/disk_crawler.cpp
+        poc/logging.h poc/logging.cpp
+        poc/timestamper.h poc/timestamper.cpp
+        poc/config.h poc/config.cpp
+        ${CONFIG_SOURCES}
+        )
+target_link_libraries(TeRaTool ${ZIP_LIBRARIES} ${OPENSSL_LIBRARIES} ${FOR_OPENSSL_STATIC} ${ZLIB_LIBRARIES} ${TERA_SCARD_LIBRARIES})
+qt5_use_modules(TeRaTool Core Concurrent Network)
+endif()
 
 SET (TERA_GUI_NAME TeRa)
 add_executable(${TERA_GUI_NAME} WIN32 MACOSX_BUNDLE
