@@ -448,7 +448,7 @@ Timestamped files might not fit on disk.</source>
     <message>
         <location filename="../poc/main_window.cpp" line="643"/>
         <source>Operation cancelled by user...</source>
-        <translation>Tühistatud kasutaja poolt</translation>
+        <translation>Katkestatud kasutaja poolt</translation>
     </message>
 </context>
 <context>

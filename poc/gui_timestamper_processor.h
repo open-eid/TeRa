@@ -64,6 +64,8 @@ public:
         int progressFailed;
         bool success;
         QString error;
+        /// show "Error:" before error string?
+        bool isSystemError = true;
         int cnt;
         int cntFound;
     };
@@ -113,6 +115,7 @@ public: // TODO
     QStringList inFiles;
 
     QScopedPointer<Result> result;
+    /// raport/logfile
     QScopedPointer<LogFile> logfile;
 };
 

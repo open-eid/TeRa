@@ -438,7 +438,7 @@ void TeraMainWin::globalConfFinished(bool changed, const QString &error) {
     processor.processGlobalConfiguration();
 }
 
-void TeraMainWin::timestampingFinished(bool success, QString errString) {
+void TeraMainWin::timestampingFinished(bool success, QString errString, bool isSystemError) {
     if (processor.result) {
         if (success) {
             processor.result->success = true;
@@ -447,13 +447,17 @@ void TeraMainWin::timestampingFinished(bool success, QString errString) {
         else {
             processor.result->success = false;
             processor.result->error = errString;
+            processor.result->isSystemError = isSystemError;
             logText->clear();
         }
     }
     fillProgressBar();
     fillDoneLog();
 
-    if (processor.logfile) processor.logfile->close();
+    if (processor.logfile) {
+        if (0 == processor.inFiles.size()) processor.logfile->getStream() << "No *.ddoc files found" << endl;
+        processor.logfile->close();
+    }
 
     processor.inFiles.clear();
     timestapmping = false;
@@ -515,7 +519,7 @@ void TeraMainWin::fillDoneLog() {
     logText->setCurrentCharFormat(format);
 
     if (!processor.result->success) {
-        logText->append(tr("Error:"));
+        if (processor.result->isSystemError) logText->append(tr("Error:"));
         logText->append(processor.result->error);
         return;
     }
@@ -642,7 +646,7 @@ void TeraMainWin::doUserCancel(QString msg) {
     if (message.isNull()) {
         message = tr("Operation cancelled by user...");
     }
-    timestampingFinished(false, message);
+    timestampingFinished(false, message, false);
 }
 
 void TeraMainWin::handleReadyButton() {
