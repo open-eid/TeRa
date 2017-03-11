@@ -92,7 +92,7 @@ private:
     bool processingFile(QString const& pathIn, QString const& pathOut, int nr, int totalCnt);
     bool processingFileDone(QString const& pathIn, QString const& pathOut, int nr, int totalCnt, bool success, QString const& errString);
 public slots:
-    void timestampingFinished(bool success, QString errString, bool isSystemError = true);
+    void timestampingFinished(BatchStamper::FinishingDetails details);
 
     void globalConfFinished(bool changed, const QString &error);
 

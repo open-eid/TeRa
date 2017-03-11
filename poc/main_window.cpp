@@ -104,8 +104,8 @@ TeraMainWin::TeraMainWin(QWidget *parent) :
     connect(cancelProcess, SIGNAL(clicked()), this, SLOT(handleCancelProcess()));
     connect(btnReady, SIGNAL(clicked()), this, SLOT(handleReadyButton()));
 
-    connect(&stamper, SIGNAL(timestampingFinished(bool,QString)),
-            this, SLOT(timestampingFinished(bool,QString)));
+    connect(&stamper, &ria_tera::BatchStamper::timestampingFinished,
+            this, &TeraMainWin::timestampingFinished);
     connect(&stamper.getTimestamper(), SIGNAL(timestampingTestFinished(bool,QByteArray,QString)),
             this, SLOT(timestampingTestFinished(bool,QByteArray,QString)));
 
@@ -268,7 +268,7 @@ void TeraMainWin::doTestStamp() {
 
 void TeraMainWin::timestampingTestFinished(bool success, QByteArray resp, QString errString) {
     if (!success) {
-        timestampingFinished(false, tr("Test request to Time Server failed. ") + "\n" + errString);
+        timestampingFinished(BatchStamper::FinishingDetails::error(tr("Test request to Time Server failed. ") + "\n" + errString));
         return;
     }
 
@@ -438,16 +438,20 @@ void TeraMainWin::globalConfFinished(bool changed, const QString &error) {
     processor.processGlobalConfiguration();
 }
 
-void TeraMainWin::timestampingFinished(bool success, QString errString, bool isSystemError) {
+void TeraMainWin::timestampingFinished(BatchStamper::FinishingDetails details) {
     if (processor.result) {
-        if (success) {
+        if (details.success) {
             processor.result->success = true;
             processor.result->cnt = processor.inFiles.size(); // TODO
         }
         else {
             processor.result->success = false;
-            processor.result->error = errString;
-            processor.result->isSystemError = isSystemError;
+            processor.result->isSystemError = !details.userCancelled;
+            if (details.userCancelled && details.errString.isNull()) {
+                processor.result->error = tr("Operation cancelled by user...");
+            } else {
+                processor.result->error = details.errString;
+            }
             logText->clear();
         }
     }
@@ -642,11 +646,7 @@ void TeraMainWin::handleCancelProcess() {
 
 void TeraMainWin::doUserCancel(QString msg) {
     cancel = true;
-    QString message = msg;
-    if (message.isNull()) {
-        message = tr("Operation cancelled by user...");
-    }
-    timestampingFinished(false, message, false);
+    timestampingFinished(BatchStamper::FinishingDetails::cancelled(msg));
 }
 
 void TeraMainWin::handleReadyButton() {

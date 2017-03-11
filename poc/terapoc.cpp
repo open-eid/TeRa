@@ -37,8 +37,8 @@ QString const ts_url_param("ts_url");
 class TeRaMonitor : public QObject, public ria_tera::ProcessingMonitorCallback {
     Q_OBJECT
 public slots:
-    void exitOnFinished(bool success, QString errString) {
-        if (success && 0 == failedCnt && succeededCnt == foundCnt) {
+    void exitOnFinished(ria_tera::BatchStamper::FinishingDetails d) {
+        if (d.success && 0 == failedCnt && succeededCnt == foundCnt) {
             TERA_COUT("Timestamping finished successfully :)");
             QCoreApplication::exit(0);
         } else {
@@ -49,8 +49,8 @@ public slots:
             if (0 != skipped) {
                 TERA_LOG(error) << "   Number of DDOCs skipped: " << skipped;
             }
-            if (!success) {
-                TERA_LOG(error) << "Error: " << errString.toUtf8().constData();
+            if (!d.success) {
+                TERA_LOG(error) << "Error: " << d.errString.toUtf8().constData();
             }
             QCoreApplication::exit(1);
         }
@@ -323,8 +323,8 @@ int main(int argc, char *argv[]) {
     }
     ria_tera::BatchStamper stamper(monitor, namegen, false);
 
-    QObject::connect(&stamper, SIGNAL(timestampingFinished(bool,QString)),
-                     &monitor, SLOT(exitOnFinished(bool,QString)), Qt::QueuedConnection);
+    QObject::connect(&stamper, &ria_tera::BatchStamper::timestampingFinished,
+        &monitor, &TeRaMonitor::exitOnFinished, Qt::QueuedConnection);
 
     stamper.startTimestamping(time_server_url, inFiles); // TODO error to XXX when network is down for example
 

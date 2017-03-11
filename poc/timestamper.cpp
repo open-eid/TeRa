@@ -18,19 +18,21 @@
 
 #include <zip.h>
 
+#ifdef LIBZIP_VERSION_MAJOR
 #if LIBZIP_VERSION_MAJOR == 0 && LIBZIP_VERSION_MINOR <= 10
-	typedef struct zip zip_t;
-	typedef struct zip_source zip_source_t;
+    typedef struct zip zip_t;
+    typedef struct zip_source zip_source_t;
 
-	#define ZIP_TRUNCATE 0
+    #define ZIP_TRUNCATE 0
 
-	#define OLD_LIBZIP_NO_ZIP_DISCARD
+    #define OLD_LIBZIP_NO_ZIP_DISCARD
 
-	#define ZIP_FL_ENC_UTF_8 0
-	ZIP_EXTERN zip_int64_t zip_dir_add(zip_t *za, const char *name, int) {return zip_add_dir(za, name);};
+    #define ZIP_FL_ENC_UTF_8 0
+    ZIP_EXTERN zip_int64_t zip_dir_add(zip_t *za, const char *name, int) {return zip_add_dir(za, name);};
 
-	#define ZIP_FL_OVERWRITE 0
-	ZIP_EXTERN zip_int64_t zip_file_add(zip_t *za, const char *name, zip_source_t *s, int) {return zip_add(za, name,s);};
+    #define ZIP_FL_OVERWRITE 0
+    ZIP_EXTERN zip_int64_t zip_file_add(zip_t *za, const char *name, zip_source_t *s, int) {return zip_add(za, name,s);};
+#endif
 #endif
 
 #include "logging.h"
@@ -394,14 +396,14 @@ TimeStamper& BatchStamper::getTimestamper() {
 void BatchStamper::processNext() {
     if ((pos+1) >= input.size()) {
         pos = input.size();
-        emit timestampingFinished(true, "");
+        emit timestampingFinished(FinishingDetails(true, ""));
         return;
     }
     ++pos;
     curIn = input[pos];
     curOut = namegen.getOutFile(curIn);
     if (!monitor.processingFile(curIn, curOut, pos, input.size())) {
-        emit timestampingFinished(false, tr("Operation cancelled by user...")); // TODO const text see main_window.cpp
+        emit timestampingFinished(FinishingDetails::cancelled()); // TODO const text see main_window.cpp // false
         return;
     }
     ts.startTimestamping(timeServerUrl, curIn, curOut);
@@ -409,11 +411,11 @@ void BatchStamper::processNext() {
 
 void BatchStamper::timestampFinished(bool success, QString errString) {
     if (!monitor.processingFileDone(curIn, curOut, pos, input.size(), success, errString)) {
-        emit timestampingFinished(false, tr("Operation cancelled by user...")); // TODO const text see main_window.cpp
+        emit timestampingFinished(FinishingDetails::cancelled()); // TODO const text see main_window.cpp
         return;
     }
     if (!success && instaFail) {
-        timestampingFinished(success, errString);
+        emit timestampingFinished(FinishingDetails(success, errString));
     } else {
         emit triggerNext();
     }

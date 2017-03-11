@@ -99,12 +99,29 @@ private:
 class BatchStamper : public QObject {
     Q_OBJECT
 public:
+    class FinishingDetails {
+    public:
+        bool success = false;
+        bool userCancelled = false;
+        QString errString;
+        FinishingDetails(bool _success, QString _errStr) : success(_success), errString(_errStr) {};
+        static FinishingDetails error(QString const& errStr) {
+            FinishingDetails d(false, errStr);
+            return d;
+        }
+        static FinishingDetails cancelled(QString err = QString()) {
+            FinishingDetails d(false, err);
+            d.userCancelled = true;
+            return d;
+        };
+    };
+
     BatchStamper(StampingMonitorCallback& mon, OutputNameGenerator& ng, bool end_on_first_fail);
     void startTimestamping(QString const& tsUrl, QStringList const& inputFiles);
     TimeStamper& getTimestamper();
 signals:
     void triggerNext();
-    void timestampingFinished(bool success, QString errString);
+    void timestampingFinished(FinishingDetails details);
 private slots:
     void processNext();
     void timestampFinished(bool success, QString errString);
