@@ -106,7 +106,7 @@ void Config::append_excl_dirs(QString const& val, QSet<QString>& excl_dirs_set) 
     }
 }
 
-QSet<QString> Config::getDefaultInclDirs() {
+QSet<QString> Config::getDefaultInclDirs() const {
     QSet<QString> res;
 #ifdef Q_OS_WIN32
     const QByteArray LOCAL_PREFIX("\\\\?\\");

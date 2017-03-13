@@ -101,6 +101,7 @@ public slots:
     void introReject();
 
     void handleSettings();
+    void handleSettingsFromPage(TeraSettingsWin::PAGE openPage);
     void handleSettingsAccepted();
 
     void handleFilesAccepted();

@@ -98,7 +98,7 @@ TeraMainWin::TeraMainWin(QWidget *parent) :
     connect(introButtonBox, SIGNAL(rejected()), this, SLOT(introReject()));
 
     connect(btnStamp, SIGNAL (clicked()), this, SLOT (handleStartStamping()));
-    connect(settings, SIGNAL(clicked()), this, SLOT(handleSettings()));
+    connect(settings, &QPushButton::clicked, this, &TeraMainWin::handleSettings);
     connect(about, SIGNAL(clicked()), this, SLOT(handleAbout()));
     connect(help, SIGNAL(clicked()), this, SLOT(handleHelp()));
     connect(cancelProcess, SIGNAL(clicked()), this, SLOT(handleCancelProcess()));
@@ -153,7 +153,7 @@ gui(mainWindow), jobId(jobid), dc(*this, Config::EXTENSION_IN)
 {
     dc.addExcludeDirs(processor.exclDirs.toList());
 
-    QList<QString> inDirList = processor.inclDirs.toList(); // TODO checked previously
+    QList<QString> inDirList = processor.getInclDirList(); // TODO checked previously
     for (int i = 0; i < inDirList.size(); ++i) {
         QString dir = inDirList.at(i);
         dc.addInputDir(dir, true);
@@ -210,15 +210,41 @@ void TeraMainWin::configureRequest(QNetworkRequest& request) {
 }
 
 void TeraMainWin::handleStartStamping() {
-    doPin1Authentication();
+    static const QString ID_CARD_AUTH_PREFIX("#IDCard-AUTH#");
+    QString url = processor.timeServerUrl.trimmed();
+    bool useIDCardAuthentication = false;
+    if (url == "https://puhver.ria.ee/tsa") {
+        useIDCardAuthentication = true;
+    }
+    else if (url.startsWith(ID_CARD_AUTH_PREFIX)) {
+        useIDCardAuthentication = true;
+        url = url.mid(ID_CARD_AUTH_PREFIX.length()).trimmed();
+    }
+
+    stamper.getTimestamper().setTimeserverUrl(url, (useIDCardAuthentication ? this : nullptr));
+
+    if (useIDCardAuthentication) {
+        doPin1Authentication();
+    } else {
+        doTestStamp();
+    }
 }
 
+class DeleteIDCardSelectDialog : public QRunnable {
+    QSharedPointer<IDCardSelectDialog> cardSelectDialog;
+public:
+    DeleteIDCardSelectDialog(QSharedPointer<IDCardSelectDialog>& csd) {
+        cardSelectDialog.swap(csd);
+    }
+    void run() {
+        cardSelectDialog.reset();
+    }
+};
+
 void TeraMainWin::doPin1Authentication() {
-    QPCSC& instance = QPCSC::instance();
-    QStringList drivers = instance.drivers();
-    QStringList readers = instance.readers();
-
-
+    // Deleting old dialog takes time because QSmartCard destructor does some stuff...
+    // But we want to display the new dialog fast as a minimum
+    QThreadPool::globalInstance()->start(new DeleteIDCardSelectDialog(cardSelectDialog));
     cardSelectDialog.reset(new IDCardSelectDialog(this));
     connect(cardSelectDialog.data(), SIGNAL(accepted()), this, SLOT(pin1AuthenticaionDone()));
     cardSelectDialog->setVisible(true);
@@ -238,7 +264,10 @@ void TeraMainWin::doTestStamp() {
         return;
     }
 
-    if (!processor.checkInDirListWithMessagebox(this)) return;
+    if (!processor.checkInDirListWithMessagebox(this)) {
+        handleSettingsFromPage(TeraSettingsWin::PAGE::INPUT_DIR);
+        return;
+    }
 
     //
     cancel = false;
@@ -262,7 +291,7 @@ void TeraMainWin::doTestStamp() {
 
     QByteArray pseudosha256(256/8, '\0');
     QByteArray req = stamper.getTimestamper().getTimestampRequest4Sha256(pseudosha256);
-    stamper.getTimestamper().setTimeserverUrl(processor.timeServerUrl, this); // TODO true = ask PIN1 XXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
     stamper.getTimestamper().sendTSRequest(req, true); // TODO api is rubbish
 }
 
@@ -664,7 +693,12 @@ void TeraMainWin::introReject() {
 }
 
 void TeraMainWin::handleSettings() {
+    handleSettingsFromPage(TeraSettingsWin::PAGE::__NONE);
+}
+
+void TeraMainWin::handleSettingsFromPage(TeraSettingsWin::PAGE openPage) {
     processor.initializeSettingsWindow(*settingsWin);
+    settingsWin->selectPage(openPage);
     settingsWin->open();
 }
 

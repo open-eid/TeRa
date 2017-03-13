@@ -18,6 +18,7 @@ IDCardSelectDialog::IDCardSelectDialog(QWidget *parent)
 
     btnStart->setEnabled(false);
     connect(btnStart, SIGNAL(clicked(bool)), this, SLOT(startAuthentication()));
+    connect(btnCancel, SIGNAL(clicked(bool)), this, SLOT(reject()));
 }
 
 IDCardSelectDialog::~IDCardSelectDialog() {}
@@ -29,14 +30,24 @@ void IDCardSelectDialog::showEvent(QShowEvent * event) {
 
 void IDCardSelectDialog::startAuthentication() {
     if (smartCard.isNull()) return;
-    qDebug() << "ddljadfljlasdfjkl;sdfds 111";
     QSmartCard::ErrorType error = smartCard->login(QSmartCardData::Pin1Type);
     if (QSmartCard::ErrorType::NoError != error) {
-        QMessageBox::warning(this, "xxxxxxxxxxxxxxx", tr("Error: ") + QString::number(error)); // TODO
+        bufferCardData();
+        QString title = tr("PIN Verification");
+        QString message;
+        if (QSmartCard::ErrorType::ValidateError == error) {
+            int retryCount = smartCardData.retryCount(QSmartCardData::PinType::Pin1Type);
+            message = tr("Wrong PIN1. %1 retries left").arg(QString::number(retryCount));
+        } else if (QSmartCard::ErrorType::BlockedError == error) {
+            message = tr("PIN1 is blocked.");
+        } else {
+            message = tr("Error: ") + QString::number(error); // TODO
+        }
+        populateGuiFromIDCard();
+        QMessageBox::warning(this, title, message);
     } else {
         accept();
     }
-    qDebug() << "ddljadfljlasdfjkl;sdfds 222";
 }
 
 void IDCardSelectDialog::initSmartCard() {
@@ -48,7 +59,7 @@ void IDCardSelectDialog::initSmartCard() {
 }
 
 void IDCardSelectDialog::cardDataChanged() {
-    qDebug() << "data changed";
+qDebug() << "data changed";
     bufferCardData();
     populateGuiFromIDCard();
 }
@@ -66,35 +77,66 @@ void IDCardSelectDialog::populateGuiFromIDCard() {
     comboBoxIDCardSelect->setCurrentIndex(comboBoxIDCardSelect->findText(smartCardData.card()));
 }
 
+static QString formatLine(QString const& title, QString const& value) {
+    QString text;
+    QTextStream st(&text);
+
+    //st << "<font style = 'font-weight: bold;'>";
+    st << "<font style='color: #54859b;'>" << title.toHtmlEscaped() << " </font>";
+    st << "<font style='color: black;'>" << value.toHtmlEscaped() << " </font>";
+    //st << "</font>";
+
+    return text;
+}
+
 void IDCardSelectDialog::populateIDCardInfoText(QSmartCardData const& t) {
     QString text;
     QTextStream st(&text);
 
-    st << QString::number(smartCardData.cards().size()) + " cards in the reader(s)<br/><br/>";
+    st << tr("NEED_PIN1_FOR_AUTHENTICATION") << "<br/><br/>\n";
+
+    st << tr("%1 cards in the reader(s)").arg(QString::number(smartCardData.cards().size())) << "<br/><br/>";
 
     if (!t.isNull()) {
-        st << "<font style='color: #54859b;'><font style='font-weight: bold; font-size: 16px;'>"
+        // Card number
+        st << "<font style='color: #54859b;'>" // <font style='font-weight: bold;'>
             << tr("Card in reader") << " <font style='color: black;'>"
-            << t.data(QSmartCardData::DocumentId).toString() << "</font></font><br />";
-        if (t.authCert().type() & SslCertificate::EstEidType) {
-            st << tr("This is");
-            if (t.isValid())
-                st << " <font style='color: #509b00;'>" << tr("valid") << "</font> ";
-            else
-                st << " <font style='color: #e80303;'>" << tr("expired") << "</font> ";
-            st << tr("document") << "<br />";
-        } else {
-            st << tr("You're using Digital identity card") << "<br />";
+            << t.data(QSmartCardData::DocumentId).toString() << "</font><br />";
+
+        // User data
+        QString fname = t.data(QSmartCardData::FirstName1).toString() + " " + t.data(QSmartCardData::FirstName2).toString();
+        fname = fname.trimmed();
+        QString surname = t.data(QSmartCardData::SurName).toString();
+        QString userid = t.data(QSmartCardData::Id).toString();
+
+        st << formatLine(tr("Given Names:"), fname) << "<br/>";
+        st << formatLine(tr("Surname:"), surname) << "<br/>";
+        st << formatLine(tr("Personal Code:"), userid) << "<br/>";
+
+        st << "<br/>";
+
+        // Card validity
+        bool validForAuth = false;
+        QString authValidity;
+        if (t.retryCount(QSmartCardData::Pin1Type) == 0)
+            authValidity = (t.authCert().isValid() ? tr("valid but blocked") : tr("invalid and blocked"));
+        else if (!t.authCert().isValid())
+            authValidity = tr("expired");
+        else {
+            validForAuth = true;
+            authValidity = tr("valid and applicable");
         }
-        st << tr("Card is valid till") << " <font style='color: black;'>"
-            << t.data(QSmartCardData::Expiry).toDateTime().toString("dd. MMMM yyyy") << "</font>";
+
+        QString validityColor = (validForAuth ? "#509b00" : "#e80303");
+        st << tr("Authentication certificate is");
+        st << "<font style='color: " << validityColor << ";'> " << authValidity << "</font>";
 
         st << "<br/><br/>";
 
-        st << t.data(QSmartCardData::FirstName1).toString() << " "
-            << t.data(QSmartCardData::FirstName2).toString() << "<br/>"
-            << t.data(QSmartCardData::SurName).toString() << "<br/>"
-            << t.data(QSmartCardData::Id).toString();
+        int retryCount = smartCardData.retryCount(QSmartCardData::PinType::Pin1Type);
+        if (retryCount < 3) {
+            st << tr("%1 retries left for PIN1").arg(QString::number(retryCount));
+        }
     }
 
     label->setText(text);

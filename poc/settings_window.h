@@ -19,11 +19,15 @@ class TeraSettingsWin: public QDialog, public Ui::SettingsDialog
     Q_OBJECT
 
 public:
+    enum PAGE {__NONE, INPUT_DIR};
+
     explicit TeraSettingsWin(QWidget *parent = 0);
     ~TeraSettingsWin();
 
     QStringListModel* modelExclDir;
     QStringListModel* modelInclDir;
+
+    void selectPage(TeraSettingsWin::PAGE openPage);
 private slots:
     void handleTryAccept();
 

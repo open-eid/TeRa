@@ -43,6 +43,11 @@ TeraSettingsWin::~TeraSettingsWin() {
     ;
 }
 
+void TeraSettingsWin::selectPage(TeraSettingsWin::PAGE openPage) {
+    if (PAGE::INPUT_DIR == openPage) gotoInputDirTab();
+}
+
+
 void TeraSettingsWin::gotoInputDirTab() {
     tabWidget->setCurrentIndex(0);
 }

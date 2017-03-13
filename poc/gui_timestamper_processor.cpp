@@ -107,7 +107,7 @@ void GuiTimestamperProcessor::initializeSettingsWindow(TeraSettingsWin& sw) {
     QSet2GUI(exclDirs, *sw.modelExclDir);
 
     // include dirs
-    QSet2GUI(inclDirs, *sw.modelInclDir);
+    QSet2GUI(_getInclDirs(), *sw.modelInclDir);
 
     // preview files
     sw.cbPreviewFiles->setChecked(previewFiles);
@@ -121,7 +121,7 @@ void GuiTimestamperProcessor::readSettings(TeraSettingsWin& sw) {
     timeServerUrl = sw.lineTSURL->text().trimmed();
 
     GUI2QSet(*sw.modelExclDir, exclDirs);
-    GUI2QSet(*sw.modelInclDir, inclDirs);
+    GUI2QSet(*sw.modelInclDir, _getInclDirs());
 
     previewFiles = sw.cbPreviewFiles->isChecked();
 
@@ -156,7 +156,7 @@ bool GuiTimestamperProcessor::openLogFile(QString& errorText) {
 }
 
 bool GuiTimestamperProcessor::checkInDirListWithMessagebox(QWidget* parent) {
-    return checkInDirListWithMessagebox(parent, inclDirs);
+    return checkInDirListWithMessagebox(parent, _getInclDirs());
 }
 
 bool GuiTimestamperProcessor::checkInDirListWithMessagebox(QWidget* parent, QStringListModel const& inDirs) {
@@ -203,8 +203,6 @@ void GuiTimestamperProcessor::readSettings() {
     exclDirs.unite(config.getExclDirsXXXXXXXX());
     centralExclDirsDisabledByUser.unite(config.getExclDirExclusions());
 
-    inclDirs.unite(config.getDefaultInclDirs());
-
     showIntro = settings.value(REG_PARAM_SHOW_INTRO, QVariant(true)).toBool();
 }
 
@@ -221,7 +219,7 @@ QString asPathList(QSet<QString> set) {
 void GuiTimestamperProcessor::saveSettings() {
     QSettings ini(iniPath, QSettings::IniFormat);
 
-    if (timeServerUrl != config.getDefaultTimeServerURL()) {
+    if (timeServerUrl != config.getDefaultTimeServerURL() && !timeServerUrl.isEmpty()) {
         ini.setValue(Config::INI_PARAM_TIME_SERVER_URL, timeServerUrl);
     } else {
         ini.remove(Config::INI_PARAM_TIME_SERVER_URL);
@@ -239,6 +237,19 @@ void GuiTimestamperProcessor::saveSettings() {
     // save
     ini.sync();
     saveShowIntro(showIntro);
+}
+
+QSet<QString>& GuiTimestamperProcessor::_getInclDirs() {
+    if (inclDirs.isNull()) inclDirs.reset(new QSet<QString>(config.getDefaultInclDirs()));
+    return *inclDirs;
+}
+
+QSet<QString> const& GuiTimestamperProcessor::_getInclDirs() const {
+    return const_cast<GuiTimestamperProcessor*>(this)->_getInclDirs();
+}
+
+QList<QString> GuiTimestamperProcessor::getInclDirList() const {
+    return _getInclDirs().toList();
 }
 
 }

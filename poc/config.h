@@ -42,7 +42,7 @@ public:
     QSet<QString> getExclDirsXXXXXXXX();
     QSet<QString> getExclDirExclusions();
 
-    QSet<QString> getDefaultInclDirs();
+    QSet<QString> getDefaultInclDirs() const;
 
     static void append_excl_dirs(QString const& val, QSet<QString>& excl_dirs_set); // TODO no need to be public
 private:

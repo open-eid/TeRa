@@ -83,6 +83,8 @@ public:
     void readSettings();
     void saveSettings();
 
+    QList<QString> getInclDirList() const;
+
     void initializeFilePreviewWindow(FileListWindow& fw);
     void copySelectedFiles(FileListWindow& fw);
 
@@ -108,7 +110,12 @@ public: // TODO
     QSet<QString> centralExclDirs;
     QSet<QString> centralExclDirsDisabledByUser;
     QSet<QString> exclDirs;
-    QSet<QString> inclDirs;
+private:
+    /// For lazy evaluation of inclDirs
+    QSet<QString>& _getInclDirs();
+    QSet<QString> const& _getInclDirs() const;
+    mutable QScopedPointer<QSet<QString>> inclDirs;
+public:
     bool previewFiles;
 
     QMap<QString, InFileData> foundFiles;
