@@ -28,6 +28,9 @@ set(CMAKE_AUTOMOC ON)
 SET(CMAKE_AUTOUIC ON) 
 SET(CMAKE_AUTORCC ON)
 
+include( TeRaVersionInfo )
+set_app_name( PROGNAME qestidtera )
+
 # Find Qt libraries
 find_package(Qt5Core REQUIRED)
 include_directories(${Qt5Core_INCLUDE_DIRS})
@@ -256,11 +259,8 @@ elseif( APPLE )
     )
     add_custom_target( codesign DEPENDS ${TERA_GUI_NAME}
         COMMAND codesign -f -s \"$$SIGNCERT\"
-            $<TARGET_FILE_DIR:${TERA_GUI_NAME}>/*.*
-            $<TARGET_FILE_DIR:${TERA_GUI_NAME}>/../Frameworks/digidocpp.framework/Libraries/*
             $<TARGET_FILE_DIR:${TERA_GUI_NAME}>/../Frameworks/*
             $<TARGET_FILE_DIR:${TERA_GUI_NAME}>/../PlugIns/*/*
-            $<TARGET_FILE_DIR:${TERA_GUI_NAME}>/../Library/QuickLook/DigiDocQL.qlgenerator
         COMMAND codesign -f -v -s \"$$SIGNCERT\" $<TARGET_FILE_DIR:${TERA_GUI_NAME}>/../..
             --entitlements ${CMAKE_SOURCE_DIR}/${TERA_GUI_NAME}.entitlements
     )
@@ -269,7 +269,7 @@ elseif( APPLE )
     )
     add_custom_target( productbuild DEPENDS ${TERA_GUI_NAME}
         COMMAND productbuild --component ${CMAKE_CURRENT_BINARY_DIR}/${TERA_GUI_NAME}.app /Applications
-            --sign \"$$INSTCERT\" ${CMAKE_BINARY_DIR}/TeRa-store_${VERSION}$ENV{VER_SUFFIX}.pkg
+            --sign \"$$INSTCERT\" ${TERA_GUI_NAME}-store_${VERSION}$ENV{VER_SUFFIX}.pkg
     )
 else()
     include( GNUInstallDirs )
