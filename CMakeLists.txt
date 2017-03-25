@@ -28,6 +28,7 @@ set(CMAKE_AUTOMOC ON)
 SET(CMAKE_AUTOUIC ON) 
 SET(CMAKE_AUTORCC ON)
 
+SET( CMAKE_OSX_DEPLOYMENT_TARGET "10.10.5")
 include( TeRaVersionInfo )
 set_app_name( PROGNAME qestidtera )
 

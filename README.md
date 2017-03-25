@@ -95,12 +95,13 @@ Download and install the latest version from https://nih.at/libzip/
 ###### e) OpenSSL
 
 Install OpenSSL from https://www.openssl.org/source/openssl-1.0.2h.tar.gz (for details, see https://wiki.openssl.org/index.php/Compilation_and_Installation#OS_X)
+See http://stackoverflow.com/questions/41865537/how-does-apples-codesign-utility-decide-which-sha-algorithms-to-sign-a-shared and https://wiki.openssl.org/index.php/Compilation_and_Installation (look for "-mios-version-min=")
 
     mkdir -p ~/cmake_builds/ && cd ~/cmake_builds/
     curl -O -L https://www.openssl.org/source/openssl-1.0.2h.tar.gz
     tar xf openssl-1.0.2h.tar.gz
     cd ~/cmake_builds/openssl-1.0.2h
-    ./Configure darwin64-x86_64-cc shared --openssldir=$HOME/cmake_builds/openssl-1.0.2h.bin
+    ./Configure darwin64-x86_64-cc shared --openssldir=$HOME/cmake_builds/openssl-1.0.2h.bin -mmacosx-version-min=10.10
     make depend
     make install
     make test
@@ -115,7 +116,6 @@ Install OpenSSL from https://www.openssl.org/source/openssl-1.0.2h.tar.gz (for d
     curl -O -L http://download.qt.io/official_releases/qt/5.8/5.8.0/submodules/qtbase-opensource-src-5.8.0.tar.gz
     tar xf qtbase-opensource-src-5.8.0.tar.gz
     cd qtbase-opensource-src-5.8.0
-./configure -prefix ~/Qt5.8.0-OpenSSL-dyn -openssl -opensource -nomake tests -nomake examples -no-securetransport -confirm-license
     ./configure -prefix ~/Qt5.8.0-OpenSSL -openssl-linked -opensource -nomake tests -nomake examples -no-securetransport -confirm-license
     make
     sudo make install
