@@ -51,6 +51,15 @@ FIND_PACKAGE(Qt5LinguistTools)
 #include_directories(${QTCOMMON_INCLUDE_DIRS})
 
 IF (WIN32)
+    IF ($ENV{TERA_ARCH} STREQUAL "_32")
+        SET (TERA_WIX_PLATFORM "x86")
+    ELSEIF ($ENV{TERA_ARCH} STREQUAL "_64")
+        SET (TERA_WIX_PLATFORM "x64")
+    ELSE()
+        message( FATAL_ERROR "Environment variable TERA_ARCH must be set to '_32' or '_64'" )
+    ENDIF()
+    SET (WIX_PATH $ENV{WIX_PATH})
+
     #find_package(ZLib)
     SET (ZLIB_INCLUDE_DIRS "$ENV{TERA_ZLIB_DIR}/include")
     SET (ZLIB_LIBRARIES "$ENV{TERA_ZLIB_DIR}/lib/zlibstatic.lib")
@@ -260,6 +269,13 @@ qt5_use_modules(${TERA_GUI_NAME} Core Concurrent Network Widgets Gui)
 ########### target_link_libraries(${TERA_GUI_NAME} Qt5::Widgets)
 
 if( WIN32 )
+    add_custom_target( run_wix_candle
+        COMMAND "${WIX_PATH}candle.exe" ${CMAKE_SOURCE_DIR}/tera.wxs -dMSI_VERSION=${VERSION} -dqt_path=$ENV{TERA_QT_CMAKE_DIR} -dopenssl_path=$ENV{TERA_OPENSSL_DIR} -dclient_path=${CMAKE_CURRENT_BINARY_DIR}/Release -dPlatform=${TERA_WIX_PLATFORM}
+    )
+    add_custom_target( run_wix_light
+        COMMAND "${WIX_PATH}light.exe" -out ${CMAKE_CURRENT_BINARY_DIR}/TeRa_${TERA_WIX_PLATFORM}.${VERSION}.msi -sice:ICE80 ${CMAKE_CURRENT_BINARY_DIR}/tera.wixobj -v -ext WixUIExtension
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    )
 elseif( APPLE )
     add_custom_target( macdeployqt DEPENDS ${TERA_GUI_NAME}
         COMMAND $ENV{TERA_QT_DIR}/bin/macdeployqt ${CMAKE_CURRENT_BINARY_DIR}/${TERA_GUI_NAME}.app
@@ -272,7 +288,7 @@ elseif( APPLE )
             --entitlements ${CMAKE_SOURCE_DIR}/${TERA_GUI_NAME}.entitlements
     )
     add_custom_target( zip DEPENDS ${TERA_GUI_NAME}
-        COMMAND zip --symlinks -r -D ${CMAKE_BINARY_DIR}/TeRa_${VERSION}$ENV{VER_SUFFIX}.zip ${TERA_GUI_NAME}.app
+        COMMAND zip --symlinks -r -D ${CMAKE_BINARY_DIR}/${TERA_GUI_NAME}_${VERSION}$ENV{VER_SUFFIX}.zip ${TERA_GUI_NAME}.app
     )
     add_custom_target( productbuild DEPENDS ${TERA_GUI_NAME}
         COMMAND productbuild --component ${CMAKE_CURRENT_BINARY_DIR}/${TERA_GUI_NAME}.app /Applications
