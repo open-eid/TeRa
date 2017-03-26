@@ -56,10 +56,10 @@ macro( SET_APP_NAME OUTPUT NAME )
 	set( MACOSX_BUNDLE_BUNDLE_NAME ${NAME} )
 	set( MACOSX_BUNDLE_GUI_IDENTIFIER "ee.ria.${NAME}" )
 	if( APPLE )
-		file( GLOB_RECURSE RESOURCE_FILES
+		file( GLOB_RECURSE TERA_MAC_RESOURCE_FILES
 			${CMAKE_CURRENT_SOURCE_DIR}/mac/Resources/*.icns
 			${CMAKE_CURRENT_SOURCE_DIR}/mac/Resources/*.strings )
-		foreach( _file ${RESOURCE_FILES} )
+		foreach( _file ${TERA_MAC_RESOURCE_FILES} )
 			get_filename_component( _file_dir ${_file} PATH )
 			file( RELATIVE_PATH _file_dir ${CMAKE_CURRENT_SOURCE_DIR}/mac ${_file_dir} )
 			set_source_files_properties( ${_file} PROPERTIES MACOSX_PACKAGE_LOCATION ${_file_dir} )
