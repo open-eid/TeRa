@@ -30,7 +30,7 @@ SET(CMAKE_AUTORCC ON)
 
 SET( CMAKE_OSX_DEPLOYMENT_TARGET "10.10.5")
 include( TeRaVersionInfo )
-set_app_name( PROGNAME qestidtera )
+set_app_name( PROGNAME qesteidutil-tera )
 
 # Find Qt libraries
 find_package(Qt5Core REQUIRED)
@@ -208,7 +208,7 @@ qt5_add_resources( SOURCES images/images.qrc translations/tr.qrc )
 qt5_wrap_ui( UI_HEADERS ${TERA_GUI_UI} )
 
 # TeRaTool
-if( UNIX AND NOT APPLE )
+if( UNIX )
     SET (TERA_CMD_NAME qesteidutil-tera)
 else()
     SET (TERA_CMD_NAME TeRaTool)
@@ -233,7 +233,9 @@ qt5_use_modules(${TERA_CMD_NAME} Core Concurrent Network)
 endif()
 
 # TeRa GUI
-if( UNIX AND NOT APPLE )
+if ( APPLE )
+    SET (TERA_GUI_NAME ${PROGNAME})
+elseif( UNIX AND NOT APPLE )
     SET (TERA_GUI_NAME qesteidutil-tera-gui)
 else()
     SET (TERA_GUI_NAME TeRa)
