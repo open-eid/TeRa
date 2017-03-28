@@ -13,6 +13,10 @@ namespace ria_tera {
 
 enum log_level {none=0, error, warn, info, debug, trace};
 
+QString log_level_to_string(log_level lvl);
+bool log_level_from_string(QString const& lvl_str, log_level& lvl);
+QString log_level_list();
+
 class LogFile {
 public:
     LogFile(QFile* file);
@@ -32,7 +36,7 @@ public:
     TeraLogger();
     ~TeraLogger();
     void addConsoleLog(log_level lvl);
-    void addFileLog(log_level lvl);
+    bool addFileLog(log_level lvl);
     void append(log_level lvl, char const* text, bool consoleOnly = false);
 private:
     log_level console_level;
@@ -55,8 +59,6 @@ private:
 };
 
 extern TeraLogger logger;
-
-void initLogging();
 
 }
 

@@ -15,6 +15,7 @@
 #include <QCoreApplication>
 #include <QNetworkReply>
 #include <QThreadPool>
+#include <QTimer>
 
 #include <zip.h>
 
@@ -403,7 +404,7 @@ void BatchStamper::processNext() {
     curIn = input[pos];
     curOut = namegen.getOutFile(curIn);
     if (!monitor.processingFile(curIn, curOut, pos, input.size())) {
-        emit timestampingFinished(FinishingDetails::cancelled()); // TODO const text see main_window.cpp // false
+        emit timestampingFinished(FinishingDetails::cancelled());
         return;
     }
     ts.startTimestamping(timeServerUrl, curIn, curOut);
@@ -411,7 +412,7 @@ void BatchStamper::processNext() {
 
 void BatchStamper::timestampFinished(bool success, QString errString) {
     if (!monitor.processingFileDone(curIn, curOut, pos, input.size(), success, errString)) {
-        emit timestampingFinished(FinishingDetails::cancelled()); // TODO const text see main_window.cpp
+        emit timestampingFinished(FinishingDetails::cancelled());
         return;
     }
     if (!success && instaFail) {

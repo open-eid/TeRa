@@ -27,7 +27,7 @@ TeraSettingsWin::TeraSettingsWin(QWidget *parent) :
     modelInclDir = new QStringListModel(); // TODO delete?
     listInclDir->setModel(modelInclDir);
 
-    connect(btnAddExclDir, SIGNAL (clicked()), this, SLOT (handleAddExclDir()), Qt::QueuedConnection); // TODO remove queued connection
+    connect(btnAddExclDir, SIGNAL (clicked()), this, SLOT (handleAddExclDir()));
     connect(btnDelExclDir, SIGNAL (clicked()), this, SLOT (handleDelExclDir()));
     connect(btnExclDirSearch, SIGNAL (clicked()), this, SLOT (handleExclDirSearch()));
 

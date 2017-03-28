@@ -104,7 +104,7 @@ public:
         bool success = false;
         bool userCancelled = false;
         QString errString;
-        FinishingDetails(bool _success, QString _errStr) : success(_success), errString(_errStr) {};
+        FinishingDetails(bool _success = false, QString _errStr = "internal error") : success(_success), errString(_errStr) {};
         static FinishingDetails error(QString const& errStr) {
             FinishingDetails d(false, errStr);
             return d;

@@ -72,9 +72,9 @@ TeraLogger::~TeraLogger() {
 
 void TeraLogger::addConsoleLog(log_level lvl) { console_level = lvl; }
 
-void TeraLogger::addFileLog(log_level lvl) {
+bool TeraLogger::addFileLog(log_level lvl) {
     file_level = lvl;
-    if (lvl == log_level::none) return;
+    if (lvl == log_level::none) return true;
 
     QString error;
     QDir dir = QDir::current();
@@ -85,10 +85,12 @@ void TeraLogger::addFileLog(log_level lvl) {
     if (log) {
         logfile.reset(log);
         TeraLoggerLine(log_level::info) << QString("Opened log file '%1'").arg(log->filePath()).toUtf8().constData();
+        return true;
     } else {
         TeraLoggerLine logline(log_level::error);
         logline.setConsoleOnly();
         logline.append(error.toUtf8().constData());
+        return false;
     }
 }
 
@@ -136,10 +138,54 @@ TeraLoggerLine& TeraLoggerLine::operator<<(char const* text) {
 }
 
 TeraLoggerLine& TeraLoggerLine::operator<<(int nr) {    *this << QString::number(nr).toUtf8().constData();    return *this;}
-void initLogging()
-{
-    logger.addConsoleLog(log_level::info);
-    logger.addFileLog(log_level::trace);
+
+QString log_level_to_string(log_level lvl) {
+    switch (lvl) {
+    case none:  return "none";
+    case error: return "error";
+    case warn:  return "warn";
+    case info:  return "info";
+    case debug: return "debug";
+    case trace: return "trace";
+    default:
+        return "XXX";
+    }
 }
+
+bool log_level_from_string(QString const& trace, log_level& lvl) {
+    if (trace == "none") {
+        lvl = log_level::none;
+        return true;
+    }
+    if (trace == "error") {
+        lvl = log_level::error;
+        return true;
+    }
+    if (trace == "warn") {
+        lvl = log_level::warn;
+        return true;
+    }
+    if (trace == "info") {
+        lvl = log_level::info;
+        return true;
+    }
+    if (trace == "debug") {
+        lvl = log_level::debug;
+        return true;
+    }
+    if (trace == "trace") {
+        lvl = log_level::trace;
+        return true;
+    }
+    return false;
+}
+
+QString log_level_list() {
+    return "none, error, warn, info, debug, trace";
+}
+
+
+
+
 
 }

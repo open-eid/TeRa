@@ -8,6 +8,7 @@
 #include <QLoggingCategory>
 #include <QRegExp>
 #include <QSettings>
+#include <QTimer>
 
 #include "../src/version.h"
 
@@ -16,6 +17,8 @@
 #include "logging.h"
 #include "disk_crawler.h"
 #include "timestamper.h"
+
+Q_DECLARE_METATYPE(ria_tera::BatchStamper::FinishingDetails)
 
 namespace {
 
@@ -29,6 +32,8 @@ QString const ext_out_param("ext_out");
 QString const excl_dir_param("excl_dir");
 QString const no_ini_excl_dirs_param("no_ini_excl_dirs");
 QString const ts_url_param("ts_url");
+QString const log_level_param("log_level");
+QString const logfile_level_param("logfile_level");
 
 #define TERA_COUT(xxx) {\
     TERA_LOG(info) << xxx;\
@@ -170,6 +175,19 @@ int main(int argc, char *argv[]) {
             QCommandLineOption(no_ini_excl_dirs_param,
                     "if set exclude directories from config file are not taken into account"));
 
+    ria_tera::log_level console_log_lvl = ria_tera::log_level::info;
+    ria_tera::log_level file_log_lvl = ria_tera::log_level::trace;
+    parser.addOption(
+        QCommandLineOption(
+            log_level_param,
+            QString("console log level, default '%1' (possible values: %2)").arg(log_level_to_string(console_log_lvl), ria_tera::log_level_list()),
+            log_level_param));
+    parser.addOption(
+        QCommandLineOption(
+            logfile_level_param,
+            QString("logfile log level, default '%1' (possible values: %2)").arg(log_level_to_string(console_log_lvl), ria_tera::log_level_list()),
+            logfile_level_param));
+
     parser.process(a);
 
     QString in_dir;
@@ -230,7 +248,34 @@ int main(int argc, char *argv[]) {
         parser.showHelp(EXIT_CODE_WRONG_ARGUMENTS);
     }
 
-    ria_tera::initLogging();
+    if (parser.isSet(log_level_param)) {
+        QString lvl_str = parser.value(log_level_param);
+        if (!log_level_from_string(lvl_str, console_log_lvl)) {
+            QString err = QString("Illegal '%1' value '%2' (allowed values: %3)").
+                arg(log_level_param, lvl_str, ria_tera::log_level_list());
+            std::cout << err.toUtf8().constData() << std::endl;
+            std::cout << std::endl;
+            parser.showHelp(EXIT_CODE_WRONG_ARGUMENTS);
+        }
+    }
+
+    if (parser.isSet(logfile_level_param)) {
+        QString lvl_str = parser.value(logfile_level_param);
+        if (!log_level_from_string(lvl_str, file_log_lvl)) {
+            QString err = QString("Illegal '%1' value '%2' (allowed values: %3)").
+                arg(logfile_level_param, lvl_str, ria_tera::log_level_list());
+            std::cout << err.toUtf8().constData() << std::endl;
+            std::cout << std::endl;
+            parser.showHelp(EXIT_CODE_WRONG_ARGUMENTS);
+        }
+    }
+
+    ria_tera::logger.addConsoleLog(console_log_lvl);
+    if (!ria_tera::logger.addFileLog(file_log_lvl)) {
+        std::cout << QString("Add '--%1 %2' to disable logging to a file.").
+            arg(logfile_level_param, log_level_to_string(ria_tera::log_level::none)).toUtf8().constData() << std::endl;
+        return EXIT_CODE_WRONG_ARGUMENTS;
+    }
 
     QString out_extension("");
     if (parser.isSet(ext_out_param)) {
@@ -325,7 +370,6 @@ int main(int argc, char *argv[]) {
 
     QObject::connect(&stamper, &ria_tera::BatchStamper::timestampingFinished,
         &monitor, &TeRaMonitor::exitOnFinished, Qt::QueuedConnection);
-
     stamper.startTimestamping(time_server_url, inFiles); // TODO error to XXX when network is down for example
 
     return a.exec();
