@@ -34,6 +34,7 @@ QString const no_ini_excl_dirs_param("no_ini_excl_dirs");
 QString const ts_url_param("ts_url");
 QString const log_level_param("log_level");
 QString const logfile_level_param("logfile_level");
+QString const logfile_dir_param("logfile_dir");
 
 #define TERA_COUT(xxx) {\
     TERA_LOG(info) << xxx;\
@@ -187,6 +188,11 @@ int main(int argc, char *argv[]) {
             logfile_level_param,
             QString("logfile log level, default '%1' (possible values: %2)").arg(log_level_to_string(console_log_lvl), ria_tera::log_level_list()),
             logfile_level_param));
+    parser.addOption(
+        QCommandLineOption(
+            logfile_dir_param,
+            QString("logfile directory (default is current directory)"),
+            logfile_dir_param));
 
     parser.process(a);
 
@@ -270,10 +276,18 @@ int main(int argc, char *argv[]) {
         }
     }
 
+    // set-up logging
     ria_tera::logger.addConsoleLog(console_log_lvl);
-    if (!ria_tera::logger.addFileLog(file_log_lvl)) {
-        std::cout << QString("Add '--%1 %2' to disable logging to a file.").
-            arg(logfile_level_param, log_level_to_string(ria_tera::log_level::none)).toUtf8().constData() << std::endl;
+    QString logfile_dir;
+    if (parser.isSet(logfile_dir_param)) {
+        logfile_dir = parser.value(logfile_dir_param);
+    }
+
+    if (!ria_tera::logger.addFileLog(file_log_lvl, logfile_dir)) {
+        std::cout << QString("Add '--%1 %2' to disable logging to a file or use '--%3 <path>' to set directory for logfile.").
+            arg(logfile_level_param,
+                log_level_to_string(ria_tera::log_level::none),
+                logfile_dir_param).toUtf8().constData() << std::endl;
         return EXIT_CODE_WRONG_ARGUMENTS;
     }
 
@@ -369,7 +383,7 @@ int main(int argc, char *argv[]) {
     ria_tera::BatchStamper stamper(monitor, namegen, false);
 
     QObject::connect(&stamper, &ria_tera::BatchStamper::timestampingFinished,
-        &monitor, &TeRaMonitor::exitOnFinished, Qt::QueuedConnection);
+        &monitor, &TeRaMonitor::exitOnFinished, Qt::QueuedConnection); // queued connection needed to ensure a.exec() catches exit
     stamper.startTimestamping(time_server_url, inFiles); // TODO error to XXX when network is down for example
 
     return a.exec();

@@ -72,12 +72,15 @@ TeraLogger::~TeraLogger() {
 
 void TeraLogger::addConsoleLog(log_level lvl) { console_level = lvl; }
 
-bool TeraLogger::addFileLog(log_level lvl) {
+bool TeraLogger::addFileLog(log_level lvl, QString dir_path) {
     file_level = lvl;
     if (lvl == log_level::none) return true;
 
     QString error;
     QDir dir = QDir::current();
+    if (!dir_path.isEmpty()) {
+        dir.setPath(dir_path);
+    }
     QString const filePrefix = "terapoc_" + QDateTime::currentDateTime().toString("yyyy-MM-dd_HH-mm-ss-zzz");
     QString const fileSufix = ".log";
 

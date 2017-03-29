@@ -36,7 +36,7 @@ public:
     TeraLogger();
     ~TeraLogger();
     void addConsoleLog(log_level lvl);
-    bool addFileLog(log_level lvl);
+    bool addFileLog(log_level lvl, QString dir_path = QString());
     void append(log_level lvl, char const* text, bool consoleOnly = false);
 private:
     log_level console_level;
