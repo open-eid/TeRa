@@ -33,18 +33,22 @@ void IDCardSelectDialog::startAuthentication() {
     QSmartCard::ErrorType error = smartCard->login(QSmartCardData::Pin1Type);
     if (QSmartCard::ErrorType::NoError != error) {
         bufferCardData();
-        QString title = tr("PIN Verification");
-        QString message;
-        if (QSmartCard::ErrorType::ValidateError == error) {
-            int retryCount = smartCardData.retryCount(QSmartCardData::PinType::Pin1Type);
-            message = tr("Wrong PIN1. %1 retries left").arg(QString::number(retryCount));
-        } else if (QSmartCard::ErrorType::BlockedError == error) {
-            message = tr("PIN1 is blocked.");
-        } else {
-            message = tr("Error: ") + QString::number(error); // TODO
+
+        if (QSmartCard::ErrorType::CancelError != error) {
+            QString title = tr("PIN Verification");
+            QString message;
+
+            if (QSmartCard::ErrorType::ValidateError == error) {
+                int retryCount = smartCardData.retryCount(QSmartCardData::PinType::Pin1Type);
+                message = tr("Wrong PIN1. %1 retries left").arg(QString::number(retryCount));
+            } else if (QSmartCard::ErrorType::BlockedError == error) {
+                message = tr("PIN1 is blocked.");
+            } else {
+                message = tr("Error: ") + QString::number(error); // TODO
+            }
+            populateGuiFromIDCard();
+            QMessageBox::warning(this, title, message);
         }
-        populateGuiFromIDCard();
-        QMessageBox::warning(this, title, message);
     } else {
         accept();
     }
