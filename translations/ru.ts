@@ -140,7 +140,7 @@ By default only files on local drives will be timestamped. If you wish to also t
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../poc/main_window.cpp" line="333"/>
+        <location filename="../poc/main_window.cpp" line="334"/>
         <source>Searching</source>
         <translation type="unfinished"></translation>
     </message>
@@ -233,82 +233,82 @@ By default only files on local drives will be timestamped. If you wish to also t
 <context>
     <name>ria_tera::IDCardSelectDialog</name>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="36"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="38"/>
         <source>PIN Verification</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="40"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="43"/>
         <source>Wrong PIN1. %1 retries left</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="42"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="45"/>
         <source>PIN1 is blocked.</source>
         <translation type="unfinished">PIN1 заблокирован</translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="44"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="47"/>
         <source>Error: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="96"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="100"/>
         <source>NEED_PIN1_FOR_AUTHENTICATION</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="98"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="102"/>
         <source>%1 cards in the reader(s)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="103"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="107"/>
         <source>Card in reader</source>
         <translation type="unfinished">В считывателе карта</translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="112"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="116"/>
         <source>Given Names:</source>
         <translation type="unfinished">Имя:</translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="113"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="117"/>
         <source>Surname:</source>
         <translation type="unfinished">Фамилия:</translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="114"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="118"/>
         <source>Personal Code:</source>
         <translation type="unfinished">Личный номер:</translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="122"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="126"/>
         <source>valid but blocked</source>
         <translation type="unfinished">действителен, но заблокирован</translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="122"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="126"/>
         <source>invalid and blocked</source>
         <translation type="unfinished">недействителен и заблокирован</translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="127"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="131"/>
         <source>valid and applicable</source>
         <translation type="unfinished">действителен и пригоден</translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="131"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="135"/>
         <source>Authentication certificate is</source>
         <translation type="unfinished">Идентификационный сертификат</translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="138"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="142"/>
         <source>%1 retries left for PIN1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="124"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="128"/>
         <source>expired</source>
         <translation type="unfinished">недействителен</translation>
     </message>
@@ -316,131 +316,141 @@ By default only files on local drives will be timestamped. If you wish to also t
 <context>
     <name>ria_tera::TeraMainWin</name>
     <message>
-        <location filename="../poc/main_window.cpp" line="263"/>
+        <location filename="../poc/main_window.cpp" line="264"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="263"/>
+        <location filename="../poc/main_window.cpp" line="264"/>
         <source>Time server URL is empty.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="411"/>
+        <location filename="../poc/main_window.cpp" line="412"/>
         <source>The space needed to timestamp all the DDOC files found exceeds the amount of free space found:
 
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="414"/>
+        <location filename="../poc/main_window.cpp" line="415"/>
         <source>Abort timestamping?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="534"/>
+        <location filename="../poc/main_window.cpp" line="473"/>
+        <source>NO_NETWORK_MSG</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../poc/main_window.cpp" line="475"/>
+        <source>Error downloading configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../poc/main_window.cpp" line="542"/>
         <source>Testing Time Server...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="536"/>
+        <location filename="../poc/main_window.cpp" line="544"/>
         <source>Searching DDOC files. %1 found so far...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="538"/>
+        <location filename="../poc/main_window.cpp" line="546"/>
         <source>Found %1 DDOC files. %2 left to be converted...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="555"/>
+        <location filename="../poc/main_window.cpp" line="563"/>
         <source>Error:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="560"/>
+        <location filename="../poc/main_window.cpp" line="568"/>
         <source>Finished timestamping DDOC files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="561"/>
+        <location filename="../poc/main_window.cpp" line="569"/>
         <source>DDOC files found: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="563"/>
+        <location filename="../poc/main_window.cpp" line="571"/>
         <source>   of which %1 where chosen for timestamping</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="564"/>
+        <location filename="../poc/main_window.cpp" line="572"/>
         <source>DDOC files timestamped: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="566"/>
+        <location filename="../poc/main_window.cpp" line="574"/>
         <source>Failed timestampings: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="300"/>
+        <location filename="../poc/main_window.cpp" line="301"/>
         <source>Test request to Time Server failed. </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="403"/>
+        <location filename="../poc/main_window.cpp" line="404"/>
         <source>* %1: free space %2, space needed %3 (approximately)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="413"/>
+        <location filename="../poc/main_window.cpp" line="414"/>
         <source>
 Timestamped files might not fit on disk.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="507"/>
+        <location filename="../poc/main_window.cpp" line="515"/>
         <source>Timestamping is not finished. Are you sure?
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="570"/>
+        <location filename="../poc/main_window.cpp" line="578"/>
         <source>For detailed report click </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="579"/>
+        <location filename="../poc/main_window.cpp" line="587"/>
         <source>HERE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="590"/>
+        <location filename="../poc/main_window.cpp" line="598"/>
         <source>HTTP_HELP</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="592"/>
+        <location filename="../poc/main_window.cpp" line="600"/>
         <source>Couldn&apos;t open help URL: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="607"/>
+        <location filename="../poc/main_window.cpp" line="615"/>
         <source>Couldn&apos;t open timestamping log: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="631"/>
+        <location filename="../poc/main_window.cpp" line="639"/>
         <source>I agree</source>
         <translation>Подтверждаю</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="632"/>
+        <location filename="../poc/main_window.cpp" line="640"/>
         <source>Cancel</source>
         <translation type="unfinished">Отменить</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="480"/>
+        <location filename="../poc/main_window.cpp" line="488"/>
         <source>Operation cancelled by user...</source>
         <translation type="unfinished"></translation>
     </message>

@@ -95,6 +95,7 @@ public slots:
     void timestampingFinished(BatchStamper::FinishingDetails details);
 
     void globalConfFinished(bool changed, const QString &error);
+    void globalConfNetworkError(const QString &error);
 
     // GUI related slots
     void introAccept();

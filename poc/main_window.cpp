@@ -141,6 +141,7 @@ TeraMainWin::TeraMainWin(QWidget *parent) :
 
     ///
     connect(&Configuration::instance(), SIGNAL(finished(bool, const QString&)), this, SLOT(globalConfFinished(bool, const QString&)));
+    connect(&Configuration::instance(), SIGNAL(networkError(const QString&)), this, SLOT(globalConfNetworkError(const QString&)));
     Configuration::instance().update();
 }
 
@@ -465,6 +466,12 @@ void TeraMainWin::globalConfFinished(bool changed, const QString &error) {
     progressBarDnldConf->setValue(100);
     if (!showingIntro) setPage(PAGE::START);
     processor.processGlobalConfiguration();
+}
+
+void TeraMainWin::globalConfNetworkError(const QString &error) {
+    QString msg;
+    msg = tr("NO_NETWORK_MSG").arg(error);
+    QMessageBox::warning(this, tr("Error downloading configuration"), msg);
 }
 
 void TeraMainWin::timestampingFinished(BatchStamper::FinishingDetails details) {

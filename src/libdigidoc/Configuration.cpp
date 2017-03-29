@@ -380,6 +380,7 @@ Configuration::Configuration(QObject *parent)
 			break;
 		default:
 			Q_EMIT finished(false, reply->errorString());
+            Q_EMIT networkError(reply->errorString());
 			break;
 		}
 		reply->deleteLater();
