@@ -19,12 +19,6 @@
 #include <QThreadPool>
 
 
-
-
-
-
-
-
 #include <openssl/evp.h>
 #include <openssl/rsa.h>
 #include <QSslKey>
@@ -37,6 +31,7 @@
 #include "disk_crawler.h"
 #include "settings_window.h"
 #include "../src/libdigidoc/Configuration.h"
+#include "../src/client/about/AboutDialog.h"
 
 namespace {
     static int PP_TS_TEST = 100;
@@ -135,7 +130,10 @@ TeraMainWin::TeraMainWin(QWidget *parent) :
     connect( languages, SIGNAL(activated(int)), SLOT(slotLanguageChanged(int)) ); // TODO do with actions?
     connect( langGroup, SIGNAL(triggered(QAction*)), SLOT(slotLanguageChanged(QAction*)) );
 
-    loadTranslation("et");
+    QString sysLang = processor.settings.value("Main/Language").toString();
+    QString lang = "et";
+    if (langs.contains(sysLang)) lang = sysLang;
+    loadTranslation(lang);
 
     timestapmping = false;
 
@@ -588,9 +586,8 @@ void TeraMainWin::fillDoneLog() {
 }
 
 void TeraMainWin::handleAbout() {
-    //AboutDialog *a = new AboutDialog(this);
-    //a->addAction(d->closeAction);
-    //a->open();
+    AboutDialog *a = new AboutDialog(this);
+    a->open();
 }
 
 void TeraMainWin::handleHelp() {

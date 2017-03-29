@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
     //qputenv("QT_QPA_PLATFORM_PLUGIN_PATH", ".");
     QApplication a(argc, argv);
     a.setOrganizationName("RIA");
-    a.setApplicationName("tera");
+    a.setApplicationName("TeRa");
     a.setApplicationVersion(ria_tera::TERA_CLIENT_VERSION);
 
     ria_tera::TeraMainWin w;

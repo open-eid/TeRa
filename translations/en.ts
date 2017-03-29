@@ -2,6 +2,27 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="en" sourcelanguage="en">
 <context>
+    <name>AboutDialog</name>
+    <message>
+        <location filename="../src/client/about/AboutDialog.ui" line="14"/>
+        <location filename="../src/client/about/AboutDialog.ui" line="30"/>
+        <source>About</source>
+        <translation>About</translation>
+    </message>
+    <message>
+        <location filename="../src/client/about/AboutDialog.ui" line="62"/>
+        <source>&lt;p&gt;Estonian ID-software is released by Information Systems&apos;s Auhtority, developed by AS Sertifitseerimiskeskus&lt;br /&gt;
+Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.&lt;/p&gt;
+Additional licenses and components</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../src/client/about/AboutDialog.ui" line="105"/>
+        <source>Diagnostics</source>
+        <translation>Diagnostics</translation>
+    </message>
+</context>
+<context>
     <name>FileListDialog</name>
     <message>
         <location filename="../poc/FileListDialog.ui" line="17"/>
@@ -158,7 +179,7 @@ By default only files on local drives will be timestamped. If you wish to also t
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../poc/main_window.cpp" line="334"/>
+        <location filename="../poc/main_window.cpp" line="329"/>
         <source>Searching</source>
         <translation>Searching</translation>
     </message>
@@ -227,6 +248,19 @@ By default only files on local drives will be timestamped. If you wish to also t
         <location filename="../poc/SettingsDialog.ui" line="269"/>
         <source>Preview file list</source>
         <translation>Preview file list</translation>
+    </message>
+</context>
+<context>
+    <name>ria_tera::AboutDialog</name>
+    <message>
+        <location filename="../src/client/about/AboutDialog.cpp" line="14"/>
+        <source>Close</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../src/client/about/AboutDialog.cpp" line="18"/>
+        <source>%1 version %2, released %3%4</source>
+        <translation>%1 version %2, released %3%4</translation>
     </message>
 </context>
 <context>
@@ -341,12 +375,12 @@ By default only files on local drives will be timestamped. If you wish to also t
 <context>
     <name>ria_tera::TeraMainWin</name>
     <message>
-        <location filename="../poc/main_window.cpp" line="264"/>
+        <location filename="../poc/main_window.cpp" line="259"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="264"/>
+        <location filename="../poc/main_window.cpp" line="259"/>
         <source>Time server URL is empty.</source>
         <translation>Time server URL is empty.</translation>
     </message>
@@ -355,7 +389,7 @@ By default only files on local drives will be timestamped. If you wish to also t
         <translation type="vanished"> * %1: free space %2, space needed %3 (approximately)</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="412"/>
+        <location filename="../poc/main_window.cpp" line="407"/>
         <source>The space needed to timestamp all the DDOC files found exceeds the amount of free space found:
 
 </source>
@@ -366,73 +400,73 @@ By default only files on local drives will be timestamped. If you wish to also t
         <translation type="vanished">Timestamped files might not fit on disk.</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="415"/>
+        <location filename="../poc/main_window.cpp" line="410"/>
         <source>Abort timestamping?</source>
         <translation>Abort timestamping?</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="542"/>
+        <location filename="../poc/main_window.cpp" line="536"/>
         <source>Testing Time Server...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="544"/>
+        <location filename="../poc/main_window.cpp" line="538"/>
         <source>Searching DDOC files. %1 found so far...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="546"/>
+        <location filename="../poc/main_window.cpp" line="540"/>
         <source>Found %1 DDOC files. %2 left to be converted...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="563"/>
+        <location filename="../poc/main_window.cpp" line="557"/>
         <source>Error:</source>
         <translation>Error:</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="568"/>
+        <location filename="../poc/main_window.cpp" line="562"/>
         <source>Finished timestamping DDOC files</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="569"/>
+        <location filename="../poc/main_window.cpp" line="563"/>
         <source>DDOC files found: %1</source>
         <translation>DDOC files found: %1</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="571"/>
+        <location filename="../poc/main_window.cpp" line="565"/>
         <source>   of which %1 where chosen for timestamping</source>
         <translation>   of which %1 where chosen for timestamping</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="572"/>
+        <location filename="../poc/main_window.cpp" line="566"/>
         <source>DDOC files timestamped: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="574"/>
+        <location filename="../poc/main_window.cpp" line="568"/>
         <source>Failed timestampings: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="301"/>
+        <location filename="../poc/main_window.cpp" line="296"/>
         <source>Test request to Time Server failed. </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="404"/>
+        <location filename="../poc/main_window.cpp" line="399"/>
         <source>* %1: free space %2, space needed %3 (approximately)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="414"/>
+        <location filename="../poc/main_window.cpp" line="409"/>
         <source>
 Timestamped files might not fit on disk.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="473"/>
+        <location filename="../poc/main_window.cpp" line="468"/>
         <source>NO_NETWORK_MSG</source>
         <translation>Error on downloading configuration updates.
 
@@ -442,54 +476,54 @@ Internet connection is needed for timestamping *.ddoc files.
 Error: %1</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="475"/>
+        <location filename="../poc/main_window.cpp" line="469"/>
         <source>Error downloading configuration</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="515"/>
+        <location filename="../poc/main_window.cpp" line="509"/>
         <source>Timestamping is not finished. Are you sure?
 </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="578"/>
+        <location filename="../poc/main_window.cpp" line="572"/>
         <source>For detailed report click </source>
         <translation>For detailed report click </translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="587"/>
+        <location filename="../poc/main_window.cpp" line="581"/>
         <source>HERE</source>
         <translation>HERE</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="598"/>
+        <location filename="../poc/main_window.cpp" line="591"/>
         <source>HTTP_HELP</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="600"/>
+        <location filename="../poc/main_window.cpp" line="593"/>
         <source>Couldn&apos;t open help URL: </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="615"/>
+        <location filename="../poc/main_window.cpp" line="608"/>
         <source>Couldn&apos;t open timestamping log: </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="639"/>
+        <location filename="../poc/main_window.cpp" line="632"/>
         <source>I agree</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="640"/>
+        <location filename="../poc/main_window.cpp" line="633"/>
         <source>Cancel</source>
         <translatorcomment>reject button text for &quot;Intro text&quot;</translatorcomment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="488"/>
+        <location filename="../poc/main_window.cpp" line="482"/>
         <source>Operation cancelled by user...</source>
         <translation></translation>
     </message>

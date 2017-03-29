@@ -190,7 +190,12 @@ SET (TERA_LIBDIGIDOC_SRC
         src/libdigidoc/Configuration.h src/libdigidoc/Configuration.cpp
         src/libdigidoc/Settings.h)
 
-SET (TERA_GUI_UI poc/MainWindow.ui poc/SettingsDialog.ui poc/FileListDialog.ui poc/IDCardSelectionDialog.ui )
+SET (TERA_GUI_UI
+        poc/MainWindow.ui
+        poc/SettingsDialog.ui
+        poc/FileListDialog.ui
+        poc/IDCardSelectionDialog.ui
+        src/client/about/AboutDialog.ui)
 SET (TERA_GUI_SRC
         poc/xxx.cpp
         poc/main_window.h poc/main_window.cpp ComboBox.h ComboBox.cpp
@@ -198,6 +203,7 @@ SET (TERA_GUI_SRC
         poc/settings_window.h poc/settings_window.cpp
         poc/files_window.h poc/files_window.cpp
         poc/id_card_select_dialog.h poc/id_card_select_dialog.cpp
+        src/client/about/AboutDialog.h src/client/about/AboutDialog.cpp
 
         poc/utils.h poc/utils.cpp
         poc/openssl_utils.h poc/openssl_utils.cpp

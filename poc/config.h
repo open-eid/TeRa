@@ -35,6 +35,8 @@ public:
 
     void appendIniFile(QString const& path);
 
+    QString getLanguage();
+
     QString getDefaultTimeServerURL();
 
     QString getTimeServerURL();
