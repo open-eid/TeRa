@@ -176,7 +176,7 @@ Vaikimisi ajatembeldatakse ainult arvutis asuvaid DDOC faile. Kui soovite võrgu
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../poc/main_window.cpp" line="329"/>
+        <location filename="../poc/main_window.cpp" line="332"/>
         <source>Searching</source>
         <translation>Otsimine</translation>
     </message>
@@ -270,18 +270,18 @@ Vaikimisi ajatembeldatakse ainult arvutis asuvaid DDOC faile. Kui soovite võrgu
 <context>
     <name>ria_tera::GuiTimestamperProcessor</name>
     <message>
-        <location filename="../poc/gui_timestamper_processor.cpp" line="172"/>
-        <location filename="../poc/gui_timestamper_processor.cpp" line="188"/>
+        <location filename="../poc/gui_timestamper_processor.cpp" line="175"/>
+        <location filename="../poc/gui_timestamper_processor.cpp" line="191"/>
         <source>Error</source>
         <translation>Viga</translation>
     </message>
     <message>
-        <location filename="../poc/gui_timestamper_processor.cpp" line="172"/>
+        <location filename="../poc/gui_timestamper_processor.cpp" line="175"/>
         <source>No input directory selected.</source>
         <translation>Ühtegi sisendkataloogi pole valitud.</translation>
     </message>
     <message>
-        <location filename="../poc/gui_timestamper_processor.cpp" line="188"/>
+        <location filename="../poc/gui_timestamper_processor.cpp" line="191"/>
         <source>The following input folders don&apos;t exist (or are files). Please fix the list under &quot;Settings&quot; window:</source>
         <translation>Järgmised sisendkataloogid ei eksisteeri (või on tegu failidega). Palun korrasta sisendkataloogide nimistut &quot;Seaded&quot; vaates:</translation>
     </message>
@@ -376,12 +376,12 @@ Vaikimisi ajatembeldatakse ainult arvutis asuvaid DDOC faile. Kui soovite võrgu
         <translation type="vanished">Ühtegi sisendkataloogi pole valitud</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="259"/>
+        <location filename="../poc/main_window.cpp" line="262"/>
         <source>Error</source>
         <translation>Viga</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="259"/>
+        <location filename="../poc/main_window.cpp" line="262"/>
         <source>Time server URL is empty.</source>
         <translation>Ajatempliserveri URL on tühi.</translation>
     </message>
@@ -390,7 +390,7 @@ Vaikimisi ajatembeldatakse ainult arvutis asuvaid DDOC faile. Kui soovite võrgu
         <translation type="vanished"> * &apos;%1&apos;: vaba ruumi %2, vajalik ruum (ligikaudu) %3</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="407"/>
+        <location filename="../poc/main_window.cpp" line="410"/>
         <source>The space needed to timestamp all the DDOC files found exceeds the amount of free space found:
 
 </source>
@@ -401,73 +401,91 @@ Vaikimisi ajatembeldatakse ainult arvutis asuvaid DDOC faile. Kui soovite võrgu
         <translation type="vanished">Ajatembeldatud failid ei pruugi kettale mahtuda.</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="410"/>
+        <location filename="../poc/main_window.cpp" line="413"/>
         <source>Abort timestamping?</source>
         <translation>Katkesta tembeldamine?</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="536"/>
+        <location filename="../poc/main_window.cpp" line="570"/>
         <source>Testing Time Server...</source>
         <translation>Aja-serveri test...</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="538"/>
+        <location filename="../poc/main_window.cpp" line="572"/>
         <source>Searching DDOC files. %1 found so far...</source>
         <translation>Otsin DDOC faile. Hetkel leitud %1...</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="540"/>
+        <location filename="../poc/main_window.cpp" line="574"/>
         <source>Found %1 DDOC files. %2 left to be converted...</source>
         <translation>Leitud %1 DDOC faili. Konverteerimata veel %2...</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="557"/>
+        <location filename="../poc/main_window.cpp" line="591"/>
         <source>Error:</source>
         <translation>Viga:</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="562"/>
+        <location filename="../poc/main_window.cpp" line="596"/>
         <source>Finished timestamping DDOC files</source>
         <translation>DDOC failide tembeldamine on lõppenud</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="563"/>
+        <location filename="../poc/main_window.cpp" line="597"/>
         <source>DDOC files found: %1</source>
         <translation>DDOC faile leitud: %1</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="565"/>
+        <location filename="../poc/main_window.cpp" line="599"/>
         <source>   of which %1 where chosen for timestamping</source>
         <translation>  milles %1 olid valitud tembeldamiseks</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="566"/>
+        <location filename="../poc/main_window.cpp" line="600"/>
         <source>DDOC files timestamped: %1</source>
         <translation>DDOC faile tembeldatud: %1</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="568"/>
+        <location filename="../poc/main_window.cpp" line="602"/>
         <source>Failed timestampings: %1</source>
         <translation>Ebaõnnestunud tembeldamisi: %1</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="296"/>
+        <location filename="../poc/main_window.cpp" line="299"/>
         <source>Test request to Time Server failed. </source>
         <translation>Aja-serveri kontroll-päring ebaõnnestus. </translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="399"/>
+        <location filename="../poc/main_window.cpp" line="402"/>
         <source>* %1: free space %2, space needed %3 (approximately)</source>
         <translation> * &apos;%1&apos;: vaba ruumi %2, vajalik ruum (ligikaudu) %3</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="409"/>
+        <location filename="../poc/main_window.cpp" line="412"/>
         <source>
 Timestamped files might not fit on disk.</source>
         <translation>Ajatembeldatud failid ei pruugi kettale mahtuda.</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="468"/>
+        <location filename="../poc/main_window.cpp" line="493"/>
+        <source>Your version of the software (%1) is not supported any more.
+
+Minimum supported version is %2.
+
+Please upgrade your software from https://installer.id.ee/</source>
+        <translation type="unfinished">Teie kasutatav versioon tarkvarast (%1) on liiga vana.
+
+Minimaalne toetatud versioon on %2.
+
+Palun uuenda tarkvara https://installer.id.ee/</translation>
+    </message>
+    <message>
+        <location filename="../poc/main_window.cpp" line="495"/>
+        <source>Version check</source>
+        <translation>Versiooni kontroll</translation>
+    </message>
+    <message>
+        <location filename="../poc/main_window.cpp" line="502"/>
         <source>NO_NETWORK_MSG</source>
         <translation>Viga konfiguratsiooniuuenduste allalaadimisel.
 
@@ -477,53 +495,53 @@ Internetiühendus on vajalik *.ddoc failide ajatembeldamiseks.
 Viga: %1</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="469"/>
+        <location filename="../poc/main_window.cpp" line="503"/>
         <source>Error downloading configuration</source>
         <translation>Viga konfiguratsiooniuuenduste allalaadimisel</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="509"/>
+        <location filename="../poc/main_window.cpp" line="543"/>
         <source>Timestamping is not finished. Are you sure?
 </source>
         <translation>Tembeldamine pole lõppenud. Katkestada protsess?</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="572"/>
+        <location filename="../poc/main_window.cpp" line="606"/>
         <source>For detailed report click </source>
         <translation>Täpsema aruande vaatamiseks vajuta </translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="581"/>
+        <location filename="../poc/main_window.cpp" line="615"/>
         <source>HERE</source>
         <translation>SIIN</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="591"/>
+        <location filename="../poc/main_window.cpp" line="625"/>
         <source>HTTP_HELP</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="593"/>
+        <location filename="../poc/main_window.cpp" line="627"/>
         <source>Couldn&apos;t open help URL: </source>
         <translation>Abi URL&apos;i avamine ebaõnnestus:</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="608"/>
+        <location filename="../poc/main_window.cpp" line="642"/>
         <source>Couldn&apos;t open timestamping log: </source>
         <translation>Tembeldamise logi avamine ebaõnnestus:</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="632"/>
+        <location filename="../poc/main_window.cpp" line="666"/>
         <source>I agree</source>
         <translation>Nõustun</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="633"/>
+        <location filename="../poc/main_window.cpp" line="667"/>
         <source>Cancel</source>
         <translation>Loobu</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="482"/>
+        <location filename="../poc/main_window.cpp" line="516"/>
         <source>Operation cancelled by user...</source>
         <translation>Katkestatud kasutaja poolt</translation>
     </message>

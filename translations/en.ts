@@ -179,7 +179,7 @@ By default only files on local drives will be timestamped. If you wish to also t
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../poc/main_window.cpp" line="329"/>
+        <location filename="../poc/main_window.cpp" line="332"/>
         <source>Searching</source>
         <translation>Searching</translation>
     </message>
@@ -273,18 +273,18 @@ By default only files on local drives will be timestamped. If you wish to also t
 <context>
     <name>ria_tera::GuiTimestamperProcessor</name>
     <message>
-        <location filename="../poc/gui_timestamper_processor.cpp" line="172"/>
-        <location filename="../poc/gui_timestamper_processor.cpp" line="188"/>
+        <location filename="../poc/gui_timestamper_processor.cpp" line="175"/>
+        <location filename="../poc/gui_timestamper_processor.cpp" line="191"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../poc/gui_timestamper_processor.cpp" line="172"/>
+        <location filename="../poc/gui_timestamper_processor.cpp" line="175"/>
         <source>No input directory selected.</source>
         <translation>No input directory selected.</translation>
     </message>
     <message>
-        <location filename="../poc/gui_timestamper_processor.cpp" line="188"/>
+        <location filename="../poc/gui_timestamper_processor.cpp" line="191"/>
         <source>The following input folders don&apos;t exist (or are files). Please fix the list under &quot;Settings&quot; window:</source>
         <translation>The following input folders don&apos;t exist (or are files). Please fix the list in the &quot;Settings&quot; window:</translation>
     </message>
@@ -375,12 +375,12 @@ By default only files on local drives will be timestamped. If you wish to also t
 <context>
     <name>ria_tera::TeraMainWin</name>
     <message>
-        <location filename="../poc/main_window.cpp" line="259"/>
+        <location filename="../poc/main_window.cpp" line="262"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="259"/>
+        <location filename="../poc/main_window.cpp" line="262"/>
         <source>Time server URL is empty.</source>
         <translation>Time server URL is empty.</translation>
     </message>
@@ -389,7 +389,7 @@ By default only files on local drives will be timestamped. If you wish to also t
         <translation type="vanished"> * %1: free space %2, space needed %3 (approximately)</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="407"/>
+        <location filename="../poc/main_window.cpp" line="410"/>
         <source>The space needed to timestamp all the DDOC files found exceeds the amount of free space found:
 
 </source>
@@ -400,73 +400,87 @@ By default only files on local drives will be timestamped. If you wish to also t
         <translation type="vanished">Timestamped files might not fit on disk.</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="410"/>
+        <location filename="../poc/main_window.cpp" line="413"/>
         <source>Abort timestamping?</source>
         <translation>Abort timestamping?</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="536"/>
+        <location filename="../poc/main_window.cpp" line="570"/>
         <source>Testing Time Server...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="538"/>
+        <location filename="../poc/main_window.cpp" line="572"/>
         <source>Searching DDOC files. %1 found so far...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="540"/>
+        <location filename="../poc/main_window.cpp" line="574"/>
         <source>Found %1 DDOC files. %2 left to be converted...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="557"/>
+        <location filename="../poc/main_window.cpp" line="591"/>
         <source>Error:</source>
         <translation>Error:</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="562"/>
+        <location filename="../poc/main_window.cpp" line="596"/>
         <source>Finished timestamping DDOC files</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="563"/>
+        <location filename="../poc/main_window.cpp" line="597"/>
         <source>DDOC files found: %1</source>
         <translation>DDOC files found: %1</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="565"/>
+        <location filename="../poc/main_window.cpp" line="599"/>
         <source>   of which %1 where chosen for timestamping</source>
         <translation>   of which %1 where chosen for timestamping</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="566"/>
+        <location filename="../poc/main_window.cpp" line="600"/>
         <source>DDOC files timestamped: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="568"/>
+        <location filename="../poc/main_window.cpp" line="602"/>
         <source>Failed timestampings: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="296"/>
+        <location filename="../poc/main_window.cpp" line="299"/>
         <source>Test request to Time Server failed. </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="399"/>
+        <location filename="../poc/main_window.cpp" line="402"/>
         <source>* %1: free space %2, space needed %3 (approximately)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="409"/>
+        <location filename="../poc/main_window.cpp" line="412"/>
         <source>
 Timestamped files might not fit on disk.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="468"/>
+        <location filename="../poc/main_window.cpp" line="493"/>
+        <source>Your version of the software (%1) is not supported any more.
+
+Minimum supported version is %2.
+
+Please upgrade your software from https://installer.id.ee/</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../poc/main_window.cpp" line="495"/>
+        <source>Version check</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../poc/main_window.cpp" line="502"/>
         <source>NO_NETWORK_MSG</source>
         <translation>Error on downloading configuration updates.
 
@@ -476,54 +490,54 @@ Internet connection is needed for timestamping *.ddoc files.
 Error: %1</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="469"/>
+        <location filename="../poc/main_window.cpp" line="503"/>
         <source>Error downloading configuration</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="509"/>
+        <location filename="../poc/main_window.cpp" line="543"/>
         <source>Timestamping is not finished. Are you sure?
 </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="572"/>
+        <location filename="../poc/main_window.cpp" line="606"/>
         <source>For detailed report click </source>
         <translation>For detailed report click </translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="581"/>
+        <location filename="../poc/main_window.cpp" line="615"/>
         <source>HERE</source>
         <translation>HERE</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="591"/>
+        <location filename="../poc/main_window.cpp" line="625"/>
         <source>HTTP_HELP</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="593"/>
+        <location filename="../poc/main_window.cpp" line="627"/>
         <source>Couldn&apos;t open help URL: </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="608"/>
+        <location filename="../poc/main_window.cpp" line="642"/>
         <source>Couldn&apos;t open timestamping log: </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="632"/>
+        <location filename="../poc/main_window.cpp" line="666"/>
         <source>I agree</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="633"/>
+        <location filename="../poc/main_window.cpp" line="667"/>
         <source>Cancel</source>
         <translatorcomment>reject button text for &quot;Intro text&quot;</translatorcomment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="482"/>
+        <location filename="../poc/main_window.cpp" line="516"/>
         <source>Operation cancelled by user...</source>
         <translation></translation>
     </message>

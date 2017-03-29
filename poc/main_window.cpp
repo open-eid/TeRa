@@ -138,7 +138,7 @@ TeraMainWin::TeraMainWin(QWidget *parent) :
     timestapmping = false;
 
     ///
-    connect(&Configuration::instance(), SIGNAL(finished(bool, const QString&)), this, SLOT(globalConfFinished(bool, const QString&)));
+    connect(&Configuration::instance(), SIGNAL(finished(bool, const QString&)), this, SLOT(globalConfFinished(bool, const QString&)), Qt::QueuedConnection);
     connect(&Configuration::instance(), SIGNAL(networkError(const QString&)), this, SLOT(globalConfNetworkError(const QString&)));
     Configuration::instance().update();
 }
@@ -459,11 +459,45 @@ bool TeraMainWin::processingFileDone(QString const& pathIn, QString const& pathO
     return true;
 }
 
+QVector<int> getVersionAsArray(QString const& ver) {
+    QVector<int> res;
+    QStringList verList = ver.split('.');
+    for (int i = 0; i < verList.size(); ++i) {
+        int num = verList[i].toInt();
+        res.append(num);
+    }
+    return res;
+}
+
+static bool isSupported(QString const& ver, QString const& minver) {
+    QVector<int> ver_v = getVersionAsArray(ver);
+    QVector<int> minver_v = getVersionAsArray(minver);
+
+    int l = qMin(ver_v.size(), minver_v.size());
+    for (int i = 0; i < l; ++i) {
+        if (ver_v[i] > minver_v[i]) return true;
+        if (ver_v[i] < minver_v[i]) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 void TeraMainWin::globalConfFinished(bool changed, const QString &error) {
     initDone = true;
     progressBarDnldConf->setValue(100);
     if (!showingIntro) setPage(PAGE::START);
     processor.processGlobalConfiguration();
+
+    QString minSupported = processor.minSupportedVersion;
+    QString appVersion = QCoreApplication::applicationVersion();
+    if (!isSupported(appVersion, minSupported)) {
+        QString msg = tr("Your version of the software (%1) is not supported any more.\n\nMinimum supported version is %2.\n\nPlease upgrade your software from https://installer.id.ee/").
+            arg(appVersion, minSupported);
+        QMessageBox::critical(this, tr("Version check"), msg);
+        QCoreApplication::exit(1);
+    }
 }
 
 void TeraMainWin::globalConfNetworkError(const QString &error) {

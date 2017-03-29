@@ -38,8 +38,9 @@ QString toBulletedList(QList<QString> list) {
 namespace ria_tera {
 
 static char const* REG_PARAM_SHOW_INTRO = "ShowIntro";
-QString const& GuiTimestamperProcessor::JSON_TERA_DEFAULT_OUT_EXT("TERA-DEFAULT-OUT-EXTENSION");
-QString const& GuiTimestamperProcessor::JSON_TERA_EXCL_DIRS_("TERA-EXCL-DIRS-");
+QString const GuiTimestamperProcessor::JSON_TERA_MIN_SUPPORTED_VERSION("TERA-SUPPORTED");
+QString const GuiTimestamperProcessor::JSON_TERA_DEFAULT_OUT_EXT("TERA-DEFAULT-OUT-EXTENSION");
+QString const GuiTimestamperProcessor::JSON_TERA_EXCL_DIRS_("TERA-EXCL-DIRS-");
 
 GuiTimestamperProcessor::GuiTimestamperProcessor() :
     INI_PARAM_PREVIEW_FILES(Config::INI_GROUP_ + "preview_files"),
@@ -85,11 +86,13 @@ void GuiTimestamperProcessor::processGlobalConfiguration() {
     exclDirs.unite(toBeAdded);
 
     QString jsonOutExt = o.value(JSON_TERA_DEFAULT_OUT_EXT).toString();
-    qDebug() << "<<<< " << jsonOutExt;
+
     if (!jsonOutExt.isNull()) {
         outExt = jsonOutExt;
     }
-    qDebug() << "<<<<2 " << outExt;
+
+    // min supported version
+    minSupportedVersion = o.value(JSON_TERA_MIN_SUPPORTED_VERSION).toString();
 }
 
 void GuiTimestamperProcessor::initializeSettingsWindow(TeraSettingsWin& sw) {

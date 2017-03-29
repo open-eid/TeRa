@@ -97,14 +97,16 @@ public:
     static bool checkInDirListWithMessagebox(QWidget* parent, QStringListModel const& inDirs);
     static bool checkInDirListWithMessagebox(QWidget* parent, QSet<QString> const& inDirs);
 
-    static QString const& JSON_TERA_DEFAULT_OUT_EXT;
-    static QString const& JSON_TERA_EXCL_DIRS_; // "TERA-EXCL-DIRS-"
+    static QString const JSON_TERA_MIN_SUPPORTED_VERSION;
+    static QString const JSON_TERA_DEFAULT_OUT_EXT;
+    static QString const JSON_TERA_EXCL_DIRS_; // "TERA-EXCL-DIRS-"
 public: // TODO
     Config config;
     QSettings settings; // register
     QString iniPath; // user changes
 
     bool showIntro;
+    QString minSupportedVersion;
     QString timeServerUrl;
     QString outExt;
     QSet<QString> centralExclDirs;
