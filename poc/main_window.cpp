@@ -229,24 +229,12 @@ void TeraMainWin::handleStartStamping() {
     }
 }
 
-class DeleteIDCardSelectDialog : public QRunnable {
-    QSharedPointer<IDCardSelectDialog> cardSelectDialog;
-public:
-    DeleteIDCardSelectDialog(QSharedPointer<IDCardSelectDialog>& csd) {
-        cardSelectDialog.swap(csd);
-    }
-    void run() {
-        cardSelectDialog.reset();
-    }
-};
-
 void TeraMainWin::doPin1Authentication() {
-    // Deleting old dialog takes time because QSmartCard destructor does some stuff...
-    // But we want to display the new dialog fast as a minimum
-    QThreadPool::globalInstance()->start(new DeleteIDCardSelectDialog(cardSelectDialog));
-    cardSelectDialog.reset(new IDCardSelectDialog(this));
-    connect(cardSelectDialog.data(), SIGNAL(accepted()), this, SLOT(pin1AuthenticaionDone()));
-    cardSelectDialog->setVisible(true);
+    if (cardSelectDialog.isNull()) {
+        cardSelectDialog.reset(new IDCardSelectDialog(this));
+        connect(cardSelectDialog.data(), SIGNAL(accepted()), this, SLOT(pin1AuthenticaionDone()));
+    }
+    cardSelectDialog->open();
 }
 
 void TeraMainWin::pin1AuthenticaionDone() {

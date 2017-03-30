@@ -124,9 +124,9 @@ public:
 	explicit QSmartCard( QObject *parent = 0 );
 	~QSmartCard();
 
-QMutex& mutex(); // TODO
 	ErrorType change( QSmartCardData::PinType type, const QString &newpin, const QString &pin );
 	QSmartCardData data() const;
+    QSmartCardData dataXXX(); // thread safe
 	Qt::HANDLE key();
 	ErrorType login( QSmartCardData::PinType type );
 	void logout();
@@ -140,7 +140,10 @@ public slots:
 	void selectCard( const QString &card );
 
 private:
+    QMutex bufferedDataMutex;
+    QSmartCardData bufferedData;
 	void run();
+    void emitDataChanged();
 
 	QSmartCardPrivate *d;
 };

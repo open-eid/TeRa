@@ -190,7 +190,8 @@ std::cout << "could not create query\n" << std::endl;
 
 
 
-static int reply_command(CONF *conf, const char *section, const char *engine,
+static int reply_command(//CONF *conf, 
+                         const char *section, const char *engine,
                          const char *queryfile, const char *passin, const char *inkey,
                          const EVP_MD *md, const char *signer, const char *chain,
                          const char *policy, QByteArray const& in, int token_in,
@@ -280,7 +281,7 @@ out = xxx;
 }
 
 bool extract_timestamp_from_ts_response(QByteArray const& timeserverResponse, QByteArray& timestamp) {
-    CONF *conf; // TODO
+    //CONF *conf; // TODO
     const char *section = NULL;
     const char *engine = NULL;
     const char *queryfile = NULL;
@@ -296,7 +297,8 @@ bool extract_timestamp_from_ts_response(QByteArray const& timeserverResponse, QB
     int token_out = 1;
     int text = 0;
 
-    int result = reply_command(conf, section, engine,
+    int result = reply_command(//conf,
+                             section, engine,
                              queryfile, passin, inkey,
                              md, signer, chain,
                              policy, timeserverResponse, token_in,

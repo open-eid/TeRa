@@ -19,6 +19,7 @@ IDCardSelectDialog::IDCardSelectDialog(QWidget *parent)
     btnStart->setEnabled(false);
     connect(btnStart, SIGNAL(clicked(bool)), this, SLOT(startAuthentication()));
     connect(btnCancel, SIGNAL(clicked(bool)), this, SLOT(reject()));
+    QTimer::singleShot(0, this, SLOT(initSmartCard()));
 }
 
 IDCardSelectDialog::~IDCardSelectDialog() {}
@@ -43,8 +44,12 @@ void IDCardSelectDialog::startAuthentication() {
                 message = tr("Wrong PIN1. %1 retries left").arg(QString::number(retryCount));
             } else if (QSmartCard::ErrorType::BlockedError == error) {
                 message = tr("PIN1 is blocked.");
+            } else if (QSmartCard::ErrorType::UnknownError == error) {
+                message = tr("Error occurred while verifying PIN.\nPlease check if ID-card is still in the reader.");
+                smartCard->logout();
             } else {
                 message = tr("Error: ") + QString::number(error); // TODO
+                smartCard->logout();
             }
             populateGuiFromIDCard();
             QMessageBox::warning(this, title, message);
@@ -55,11 +60,15 @@ void IDCardSelectDialog::startAuthentication() {
 }
 
 void IDCardSelectDialog::initSmartCard() {
-    smartCard.reset(new QSmartCard());
-    connect(smartCard.data(), SIGNAL(dataChanged()), this, SLOT(cardDataChanged()));
-    connect(comboBoxIDCardSelect, static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::activated),
-        smartCard.data(), &QSmartCard::selectCard);
-    smartCard->start();
+    if (smartCard.isNull()) {
+        smartCard.reset(new QSmartCard());
+        connect(smartCard.data(), SIGNAL(dataChanged()), this, SLOT(cardDataChanged()), Qt::QueuedConnection);
+        connect(comboBoxIDCardSelect, SIGNAL(activated(QString)),
+            smartCard.data(), SLOT(selectCard(QString)), Qt::QueuedConnection);
+        smartCard->start();
+    } else {
+        smartCard->logout();
+    }
 }
 
 void IDCardSelectDialog::cardDataChanged() {
@@ -148,9 +157,8 @@ void IDCardSelectDialog::populateIDCardInfoText(QSmartCardData const& t) {
 
 void IDCardSelectDialog::bufferCardData() {
 qDebug() << "aaaa bl";
-    QMutexLocker lock(&smartCard->mutex());
+    smartCardData = smartCard->dataXXX();
 qDebug() << "aaaa al";
-    smartCardData = smartCard->data();
 }
 
 }
