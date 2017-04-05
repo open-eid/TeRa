@@ -138,8 +138,8 @@ private:
     TimeStamper ts;
 };
 
-Q_DECLARE_METATYPE(ria_tera::BatchStamper::FinishingDetails)
-
 }
+
+Q_DECLARE_METATYPE(ria_tera::BatchStamper::FinishingDetails)
 
 #endif /* TIMESTAMPER_H_ */
