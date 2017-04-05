@@ -4,6 +4,7 @@
 
 #include "ui_IDCardSelectionDialog.h"
 
+#include "common/PinDialog.h"
 #include "common/QSmartCard.h"
 
 namespace ria_tera {
@@ -29,6 +30,7 @@ private:
     void populateIDCardInfoText(QSmartCardData const& t);
 
 public: // TODO
+    PinDialogGUIFactory pdf;
     QSharedPointer<QSmartCard> smartCard;
     QSmartCardData smartCardData;
 };

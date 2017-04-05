@@ -24,6 +24,8 @@
 #include <openssl/err.h>
 #include <openssl/pem.h>
 
+#include "poc/logging.h"
+
 class ConfigurationPrivate
 {
 public:
@@ -38,7 +40,7 @@ public:
 QFile tf(cache + "config.test.json");
 if (tf.exists() && tf.open(QIODevice::ReadOnly)) {
     data = tf.readAll();
-    qDebug() << " data len... " << data.length() << " " << _data.length();
+    TERA_LOG(debug) << "Using config.test.json instead of downloaded config file. Data len = " << data.length() << " " << _data.length();
 } else
 		data = _data;
 		dataobject = QJsonDocument::fromJson(data).object();
@@ -322,7 +324,7 @@ Configuration::Configuration(QObject *parent)
 			{
 				d->tmpsignature = QByteArray::fromBase64(reply->readAll());
 				if(d->forceUpdate)
-					qDebug() << "Forced update";
+					TERA_LOG(debug) << "Forced update";
 				else if(d->validate(d->data, d->tmpsignature))
 				{
 #ifdef LAST_CHECK_DAYS
@@ -332,7 +334,7 @@ Configuration::Configuration(QObject *parent)
 					break;
 				}
 				else
-					qDebug() << "Remote signature does not match, downloading new configuration";
+					TERA_LOG(debug) << "Remote signature does not match, downloading new configuration";
 				sendRequest(d->url);
 			}
 			else if(reply->url() == d->url)
@@ -354,7 +356,7 @@ Configuration::Configuration(QObject *parent)
 					break;
 				}
 
-				qDebug() << "Writing new configuration";
+				TERA_LOG(debug) << "Writing new configuration";
 				d->setData(data);
 				d->signature = d->tmpsignature.toBase64();
 #ifndef NO_CACHE
@@ -418,13 +420,13 @@ Configuration::Configuration(QObject *parent)
 	else
 	{
 		int serial = object().value("META-INF").toObject().value("SERIAL").toInt();
-		qDebug() << "Chache configuration serial:" << serial;
+		TERA_LOG(debug) << "Chache configuration serial:" << serial;
 		QFile embedConf(":/config.json");
 		if(embedConf.open(QFile::ReadOnly))
 		{
 			QJsonObject obj = QJsonDocument::fromJson(embedConf.readAll()).object();
 			int bundledSerial = obj.value("META-INF").toObject().value("SERIAL").toInt();
-			qDebug() << "Bundled configuration serial:" << bundledSerial;
+			TERA_LOG(debug) << "Bundled configuration serial:" << bundledSerial;
 			if(serial < bundledSerial)
 			{
 				qWarning() << "Bundled configuration is recent than cache, reseting cache";
@@ -498,7 +500,7 @@ void Configuration::sendRequest(const QUrl &url)
 			return;
 		d->requestcache.removeAll(reply);
 		reply->deleteLater();
-		qDebug() << "Request timed out";
+		TERA_LOG(debug) << "Request timed out";
 		Q_EMIT finished(false, tr("Request timed out"));
 	});
 	timer->start(30*1000);

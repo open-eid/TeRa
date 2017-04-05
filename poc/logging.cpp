@@ -135,6 +135,18 @@ void TeraLoggerLine::append(char const* text) { message += text; }
 
 void TeraLoggerLine::setConsoleOnly() { consoleOnly = true; };
 
+TeraLoggerLine& TeraLoggerLine::operator<<(QString const& text) {
+    if (text.isNull()) append("<null>");
+    else append(text.toUtf8());
+    return *this;
+}
+
+TeraLoggerLine& TeraLoggerLine::operator<<(QByteArray const& text) {
+    if (text.isNull()) append("<null>");
+    else append(text.constData());
+    return *this;
+}
+
 TeraLoggerLine& TeraLoggerLine::operator<<(char const* text) {
     append(text);
     return *this;

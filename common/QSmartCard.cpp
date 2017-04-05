@@ -20,7 +20,8 @@
 #include "QSmartCard_p.h"
 
 #include <common/IKValidator.h>
-#include <common/PinDialog.h>
+//#include <common/PinDialog.h>
+#include "TokenData.h"
 ///// TODO ???? #include <common/Settings.h>
 
 #include <QtCore/QDateTime>
@@ -31,6 +32,8 @@
 
 #include <openssl/evp.h>
 #include <thread>
+
+#include "poc/logging.h"
 
 QSmartCardData::QSmartCardData(): d(new QSmartCardDataPrivate) {}
 QSmartCardData::QSmartCardData(const QSmartCardData &other): d(other.d) {}
@@ -74,7 +77,7 @@ QString QSmartCardData::typeString(QSmartCardData::PinType type)
 
 QSharedPointer<QPCSCReader> QSmartCardPrivate::connect(const QString &reader)
 {
-	qDebug() << "Connecting to reader" << reader;
+	TERA_LOG(debug) << "Connecting to reader" << reader;
 	QSharedPointer<QPCSCReader> r(new QPCSCReader(reader, &QPCSC::instance()));
 	if(r->connect() && r->beginTransaction())
 		return r;
@@ -134,7 +137,6 @@ QHash<quint8,QByteArray> QSmartCardPrivate::parseFCI(const QByteArray &data) con
 int QSmartCardPrivate::rsa_sign(int type, const unsigned char *m, unsigned int m_len,
 		unsigned char *sigret, unsigned int *siglen, const RSA *rsa)
 {
-qDebug() << "<><><><> QSmartCardPrivate::rsa_sign start";
 	QSmartCardPrivate *d = (QSmartCardPrivate*)RSA_get_app_data(rsa);
 	if(type != NID_md5_sha1 ||
 		m_len != 36 ||
@@ -148,18 +150,12 @@ qDebug() << "<><><><> QSmartCardPrivate::rsa_sign start";
 	cmd[4] = m_len;
 	cmd += QByteArray::fromRawData((const char*)m, m_len);
 	QPCSCReader::Result result = d->reader->transfer(cmd);
-qDebug() << "<><><><> QSmartCardPrivate::rsa_sign check result...";
 	if(!result.resultOk()) {
-//        // TODO QSmartCardPrivate should have logout()
-//        d->updateCounters(d->reader.data(), d->t.d);
-//        d->reader.clear();
-//        d->m.unlock();
 		return 0;
     }
 
 	*siglen = (unsigned int)result.data.size();
 	memcpy(sigret, result.data.constData(), result.data.size());
-qDebug() << "<><><><> QSmartCardPrivate::rsa_sign return 1";
 	return 1;
 }
 
@@ -217,9 +213,10 @@ bool QSmartCardPrivate::updateCounters(QPCSCReader *reader, QSmartCardDataPrivat
 
 
 
-QSmartCard::QSmartCard(QObject *parent)
+QSmartCard::QSmartCard(PinDialogFactory& p, QObject *parent)
 :	QThread(parent)
 ,	d(new QSmartCardPrivate)
+, pdf(p)
 {
 #ifdef TERA_OLD_OPENSSL
     d->method->name = "QSmartCard";
@@ -281,11 +278,11 @@ QSmartCardData QSmartCard::dataXXX() {
 
 
 
-Qt::HANDLE QSmartCard::key()
+QSslKey QSmartCard::key()
 {
 	RSA *rsa = RSAPublicKey_dup((RSA*)d->t.authCert().publicKey().handle());
 	if (!rsa)
-		return 0;
+		return QSslKey();
 
 	RSA_set_method(rsa, d->method);
 #ifdef TERA_OLD_OPENSSL
@@ -295,43 +292,40 @@ Qt::HANDLE QSmartCard::key()
 	EVP_PKEY *key = EVP_PKEY_new();
 	EVP_PKEY_set1_RSA(key, rsa);
 	RSA_free(rsa);
-	return Qt::HANDLE(key);
+	return QSslKey(key);
 }
 
 QSmartCard::ErrorType QSmartCard::login(QSmartCardData::PinType type)
 {
-	PinDialog::PinFlags flags = PinDialog::Pin1Type;
+    PinDialogInterface::PinFlags flags = PinDialogInterface::Pin1Type;
 	QSslCertificate cert;
 	switch(type)
 	{
-	case QSmartCardData::Pin1Type: flags = PinDialog::Pin1Type; cert = d->t.authCert(); break;
-	case QSmartCardData::Pin2Type: flags = PinDialog::Pin2Type; cert = d->t.signCert(); break;
+    case QSmartCardData::Pin1Type: flags = PinDialogInterface::Pin1Type; cert = d->t.authCert(); break;
+    case QSmartCardData::Pin2Type: flags = PinDialogInterface::Pin2Type; cert = d->t.signCert(); break;
 	default: return UnknownError;
 	}
 
-	QScopedPointer<PinDialog> p;
+	QScopedPointer<PinDialogInterface> p;
 	QByteArray pin;
 	if(!d->t.isPinpad())
 	{
-		p.reset(new PinDialog(flags, cert, 0, qApp->activeWindow()));
-		if(!p->exec())
+		p.reset(pdf.createPinDialog(flags, cert));
+		if(!p->execDialog())
 			return CancelError;
-		pin = p->text().toUtf8();
+		pin = p->getPin();
 	}
 	else
-		p.reset(new PinDialog(PinDialog::PinFlags(flags|PinDialog::PinpadFlag), cert, 0, qApp->activeWindow()));
+        p.reset(pdf.createPinDialog(PinDialogInterface::PinFlags(flags | PinDialogInterface::PinpadFlag), cert));
 
-qDebug() << "QSmartCard::login lock";
 	d->m.lock();
 	d->reader = d->connect(d->t.reader());
 	if(!d->reader) {
-qDebug() << "QSmartCard::login unlock unknown error";
         //d->updateCounters(d->reader.data(), d->t.d);
         d->reader.clear();
         d->m.unlock();
 		return UnknownError;
     }
-qDebug() << "<><> QSmartCard::login  verify";
 	QByteArray cmd = d->VERIFY;
     cmd[3] = type;
 	cmd[4] = pin.size();
@@ -339,11 +333,11 @@ qDebug() << "<><> QSmartCard::login  verify";
 	if(d->t.isPinpad())
 	{
 		std::thread([&]{
-			Q_EMIT p->startTimer();
+            p->doStartTimer();
 			result = d->reader->transferCTL(cmd, true, d->language());
-			Q_EMIT p->finish(0);
+            p->doFinish(0);
 		}).detach();
-		p->exec();
+		p->execDialog();
 	}
 	else
 		result = d->reader->transfer(cmd + pin);
@@ -352,10 +346,8 @@ qDebug() << "<><> QSmartCard::login  verify";
 	{
 		d->updateCounters(d->reader.data(), d->t.d);
 		d->reader.clear();
-qDebug() << "QSmartCard::login unlock";
 		d->m.unlock();
 	}
-qDebug() << "<><> QSmartCard::login  err = " << err;
 	return err;
 }
 
@@ -365,7 +357,6 @@ void QSmartCard::logout()
 		return;
 	d->updateCounters(d->reader.data(), d->t.d);
 	d->reader.clear();
-qDebug() << "QSmartCard::login unlock";
 	d->m.unlock();
 }
 
@@ -403,25 +394,23 @@ void QSmartCard::run()
 
 	while(!d->terminate)
 	{
-qDebug() << "unlock m trylock";
 
 		if(d->m.tryLock())
 		{
-qDebug() << "unlock a trylock";
 			// Get list of available cards
 			QMap<QString,QString> cards;
 			const QStringList readers = QPCSC::instance().readers();
 			if(![&] {
 				for(const QString &name: readers)
 				{
-					qDebug() << "Connecting to reader" << name;
+					TERA_LOG(debug) << "Connecting to reader" << name;
 					QScopedPointer<QPCSCReader> reader(new QPCSCReader(name, &QPCSC::instance()));
 					if(!reader->isPresent())
 						continue;
 
 					if(!atrList.contains(reader->atr()))
 					{
-						qDebug() << "Unknown ATR" << reader->atr();
+						TERA_LOG(debug) << "Unknown ATR" << reader->atr();
 						continue;
 					}
 
@@ -462,8 +451,7 @@ qDebug() << "unlock a trylock";
 				return true;
 			}())
 			{
-				qDebug() << "Failed to poll card, try again next round";
-qDebug() << "unlock xxx 33";
+				TERA_LOG(debug) << "Failed to poll card, try again next round";
 				d->m.unlock();
 				sleep(5);
 				continue;
@@ -595,7 +583,7 @@ qDebug() << "unlock xxx 33";
 					}
 					if(tryAgain)
 					{
-						qDebug() << "Failed to read card info, try again next round";
+						TERA_LOG(debug) << "Failed to read card info, try again next round";
 						update = false;
 					}
 					else
@@ -606,7 +594,6 @@ qDebug() << "unlock xxx 33";
 			// update data if something has changed
 			if(update)
                 emitDataChanged();
-            qDebug() << "unlock xxx";
 			d->m.unlock();
 		}
 		sleep(5);
@@ -615,7 +602,6 @@ qDebug() << "unlock xxx 33";
 
 void QSmartCard::selectCard(const QString &card)
 {
-qDebug() << "QSmartCard::selectCard";
 	QMutexLocker locker(&d->m);
 	QSharedDataPointer<QSmartCardDataPrivate> t = d->t.d;
 	t->card = card;

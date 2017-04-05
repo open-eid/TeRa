@@ -24,6 +24,8 @@
 
 #include <QSharedDataPointer>
 
+#include <common/PinDialogInterface.h>
+
 template<class Key, class T> class QHash;
 class SslCertificate;
 class QSmartCardDataPrivate;
@@ -121,13 +123,13 @@ public:
 		OldNewPinSameError
 	};
 
-	explicit QSmartCard( QObject *parent = 0 );
+    explicit QSmartCard( PinDialogFactory& p, QObject *parent = 0);
 	~QSmartCard();
 
 	ErrorType change( QSmartCardData::PinType type, const QString &newpin, const QString &pin );
 	QSmartCardData data() const;
     QSmartCardData dataXXX(); // thread safe
-	Qt::HANDLE key();
+    QSslKey key();
 	ErrorType login( QSmartCardData::PinType type );
 	void logout();
 	void reload();
@@ -140,6 +142,8 @@ public slots:
 	void selectCard( const QString &card );
 
 private:
+    PinDialogFactory& pdf;
+
     QMutex bufferedDataMutex;
     QSmartCardData bufferedData;
 	void run();

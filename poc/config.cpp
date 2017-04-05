@@ -11,6 +11,12 @@
 #include <QDebug>
 #include <QDirIterator> // TODO
 
+#include <QtCore/QJsonArray>
+#include <QtCore/QJsonDocument>
+#include <QtCore/QJsonObject>
+
+#include "src/libdigidoc/Configuration.h"
+
 #if QT_VERSION < QT_VERSION_CHECK(5, 4, 0)
 #else
     #include <QStorageInfo>
@@ -29,6 +35,7 @@ QString const Config::INI_PARAM_TIME_SERVER_URL = Config::INI_GROUP_ + "time_ser
 QString const Config::INI_PARAM_OUTPUT_FORMAT = Config::INI_GROUP_ + "output_format";
 QString const Config::INI_PARAM_EXCL_DIRS = Config::INI_GROUP_ + "excl_dir";
 QString const Config::INI_PARAM_EXCL_DIRS_EXCEPTIONS = Config::INI_GROUP_ + "central_excl_dirs_removed_by_user.no_need_to_changed_manully";
+QString const Config::INI_PARAM_TRUSTED_CERT = Config::INI_GROUP_ + "time_server.trusted_cert";
 
 QString const Config::EXTENSION_IN = "ddoc";
 QString const Config::EXTENSION_BDOC = "bdoc";
@@ -95,6 +102,26 @@ QSet<QString> Config::getExclDirExclusions() {
     return exclDirExclusions;
 }
 
+static QSslCertificate derFromBase64(QByteArray const& der) {
+    return QSslCertificate(QByteArray::fromBase64(der), QSsl::Der);
+}
+
+QList<QSslCertificate> Config::getTrustedHttpsCerts() {
+    QList<QSslCertificate> trusted;
+
+    for (const QJsonValue &cert : Configuration::instance().object().value("CERT-BUNDLE").toArray()) {
+        trusted << derFromBase64(cert.toString().toLatin1());
+    }
+
+    QSettings settings(":/tera.ini", QSettings::IniFormat);
+    QStringList sl  = settings.allKeys();
+    QString der = settings.value(INI_PARAM_TRUSTED_CERT).toString();
+    if (!der.isNull()) {
+        trusted << derFromBase64(der.toLatin1());
+    }
+
+    return trusted;
+}
 
 void Config::append_excl_dirs(QString const& val, QSet<QString>& excl_dirs_set) { // TODO should be in disk_crawler or smth
     QStringList paths = val.split(PATH_LIST_SEPARATOR, QString::SkipEmptyParts);

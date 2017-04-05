@@ -49,6 +49,7 @@ private:
 
 class TimeStamperRequestConfigurationFactory {
 public:
+    virtual bool isTrusted(QSslCertificate const& request) = 0;
     virtual void configureRequest(QNetworkRequest& request) = 0;
 };
 
@@ -136,6 +137,8 @@ private:
     QString timeServerUrl;
     TimeStamper ts;
 };
+
+Q_DECLARE_METATYPE(ria_tera::BatchStamper::FinishingDetails)
 
 }
 

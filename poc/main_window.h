@@ -23,7 +23,9 @@
 #include "gui_timestamper_processor.h"
 #include "timestamper.h"
 #include "utils.h"
+
 #include "id_card_select_dialog.h"
+#include "../src/common/HttpsIDCardAuthentication.h"
 
 namespace ria_tera {
 
@@ -57,7 +59,6 @@ private:
 };
 
 class TeraMainWin : public QWidget, public Ui::MainWindow, public StampingMonitorCallback
-    , public TimeStamperRequestConfigurationFactory   // TODO XXXXXX
 {
     Q_OBJECT
 
@@ -67,8 +68,6 @@ public:
     void processEvents();
     bool isCancelled();
     bool isCancelled(int jobid);
-
-    void configureRequest(QNetworkRequest& request); /////////////////////////////
 
 public slots:
     // flow control slots
@@ -141,6 +140,7 @@ private:
     QSharedPointer<TeraSettingsWin> settingsWin;
     QSharedPointer<FileListWindow> filesWin;
     QSharedPointer<IDCardSelectDialog> cardSelectDialog;
+    HttpsIDCardAuthentication idCardAuth;
 
     QString lang;
     QStringList langs;

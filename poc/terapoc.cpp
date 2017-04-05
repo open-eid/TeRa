@@ -11,14 +11,10 @@
 #include <QTimer>
 
 #include "../src/version.h"
+#include "../src/cmdtool/cmdline_timestamper_processor.h"
 
 #include "utils.h"
 #include "config.h"
-#include "logging.h"
-#include "disk_crawler.h"
-#include "timestamper.h"
-
-Q_DECLARE_METATYPE(ria_tera::BatchStamper::FinishingDetails)
 
 namespace {
 
@@ -36,67 +32,7 @@ QString const log_level_param("log_level");
 QString const logfile_level_param("logfile_level");
 QString const logfile_dir_param("logfile_dir");
 
-#define TERA_COUT(xxx) {\
-    TERA_LOG(info) << xxx;\
-    };
-
-class TeRaMonitor : public QObject, public ria_tera::ProcessingMonitorCallback {
-    Q_OBJECT
-public slots:
-    void exitOnFinished(ria_tera::BatchStamper::FinishingDetails d) {
-        if (d.success && 0 == failedCnt && succeededCnt == foundCnt) {
-            TERA_COUT("Timestamping finished successfully :)");
-            QCoreApplication::exit(0);
-        } else {
-            TERA_LOG(error) << "Timestamping finished with some errors :(";
-            TERA_LOG(error) << "   Successfully converted: " << succeededCnt;
-            TERA_LOG(error) << "   Number of failed coversions: " << failedCnt;
-            int skipped = foundCnt - succeededCnt - failedCnt;
-            if (0 != skipped) {
-                TERA_LOG(error) << "   Number of DDOCs skipped: " << skipped;
-            }
-            if (!d.success) {
-                TERA_LOG(error) << "Error: " << d.errString.toUtf8().constData();
-            }
-            QCoreApplication::exit(1);
-        }
-    }
-public:
-    TeRaMonitor() : foundCnt(0), succeededCnt(0), failedCnt(0) {}
-    bool processingPath(QString const& path, double progress_percent) {
-        TERA_COUT("Searching " << path.toUtf8().constData());
-        return true;
-    };
-    bool excludingPath(QString const& path) {
-        TERA_COUT("   Excluding " << path.toUtf8().constData());
-        return true;
-    };
-    bool foundFile(QString const& path) {
-        TERA_COUT("   Found " << path.toUtf8().constData());
-        return true;
-    };
-    bool processingFile(QString const& pathIn, QString const& pathOut, int nr, int totalCnt) {
-        TERA_COUT("Timestamping (" << (nr+1) << "/" << totalCnt << ") " << pathIn.toUtf8().constData() <<
-                " -> " << pathOut.toUtf8().constData());
-        return true;
-    };
-    bool processingFileDone(QString const& pathIn, QString const& pathOut, int nr, int totalCnt, bool success, QString const& errString) {
-        foundCnt = totalCnt;
-        if (success) {
-            succeededCnt++;
-        } else {
-            failedCnt++;
-            TERA_LOG(error) << "   Error converting " << pathIn.toUtf8().constData() << ": " << errString.toUtf8().constData();
-        }
-        return true;
-    };
-private:
-    int foundCnt;
-    int succeededCnt;
-    int failedCnt;
-};
-
-#include "terapoc.moc"
+//#include "terapoc.moc"
 
 }
 
@@ -360,10 +296,20 @@ int main(int argc, char *argv[]) {
         TERA_COUT("Parameter - exclude-directory: " << excl_dirs[i].toUtf8().constData());
     }
 
-    // TODO test network
+    ///////////////////////////////////////////////////////////////////////////
+    ria_tera::TeRaMonitor::IOParameters ioparams;
+    ioparams.out_extension    = out_extension;
+    ioparams.in_file          = in_file;
+    ioparams.excl_dirs        = excl_dirs;
+    ioparams.in_dir           = in_dir;
+    ioparams.in_dir_recursive = in_dir_recursive;
+    ioparams.file_out         = file_out;
 
-    TeRaMonitor monitor;
+    ria_tera::TeRaMonitor monitor;
+    monitor.kickstart(time_server_url, ioparams);
 
+    ///////////////////////////////////////////////////////////////////////////
+/*
     ria_tera::OutputNameGenerator namegen(ria_tera::Config::EXTENSION_IN, out_extension);
 
     QStringList inFiles;
@@ -383,9 +329,11 @@ int main(int argc, char *argv[]) {
     ria_tera::BatchStamper stamper(monitor, namegen, false);
 
     QObject::connect(&stamper, &ria_tera::BatchStamper::timestampingFinished,
-        &monitor, &TeRaMonitor::exitOnFinished, Qt::QueuedConnection); // queued connection needed to ensure a.exec() catches exit
-    stamper.startTimestamping(time_server_url, inFiles); // TODO error to XXX when network is down for example
+        &monitor, &ria_tera::TeRaMonitor::exitOnFinished, Qt::QueuedConnection); // queued connection needed to ensure a.exec() catches exit
 
+    stamper.getTimestamper().setTimeserverUrl(ts_url, (useIDCardAuthentication ? &idCardAuth : nullptr));
+    stamper.startTimestamping(ts_url, inFiles); // TODO error to XXX when network is down for example
+    */
     return a.exec();
 }
 

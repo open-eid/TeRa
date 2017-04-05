@@ -30,8 +30,8 @@
 
 #include "disk_crawler.h"
 #include "settings_window.h"
-#include "../src/libdigidoc/Configuration.h"
-#include "../src/client/about/AboutDialog.h"
+#include "src/libdigidoc/Configuration.h"
+#include "src/client/about/AboutDialog.h"
 
 namespace {
     static int PP_TS_TEST = 100;
@@ -187,40 +187,11 @@ bool CrawlDiskJob::foundFile(QString const& path) {
 }
 
 
-void TeraMainWin::configureRequest(QNetworkRequest& request) {
-    qDebug() << "TeraMainWin::configureRequest start";
-    QSslCertificate cert = cardSelectDialog->smartCardData.authCert();
-
-    QSslConfiguration ssl = QSslConfiguration::defaultConfiguration();
-    QList<QSslCertificate> trusted;
-    //        for (const QJsonValue &cert : Configuration::instance().object().value("CERT-BUNDLE").toArray())
-    //            trusted << QSslCertificate(QByteArray::fromBase64(cert.toString().toLatin1()), QSsl::Der);
-    ssl.setCaCertificates(QList<QSslCertificate>());
-    ssl.setProtocol(QSsl::TlsV1_0);
-    Qt::HANDLE key = cardSelectDialog->smartCard->key();
-    if (key)
-    {
-        qDebug() << "key added <<<<<< ";
-        ssl.setPrivateKey(QSslKey(key));
-        ssl.setLocalCertificate(cert);
-    }
-    request.setSslConfiguration(ssl);
-    qDebug() << "TeraMainWin::configureRequest end";
-}
-
 void TeraMainWin::handleStartStamping() {
-    static const QString ID_CARD_AUTH_PREFIX("#IDCard-AUTH#");
     QString url = processor.timeServerUrl.trimmed();
-    bool useIDCardAuthentication = false;
-    if (url == "https://puhver.ria.ee/tsa") {
-        useIDCardAuthentication = true;
-    }
-    else if (url.startsWith(ID_CARD_AUTH_PREFIX)) {
-        useIDCardAuthentication = true;
-        url = url.mid(ID_CARD_AUTH_PREFIX.length()).trimmed();
-    }
+    bool useIDCardAuthentication = idCardAuth.useIDAuth(url);
 
-    stamper.getTimestamper().setTimeserverUrl(url, (useIDCardAuthentication ? this : nullptr));
+    stamper.getTimestamper().setTimeserverUrl(url, (useIDCardAuthentication ? &idCardAuth : nullptr));
 
     if (useIDCardAuthentication) {
         doPin1Authentication();
@@ -239,7 +210,7 @@ void TeraMainWin::doPin1Authentication() {
 
 void TeraMainWin::pin1AuthenticaionDone() {
 qDebug() << "### TeraMainWin::pin1AuthenticaionDone";
-    QString reader = cardSelectDialog->smartCardData.reader();
+    idCardAuth.setAuthCert(cardSelectDialog->smartCardData.authCert(), cardSelectDialog->smartCard->key()); // TODO API
     doTestStamp();
 }
 
@@ -409,7 +380,7 @@ void TeraMainWin::startStampingFiles() {
     }
 
     nameGen.setOutExt(processor.outExt); // TODO threading issues?
-    stamper.startTimestamping(processor.timeServerUrl, processor.inFiles);
+    stamper.startTimestamping(processor.timeServerUrl, processor.inFiles); // TODO url not neccessary
 }
 
 bool TeraMainWin::processingFile(QString const& pathIn, QString const& pathOut, int nr, int totalCnt) {
@@ -477,6 +448,8 @@ void TeraMainWin::globalConfFinished(bool changed, const QString &error) {
     progressBarDnldConf->setValue(100);
     if (!showingIntro) setPage(PAGE::START);
     processor.processGlobalConfiguration();
+
+    idCardAuth.addTrustedCerts(processor.config.getTrustedHttpsCerts());
 
     QString minSupported = processor.minSupportedVersion;
     QString appVersion = QCoreApplication::applicationVersion();

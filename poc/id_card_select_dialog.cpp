@@ -61,7 +61,7 @@ void IDCardSelectDialog::startAuthentication() {
 
 void IDCardSelectDialog::initSmartCard() {
     if (smartCard.isNull()) {
-        smartCard.reset(new QSmartCard());
+        smartCard.reset(new QSmartCard(pdf));
         connect(smartCard.data(), SIGNAL(dataChanged()), this, SLOT(cardDataChanged()), Qt::QueuedConnection);
         connect(comboBoxIDCardSelect, SIGNAL(activated(QString)),
             smartCard.data(), SLOT(selectCard(QString)), Qt::QueuedConnection);

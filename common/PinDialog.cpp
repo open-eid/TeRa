@@ -31,34 +31,56 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QVBoxLayout>
 
-PinDialog::PinDialog( PinFlags flags, const TokenData &t, QWidget *parent )
-:	QDialog( parent )
+#include <QtWidgets/QApplication>
+
+PinDialogInterface* PinDialogGUIFactory::createPinDialog(PinDialogInterface::PinFlags flags, const QSslCertificate &cert) {
+    return new PinDialog(flags, cert, 0, qApp->activeWindow());
+}
+
+bool PinDialog::execDialog() {
+    return QDialog::Accepted == d.exec();
+}
+
+QByteArray PinDialog::getPin() {
+    return text().toUtf8();
+}
+
+void PinDialog::doStartTimer() {
+    Q_EMIT startTimer();
+}
+
+void PinDialog::doFinish(int result) {
+    Q_EMIT finish(0);
+}
+
+PinDialog::PinDialog( PinDialogInterface::PinFlags flags, const TokenData &t, QWidget *parent )
+:	d( parent )
 {
 	SslCertificate c = t.cert();
 	init( flags, c.toString( c.showCN() ? "CN serialNumber" : "GN SN serialNumber" ), t.flags() );
 }
 
-PinDialog::PinDialog( PinFlags flags, const QSslCertificate &cert, TokenData::TokenFlags token, QWidget *parent )
-:	QDialog( parent )
+PinDialog::PinDialog( PinDialogInterface::PinFlags flags, const QSslCertificate &cert, TokenData::TokenFlags token, QWidget *parent)
+:	d( parent )
 {
 	SslCertificate c = cert;
 	init( flags, c.toString( c.showCN() ? "CN serialNumber" : "GN SN serialNumber" ), token );
 }
 
-PinDialog::PinDialog( PinFlags flags, const QString &title, TokenData::TokenFlags token, QWidget *parent )
-	: QDialog(parent)
+PinDialog::PinDialog( PinDialogInterface::PinFlags flags, const QString &title, TokenData::TokenFlags token, QWidget *parent )
+	: d(parent)
 {
 	init( flags, title, token );
 }
 
-void PinDialog::init( PinFlags flags, const QString &title, TokenData::TokenFlags token )
+void PinDialog::init( PinDialogInterface::PinFlags flags, const QString &title, TokenData::TokenFlags token )
 {
-	connect(this, &PinDialog::finish, this, &PinDialog::done);
-	setMinimumWidth( 350 );
-	setWindowModality( Qt::ApplicationModal );
+	connect(this, &PinDialog::finish, &d, &QDialog::done);
+	d.setMinimumWidth( 350 );
+    d.setWindowModality(Qt::ApplicationModal);
 
-	QLabel *label = new QLabel( this );
-	QVBoxLayout *l = new QVBoxLayout( this );
+	QLabel *label = new QLabel( &d );
+	QVBoxLayout *l = new QVBoxLayout( &d );
 	l->addWidget( label );
 
 	QString _title = title;
@@ -88,14 +110,14 @@ void PinDialog::init( PinFlags flags, const QString &title, TokenData::TokenFlag
 		text += tr("Selected action requires authentication certificate.") + "<br />" + t;
 		regexp.setPattern( "\\d{4,12}" );
 	}
-	setWindowTitle( _title );
+	d.setWindowTitle( _title );
 	label->setText( text );
 //////////////////////////////////////////////////////////////////////////////// TODO XXXXXXXXXXXXXXXXXXXXXXXXXX Common::setAccessibleName( label );
 
 	if( flags & PinpadFlag )
 	{
-		setWindowFlags( (windowFlags() | Qt::CustomizeWindowHint) & ~Qt::WindowCloseButtonHint );
-		QProgressBar *progress = new QProgressBar( this );
+		d.setWindowFlags( (d.windowFlags() | Qt::CustomizeWindowHint) & ~Qt::WindowCloseButtonHint );
+		QProgressBar *progress = new QProgressBar( &d );
 		progress->setRange( 0, 30 );
 		progress->setValue( progress->maximum() );
 		progress->setTextVisible( false );
@@ -108,21 +130,21 @@ void PinDialog::init( PinFlags flags, const QString &title, TokenData::TokenFlag
 	}
 	else if( !(flags & PinpadNoProgressFlag) )
 	{
-		m_text = new QLineEdit( this );
+        m_text = new QLineEdit( &d );
 		m_text->setEchoMode( QLineEdit::Password );
 		m_text->setFocus();
 		m_text->setValidator( new QRegExpValidator( regexp, m_text ) );
 		m_text->setMaxLength( 12 );
-		connect( m_text, SIGNAL(textEdited(QString)), SLOT(textEdited(QString)) );
+		connect( m_text, SIGNAL(textEdited(QString)), this, SLOT(textEdited(QString)) );
 		l->addWidget( m_text );
 		label->setBuddy( m_text );
 
 		QDialogButtonBox *buttons = new QDialogButtonBox(
-			QDialogButtonBox::Ok|QDialogButtonBox::Cancel, Qt::Horizontal, this );
+			QDialogButtonBox::Ok|QDialogButtonBox::Cancel, Qt::Horizontal, &d );
 		ok = buttons->button( QDialogButtonBox::Ok );
 		ok->setAutoDefault( true );
-		connect( buttons, SIGNAL(accepted()), SLOT(accept()) );
-		connect( buttons, SIGNAL(rejected()), SLOT(reject()) );
+		connect( buttons, SIGNAL(accepted()), &d, SLOT(accept()) );
+		connect( buttons, SIGNAL(rejected()), &d, SLOT(reject()) );
 		l->addWidget( buttons );
 
 		textEdited( QString() );

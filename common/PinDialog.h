@@ -22,13 +22,19 @@
 #include <QtWidgets/QDialog>
 
 #include "TokenData.h"
+#include "PinDialogInterface.h"
 
 #include <QtCore/QRegExp>
 
 class QLineEdit;
 class QSslCertificate;
 
-class PinDialog: public QDialog
+class PinDialogGUIFactory : public PinDialogFactory {
+public:
+    PinDialogInterface* createPinDialog(PinDialogInterface::PinFlags flags, const QSslCertificate &cert);
+};
+
+class PinDialog: public PinDialogInterface // public QDialog,
 {
 	Q_OBJECT
 public:
@@ -41,12 +47,18 @@ public:
 		Pin1PinpadType = Pin1Type|PinpadFlag,
 		Pin2PinpadType = Pin2Type|PinpadFlag
 	};
-	PinDialog( PinFlags flags, const TokenData &t, QWidget *parent = 0 );
-	PinDialog( PinFlags flags, const QSslCertificate &cert, TokenData::TokenFlags token, QWidget *parent = 0 );
-	PinDialog( PinFlags flags, const QString &title, TokenData::TokenFlags token, QWidget *parent = 0 );
+	PinDialog( PinDialogInterface::PinFlags flags, const TokenData &t, QWidget *parent = 0 );
+	PinDialog( PinDialogInterface::PinFlags flags, const QSslCertificate &cert, TokenData::TokenFlags token, QWidget *parent = 0 );
+	PinDialog( PinDialogInterface::PinFlags flags, const QString &title, TokenData::TokenFlags token, QWidget *parent = 0 );
 
 	QString text() const;
 
+public:
+    // inherited
+    virtual bool execDialog();
+    virtual QByteArray getPin();
+    virtual void doStartTimer();
+    virtual void doFinish(int result);
 signals:
 	void startTimer();
 	void finish(int result);
@@ -55,8 +67,9 @@ private Q_SLOTS:
 	void textEdited( const QString &text );
 
 private:
-	void init( PinFlags flags, const QString &title, TokenData::TokenFlags token );
+	void init( PinDialogInterface::PinFlags flags, const QString &title, TokenData::TokenFlags token );
 
+    QDialog d;
 	QLineEdit	*m_text;
 	QPushButton	*ok;
 	QRegExp		regexp;

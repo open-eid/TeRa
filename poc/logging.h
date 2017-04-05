@@ -9,6 +9,8 @@
 // info trace error
 #define TERA_LOG(level) ria_tera::TeraLoggerLine(ria_tera::log_level:: level)
 
+#define TERA_COUT(xxx) {TERA_LOG(info) << xxx;};
+
 namespace ria_tera {
 
 enum log_level {none=0, error, warn, info, debug, trace};
@@ -50,6 +52,8 @@ public:
     ~TeraLoggerLine();
     void append(char const* text);
     void setConsoleOnly();
+    TeraLoggerLine& operator<<(QString const& text);
+    TeraLoggerLine& operator<<(QByteArray const& text);
     TeraLoggerLine& operator<<(char const* text);
     TeraLoggerLine& operator<<(int nr);
 private:

@@ -167,18 +167,20 @@ TimeStamper::TimeStamper() : jobId(0), sslConf(nullptr)
         QList<QSslError> ignore;
         for (const QSslError &error : errors)
         {
-            qDebug() << "      SSL error" << error.error();
+            bool noissue = false;
             switch (error.error())
             {
             case QSslError::UnableToGetLocalIssuerCertificate:
             case QSslError::CertificateUntrusted:
-                //				if(trusted.contains(reply->sslConfiguration().peerCertificate()))
+                if (nullptr != sslConf && sslConf->isTrusted(reply->sslConfiguration().peerCertificate())) {
+                    noissue = true;
                 ignore << error;
-qDebug() << "Ignoring QSslError::CertificateUntrusted";
-//                qDebug() << "      SSL error X " << trusted.contains(reply->sslConfiguration().peerCertificate());
-
+                }
                 break;
-            default: ignore << error; qDebug() << "Ignoring"; break;
+            default: break;
+            }
+            if (!noissue) {
+                TERA_LOG(error) << "SSL error: " << error.errorString();
             }
         }
         reply->ignoreSslErrors(ignore);

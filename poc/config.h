@@ -9,6 +9,7 @@
 
 #include <QSettings>
 #include <QSet>
+#include <QSslCertificate>
 
 namespace ria_tera {
 
@@ -24,6 +25,7 @@ public:
     static QString const INI_PARAM_OUTPUT_FORMAT;
     static QString const INI_PARAM_EXCL_DIRS;
     static QString const INI_PARAM_EXCL_DIRS_EXCEPTIONS;
+    static QString const INI_PARAM_TRUSTED_CERT;
 
     static QString const EXTENSION_IN;
     static QString const EXTENSION_BDOC;
@@ -43,6 +45,8 @@ public:
     QSet<QString> getExclDirExclusions();
 
     QSet<QString> getDefaultInclDirs() const;
+
+    QList<QSslCertificate> getTrustedHttpsCerts();
 
     static void append_excl_dirs(QString const& val, QSet<QString>& excl_dirs_set); // TODO no need to be public
 private:

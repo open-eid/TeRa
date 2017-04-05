@@ -178,12 +178,17 @@ SET (TERA_COMMON_LIB_SRC
      common/SslCertificate.h common/SslCertificate.cpp
      common/qasn1element_p.h common/qasn1element.cpp
      common/IKValidator.h common/IKValidator.cpp
-     common/PinDialog.h common/PinDialog.cpp
      common/TokenData.h common/TokenData.cpp
+     common/PinDialogInterface.h
      )
+
+SET (TERA_COMMON_LIB_GUI_SRC
+     common/PinDialog.h common/PinDialog.cpp
+    )
 
 SET (TERA_COMMON_SRC
       src/version.h
+      src/common/HttpsIDCardAuthentication.h src/common/HttpsIDCardAuthentication.cpp
      )
 
 SET (TERA_LIBDIGIDOC_SRC
@@ -242,10 +247,15 @@ add_executable(${TERA_CMD_NAME}
         poc/logging.h poc/logging.cpp
         poc/timestamper.h poc/timestamper.cpp
         poc/config.h poc/config.cpp
+        src/cmdtool/cmdline_timestamper_processor.h src/cmdtool/cmdline_timestamper_processor.cpp
+        ${TERA_COMMON_LIB_SRC}
+        ${TERA_LIBDIGIDOC_SRC}
+#${TERA_COMMON_LIB_GUI_SRC}
         ${CONFIG_SOURCES}
         )
 target_link_libraries(${TERA_CMD_NAME} ${ZIP_LIBRARIES} ${OPENSSL_LIBRARIES} ${FOR_OPENSSL_STATIC} ${ZLIB_LIBRARIES} ${TERA_SCARD_LIBRARIES})
-qt5_use_modules(${TERA_CMD_NAME} Core Concurrent Network)
+qt5_use_modules(${TERA_CMD_NAME} Core Concurrent Network
+Widgets Gui)
 endif()
 
 # TeRa GUI
@@ -268,6 +278,7 @@ add_executable(${TERA_GUI_NAME} WIN32 MACOSX_BUNDLE
         ${QM}
         ${TRANS}
         ${TERA_COMMON_LIB_SRC}
+        ${TERA_COMMON_LIB_GUI_SRC}
         ${TERA_MAC_RESOURCE_FILES}
         )
 target_link_libraries(${TERA_GUI_NAME} ${ZIP_LIBRARIES} ${OPENSSL_LIBRARIES} ${FOR_OPENSSL_STATIC} ${ZLIB_LIBRARIES} ${TERA_SCARD_LIBRARIES})
@@ -282,6 +293,20 @@ if( WIN32 )
         COMMAND "${WIX_PATH}light.exe" -out ${CMAKE_CURRENT_BINARY_DIR}/TeRa_${TERA_WIX_PLATFORM}.${VERSION}.msi -sice:ICE80 ${CMAKE_CURRENT_BINARY_DIR}/tera.wixobj -v -ext WixUIExtension
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     )
+    add_custom_target( msi DEPENDS run_wix_candle run_wix_light )
+    if(SIGNCERT)
+        list(APPEND SIGNCMD signtool.exe sign /a /v /s MY /n "${SIGNCERT}" /fd SHA256
+            /du http://installer.id.ee /t http://timestamp.verisign.com/scripts/timstamp.dll)
+        add_custom_command(TARGET ${TERA_CMD_NAME} POST_BUILD
+            COMMAND ${SIGNCMD} $<TARGET_FILE:${TERA_CMD_NAME}>
+        )
+        add_custom_command(TARGET ${TERA_GUI_NAME} POST_BUILD
+            COMMAND ${SIGNCMD} $<TARGET_FILE:${TERA_GUI_NAME}>
+        )
+        add_custom_command(TARGET msi POST_BUILD
+            COMMAND ${SIGNCMD} "${CMAKE_CURRENT_BINARY_DIR}/TeRa_${TERA_WIX_PLATFORM}.${VERSION}.msi"
+        )
+    endif()
 elseif( APPLE )
     add_custom_target( macdeployqt DEPENDS ${TERA_GUI_NAME}
         COMMAND $ENV{TERA_QT_DIR}/bin/macdeployqt ${CMAKE_CURRENT_BINARY_DIR}/${TERA_GUI_NAME}.app
