@@ -29,37 +29,37 @@ Additional licenses and components</source>
     <message>
         <location filename="../poc/FileListDialog.ui" line="17"/>
         <source>Files</source>
-        <translation type="unfinished"></translation>
+        <translation>Файлы</translation>
     </message>
     <message>
         <location filename="../poc/FileListDialog.ui" line="87"/>
         <source>Deselect All</source>
-        <translation type="unfinished"></translation>
+        <translation>Отменить все</translation>
     </message>
     <message>
         <location filename="../poc/FileListDialog.ui" line="94"/>
         <source>Select All</source>
-        <translation type="unfinished"></translation>
+        <translation>Выберите все</translation>
     </message>
     <message>
         <location filename="../poc/FileListDialog.ui" line="114"/>
         <source>Select</source>
-        <translation type="unfinished"></translation>
+        <translation>Выберите</translation>
     </message>
     <message>
         <location filename="../poc/FileListDialog.ui" line="121"/>
         <source>list view</source>
-        <translation type="unfinished"></translation>
+        <translation>представление списком</translation>
     </message>
     <message>
         <location filename="../poc/FileListDialog.ui" line="131"/>
         <source>tree view</source>
-        <translation type="unfinished"></translation>
+        <translation>древовидное представление</translation>
     </message>
     <message>
         <location filename="../poc/FileListDialog.ui" line="141"/>
         <source>Deselect</source>
-        <translation type="unfinished"></translation>
+        <translation>Отменить выбор</translation>
     </message>
 </context>
 <context>
@@ -67,7 +67,7 @@ Additional licenses and components</source>
     <message>
         <location filename="../poc/IDCardSelectionDialog.ui" line="14"/>
         <source>Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Идентификационный</translation>
     </message>
     <message>
         <location filename="../poc/IDCardSelectionDialog.ui" line="26"/>
@@ -77,12 +77,12 @@ Additional licenses and components</source>
     <message>
         <location filename="../poc/IDCardSelectionDialog.ui" line="94"/>
         <source>Start</source>
-        <translation type="unfinished">RU Start</translation>
+        <translation>Начать</translation>
     </message>
     <message>
         <location filename="../poc/IDCardSelectionDialog.ui" line="101"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Отмена</translation>
     </message>
 </context>
 <context>
@@ -95,17 +95,17 @@ Additional licenses and components</source>
     <message>
         <location filename="../poc/MainWindow.ui" line="252"/>
         <source>Settings</source>
-        <translation>Настройки</translation>
+        <translation>Параметры</translation>
     </message>
     <message>
         <location filename="../poc/MainWindow.ui" line="278"/>
         <source>Help</source>
-        <translation>Помощь</translation>
+        <translation>Справка</translation>
     </message>
     <message>
         <location filename="../poc/MainWindow.ui" line="1894"/>
         <source>Downloading configuration updates...</source>
-        <translation type="unfinished"></translation>
+        <translation>Загрузка обновления конфигурации...</translation>
     </message>
     <message>
         <location filename="../poc/MainWindow.ui" line="1969"/>
@@ -115,7 +115,7 @@ Additional licenses and components</source>
     <message>
         <location filename="../poc/MainWindow.ui" line="1982"/>
         <source>Skip this intro</source>
-        <translation>Больше не показывать</translation>
+        <translation>Пропустить этот вступление</translation>
     </message>
     <message>
         <location filename="../poc/MainWindow.ui" line="2036"/>
@@ -126,19 +126,21 @@ Additional licenses and components</source>
     <message>
         <location filename="../poc/MainWindow.ui" line="931"/>
         <source>Start</source>
-        <translation type="unfinished">Поехали</translation>
+        <translation>Начать</translation>
     </message>
     <message>
         <location filename="../poc/MainWindow.ui" line="1257"/>
         <source>Ready</source>
-        <translation type="unfinished">Готова</translation>
+        <translation>Готово</translation>
     </message>
     <message>
         <location filename="../poc/MainWindow.ui" line="499"/>
         <source>To protect you from possible future security issues your digitally signed DDOC files will be timestamped. Timestamped files will have a .asics extention and will be placed in the same folder with the original DDOC files.
 
 By default only files on local drives will be timestamped. If you wish to also timestamp files from network drives or change other settings please open the &quot;Settings&quot; menu.</source>
-        <translation type="unfinished"></translation>
+        <translation>Чтобы защитить вас от возможных будущих проблем безопасности, ваши цифровые файлы DDOC будут отмечены меткой времени. Временные файлы будут иметь расширение .asics и будут помещены в одну папку с исходными файлами DDOC.
+
+По умолчанию только файлы на локальных дисках будут отмечены меткой времени. Если вы хотите также установить временные метки файлов с сетевых дисков или изменить другие настройки, откройте меню &amp;quot;Настройки&amp;quot;. </translation>
     </message>
     <message>
         <source>TeRa client 0.4.0</source>
@@ -152,12 +154,12 @@ By default only files on local drives will be timestamped. If you wish to also t
     <message>
         <location filename="../poc/MainWindow.ui" line="333"/>
         <source>Languages</source>
-        <translation type="unfinished">Языки</translation>
+        <translation>Языки</translation>
     </message>
     <message>
         <location filename="../poc/MainWindow.ui" line="1844"/>
         <source>Cancel</source>
-        <translation type="unfinished">Отмени</translation>
+        <translation>Отмена</translation>
     </message>
 </context>
 <context>
@@ -165,7 +167,7 @@ By default only files on local drives will be timestamped. If you wish to also t
     <message>
         <location filename="../poc/main_window.cpp" line="332"/>
         <source>Searching</source>
-        <translation type="unfinished"></translation>
+        <translation>Поиск</translation>
     </message>
 </context>
 <context>
@@ -173,65 +175,65 @@ By default only files on local drives will be timestamped. If you wish to also t
     <message>
         <location filename="../poc/SettingsDialog.ui" line="17"/>
         <source>Settings</source>
-        <translation type="unfinished">Настройки</translation>
+        <translation>Параметры</translation>
     </message>
     <message>
         <location filename="../poc/SettingsDialog.ui" line="30"/>
         <source>Input</source>
-        <translation type="unfinished"></translation>
+        <translation>Ввод</translation>
     </message>
     <message>
         <location filename="../poc/SettingsDialog.ui" line="36"/>
         <location filename="../poc/SettingsDialog.ui" line="159"/>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить</translation>
     </message>
     <message>
         <location filename="../poc/SettingsDialog.ui" line="43"/>
         <location filename="../poc/SettingsDialog.ui" line="152"/>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалить</translation>
     </message>
     <message>
         <location filename="../poc/SettingsDialog.ui" line="50"/>
         <source>Input directories:</source>
-        <translation type="unfinished"></translation>
+        <translation>Ввод каталогов:</translation>
     </message>
     <message>
         <location filename="../poc/SettingsDialog.ui" line="108"/>
         <location filename="../poc/SettingsDialog.ui" line="200"/>
         <source>...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../poc/SettingsDialog.ui" line="119"/>
         <source>Exclude</source>
-        <translation type="unfinished"></translation>
+        <translation>исключить</translation>
     </message>
     <message>
         <location filename="../poc/SettingsDialog.ui" line="125"/>
         <source>Exclude directories:</source>
-        <translation type="unfinished"></translation>
+        <translation>исключить каталоги:</translation>
     </message>
     <message>
         <location filename="../poc/SettingsDialog.ui" line="211"/>
         <source>Other</source>
-        <translation type="unfinished"></translation>
+        <translation>другие</translation>
     </message>
     <message>
         <location filename="../poc/SettingsDialog.ui" line="246"/>
         <source>Time Server URL (ex. http://demo.sk.ee/tsa):</source>
-        <translation type="unfinished"></translation>
+        <translation>URL-адрес сервера отметки времени (напр. http://demo.sk.ee/tsa):</translation>
     </message>
     <message>
         <location filename="../poc/SettingsDialog.ui" line="262"/>
         <source>Show intro</source>
-        <translation type="unfinished"></translation>
+        <translation>Показать вступление</translation>
     </message>
     <message>
         <location filename="../poc/SettingsDialog.ui" line="269"/>
         <source>Preview file list</source>
-        <translation type="unfinished"></translation>
+        <translation>Просмотр списка файлов</translation>
     </message>
 </context>
 <context>
@@ -253,17 +255,17 @@ By default only files on local drives will be timestamped. If you wish to also t
         <location filename="../poc/gui_timestamper_processor.cpp" line="175"/>
         <location filename="../poc/gui_timestamper_processor.cpp" line="191"/>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка</translation>
     </message>
     <message>
         <location filename="../poc/gui_timestamper_processor.cpp" line="175"/>
         <source>No input directory selected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не выбран ни один каталог ввода.</translation>
     </message>
     <message>
         <location filename="../poc/gui_timestamper_processor.cpp" line="191"/>
         <source>The following input folders don&apos;t exist (or are files). Please fix the list under &quot;Settings&quot; window:</source>
-        <translation type="unfinished"></translation>
+        <translation>Следующие папки ввода не существуют (или являются файлами). Исправьте список в окне &amp;quot;Настройки&amp;quot;:</translation>
     </message>
 </context>
 <context>
@@ -281,12 +283,12 @@ By default only files on local drives will be timestamped. If you wish to also t
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="45"/>
         <source>PIN1 is blocked.</source>
-        <translation type="unfinished">PIN1 заблокирован</translation>
+        <translation>PIN1 заблокирован.</translation>
     </message>
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="47"/>
         <source>Error: </source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка: </translation>
     </message>
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="100"/>
@@ -301,42 +303,42 @@ By default only files on local drives will be timestamped. If you wish to also t
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="107"/>
         <source>Card in reader</source>
-        <translation type="unfinished">В считывателе карта</translation>
+        <translation>Карта в считывателе</translation>
     </message>
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="116"/>
         <source>Given Names:</source>
-        <translation type="unfinished">Имя:</translation>
+        <translation>Имя:</translation>
     </message>
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="117"/>
         <source>Surname:</source>
-        <translation type="unfinished">Фамилия:</translation>
+        <translation>Фамилия:</translation>
     </message>
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="118"/>
         <source>Personal Code:</source>
-        <translation type="unfinished">Личный номер:</translation>
+        <translation>Личный номер:</translation>
     </message>
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="126"/>
         <source>valid but blocked</source>
-        <translation type="unfinished">действителен, но заблокирован</translation>
+        <translation>действителен, но заблокирован</translation>
     </message>
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="126"/>
         <source>invalid and blocked</source>
-        <translation type="unfinished">недействителен и заблокирован</translation>
+        <translation>недействителен и заблокирован</translation>
     </message>
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="131"/>
         <source>valid and applicable</source>
-        <translation type="unfinished">действителен и пригоден</translation>
+        <translation>действителен и пригоден</translation>
     </message>
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="135"/>
         <source>Authentication certificate is</source>
-        <translation type="unfinished">Идентификационный сертификат</translation>
+        <translation>Идентификационный сертификат</translation>
     </message>
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="142"/>
@@ -346,7 +348,7 @@ By default only files on local drives will be timestamped. If you wish to also t
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="128"/>
         <source>expired</source>
-        <translation type="unfinished">недействителен</translation>
+        <translation>недействителен</translation>
     </message>
 </context>
 <context>
@@ -354,24 +356,24 @@ By default only files on local drives will be timestamped. If you wish to also t
     <message>
         <location filename="../poc/main_window.cpp" line="262"/>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="262"/>
         <source>Time server URL is empty.</source>
-        <translation type="unfinished"></translation>
+        <translation>URL-адрес сервера отметки времени пуст.</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="410"/>
         <source>The space needed to timestamp all the DDOC files found exceeds the amount of free space found:
 
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Пространство необходимое для отметки времени всех DDOC файлов, превышает объем свободного пространства найдено:</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="413"/>
         <source>Abort timestamping?</source>
-        <translation type="unfinished"></translation>
+        <translation>Прервать процесс отметки времени?</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="493"/>
@@ -400,57 +402,57 @@ Please upgrade your software from https://installer.id.ee/</source>
     <message>
         <location filename="../poc/main_window.cpp" line="570"/>
         <source>Testing Time Server...</source>
-        <translation type="unfinished"></translation>
+        <translation>Тестирование сервера отметки времени...</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="572"/>
         <source>Searching DDOC files. %1 found so far...</source>
-        <translation type="unfinished"></translation>
+        <translation>Поиска DDOC файлов. %1 найдено ...</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="574"/>
         <source>Found %1 DDOC files. %2 left to be converted...</source>
-        <translation type="unfinished"></translation>
+        <translation>Найдено %1 DDOC файлов. %2 осталось для преобразования …</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="591"/>
         <source>Error:</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка: </translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="596"/>
         <source>Finished timestamping DDOC files</source>
-        <translation type="unfinished"></translation>
+        <translation>Завершенные временные метки файлов DDOC </translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="597"/>
         <source>DDOC files found: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>DDOC файлов найдено: %1</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="599"/>
         <source>   of which %1 where chosen for timestamping</source>
-        <translation type="unfinished"></translation>
+        <translation>из которых %1 выбраны для временных меток </translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="600"/>
         <source>DDOC files timestamped: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>DDOC файлов с временной меткой: %1</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="602"/>
         <source>Failed timestampings: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка выдачи временной метки: %1</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="299"/>
         <source>Test request to Time Server failed. </source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось сделать тестовый запрос на сервера отметки времени. </translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="402"/>
         <source>* %1: free space %2, space needed %3 (approximately)</source>
-        <translation type="unfinished"></translation>
+        <translation>* %1: свободное пространство %2, пространства необходимо %3 (приблизительно)</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="412"/>
@@ -462,17 +464,17 @@ Timestamped files might not fit on disk.</source>
         <location filename="../poc/main_window.cpp" line="543"/>
         <source>Timestamping is not finished. Are you sure?
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Выдача временных меток не закончена. Вы уверены?</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="606"/>
         <source>For detailed report click </source>
-        <translation type="unfinished"></translation>
+        <translation>Для подробного отчета щелкните </translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="615"/>
         <source>HERE</source>
-        <translation type="unfinished"></translation>
+        <translation>ЗДЕСЬ</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="625"/>
@@ -482,27 +484,27 @@ Timestamped files might not fit on disk.</source>
     <message>
         <location filename="../poc/main_window.cpp" line="627"/>
         <source>Couldn&apos;t open help URL: </source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось открыть URL справки: </translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="642"/>
         <source>Couldn&apos;t open timestamping log: </source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось открыть журнал выдачи временной метки: </translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="666"/>
         <source>I agree</source>
-        <translation>Подтверждаю</translation>
+        <translation>Я согласен</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="667"/>
         <source>Cancel</source>
-        <translation type="unfinished">Отменить</translation>
+        <translation>Отменa</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="516"/>
         <source>Operation cancelled by user...</source>
-        <translation type="unfinished"></translation>
+        <translation>Операция отменена пользователем...</translation>
     </message>
 </context>
 <context>
@@ -510,12 +512,12 @@ Timestamped files might not fit on disk.</source>
     <message>
         <location filename="../poc/settings_window.cpp" line="87"/>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка</translation>
     </message>
     <message>
         <location filename="../poc/settings_window.cpp" line="87"/>
         <source>Can&apos;t add &apos;%1&apos;. Directory does not exist.</source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно добавить &amp;apos;%1&amp;apos;. Каталог не существует.</translation>
     </message>
 </context>
 </TS>

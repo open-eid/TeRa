@@ -68,7 +68,7 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <location filename="../poc/IDCardSelectionDialog.ui" line="14"/>
         <source>Dialog</source>
-        <translation type="unfinished">Kasutaja tuvastamine</translation>
+        <translation>Kasutaja tuvastamine</translation>
     </message>
     <message>
         <location filename="../poc/IDCardSelectionDialog.ui" line="26"/>
@@ -78,12 +78,12 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <location filename="../poc/IDCardSelectionDialog.ui" line="94"/>
         <source>Start</source>
-        <translation type="unfinished">Alusta</translation>
+        <translation>Alusta</translation>
     </message>
     <message>
         <location filename="../poc/IDCardSelectionDialog.ui" line="101"/>
         <source>Cancel</source>
-        <translation type="unfinished">Katkesta</translation>
+        <translation>Katkesta</translation>
     </message>
 </context>
 <context>
@@ -301,7 +301,7 @@ Vaikimisi ajatembeldatakse ainult arvutis asuvaid DDOC faile. Kui soovite võrgu
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="45"/>
         <source>PIN1 is blocked.</source>
-        <translation>PIN1 kood blokeeritud</translation>
+        <translation>PIN1 kood blokeeritud.</translation>
     </message>
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="47"/>
@@ -316,7 +316,7 @@ Vaikimisi ajatembeldatakse ainult arvutis asuvaid DDOC faile. Kui soovite võrgu
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="102"/>
         <source>%1 cards in the reader(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 kaart(i) lugeja(te)s</translation>
     </message>
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="107"/>
@@ -464,7 +464,8 @@ Vaikimisi ajatembeldatakse ainult arvutis asuvaid DDOC faile. Kui soovite võrgu
         <location filename="../poc/main_window.cpp" line="412"/>
         <source>
 Timestamped files might not fit on disk.</source>
-        <translation>Ajatembeldatud failid ei pruugi kettale mahtuda.</translation>
+        <translation>
+Ajatembeldatud failid ei pruugi kettale mahtuda.</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="493"/>
@@ -473,7 +474,7 @@ Timestamped files might not fit on disk.</source>
 Minimum supported version is %2.
 
 Please upgrade your software from https://installer.id.ee/</source>
-        <translation type="unfinished">Teie kasutatav versioon tarkvarast (%1) on liiga vana.
+        <translation>Teie kasutatav versioon tarkvarast (%1) on liiga vana.
 
 Minimaalne toetatud versioon on %2.
 
@@ -543,7 +544,7 @@ Viga: %1</translation>
     <message>
         <location filename="../poc/main_window.cpp" line="516"/>
         <source>Operation cancelled by user...</source>
-        <translation>Katkestatud kasutaja poolt</translation>
+        <translation>Katkestatud kasutaja poolt...</translation>
     </message>
 </context>
 <context>
@@ -556,7 +557,7 @@ Viga: %1</translation>
     <message>
         <location filename="../poc/settings_window.cpp" line="87"/>
         <source>Can&apos;t add &apos;%1&apos;. Directory does not exist.</source>
-        <translation>Lisamine ebaõnnestus. &apos;%1&apos; ei ole olemas</translation>
+        <translation>Lisamine ebaõnnestus. &apos;%1&apos; ei ole olemas.</translation>
     </message>
 </context>
 </TS>

@@ -65,22 +65,22 @@ Additional licenses and components</source>
     <message>
         <location filename="../poc/IDCardSelectionDialog.ui" line="14"/>
         <source>Dialog</source>
-        <translation type="unfinished">Authentication</translation>
+        <translation>Authentication</translation>
     </message>
     <message>
         <location filename="../poc/IDCardSelectionDialog.ui" line="26"/>
         <source>TextLabel</source>
-        <translation type="unfinished">Ajatempli teenuse kasutamiseks on vajalik kasutaja tuvastamine.&lt;br/&gt;Palun veenduge et, ID-kaart on kaardilugejas ja arvuti on ühendatud internetti</translation>
+        <translation>Authentication is needed for timestamping.&lt;br/&gt;Please make sure an ID-card is in the card reader and that internet connection is available</translation>
     </message>
     <message>
         <location filename="../poc/IDCardSelectionDialog.ui" line="94"/>
         <source>Start</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../poc/IDCardSelectionDialog.ui" line="101"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -309,7 +309,7 @@ By default only files on local drives will be timestamped. If you wish to also t
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="47"/>
         <source>Error: </source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="100"/>
@@ -319,7 +319,7 @@ By default only files on local drives will be timestamped. If you wish to also t
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="102"/>
         <source>%1 cards in the reader(s)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="107"/>
