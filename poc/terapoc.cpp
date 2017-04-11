@@ -64,6 +64,7 @@ void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QS
 }
 
 int main(int argc, char *argv[]) {
+    qsrand(QTime::currentTime().msec());
     qInstallMessageHandler(myMessageOutput);
     QLoggingCategory::setFilterRules("qt.network.ssl.warning=false");
 

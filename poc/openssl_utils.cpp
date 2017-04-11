@@ -9,6 +9,7 @@
 
 #include <iostream>
 
+#include <QtGlobal>
 
 #if (OPENSSL_VERSION_NUMBER & 0xFFFF00000) == 0x010000000
     #define TERA_OLD_OPENSSL
@@ -24,6 +25,12 @@ namespace ria_tera {
 /* Request nonce length, in bits (must be a multiple of 8). */
 # define NONCE_LENGTH            64
 
+static int RAND_bytes(unsigned char* buf, int len) {
+    for (int i = 0; i < len; ++i)
+        buf[i] = rand() & 0xff;
+    return 1;
+}
+
 static ASN1_INTEGER *create_nonce(int bits)
 {
 	unsigned char buf[20];
@@ -33,8 +40,8 @@ static ASN1_INTEGER *create_nonce(int bits)
 
 	if (len > (int)sizeof(buf))
 		goto err;
-//TODO    if (RAND_bytes(buf, len) <= 0)
-//        goto err;
+    if (RAND_bytes(buf, len) <= 0)
+        goto err;
 
 	/* Find the first non-zero byte and creating ASN1_INTEGER object. */
 	for (i = 0; i < len && !buf[i]; ++i)

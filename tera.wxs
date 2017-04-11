@@ -63,12 +63,13 @@ msiexec /a Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi /qn TARGETDIR
     <Publish Dialog="CustomizeDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg" Order="3">1</Publish>
 </UI-->
     <UIRef Id="WixUI_MondoNoLicense" />
+    <!--UIRef Id="WixUI_Mondo" /-->
 
     <Directory Id="TARGETDIR" Name="SourceDir">
       <!-- Program Menu shortcut -->
       <Directory Id="ProgramMenuFolder">
         <!--Directory Id="ProgramMenuDir" Name="!(loc.idcardLabel)"-->
-        <Directory Id="ProgramMenuDir" Name="TeRa Client">
+        <Directory Id="ProgramMenuDir" Name="!(loc.TeRaProgamMenuDir)">
           <Component Id="ProgramMenuDir" Guid="5d26b9c2-cc87-452e-8132-76f0fc8f3eff"> <!-- TODO Guid -->
             <RemoveFolder Id="ProgramMenuDir" On="uninstall" />
             <RegistryValue Root='HKMU' Key='Software\[Manufacturer]\[ProductName]' Type='string' Value='' KeyPath='yes' />
@@ -81,7 +82,7 @@ msiexec /a Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi /qn TARGETDIR
         <Component Id="DesktopShortcut" Guid="412b4616-001f-49ec-a9be-c942eb165fff" Transitive="yes">
           <Condition>DESKTOP_SHORTCUT = 1</Condition> <!-- TODO use 0 instead -->
           <!-- Name="!(loc.qdigidocclientLabel)" -->
-          <Shortcut Id="TeraDesktopShortcut" Name="TeRa Client"
+          <Shortcut Id="TeraDesktopShortcut" Name="!(loc.TeRaShortcutName)"
                     Target="[!TeRa.exe]" WorkingDirectory="APPLICATIONFOLDER"/>
           <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Name="DesktopShortcut" Value="1" Type="integer" KeyPath="yes"/>
         </Component>

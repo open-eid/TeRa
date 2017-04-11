@@ -289,8 +289,11 @@ if( WIN32 )
     add_custom_target( run_wix_candle
         COMMAND "${WIX_PATH}candle.exe" ${CMAKE_SOURCE_DIR}/tera.wxs -dMSI_VERSION=${VERSION} -dqt_path=$ENV{TERA_QT_CMAKE_DIR} -dopenssl_path=$ENV{TERA_OPENSSL_DIR} -dclient_path=${CMAKE_CURRENT_BINARY_DIR}/Release -dPlatform=${TERA_WIX_PLATFORM}
     )
+    list(APPEND LIGHT_CMD "${WIX_PATH}light.exe" -sice:ICE80 ${CMAKE_CURRENT_BINARY_DIR}/tera.wixobj -v -ext WixUIExtension
+            -dWixUILicenseRtf=${CMAKE_SOURCE_DIR}/cmake/modules/LICENSE.LGPL.rtf)
     add_custom_target( run_wix_light
-        COMMAND "${WIX_PATH}light.exe" -out ${CMAKE_CURRENT_BINARY_DIR}/TeRa_${TERA_WIX_PLATFORM}.${VERSION}.msi -sice:ICE80 ${CMAKE_CURRENT_BINARY_DIR}/tera.wixobj -v -ext WixUIExtension
+        COMMAND ${LIGHT_CMD} -loc ${CMAKE_SOURCE_DIR}/tera.en-US.wxl -cultures:en-US -out ${CMAKE_CURRENT_BINARY_DIR}/TeRa_${TERA_WIX_PLATFORM}.${VERSION}.en-US.msi
+        COMMAND ${LIGHT_CMD} -loc ${CMAKE_SOURCE_DIR}/tera.et-EE.wxl -cultures:et-EE -out ${CMAKE_CURRENT_BINARY_DIR}/TeRa_${TERA_WIX_PLATFORM}.${VERSION}.et-EE.msi
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     )
     add_custom_target( msi DEPENDS run_wix_candle run_wix_light )
@@ -304,7 +307,7 @@ if( WIN32 )
             COMMAND ${SIGNCMD} $<TARGET_FILE:${TERA_GUI_NAME}>
         )
         add_custom_command(TARGET msi POST_BUILD
-            COMMAND ${SIGNCMD} "${CMAKE_CURRENT_BINARY_DIR}/TeRa_${TERA_WIX_PLATFORM}.${VERSION}.msi"
+            COMMAND ${SIGNCMD} "${CMAKE_CURRENT_BINARY_DIR}/TeRa_${TERA_WIX_PLATFORM}.${VERSION}.en-US.msi" "${CMAKE_CURRENT_BINARY_DIR}/TeRa_${TERA_WIX_PLATFORM}.${VERSION}.et-EE.msi"
         )
     endif()
 elseif( APPLE )

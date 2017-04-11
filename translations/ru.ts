@@ -138,9 +138,9 @@ Additional licenses and components</source>
         <source>To protect you from possible future security issues your digitally signed DDOC files will be timestamped. Timestamped files will have a .asics extention and will be placed in the same folder with the original DDOC files.
 
 By default only files on local drives will be timestamped. If you wish to also timestamp files from network drives or change other settings please open the &quot;Settings&quot; menu.</source>
-        <translation>Чтобы защитить вас от возможных будущих проблем безопасности, ваши цифровые файлы DDOC будут отмечены меткой времени. Временные файлы будут иметь расширение .asics и будут помещены в одну папку с исходными файлами DDOC.
+        <translation type="unfinished">Чтобы защитить вас от возможных будущих проблем безопасности, ваши цифровые файлы DDOC будут отмечены меткой времени. Временные файлы будут иметь расширение .asics и будут помещены в одну папку с исходными файлами DDOC.
 
-По умолчанию только файлы на локальных дисках будут отмечены меткой времени. Если вы хотите также установить временные метки файлов с сетевых дисков или изменить другие настройки, откройте меню &amp;quot;Настройки&amp;quot;. </translation>
+По умолчанию только файлы на локальных дисках будут отмечены меткой времени. Если вы хотите также установить временные метки файлов с сетевых дисков или изменить другие настройки, откройте меню &quot;Настройки&quot;. </translation>
     </message>
     <message>
         <source>TeRa client 0.4.0</source>
@@ -293,7 +293,7 @@ By default only files on local drives will be timestamped. If you wish to also t
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="100"/>
         <source>NEED_PIN1_FOR_AUTHENTICATION</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"> </translation>
     </message>
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="102"/>

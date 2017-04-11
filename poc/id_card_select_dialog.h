@@ -16,6 +16,7 @@ public:
     explicit IDCardSelectDialog(QWidget *parent = 0);
     virtual ~IDCardSelectDialog();
 
+    void onTranslate(); // TODO
 protected:
     void showEvent(QShowEvent * event);
 

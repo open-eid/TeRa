@@ -14,6 +14,8 @@
 #include "utils.h"
 
 int main(int argc, char *argv[]) {
+    qsrand(QTime::currentTime().msec());
+
     //QGuiApplication::setAttribute(Qt::AA_Use96Dpi, true);
     //QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling, false);
     //QGuiApplication::setAttribute(Qt::AA_DisableHighDpiScaling, false);

@@ -79,6 +79,10 @@ TeraMainWin::TeraMainWin(QWidget *parent) :
     fixFontSizeInStyleSheet(btnReady);
     fixFontSize(logText);
 
+    // no help at the moment
+    help->setVisible(false);
+    headerLine3->setVisible(false);
+
     settings->setStyleSheet("QPushButton:disabled"
             "{ color: gray }");
 
@@ -209,13 +213,11 @@ void TeraMainWin::doPin1Authentication() {
 }
 
 void TeraMainWin::pin1AuthenticaionDone() {
-qDebug() << "### TeraMainWin::pin1AuthenticaionDone";
     idCardAuth.setAuthCert(cardSelectDialog->smartCardData.authCert(), cardSelectDialog->smartCard->key()); // TODO API
     doTestStamp();
 }
 
 void TeraMainWin::doTestStamp() {
-    qDebug() << "### TeraMainWin::doTestStamp";
     processor.timeServerUrl = processor.timeServerUrl.trimmed(); // TODO
     if (processor.timeServerUrl.isEmpty()) {
         QMessageBox::critical(this, tr("Error"), tr("Time server URL is empty.")); // Error only onve
@@ -597,7 +599,6 @@ void TeraMainWin::showLog(QUrl const& link) {
 
 #if defined(Q_OS_MAC)
     if (!success) {
-        qDebug() << "Opening log-file " << link.url();
         success = QProcess::startDetached("open", QStringList()  << link.url());
     }
 #endif
@@ -630,6 +631,7 @@ void TeraMainWin::loadTranslation(QString const& language_short) {
     }
     if (!cardSelectDialog.isNull()) {
         cardSelectDialog.data()->retranslateUi(cardSelectDialog.data());
+        cardSelectDialog.data()->onTranslate();
     }
     // TODO retranslate other GUIs as well?
 
@@ -718,7 +720,31 @@ void TeraMainWin::processEvents() {
 }
 
 void TeraMainWin::handleFilesAccepted() {
+    // remember old list
+    QSet<QString> oldList;
+    QStringList l = processor.inFiles;
+    for (int i = 0; i < l.size(); ++i)
+        oldList.insert(l.at(i));
+    l.clear();
+
+    // update selected files list
     processor.copySelectedFiles(*filesWin);
+
+    // remove selected ones to get to know which ones were excluded
+    l = processor.inFiles;
+    for (int i = 0; i < l.size(); ++i)
+        oldList.remove(l.at(i));
+
+    // log all de-selected files
+    if (processor.logfile) {
+        QList<QString> list = oldList.toList();
+        qSort(list);
+        for (int i = 0; i < list.size(); ++i) {
+            processor.logfile->getStream() << "User de-selected: " << list.at(i) << endl;
+        }
+    }
+
+    // continue with processing...
     startStampingFiles();
 }
 

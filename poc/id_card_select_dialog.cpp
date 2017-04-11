@@ -24,6 +24,10 @@ IDCardSelectDialog::IDCardSelectDialog(QWidget *parent)
 
 IDCardSelectDialog::~IDCardSelectDialog() {}
 
+void IDCardSelectDialog::onTranslate() {
+    populateGuiFromIDCard();
+}
+
 void IDCardSelectDialog::showEvent(QShowEvent * event) {
     QDialog::showEvent(event);
     QTimer::singleShot(0, this, SLOT(initSmartCard()));
@@ -72,13 +76,11 @@ void IDCardSelectDialog::initSmartCard() {
 }
 
 void IDCardSelectDialog::cardDataChanged() {
-qDebug() << "data changed";
     bufferCardData();
     populateGuiFromIDCard();
 }
 
 void IDCardSelectDialog::populateGuiFromIDCard() {
-    qDebug() << "aaaa";
     // see void MainWindow::updateData() from qestidutil
     populateIDCardInfoText(smartCardData);
 
@@ -106,7 +108,10 @@ void IDCardSelectDialog::populateIDCardInfoText(QSmartCardData const& t) {
     QString text;
     QTextStream st(&text);
 
-    st << tr("NEED_PIN1_FOR_AUTHENTICATION") << "<br/><br/>\n";
+    QString needPinText = tr("NEED_PIN1_FOR_AUTHENTICATION");
+    if (!needPinText.trimmed().isEmpty()) {
+        st << tr("NEED_PIN1_FOR_AUTHENTICATION") << "<br/><br/>\n";
+    }
 
     st << tr("%1 cards in the reader(s)").arg(QString::number(smartCardData.cards().size())) << "<br/><br/>";
 
@@ -156,9 +161,7 @@ void IDCardSelectDialog::populateIDCardInfoText(QSmartCardData const& t) {
 }
 
 void IDCardSelectDialog::bufferCardData() {
-qDebug() << "aaaa bl";
     smartCardData = smartCard->dataXXX();
-qDebug() << "aaaa al";
 }
 
 }
