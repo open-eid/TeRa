@@ -624,6 +624,13 @@ void TeraMainWin::loadTranslation(QString const& language_short) {
     qApp->installTranslator(&appTranslator);
 
     retranslateUi(this);
+    settingsWin.data()->retranslateUi(settingsWin.data());
+    if (!filesWin.isNull()) {
+        filesWin.data()->retranslateUi(filesWin.data());
+    }
+    if (!cardSelectDialog.isNull()) {
+        cardSelectDialog.data()->retranslateUi(cardSelectDialog.data());
+    }
     // TODO retranslate other GUIs as well?
 
     versionLabel->setText(versionLabel->text().arg(qApp->applicationVersion()));
