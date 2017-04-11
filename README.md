@@ -81,7 +81,7 @@ Download and install the latest zlib from http://zlib.net/
 ###### d) libzip
 
 Download and install the latest version from https://nih.at/libzip/
-(Do make static version of the libraries as well uncomment lines at the end of the file libzip-1.1.3/lib/CMakeList.txt before running cmake (starting from "#ADD_LIBRARY(zipstatic STATIC ...").)
+(NB! Do make static version of the libraries as well uncomment lines at the end of the file libzip-1.1.3/lib/CMakeList.txt before running cmake (starting from "#ADD_LIBRARY(zipstatic STATIC ...").)
 
     mkdir -p ~/cmake_builds/ && cd ~/cmake_builds/
     curl -O -L https://nih.at/libzip/libzip-1.1.3.tar.gz
@@ -111,6 +111,7 @@ See http://stackoverflow.com/questions/41865537/how-does-apples-codesign-utility
 
 
     export C_INCLUDE_PATH=$HOME/cmake_builds/openssl-1.0.2h.bin/include/
+    export CPLUS_INCLUDE_PATH=$C_INCLUDE_PATH
     export OPENSSL_PATH="$HOME/cmake_builds/openssl-1.0.2h.bin/"
     export OPENSSL_LIBS="-L$HOME/cmake_builds/openssl-1.0.2h.bin/lib/ -lssl -lcrypto"
     curl -O -L http://download.qt.io/official_releases/qt/5.8/5.8.0/submodules/qtbase-opensource-src-5.8.0.tar.gz
@@ -118,7 +119,7 @@ See http://stackoverflow.com/questions/41865537/how-does-apples-codesign-utility
     cd qtbase-opensource-src-5.8.0
     ./configure -prefix ~/Qt5.8.0-OpenSSL -openssl-linked -opensource -nomake tests -nomake examples -no-securetransport -confirm-license
     make
-    sudo make install
+    make install
     cd ..
     rm -rf qtbase-opensource-src-5.8.0
 
@@ -127,7 +128,7 @@ See http://stackoverflow.com/questions/41865537/how-does-apples-codesign-utility
     cd qttools-opensource-src-5.8.0
     ~/Qt5.8.0-OpenSSL/bin/qmake
     make
-    sudo make install
+    make install
     cd ..
     rm -rf qttools-opensource-src-5.8.0
 
