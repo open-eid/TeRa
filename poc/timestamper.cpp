@@ -223,7 +223,7 @@ QByteArray TimeStamper::getTimestampRequest4Sha256(QByteArray& sha256) { // TODO
     return create_timestamp_request(sha256);
 }
 
-void TimeStamper::sendTSRequest(QByteArray const& timestampRequest, bool test)
+void TimeStamper::sendTSRequest(QByteArray const& timestampRequest, bool test, int retries)
 {
     TERA_LOG(debug) << "Connecting to time-server: " << timeserverUrl.toUtf8().constData();
     TERA_LOG(trace) << "Request (in Hex):\n" << timestampRequest.toHex().constData();
@@ -237,7 +237,16 @@ void TimeStamper::sendTSRequest(QByteArray const& timestampRequest, bool test)
         sslConf->configureRequest(request);
     }
 
+    if (retries > 0) retriesLeft = retries;
+    else retriesLeft = 0;
+
     QNetworkReply* r = nam.post(request, timestampRequest);
+    lastPostPtr = r;
+    if (!test) {
+        lastRequest = timestampRequest;
+    } else {
+        lastRequest = QByteArray();
+    }
 
     if (test) {
         testReplies.insert(r);
@@ -251,12 +260,25 @@ void TimeStamper::tsReplyFinished(QNetworkReply *reply) {
     }
 
     reply->deleteLater();
+
+    if (!testRequest && lastPostPtr != reply) {
+        TERA_LOG(error) << "Delayed TS reply. Ignoring";
+        return;
+    }
+
     if (QNetworkReply::NoError != reply->error()) {
         QString error;
         error.push_back("Time-stamping request failed: ");
         error.push_back(reply->errorString());
-        notifyClientOnTimestampingFinished(testRequest, false, error);
-        return;
+        if (!testRequest && retriesLeft > 0) {
+            error.push_back(QString(". Trying to resend data. %1 retries left.").arg(QString::number(retriesLeft)) );
+            TERA_LOG(warn) << error;
+            sendTSRequest(lastRequest, false, retriesLeft - 1);
+            return;
+        } else {
+            notifyClientOnTimestampingFinished(testRequest, false, error);
+            return;
+        }
     }
 
     QByteArray timeserverResponse = reply->readAll();
@@ -267,7 +289,14 @@ void TimeStamper::tsReplyFinished(QNetworkReply *reply) {
     QByteArray timestamp = timeserverResponse;
 
     if (!extract_timestamp_from_ts_response(timeserverResponse, timestamp)) {
-        notifyClientOnTimestampingFinished(testRequest, false, "Time-server's response did not contain timestamp.");
+        QString error = "Time-server's response did not contain timestamp.";
+        if (!testRequest && retriesLeft > 0) {
+            error.push_back(QString(". Trying to resend data. %1 retries left.").arg(QString::number(retriesLeft)) );
+            TERA_LOG(warn) << error;
+            sendTSRequest(lastRequest, false, retriesLeft - 1);
+            return;
+        }
+        notifyClientOnTimestampingFinished(testRequest, false, error);
         return;
     }
 
@@ -327,7 +356,7 @@ void TimeStamper::startTimestamping(QString const& tsUrl, QString const& infile,
     if (!res) {
         emit timestampingFinished(false, errorMsg);
     } else {
-        sendTSRequest(request);
+        sendTSRequest(request, false, 3);
     }
 }
 

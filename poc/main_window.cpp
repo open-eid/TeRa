@@ -390,6 +390,7 @@ bool TeraMainWin::processingFile(QString const& pathIn, QString const& pathOut, 
         doUserCancel();
         return false;
     }
+
     return true;
 }
 
@@ -409,7 +410,6 @@ bool TeraMainWin::processingFileDone(QString const& pathIn, QString const& pathO
         }
     }
 
-    processor.result->progressStage = GuiTimestamperProcessor::Result::DONE;
     processor.result->progressConverted = nr+1;
     if (success) processor.result->progressSuccess++;
     else processor.result->progressFailed++;
@@ -470,6 +470,7 @@ void TeraMainWin::globalConfNetworkError(const QString &error) {
 }
 
 void TeraMainWin::timestampingFinished(BatchStamper::FinishingDetails details) {
+    processor.result->progressStage = GuiTimestamperProcessor::Result::DONE;
     if (processor.result) {
         if (details.success) {
             processor.result->success = true;

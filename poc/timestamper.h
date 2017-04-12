@@ -62,7 +62,7 @@ public:
     void startTimestamping(QString const& tsUrl, QString const& infile, QString const& outfile);
     bool getTimestampRequest(QByteArray& tsrequest, QString& error);
     QByteArray getTimestampRequest4Sha256(QByteArray& sha256); // TODO redesign
-    void sendTSRequest(QByteArray const& timestampRequest, bool test = false); // TODO redesign
+    void sendTSRequest(QByteArray const& timestampRequest, bool test = false, int retries = -1); // TODO redesign
 public slots:
     void tsReplyFinished(QNetworkReply *reply);
     void createAsicsContainerFinished(qint64 jobId, bool, QString err);
@@ -77,6 +77,10 @@ private:
     QString inputFilePath;
     QString timeserverUrl;
     QString outputFilePath;
+
+    int retriesLeft = 0;
+    void* lastPostPtr = nullptr;
+    QByteArray lastRequest;
 
     TimeStamperRequestConfigurationFactory* sslConf;
 
