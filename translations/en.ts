@@ -113,7 +113,13 @@ Additional licenses and components</source>
     <message>
         <location filename="../poc/MainWindow.ui" line="1969"/>
         <source>TextLabel TeRa Intro</source>
-        <translation type="unfinished"></translation>
+        <translation>Welcome to using the timestamping application.
+
+The timestamping application is created for eID (ID-card, Digi-ID, e-residency ID, etc) holders by The Information System Authority.
+
+The software provides a timestamping service in accordance with &quot;conditions of use for the timestamping service&quot;. To use the timestamping service in industrial scale or for commercial purposes please contact a timestamping service provider directly.
+
+To start the timestamping application an eID document with valid certificates and an internet connection is required. The application will ask You to authenticate yourself using PIN1.</translation>
     </message>
     <message>
         <location filename="../poc/MainWindow.ui" line="1982"/>
@@ -294,7 +300,7 @@ By default only files on local drives will be timestamped. If you wish to also t
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="38"/>
         <source>PIN Verification</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="43"/>
@@ -364,7 +370,7 @@ By default only files on local drives will be timestamped. If you wish to also t
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="142"/>
         <source>%1 retries left for PIN1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="128"/>

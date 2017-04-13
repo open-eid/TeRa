@@ -72,7 +72,7 @@ Additional licenses and components</source>
     <message>
         <location filename="../poc/IDCardSelectionDialog.ui" line="26"/>
         <source>TextLabel</source>
-        <translation type="unfinished"></translation>
+        <translation>Для использования сервиса Метки времени требуется идентификации пользователя. &lt;br/&gt; Пожалуйста, убедитесь, что ID-карта вставлена в считывающее устройство и компьютер подключен к Интернету</translation>
     </message>
     <message>
         <location filename="../poc/IDCardSelectionDialog.ui" line="94"/>
@@ -110,7 +110,15 @@ Additional licenses and components</source>
     <message>
         <location filename="../poc/MainWindow.ui" line="1969"/>
         <source>TextLabel TeRa Intro</source>
-        <translation type="unfinished"></translation>
+        <translation>Добро пожаловать в приложение &quot;Цифровой штамп&quot;.
+
+Приложение &quot;Цифровой штамп&quot; создано по заказу Riigi Infosüsteemi Ameti tellimusel, для владельцев eID карт (ID-карта, Digi-ID, карта e-Residend и т.д.).
+
+Приложение обеспечивает пользователю установку Метки времени, в соответствии с «Принципы выдачи Меток времени». 
+Для использования Метки временив промышленном масштабе, или в коммерческих целях, обратитесь к поставщику услуги по выдаче Метки времени.
+
+Для загрузки приложения &quot;Цифровой штамп&quot; необходимо иметь eID документ с действительными сертификатами, а также подключение к Интернету. 
+Для того, чтобы идентифицировать себя, приложение просит ввести код PIN1.</translation>
     </message>
     <message>
         <location filename="../poc/MainWindow.ui" line="1982"/>
@@ -138,7 +146,7 @@ Additional licenses and components</source>
         <source>To protect you from possible future security issues your digitally signed DDOC files will be timestamped. Timestamped files will have a .asics extention and will be placed in the same folder with the original DDOC files.
 
 By default only files on local drives will be timestamped. If you wish to also timestamp files from network drives or change other settings please open the &quot;Settings&quot; menu.</source>
-        <translation type="unfinished">Чтобы защитить вас от возможных будущих проблем безопасности, ваши цифровые файлы DDOC будут отмечены меткой времени. Временные файлы будут иметь расширение .asics и будут помещены в одну папку с исходными файлами DDOC.
+        <translation>Чтобы защитить вас от возможных будущих проблем безопасности, ваши цифровые файлы DDOC будут отмечены меткой времени. Временные файлы будут иметь расширение .asics и будут помещены в одну папку с исходными файлами DDOC.
 
 По умолчанию только файлы на локальных дисках будут отмечены меткой времени. Если вы хотите также установить временные метки файлов с сетевых дисков или изменить другие настройки, откройте меню &quot;Настройки&quot;. </translation>
     </message>
@@ -273,12 +281,12 @@ By default only files on local drives will be timestamped. If you wish to also t
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="38"/>
         <source>PIN Verification</source>
-        <translation type="unfinished"></translation>
+        <translation>Проверка PIN-кода</translation>
     </message>
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="43"/>
         <source>Wrong PIN1. %1 retries left</source>
-        <translation type="unfinished"></translation>
+        <translation>Неправильный PIN1. Осталось 1% попыток</translation>
     </message>
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="45"/>
@@ -293,12 +301,12 @@ By default only files on local drives will be timestamped. If you wish to also t
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="100"/>
         <source>NEED_PIN1_FOR_AUTHENTICATION</source>
-        <translation type="unfinished"> </translation>
+        <translation>Для использования сервиса Метки времени требуется идентификации пользователя. &lt;br/&gt; Пожалуйста, убедитесь, что ID-карта вставлена в считывающее устройство и компьютер подключен к Интернету</translation>
     </message>
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="102"/>
         <source>%1 cards in the reader(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 карт(а) в считывающем устройстве</translation>
     </message>
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="107"/>
@@ -343,7 +351,7 @@ By default only files on local drives will be timestamped. If you wish to also t
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="142"/>
         <source>%1 retries left for PIN1</source>
-        <translation type="unfinished"></translation>
+        <translation>Неправильный PIN1. Осталось 1% попыток</translation>
     </message>
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="128"/>
@@ -382,22 +390,32 @@ By default only files on local drives will be timestamped. If you wish to also t
 Minimum supported version is %2.
 
 Please upgrade your software from https://installer.id.ee/</source>
-        <translation type="unfinished"></translation>
+        <translation>Ваша версия используемого программного обеспечения (1%), слишком старая.
+
+Минимальная поддерживаемая версия %2.
+
+Пожалуйста, обновите программное обеспечение https://installer.id.ee/</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="495"/>
         <source>Version check</source>
-        <translation type="unfinished"></translation>
+        <translation>Контроль версий</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="502"/>
         <source>NO_NETWORK_MSG</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка загрузки обновления конфигурации.
+
+Пожалуйста, проверьте существующее подключение к Интернету.
+
+Требуется подключение к Интернету для выдачи Метки времени *.ddoc файлам.
+
+Ошибка:%1</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="503"/>
         <source>Error downloading configuration</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка загрузки обновления конфигурации</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="570"/>
@@ -458,7 +476,7 @@ Please upgrade your software from https://installer.id.ee/</source>
         <location filename="../poc/main_window.cpp" line="412"/>
         <source>
 Timestamped files might not fit on disk.</source>
-        <translation type="unfinished"></translation>
+        <translation>Файлы с отметкой времени не помещаются на диске</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="543"/>

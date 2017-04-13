@@ -361,7 +361,7 @@ Vaikimisi ajatembeldatakse ainult arvutis asuvaid DDOC faile. Kui soovite võrgu
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="142"/>
         <source>%1 retries left for PIN1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 katset jäänud PIN1 lukustumiseni</translation>
     </message>
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="128"/>
