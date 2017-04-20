@@ -129,18 +129,6 @@ static QString const INI_TRUSTED_CERT = Config::INI_GROUP_ + "time_server.truste
 
 void TeRaMonitor::globalConfFinished(bool changed, const QString &error) {
     idCardAuth.addTrustedCerts(config.getTrustedHttpsCerts());
-/*    // TODO log
-    for (const QJsonValue &cert : Configuration::instance().object().value("CERT-BUNDLE").toArray()) {
-        idCardAuth.addTrustedDerBase64(cert.toString().toLatin1());
-    }
-
-    QSettings settings(":/tera.ini", QSettings::IniFormat);
-    QStringList sl  = settings.allKeys();
-    QString der = settings.value(INI_TRUSTED_CERT).toString();
-    if (!der.isNull()) {
-        idCardAuth.addTrustedDerBase64(der.toLatin1());
-    }
-    */
     emit kickstart_signal();
 }
 

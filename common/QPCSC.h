@@ -118,6 +118,7 @@ public:
 	Result transfer( const char *cmd, int size ) const;
 	Result transfer( const QByteArray &apdu ) const;
 	Result transferCTL( const QByteArray &apdu, bool verify, quint8 lang = 0, quint8 minlen = 4 ) const;
+    void getstatus();
 
 private:
 	Q_DISABLE_COPY(QPCSCReader)

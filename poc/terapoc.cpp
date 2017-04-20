@@ -309,32 +309,6 @@ int main(int argc, char *argv[]) {
     ria_tera::TeRaMonitor monitor;
     monitor.kickstart(time_server_url, ioparams);
 
-    ///////////////////////////////////////////////////////////////////////////
-/*
-    ria_tera::OutputNameGenerator namegen(ria_tera::Config::EXTENSION_IN, out_extension);
-
-    QStringList inFiles;
-    if (in_file.isEmpty()) {
-        ria_tera::DiskCrawler dc(monitor, ria_tera::Config::EXTENSION_IN);
-        dc.addExcludeDirs(excl_dirs);
-        dc.addInputDir(in_dir, in_dir_recursive);
-        inFiles = dc.crawl();
-    } else {
-        inFiles.append(in_file);
-        namegen.setFixedOutFile(in_file, file_out);
-    }
-
-    if (0 == inFiles.size()) {
-        TERA_COUT("No *." << QSTR_TO_CCHAR(ria_tera::Config::EXTENSION_IN) << " files found.");
-    }
-    ria_tera::BatchStamper stamper(monitor, namegen, false);
-
-    QObject::connect(&stamper, &ria_tera::BatchStamper::timestampingFinished,
-        &monitor, &ria_tera::TeRaMonitor::exitOnFinished, Qt::QueuedConnection); // queued connection needed to ensure a.exec() catches exit
-
-    stamper.getTimestamper().setTimeserverUrl(ts_url, (useIDCardAuthentication ? &idCardAuth : nullptr));
-    stamper.startTimestamping(ts_url, inFiles); // TODO error to XXX when network is down for example
-    */
     return a.exec();
 }
 

@@ -595,8 +595,13 @@ void QSmartCard::run()
 			if(update)
                 emitDataChanged();
 			d->m.unlock();
-		}
-		sleep(5);
+		} else {
+            if(d != nullptr && d->reader != nullptr && !d->reader.isNull()) {
+                // keep-alive for SC
+                d->reader->getstatus();
+            }
+        }
+		sleep(3);
 	}
 }
 

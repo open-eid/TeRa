@@ -427,6 +427,17 @@ QPCSCReader::Result QPCSCReader::transferCTL( const QByteArray &apdu, bool verif
 	return result;
 }
 
+/// At the moment only used as keep-alive for SC transaction
+void QPCSCReader::getstatus() {
+    char name[100];
+    DWORD len = sizeof name;
+    DWORD dwState, dwProtocol;
+    // unsigned char atr[MAX_ATR_SIZE];
+    // DWORD atr_len = sizeof atr;
+    DWORD ret = SC(Status, d->card, name, &len, &dwState, &dwProtocol, nullptr, nullptr);
+    // if (err != SCARD_S_SUCCESS) {}
+}
+
 bool QPCSCReader::updateState( quint32 msec )
 {
 	if(!d->d->context)
