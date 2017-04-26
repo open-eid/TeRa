@@ -601,7 +601,7 @@ void QSmartCard::run()
                 d->reader->getstatus();
             }
         }
-		sleep(3);
+		sleep(2);
 	}
 }
 

@@ -79,10 +79,6 @@ TeraMainWin::TeraMainWin(QWidget *parent) :
     fixFontSizeInStyleSheet(btnReady);
     fixFontSize(logText);
 
-    // no help at the moment
-    help->setVisible(false);
-    headerLine3->setVisible(false);
-
     settings->setStyleSheet("QPushButton:disabled"
             "{ color: gray }");
 
@@ -470,8 +466,8 @@ void TeraMainWin::globalConfNetworkError(const QString &error) {
 }
 
 void TeraMainWin::timestampingFinished(BatchStamper::FinishingDetails details) {
-    processor.result->progressStage = GuiTimestamperProcessor::Result::DONE;
     if (processor.result) {
+        processor.result->progressStage = GuiTimestamperProcessor::Result::DONE;
         if (details.success) {
             processor.result->success = true;
             processor.result->cnt = processor.inFiles.size(); // TODO

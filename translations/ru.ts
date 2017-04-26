@@ -497,7 +497,7 @@ Timestamped files might not fit on disk.</source>
     <message>
         <location filename="../poc/main_window.cpp" line="625"/>
         <source>HTTP_HELP</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">http://www.id.ee/?id=37909</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="627"/>

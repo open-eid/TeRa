@@ -519,7 +519,7 @@ Error: %1</translation>
     <message>
         <location filename="../poc/main_window.cpp" line="625"/>
         <source>HTTP_HELP</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">http://www.id.ee/?id=37908</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="627"/>

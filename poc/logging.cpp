@@ -81,7 +81,7 @@ bool TeraLogger::addFileLog(log_level lvl, QString dir_path) {
     if (!dir_path.isEmpty()) {
         dir.setPath(dir_path);
     }
-    QString const filePrefix = "terapoc_" + QDateTime::currentDateTime().toString("yyyy-MM-dd_HH-mm-ss-zzz");
+    QString const filePrefix = "tera_" + QDateTime::currentDateTime().toString("yyyy-MM-dd_HH-mm-ss-zzz");
     QString const fileSufix = ".log";
 
     LogFile* log = LogFile::openLogFile(dir, filePrefix, fileSufix, error);
