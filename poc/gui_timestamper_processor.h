@@ -62,6 +62,7 @@ public:
         int progressConverted;
         int progressSuccess;
         int progressFailed;
+        int progressUnprocessed;
         bool success;
         QString error;
         /// show "Error:" before error string?

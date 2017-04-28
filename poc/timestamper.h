@@ -63,15 +63,17 @@ public:
     bool getTimestampRequest(QByteArray& tsrequest, QString& error);
     QByteArray getTimestampRequest4Sha256(QByteArray& sha256); // TODO redesign
     void sendTSRequest(QByteArray const& timestampRequest, bool test = false, int retries = -1); // TODO redesign
+
+    enum TS_FINISH_DETAILS : int {OTHER, SSL_HANDSHAKE_ERROR};
 public slots:
     void tsReplyFinished(QNetworkReply *reply);
     void createAsicsContainerFinished(qint64 jobId, bool, QString err);
 signals:
-    void timestampingFinished(bool success, QString errString);
+    void timestampingFinished(bool success, QString errString, int details = TS_FINISH_DETAILS::OTHER);
     void timestampingTestFinished(bool success, QByteArray resp, QString errString);
     void signalAsicsContainerFinished(bool);
 private:
-    void notifyClientOnTimestampingFinished(bool test, bool success, QString errString, QByteArray resp = QByteArray());
+    void notifyClientOnTimestampingFinished(bool test, bool success, QString errString, TS_FINISH_DETAILS details = TS_FINISH_DETAILS::OTHER, QByteArray resp = QByteArray());
 
     qint64 jobId;
     QString inputFilePath;
@@ -129,7 +131,7 @@ signals:
     void timestampingFinished(FinishingDetails details);
 private slots:
     void processNext();
-    void timestampFinished(bool success, QString errString);
+    void timestampFinished(bool success, QString errString, int details);
 private:
     StampingMonitorCallback& monitor;
     OutputNameGenerator& namegen;

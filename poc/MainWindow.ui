@@ -1968,11 +1968,20 @@ font-weight: bold;
             <property name="text">
              <string>TextLabel TeRa Intro</string>
             </property>
+            <property name="textFormat">
+             <enum>Qt::RichText</enum>
+            </property>
             <property name="alignment">
              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
             </property>
             <property name="wordWrap">
              <bool>true</bool>
+            </property>
+            <property name="openExternalLinks">
+             <bool>true</bool>
+            </property>
+            <property name="textInteractionFlags">
+             <set>Qt::TextBrowserInteraction</set>
             </property>
            </widget>
           </item>

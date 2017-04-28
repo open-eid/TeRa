@@ -111,23 +111,23 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <location filename="../poc/MainWindow.ui" line="1969"/>
         <source>TextLabel TeRa Intro</source>
-        <translation type="unfinished">Tere tulemast kasutama tembeldamisrakenduse tarkvara.
-
-Tembeldamisrakendus on loodud Riigi Infosüsteemi Ameti tellimusel, eID (ID-kaart, Digi-ID, e-Residendi digi-ID vms) omanikele kasutamiseks.
-
-Tarkvara osutab kasutajale ajatempliteenust, vastavalt „ajatempliteenuse kasutustingimustele“. Ajatempliteenuse kasutamiseks tööstuslikus ulatuses või kommertseesmärkidel pöörduge ajatempliteenuse osutaja poole.
- 
-Tembeldamisrakenduse käivitamiseks vajad kehtivate sertifikaatidega eID dokumenti ja toimivat internetiühendust. Enda tuvastamiseks palub rakendus sisestada PIN1 koodi.
-
-Ajatempliteenuse osutamise tingimused on kättesaadavad lehel https://eid.eesti.ee/index.php/TeRa-ATO</translation>
+        <translation type="unfinished">Tere tulemast kasutama tembeldamisrakenduse tarkvara.&lt;br&gt;
+&lt;br&gt;
+Tembeldamisrakendus on loodud Riigi Infosüsteemi Ameti tellimusel, eID (ID-kaart, Digi-ID, e-Residendi digi-ID vms) omanikele kasutamiseks.&lt;br&gt;
+&lt;br&gt;
+Tarkvara osutab kasutajale ajatempliteenust, vastavalt „ajatempliteenuse kasutustingimustele“. Ajatempliteenuse kasutamiseks tööstuslikus ulatuses või kommertseesmärkidel pöörduge ajatempliteenuse osutaja poole.&lt;br&gt;
+&lt;br&gt;
+Tembeldamisrakenduse käivitamiseks vajad kehtivate sertifikaatidega eID dokumenti ja toimivat internetiühendust. Enda tuvastamiseks palub rakendus sisestada PIN1 koodi.&lt;br&gt;
+&lt;br&gt;
+Ajatempliteenuse osutamise tingimused on kättesaadavad lehel &lt;a href=&quot;https://eid.eesti.ee/index.php/TeRa-ATO&quot;&gt;https://eid.eesti.ee/index.php/TeRa-ATO&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../poc/MainWindow.ui" line="1982"/>
+        <location filename="../poc/MainWindow.ui" line="1991"/>
         <source>Skip this intro</source>
         <translation>Ära rohkem mulle seda teadet näita</translation>
     </message>
     <message>
-        <location filename="../poc/MainWindow.ui" line="2036"/>
+        <location filename="../poc/MainWindow.ui" line="2045"/>
         <source>TeRa client %1</source>
         <extracomment>%1 is for version number</extracomment>
         <translation>TeRa klient %1</translation>
@@ -178,7 +178,7 @@ Vaikimisi ajatembeldatakse ainult arvutis asuvaid DDOC faile. Kui soovite võrgu
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../poc/main_window.cpp" line="332"/>
+        <location filename="../poc/main_window.cpp" line="289"/>
         <source>Searching</source>
         <translation>Otsimine</translation>
     </message>
@@ -291,82 +291,89 @@ Vaikimisi ajatembeldatakse ainult arvutis asuvaid DDOC faile. Kui soovite võrgu
 <context>
     <name>ria_tera::IDCardSelectDialog</name>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="38"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="43"/>
         <source>PIN Verification</source>
         <translation>PIN1 kontroll</translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="43"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="48"/>
         <source>Wrong PIN1. %1 retries left</source>
         <translation>Vale PIN1. %1 katset jäänud</translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="45"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="50"/>
         <source>PIN1 is blocked.</source>
         <translation>PIN1 kood blokeeritud.</translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="47"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="52"/>
+        <source>Error occurred while verifying PIN.
+Please check if ID-card is still in the reader.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../poc/id_card_select_dialog.cpp" line="55"/>
         <source>Error: </source>
         <translation>Viga: </translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="100"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="111"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="113"/>
         <source>NEED_PIN1_FOR_AUTHENTICATION</source>
         <translation>Ajatempli teenuse kasutamiseks on vajalik kasutaja tuvastamine.&lt;br/&gt;Palun veenduge et, ID-kaart on kaardilugejas ja arvuti on ühendatud internetti</translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="102"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="116"/>
         <source>%1 cards in the reader(s)</source>
         <translation>%1 kaart(i) lugeja(te)s</translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="107"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="121"/>
         <source>Card in reader</source>
         <translation>Lugejas on dokument</translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="116"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="130"/>
         <source>Given Names:</source>
         <translation>Eesnimed:</translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="117"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="131"/>
         <source>Surname:</source>
         <translation>Perekonnanimi:</translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="118"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="132"/>
         <source>Personal Code:</source>
         <translation>Isikukood:</translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="126"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="140"/>
         <source>valid but blocked</source>
         <translation>kehtiv kuid blokeeritud</translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="126"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="140"/>
         <source>invalid and blocked</source>
         <translation>kehtetu ja blokeeritud</translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="131"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="145"/>
         <source>valid and applicable</source>
         <translation>kehtiv ja kasutatav</translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="135"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="149"/>
         <source>Authentication certificate is</source>
         <translation>Isikutuvastuse sertifikaat on</translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="142"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="156"/>
         <source>%1 retries left for PIN1</source>
         <translation>%1 katset jäänud PIN1 lukustumiseni</translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="128"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="142"/>
         <source>expired</source>
         <translation>expired</translation>
     </message>
@@ -378,12 +385,12 @@ Vaikimisi ajatembeldatakse ainult arvutis asuvaid DDOC faile. Kui soovite võrgu
         <translation type="vanished">Ühtegi sisendkataloogi pole valitud</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="262"/>
+        <location filename="../poc/main_window.cpp" line="219"/>
         <source>Error</source>
         <translation>Viga</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="262"/>
+        <location filename="../poc/main_window.cpp" line="219"/>
         <source>Time server URL is empty.</source>
         <translation>Ajatempliserveri URL on tühi.</translation>
     </message>
@@ -392,7 +399,7 @@ Vaikimisi ajatembeldatakse ainult arvutis asuvaid DDOC faile. Kui soovite võrgu
         <translation type="vanished"> * &apos;%1&apos;: vaba ruumi %2, vajalik ruum (ligikaudu) %3</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="410"/>
+        <location filename="../poc/main_window.cpp" line="367"/>
         <source>The space needed to timestamp all the DDOC files found exceeds the amount of free space found:
 
 </source>
@@ -403,74 +410,74 @@ Vaikimisi ajatembeldatakse ainult arvutis asuvaid DDOC faile. Kui soovite võrgu
         <translation type="vanished">Ajatembeldatud failid ei pruugi kettale mahtuda.</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="413"/>
+        <location filename="../poc/main_window.cpp" line="370"/>
         <source>Abort timestamping?</source>
         <translation>Katkesta tembeldamine?</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="570"/>
+        <location filename="../poc/main_window.cpp" line="543"/>
         <source>Testing Time Server...</source>
         <translation>Aja-serveri test...</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="572"/>
+        <location filename="../poc/main_window.cpp" line="545"/>
         <source>Searching DDOC files. %1 found so far...</source>
         <translation>Otsin DDOC faile. Hetkel leitud %1...</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="574"/>
+        <location filename="../poc/main_window.cpp" line="547"/>
         <source>Found %1 DDOC files. %2 left to be converted...</source>
         <translation>Leitud %1 DDOC faili. Konverteerimata veel %2...</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="591"/>
+        <location filename="../poc/main_window.cpp" line="565"/>
         <source>Error:</source>
         <translation>Viga:</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="596"/>
+        <location filename="../poc/main_window.cpp" line="569"/>
         <source>Finished timestamping DDOC files</source>
         <translation>DDOC failide tembeldamine on lõppenud</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="597"/>
+        <location filename="../poc/main_window.cpp" line="573"/>
         <source>DDOC files found: %1</source>
         <translation>DDOC faile leitud: %1</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="599"/>
+        <location filename="../poc/main_window.cpp" line="575"/>
         <source>   of which %1 where chosen for timestamping</source>
         <translation>  milles %1 olid valitud tembeldamiseks</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="600"/>
+        <location filename="../poc/main_window.cpp" line="576"/>
         <source>DDOC files timestamped: %1</source>
         <translation>DDOC faile tembeldatud: %1</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="602"/>
+        <location filename="../poc/main_window.cpp" line="578"/>
         <source>Failed timestampings: %1</source>
         <translation>Ebaõnnestunud tembeldamisi: %1</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="299"/>
+        <location filename="../poc/main_window.cpp" line="256"/>
         <source>Test request to Time Server failed. </source>
         <translation>Aja-serveri kontroll-päring ebaõnnestus. </translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="402"/>
+        <location filename="../poc/main_window.cpp" line="359"/>
         <source>* %1: free space %2, space needed %3 (approximately)</source>
         <translation> * &apos;%1&apos;: vaba ruumi %2, vajalik ruum (ligikaudu) %3</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="412"/>
+        <location filename="../poc/main_window.cpp" line="369"/>
         <source>
 Timestamped files might not fit on disk.</source>
         <translation>
 Ajatembeldatud failid ei pruugi kettale mahtuda.</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="493"/>
+        <location filename="../poc/main_window.cpp" line="456"/>
         <source>Your version of the software (%1) is not supported any more.
 
 Minimum supported version is %2.
@@ -483,12 +490,12 @@ Minimaalne toetatud versioon on %2.
 Palun uuenda tarkvara https://installer.id.ee/</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="495"/>
+        <location filename="../poc/main_window.cpp" line="458"/>
         <source>Version check</source>
         <translation>Versiooni kontroll</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="502"/>
+        <location filename="../poc/main_window.cpp" line="465"/>
         <source>NO_NETWORK_MSG</source>
         <translation>Viga konfiguratsiooniuuenduste allalaadimisel.
 
@@ -498,53 +505,58 @@ Internetiühendus on vajalik *.ddoc failide ajatembeldamiseks.
 Viga: %1</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="503"/>
+        <location filename="../poc/main_window.cpp" line="466"/>
         <source>Error downloading configuration</source>
         <translation>Viga konfiguratsiooniuuenduste allalaadimisel</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="543"/>
+        <location filename="../poc/main_window.cpp" line="516"/>
         <source>Timestamping is not finished. Are you sure?
 </source>
         <translation>Tembeldamine pole lõppenud. Katkestada protsess?</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="606"/>
+        <location filename="../poc/main_window.cpp" line="581"/>
+        <source>Files left unprocessed: %1</source>
+        <translation>Töötlemata jäänud faile: %1</translation>
+    </message>
+    <message>
+        <location filename="../poc/main_window.cpp" line="586"/>
         <source>For detailed report click </source>
         <translation>Täpsema aruande vaatamiseks vajuta </translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="615"/>
+        <location filename="../poc/main_window.cpp" line="595"/>
         <source>HERE</source>
         <translation>SIIN</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="625"/>
+        <location filename="../poc/main_window.cpp" line="605"/>
         <source>HTTP_HELP</source>
         <translation>http://www.id.ee/?id=37907</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="627"/>
+        <location filename="../poc/main_window.cpp" line="607"/>
         <source>Couldn&apos;t open help URL: </source>
         <translation>Abi URL&apos;i avamine ebaõnnestus:</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="642"/>
+        <location filename="../poc/main_window.cpp" line="621"/>
         <source>Couldn&apos;t open timestamping log: </source>
         <translation>Tembeldamise logi avamine ebaõnnestus:</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="666"/>
+        <location filename="../poc/main_window.cpp" line="653"/>
         <source>I agree</source>
         <translation>Nõustun</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="667"/>
+        <location filename="../poc/main_window.cpp" line="654"/>
         <source>Cancel</source>
         <translation>Loobu</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="516"/>
+        <location filename="../poc/main_window.cpp" line="480"/>
         <source>Operation cancelled by user...</source>
         <translation>Katkestatud kasutaja poolt...</translation>
     </message>
@@ -560,6 +572,14 @@ Viga: %1</translation>
         <location filename="../poc/settings_window.cpp" line="87"/>
         <source>Can&apos;t add &apos;%1&apos;. Directory does not exist.</source>
         <translation>Lisamine ebaõnnestus. &apos;%1&apos; ei ole olemas.</translation>
+    </message>
+</context>
+<context>
+    <name>ria_tera::TimeStamper</name>
+    <message>
+        <location filename="../poc/timestamper.cpp" line="283"/>
+        <source>Couldn&apos;t use ID-card for authentication. </source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

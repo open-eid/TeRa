@@ -110,25 +110,25 @@ Additional licenses and components</source>
     <message>
         <location filename="../poc/MainWindow.ui" line="1969"/>
         <source>TextLabel TeRa Intro</source>
-        <translation type="unfinished">Добро пожаловать в приложение &quot;Цифровой штамп&quot;.
-
-Приложение &quot;Цифровой штамп&quot; создано по заказу Riigi Infosüsteemi Ameti tellimusel, для владельцев eID карт (ID-карта, Digi-ID, карта e-Residend и т.д.).
-
-Приложение обеспечивает пользователю установку Метки времени, в соответствии с «Принципы выдачи Меток времени». 
-Для использования Метки временив промышленном масштабе, или в коммерческих целях, обратитесь к поставщику услуги по выдаче Метки времени.
-
-Для загрузки приложения &quot;Цифровой штамп&quot; необходимо иметь eID документ с действительными сертификатами, а также подключение к Интернету. 
-Для того, чтобы идентифицировать себя, приложение просит ввести код PIN1.
-
-Условия услуги выдачи Метки Времени доступны здесь: https://eid.eesti.ee/index.php/TeRa-ATO</translation>
+        <translation type="unfinished">Добро пожаловать в приложение &quot;Цифровой штамп&quot;.&lt;br&gt;
+&lt;br&gt;
+Приложение &quot;Цифровой штамп&quot; создано по заказу Riigi Infosüsteemi Ameti tellimusel, для владельцев eID карт (ID-карта, Digi-ID, карта e-Residend и т.д.).&lt;br&gt;
+&lt;br&gt;
+Приложение обеспечивает пользователю установку Метки времени, в соответствии с «Принципы выдачи Меток времени». &lt;br&gt;
+Для использования Метки временив промышленном масштабе, или в коммерческих целях, обратитесь к поставщику услуги по выдаче Метки времени.&lt;br&gt;
+&lt;br&gt;
+Для загрузки приложения &quot;Цифровой штамп&quot; необходимо иметь eID документ с действительными сертификатами, а также подключение к Интернету. &lt;br&gt;
+Для того, чтобы идентифицировать себя, приложение просит ввести код PIN1.&lt;br&gt;
+&lt;br&gt;
+Условия услуги выдачи Метки Времени доступны здесь: &lt;a href=&quot;https://eid.eesti.ee/index.php/TeRa-ATO&quot;&gt;https://eid.eesti.ee/index.php/TeRa-ATO&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../poc/MainWindow.ui" line="1982"/>
+        <location filename="../poc/MainWindow.ui" line="1991"/>
         <source>Skip this intro</source>
         <translation>Пропустить этот вступление</translation>
     </message>
     <message>
-        <location filename="../poc/MainWindow.ui" line="2036"/>
+        <location filename="../poc/MainWindow.ui" line="2045"/>
         <source>TeRa client %1</source>
         <extracomment>%1 is for version number</extracomment>
         <translation>TeRa клиент %1</translation>
@@ -175,7 +175,7 @@ By default only files on local drives will be timestamped. If you wish to also t
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../poc/main_window.cpp" line="332"/>
+        <location filename="../poc/main_window.cpp" line="289"/>
         <source>Searching</source>
         <translation>Поиск</translation>
     </message>
@@ -281,82 +281,89 @@ By default only files on local drives will be timestamped. If you wish to also t
 <context>
     <name>ria_tera::IDCardSelectDialog</name>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="38"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="43"/>
         <source>PIN Verification</source>
         <translation>Проверка PIN-кода</translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="43"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="48"/>
         <source>Wrong PIN1. %1 retries left</source>
         <translation>Неправильный PIN1. Осталось 1% попыток</translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="45"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="50"/>
         <source>PIN1 is blocked.</source>
         <translation>PIN1 заблокирован.</translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="47"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="52"/>
+        <source>Error occurred while verifying PIN.
+Please check if ID-card is still in the reader.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../poc/id_card_select_dialog.cpp" line="55"/>
         <source>Error: </source>
         <translation>Ошибка: </translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="100"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="111"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="113"/>
         <source>NEED_PIN1_FOR_AUTHENTICATION</source>
         <translation>Для использования сервиса Метки времени требуется идентификации пользователя. &lt;br/&gt; Пожалуйста, убедитесь, что ID-карта вставлена в считывающее устройство и компьютер подключен к Интернету</translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="102"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="116"/>
         <source>%1 cards in the reader(s)</source>
         <translation>%1 карт(а) в считывающем устройстве</translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="107"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="121"/>
         <source>Card in reader</source>
         <translation>Карта в считывателе</translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="116"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="130"/>
         <source>Given Names:</source>
         <translation>Имя:</translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="117"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="131"/>
         <source>Surname:</source>
         <translation>Фамилия:</translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="118"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="132"/>
         <source>Personal Code:</source>
         <translation>Личный номер:</translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="126"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="140"/>
         <source>valid but blocked</source>
         <translation>действителен, но заблокирован</translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="126"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="140"/>
         <source>invalid and blocked</source>
         <translation>недействителен и заблокирован</translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="131"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="145"/>
         <source>valid and applicable</source>
         <translation>действителен и пригоден</translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="135"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="149"/>
         <source>Authentication certificate is</source>
         <translation>Идентификационный сертификат</translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="142"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="156"/>
         <source>%1 retries left for PIN1</source>
         <translation>Неправильный PIN1. Осталось 1% попыток</translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="128"/>
+        <location filename="../poc/id_card_select_dialog.cpp" line="142"/>
         <source>expired</source>
         <translation>недействителен</translation>
     </message>
@@ -364,29 +371,29 @@ By default only files on local drives will be timestamped. If you wish to also t
 <context>
     <name>ria_tera::TeraMainWin</name>
     <message>
-        <location filename="../poc/main_window.cpp" line="262"/>
+        <location filename="../poc/main_window.cpp" line="219"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="262"/>
+        <location filename="../poc/main_window.cpp" line="219"/>
         <source>Time server URL is empty.</source>
         <translation>URL-адрес сервера отметки времени пуст.</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="410"/>
+        <location filename="../poc/main_window.cpp" line="367"/>
         <source>The space needed to timestamp all the DDOC files found exceeds the amount of free space found:
 
 </source>
         <translation>Пространство необходимое для отметки времени всех DDOC файлов, превышает объем свободного пространства найдено:</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="413"/>
+        <location filename="../poc/main_window.cpp" line="370"/>
         <source>Abort timestamping?</source>
         <translation>Прервать процесс отметки времени?</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="493"/>
+        <location filename="../poc/main_window.cpp" line="456"/>
         <source>Your version of the software (%1) is not supported any more.
 
 Minimum supported version is %2.
@@ -399,12 +406,12 @@ Please upgrade your software from https://installer.id.ee/</source>
 Пожалуйста, обновите программное обеспечение https://installer.id.ee/</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="495"/>
+        <location filename="../poc/main_window.cpp" line="458"/>
         <source>Version check</source>
         <translation>Контроль версий</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="502"/>
+        <location filename="../poc/main_window.cpp" line="465"/>
         <source>NO_NETWORK_MSG</source>
         <translation>Ошибка загрузки обновления конфигурации.
 
@@ -415,114 +422,119 @@ Please upgrade your software from https://installer.id.ee/</source>
 Ошибка:%1</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="503"/>
+        <location filename="../poc/main_window.cpp" line="466"/>
         <source>Error downloading configuration</source>
         <translation>Ошибка загрузки обновления конфигурации</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="570"/>
+        <location filename="../poc/main_window.cpp" line="543"/>
         <source>Testing Time Server...</source>
         <translation>Тестирование сервера отметки времени...</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="572"/>
+        <location filename="../poc/main_window.cpp" line="545"/>
         <source>Searching DDOC files. %1 found so far...</source>
         <translation>Поиска DDOC файлов. %1 найдено ...</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="574"/>
+        <location filename="../poc/main_window.cpp" line="547"/>
         <source>Found %1 DDOC files. %2 left to be converted...</source>
         <translation>Найдено %1 DDOC файлов. %2 осталось для преобразования …</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="591"/>
+        <location filename="../poc/main_window.cpp" line="565"/>
         <source>Error:</source>
         <translation>Ошибка: </translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="596"/>
+        <location filename="../poc/main_window.cpp" line="569"/>
         <source>Finished timestamping DDOC files</source>
         <translation>Завершенные временные метки файлов DDOC </translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="597"/>
+        <location filename="../poc/main_window.cpp" line="573"/>
         <source>DDOC files found: %1</source>
         <translation>DDOC файлов найдено: %1</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="599"/>
+        <location filename="../poc/main_window.cpp" line="575"/>
         <source>   of which %1 where chosen for timestamping</source>
         <translation>из которых %1 выбраны для временных меток </translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="600"/>
+        <location filename="../poc/main_window.cpp" line="576"/>
         <source>DDOC files timestamped: %1</source>
         <translation>DDOC файлов с временной меткой: %1</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="602"/>
+        <location filename="../poc/main_window.cpp" line="578"/>
         <source>Failed timestampings: %1</source>
         <translation>Ошибка выдачи временной метки: %1</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="299"/>
+        <location filename="../poc/main_window.cpp" line="256"/>
         <source>Test request to Time Server failed. </source>
         <translation>Не удалось сделать тестовый запрос на сервера отметки времени. </translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="402"/>
+        <location filename="../poc/main_window.cpp" line="359"/>
         <source>* %1: free space %2, space needed %3 (approximately)</source>
         <translation>* %1: свободное пространство %2, пространства необходимо %3 (приблизительно)</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="412"/>
+        <location filename="../poc/main_window.cpp" line="369"/>
         <source>
 Timestamped files might not fit on disk.</source>
         <translation>Файлы с отметкой времени не помещаются на диске</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="543"/>
+        <location filename="../poc/main_window.cpp" line="516"/>
         <source>Timestamping is not finished. Are you sure?
 </source>
         <translation>Выдача временных меток не закончена. Вы уверены?</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="606"/>
+        <location filename="../poc/main_window.cpp" line="581"/>
+        <source>Files left unprocessed: %1</source>
+        <translation type="unfinished">Файлы, оставшиеся необработанными:%1</translation>
+    </message>
+    <message>
+        <location filename="../poc/main_window.cpp" line="586"/>
         <source>For detailed report click </source>
         <translation>Для подробного отчета щелкните </translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="615"/>
+        <location filename="../poc/main_window.cpp" line="595"/>
         <source>HERE</source>
         <translation>ЗДЕСЬ</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="625"/>
+        <location filename="../poc/main_window.cpp" line="605"/>
         <source>HTTP_HELP</source>
         <translation>http://www.id.ee/?id=37909</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="627"/>
+        <location filename="../poc/main_window.cpp" line="607"/>
         <source>Couldn&apos;t open help URL: </source>
         <translation>Не удалось открыть URL справки: </translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="642"/>
+        <location filename="../poc/main_window.cpp" line="621"/>
         <source>Couldn&apos;t open timestamping log: </source>
         <translation>Не удалось открыть журнал выдачи временной метки: </translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="666"/>
+        <location filename="../poc/main_window.cpp" line="653"/>
         <source>I agree</source>
         <translation>Я согласен</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="667"/>
+        <location filename="../poc/main_window.cpp" line="654"/>
         <source>Cancel</source>
         <translation>Отменa</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="516"/>
+        <location filename="../poc/main_window.cpp" line="480"/>
         <source>Operation cancelled by user...</source>
         <translation>Операция отменена пользователем...</translation>
     </message>
@@ -538,6 +550,14 @@ Timestamped files might not fit on disk.</source>
         <location filename="../poc/settings_window.cpp" line="87"/>
         <source>Can&apos;t add &apos;%1&apos;. Directory does not exist.</source>
         <translation>Невозможно добавить &amp;apos;%1&amp;apos;. Каталог не существует.</translation>
+    </message>
+</context>
+<context>
+    <name>ria_tera::TimeStamper</name>
+    <message>
+        <location filename="../poc/timestamper.cpp" line="283"/>
+        <source>Couldn&apos;t use ID-card for authentication. </source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

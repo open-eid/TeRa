@@ -409,6 +409,7 @@ bool TeraMainWin::processingFileDone(QString const& pathIn, QString const& pathO
     processor.result->progressConverted = nr+1;
     if (success) processor.result->progressSuccess++;
     else processor.result->progressFailed++;
+    processor.result->progressUnprocessed = totalCnt - processor.result->progressConverted;
 
     progressBar->setValue(PP_TS_TEST + PP_SEARCH + (int)(1.0*PP_TS*(nr+1) / totalCnt));
     progressBar->setFormat("");
@@ -487,7 +488,16 @@ void TeraMainWin::timestampingFinished(BatchStamper::FinishingDetails details) {
     fillDoneLog();
 
     if (processor.logfile) {
-        if (0 == processor.inFiles.size()) processor.logfile->getStream() << "No *.ddoc files found" << endl;
+        if (details.success) {
+            if (0 == processor.inFiles.size()) processor.logfile->getStream() << "No *.ddoc files found" << endl;
+        } else {
+            if (details.userCancelled) {
+                processor.logfile->getStream() << "Operation cancelled by user" << endl;
+            } else {
+                processor.logfile->getStream() << "Operation cancelled with error: " << details.errString << endl;
+            }
+        }
+
         processor.logfile->close();
     }
 
@@ -551,18 +561,25 @@ void TeraMainWin::fillDoneLog() {
     logText->setCurrentCharFormat(format);
 
     if (!processor.result->success) {
-        if (processor.result->isSystemError) logText->append(tr("Error:"));
-        logText->append(processor.result->error);
-        return;
+        QString prefix = "";
+        if (processor.result->isSystemError) prefix = tr("Error:");
+        logText->append("<font color='red'>" + prefix + " " + processor.result->error + "</font>");
+        logText->append("");
+    } else {
+        logText->append(tr("Finished timestamping DDOC files"));
     }
 
-    logText->append(tr("Finished timestamping DDOC files"));
-    logText->append(tr("DDOC files found: %1").arg(QString::number(processor.result->cntFound)));
-    if (processor.result->cntFound != processor.result->cnt)
-        logText->append(tr("   of which %1 where chosen for timestamping").arg(QString::number(processor.result->cnt)));
-    logText->append(tr("DDOC files timestamped: %1").arg(QString::number(processor.result->progressSuccess)));
-    if (processor.result->progressFailed > 0) {
-        logText->append(tr("Failed timestampings: %1").arg(QString::number(processor.result->progressFailed)));
+    if (processor.result->cntFound >= 0) {
+        logText->append(tr("DDOC files found: %1").arg(QString::number(processor.result->cntFound)));
+        if (processor.result->cntFound != processor.result->cnt && processor.result->cnt >= 0)
+            logText->append(tr("   of which %1 where chosen for timestamping").arg(QString::number(processor.result->cnt)));
+        logText->append(tr("DDOC files timestamped: %1").arg(QString::number(processor.result->progressSuccess)));
+        if (processor.result->progressFailed > 0) {
+            logText->append(tr("Failed timestampings: %1").arg(QString::number(processor.result->progressFailed)));
+        }
+        if (processor.result->progressUnprocessed > 0) {
+            logText->append(tr("Files left unprocessed: %1").arg(QString::number(processor.result->progressUnprocessed)));
+        }
     }
 
     if (processor.logfile) {

@@ -276,7 +276,14 @@ void TimeStamper::tsReplyFinished(QNetworkReply *reply) {
             sendTSRequest(lastRequest, false, retriesLeft - 1);
             return;
         } else {
-            notifyClientOnTimestampingFinished(testRequest, false, error);
+            TS_FINISH_DETAILS details = TS_FINISH_DETAILS::OTHER;
+            if (QNetworkReply::SslHandshakeFailedError == reply->error()) {
+                details = TS_FINISH_DETAILS::SSL_HANDSHAKE_ERROR;
+                if (nullptr != sslConf) {
+                    error = tr("Couldn't use ID-card for authentication. ") + error;
+                }
+            }
+            notifyClientOnTimestampingFinished(testRequest, false, error, details);
             return;
         }
     }
@@ -329,12 +336,12 @@ void TimeStamper::createAsicsContainerFinished(qint64 doneJobId, bool asicsSucce
     notifyClientOnTimestampingFinished(false, asicsSuccess, error);
 }
 
-void TimeStamper::notifyClientOnTimestampingFinished(bool test, bool success, QString errString, QByteArray resp) {
+void TimeStamper::notifyClientOnTimestampingFinished(bool test, bool success, QString errString, TS_FINISH_DETAILS details, QByteArray resp) {
     // TODO bad design
     if (test) {
         emit timestampingTestFinished(success, resp, errString);
     } else {
-        emit timestampingFinished(success, errString);
+        emit timestampingFinished(success, errString, details);
     }
 }
 
@@ -410,8 +417,8 @@ BatchStamper::BatchStamper(StampingMonitorCallback& mon, OutputNameGenerator& ng
 {
     QObject::connect(this, SIGNAL(triggerNext()),
                      this, SLOT(processNext()));
-    QObject::connect(&ts, SIGNAL(timestampingFinished(bool,QString)),
-                     this, SLOT(timestampFinished(bool,QString)));
+    QObject::connect(&ts, SIGNAL(timestampingFinished(bool,QString,int)),
+                     this, SLOT(timestampFinished(bool,QString,int)));
 }
 
 void BatchStamper::startTimestamping(QString const& tsUrl, QStringList const& inputFiles) {
@@ -441,12 +448,13 @@ void BatchStamper::processNext() {
     ts.startTimestamping(timeServerUrl, curIn, curOut);
 }
 
-void BatchStamper::timestampFinished(bool success, QString errString) {
+void BatchStamper::timestampFinished(bool success, QString errString, int i_details) {
+    TimeStamper::TS_FINISH_DETAILS details = static_cast<TimeStamper::TS_FINISH_DETAILS>(i_details);
     if (!monitor.processingFileDone(curIn, curOut, pos, input.size(), success, errString)) {
         emit timestampingFinished(FinishingDetails::cancelled());
         return;
     }
-    if (!success && instaFail) {
+    if (!success && (instaFail || TimeStamper::TS_FINISH_DETAILS::SSL_HANDSHAKE_ERROR == details)) {
         emit timestampingFinished(FinishingDetails(success, errString));
     } else {
         emit triggerNext();
