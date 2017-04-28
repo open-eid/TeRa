@@ -110,7 +110,7 @@ Additional licenses and components</source>
     <message>
         <location filename="../poc/MainWindow.ui" line="1969"/>
         <source>TextLabel TeRa Intro</source>
-        <translation>Добро пожаловать в приложение &quot;Цифровой штамп&quot;.
+        <translation type="unfinished">Добро пожаловать в приложение &quot;Цифровой штамп&quot;.
 
 Приложение &quot;Цифровой штамп&quot; создано по заказу Riigi Infosüsteemi Ameti tellimusel, для владельцев eID карт (ID-карта, Digi-ID, карта e-Residend и т.д.).
 
@@ -118,7 +118,9 @@ Additional licenses and components</source>
 Для использования Метки временив промышленном масштабе, или в коммерческих целях, обратитесь к поставщику услуги по выдаче Метки времени.
 
 Для загрузки приложения &quot;Цифровой штамп&quot; необходимо иметь eID документ с действительными сертификатами, а также подключение к Интернету. 
-Для того, чтобы идентифицировать себя, приложение просит ввести код PIN1.</translation>
+Для того, чтобы идентифицировать себя, приложение просит ввести код PIN1.
+
+Условия услуги выдачи Метки Времени доступны здесь: https://eid.eesti.ee/index.php/TeRa-ATO</translation>
     </message>
     <message>
         <location filename="../poc/MainWindow.ui" line="1982"/>
@@ -497,7 +499,7 @@ Timestamped files might not fit on disk.</source>
     <message>
         <location filename="../poc/main_window.cpp" line="625"/>
         <source>HTTP_HELP</source>
-        <translation type="unfinished">http://www.id.ee/?id=37909</translation>
+        <translation>http://www.id.ee/?id=37909</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="627"/>

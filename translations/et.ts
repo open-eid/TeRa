@@ -111,13 +111,15 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <location filename="../poc/MainWindow.ui" line="1969"/>
         <source>TextLabel TeRa Intro</source>
-        <translation>Tere tulemast kasutama tembeldamisrakenduse tarkvara.
+        <translation type="unfinished">Tere tulemast kasutama tembeldamisrakenduse tarkvara.
 
 Tembeldamisrakendus on loodud Riigi Infosüsteemi Ameti tellimusel, eID (ID-kaart, Digi-ID, e-Residendi digi-ID vms) omanikele kasutamiseks.
 
 Tarkvara osutab kasutajale ajatempliteenust, vastavalt „ajatempliteenuse kasutustingimustele“. Ajatempliteenuse kasutamiseks tööstuslikus ulatuses või kommertseesmärkidel pöörduge ajatempliteenuse osutaja poole.
  
-Tembeldamisrakenduse käivitamiseks vajad kehtivate sertifikaatidega eID dokumenti ja toimivat internetiühendust. Enda tuvastamiseks palub rakendus sisestada PIN1 koodi.</translation>
+Tembeldamisrakenduse käivitamiseks vajad kehtivate sertifikaatidega eID dokumenti ja toimivat internetiühendust. Enda tuvastamiseks palub rakendus sisestada PIN1 koodi.
+
+Ajatempliteenuse osutamise tingimused on kättesaadavad lehel https://eid.eesti.ee/index.php/TeRa-ATO</translation>
     </message>
     <message>
         <location filename="../poc/MainWindow.ui" line="1982"/>
@@ -519,7 +521,7 @@ Viga: %1</translation>
     <message>
         <location filename="../poc/main_window.cpp" line="625"/>
         <source>HTTP_HELP</source>
-        <translation type="unfinished">http://www.id.ee/?id=37907</translation>
+        <translation>http://www.id.ee/?id=37907</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="627"/>
