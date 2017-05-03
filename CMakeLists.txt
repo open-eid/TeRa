@@ -30,7 +30,11 @@ SET(CMAKE_AUTORCC ON)
 
 SET( CMAKE_OSX_DEPLOYMENT_TARGET "10.10.5")
 include( TeRaVersionInfo )
-set_app_name( PROGNAME qesteidutil-tera )
+if( APPLE )
+    set_app_name( PROGNAME qestidtera )
+else()
+    set_app_name( PROGNAME qesteidutil-tera )
+endif()
 
 # Find Qt libraries
 find_package(Qt5Core REQUIRED)
