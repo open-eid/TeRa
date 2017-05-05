@@ -496,7 +496,7 @@ Timestamped files might not fit on disk.</source>
     <message>
         <location filename="../poc/main_window.cpp" line="581"/>
         <source>Files left unprocessed: %1</source>
-        <translation type="unfinished">Файлы, оставшиеся необработанными:%1</translation>
+        <translation>Файлы, оставшиеся необработанными:%1</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="586"/>
@@ -557,7 +557,7 @@ Timestamped files might not fit on disk.</source>
     <message>
         <location filename="../poc/timestamper.cpp" line="283"/>
         <source>Couldn&apos;t use ID-card for authentication. </source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка Безопасное соединение. Пожалуйста, попробуйте еще раз.</translation>
     </message>
 </context>
 </TS>

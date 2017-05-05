@@ -580,7 +580,7 @@ Error: %1</translation>
     <message>
         <location filename="../poc/timestamper.cpp" line="283"/>
         <source>Couldn&apos;t use ID-card for authentication. </source>
-        <translation type="unfinished"></translation>
+        <translation>Secure channel disconnected. Please try again.</translation>
     </message>
 </context>
 </TS>
