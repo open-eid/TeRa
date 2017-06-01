@@ -28,6 +28,7 @@ public:
     QStringListModel* modelInclDir;
 
     void selectPage(TeraSettingsWin::PAGE openPage);
+    void openInclDirSearch();
 private slots:
     void handleTryAccept();
 

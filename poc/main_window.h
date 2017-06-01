@@ -101,7 +101,7 @@ public slots:
     void introReject();
 
     void handleSettings();
-    void handleSettingsFromPage(TeraSettingsWin::PAGE openPage);
+    void handleSettingsFromPage(TeraSettingsWin::PAGE openPage, bool openDirSelector = false);
     void handleSettingsAccepted();
 
     void handleFilesAccepted();
@@ -118,6 +118,8 @@ protected:
     virtual void closeEvent(QCloseEvent *event);
     virtual void changeEvent(QEvent *event);
 
+    /// Check if settings are complete + do required GUI interactions
+    bool checkSettingsWithGUI();
     void fillProgressBar();
     void fillDoneLog();
 private:

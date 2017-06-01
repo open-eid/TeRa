@@ -193,11 +193,34 @@ void TeraMainWin::handleStartStamping() {
 
     stamper.getTimestamper().setTimeserverUrl(url, (useIDCardAuthentication ? &idCardAuth : nullptr));
 
+    if (!checkSettingsWithGUI()) {
+        return;
+    }
+
     if (useIDCardAuthentication) {
         doPin1Authentication();
     } else {
         doTestStamp();
     }
+}
+
+bool TeraMainWin::checkSettingsWithGUI() {
+    processor.timeServerUrl = processor.timeServerUrl.trimmed(); // TODO
+    if (processor.timeServerUrl.isEmpty()) {
+        QMessageBox::critical(this, tr("Error"), tr("Time server URL is empty.")); // Error only onve
+        return false;
+    }
+
+    if (!processor.checkInDirListWithMessagebox(this)) {
+        bool openDirSelector = false; // TODO
+#ifdef Q_OS_MAC
+        openDirSelector = true;
+#endif
+        handleSettingsFromPage(TeraSettingsWin::PAGE::INPUT_DIR, openDirSelector);
+        return false;
+    }
+
+    return true;
 }
 
 void TeraMainWin::doPin1Authentication() {
@@ -214,16 +237,7 @@ void TeraMainWin::pin1AuthenticaionDone() {
 }
 
 void TeraMainWin::doTestStamp() {
-    processor.timeServerUrl = processor.timeServerUrl.trimmed(); // TODO
-    if (processor.timeServerUrl.isEmpty()) {
-        QMessageBox::critical(this, tr("Error"), tr("Time server URL is empty.")); // Error only onve
-        return;
-    }
-
-    if (!processor.checkInDirListWithMessagebox(this)) {
-        handleSettingsFromPage(TeraSettingsWin::PAGE::INPUT_DIR);
-        return;
-    }
+    if (!checkSettingsWithGUI()) return;
 
     //
     cancel = false;
@@ -718,10 +732,13 @@ void TeraMainWin::handleSettings() {
     handleSettingsFromPage(TeraSettingsWin::PAGE::__NONE);
 }
 
-void TeraMainWin::handleSettingsFromPage(TeraSettingsWin::PAGE openPage) {
+void TeraMainWin::handleSettingsFromPage(TeraSettingsWin::PAGE openPage, bool openDirSelector) {
     processor.initializeSettingsWindow(*settingsWin);
     settingsWin->selectPage(openPage);
     settingsWin->open();
+    if (openPage == TeraSettingsWin::PAGE::INPUT_DIR && openDirSelector) {
+        settingsWin->openInclDirSearch();
+    }
 }
 
 void TeraMainWin::handleSettingsAccepted() {

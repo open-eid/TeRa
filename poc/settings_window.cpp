@@ -7,6 +7,7 @@
 #include "settings_window.h"
 
 #include <iostream>
+#include <QDebug>
 #include <QFileDialog>
 #include <QMessageBox>
 
@@ -47,6 +48,9 @@ void TeraSettingsWin::selectPage(TeraSettingsWin::PAGE openPage) {
     if (PAGE::INPUT_DIR == openPage) gotoInputDirTab();
 }
 
+void TeraSettingsWin::openInclDirSearch() {
+    emit handleInclDirSearch();
+}
 
 void TeraSettingsWin::gotoInputDirTab() {
     tabWidget->setCurrentIndex(0);

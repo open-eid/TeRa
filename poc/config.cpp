@@ -147,6 +147,8 @@ QSet<QString> Config::getDefaultInclDirs() const {
             res.insert(vol.rootPath());
         }
     }
+#elif defined(Q_OS_MAC)
+    // User has to select home dir explicitly
 #else
     res.insert(ria_tera::fix_path("~"));
 #endif

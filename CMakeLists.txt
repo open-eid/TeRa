@@ -31,7 +31,7 @@ SET(CMAKE_AUTORCC ON)
 SET( CMAKE_OSX_DEPLOYMENT_TARGET "10.10.5")
 include( TeRaVersionInfo )
 if( APPLE )
-    set_app_name( PROGNAME qestidtera )
+    set_app_name( PROGNAME qdigidoc-tera )
 else()
     set_app_name( PROGNAME qesteidutil-tera )
 endif()
@@ -315,20 +315,20 @@ if( WIN32 )
         )
     endif()
 elseif( APPLE )
-    add_custom_target( macdeployqt DEPENDS ${TERA_GUI_NAME}
+    add_custom_target( macdeployqt #DEPENDS ${TERA_GUI_NAME}
         COMMAND $ENV{TERA_QT_DIR}/bin/macdeployqt ${CMAKE_CURRENT_BINARY_DIR}/${TERA_GUI_NAME}.app
     )
-    add_custom_target( codesign DEPENDS ${TERA_GUI_NAME}
+    add_custom_target( codesign #DEPENDS ${TERA_GUI_NAME}
         COMMAND codesign -f -s \"$$SIGNCERT\"
             $<TARGET_FILE_DIR:${TERA_GUI_NAME}>/../Frameworks/*
             $<TARGET_FILE_DIR:${TERA_GUI_NAME}>/../PlugIns/*/*
         COMMAND codesign -f -v -s \"$$SIGNCERT\" $<TARGET_FILE_DIR:${TERA_GUI_NAME}>/../..
             --entitlements ${CMAKE_SOURCE_DIR}/${TERA_GUI_NAME}.entitlements
     )
-    add_custom_target( zip DEPENDS ${TERA_GUI_NAME}
+    add_custom_target( zip #DEPENDS ${TERA_GUI_NAME}
         COMMAND zip --symlinks -r -D ${CMAKE_BINARY_DIR}/${TERA_GUI_NAME}_${VERSION}$ENV{VER_SUFFIX}.zip ${TERA_GUI_NAME}.app
     )
-    add_custom_target( productbuild DEPENDS ${TERA_GUI_NAME}
+    add_custom_target( productbuild #DEPENDS ${TERA_GUI_NAME}
         COMMAND productbuild --component ${CMAKE_CURRENT_BINARY_DIR}/${TERA_GUI_NAME}.app /Applications
             --sign \"$$INSTCERT\" ${TERA_GUI_NAME}-store_${VERSION}$ENV{VER_SUFFIX}.pkg
     )
