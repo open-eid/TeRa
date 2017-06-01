@@ -1,4 +1,4 @@
-Source: qestidutil-tera
+Source: qdigidoc-tera
 Section: utils
 Priority: extra
 Maintainer: RIA <info@ria.ee>
@@ -12,10 +12,10 @@ Build-Depends:
  qttools5-dev-tools,
  zlib1g,
  zlib1g-dev
-Standards-Version: 0.7.0
+Standards-Version: 1.0.0
 Homepage: https://github.com/open-eid/tera
 
-Package: qestidutil-tera
+Package: qdigidoc-tera
 Architecture: any
 Depends:
  fonts-liberation,
