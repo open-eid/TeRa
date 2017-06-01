@@ -40,11 +40,11 @@
 
 Command line tool:
 
-    /usr/local/bin/qesteidutil-tera
+    /usr/local/bin/qdigidoc-tera
 
 GUI:
 
-    /usr/local/bin/qesteidutil-tera-gui
+    /usr/local/bin/qdigidoc-tera-gui
 
 
 

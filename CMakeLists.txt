@@ -33,7 +33,7 @@ include( TeRaVersionInfo )
 if( APPLE )
     set_app_name( PROGNAME qdigidoc-tera )
 else()
-    set_app_name( PROGNAME qesteidutil-tera )
+    set_app_name( PROGNAME qdigidoc-tera )
 endif()
 
 # Find Qt libraries
