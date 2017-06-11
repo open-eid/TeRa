@@ -222,6 +222,14 @@ SET (TERA_GUI_SRC
         poc/config.h poc/config.cpp
      )
 
+IF ( APPLE )
+    SET (TERA_GUI_MAC_SRC
+            poc/utils_mac.h
+            poc/utils_mac.mm)
+ELSE()
+    SET (TERA_GUI_MAC_SRC)
+ENDIF()
+
 SET (TRANS translations/et.ts translations/en.ts translations/ru.ts)
 
 if (UPDATE_TRANSLATIONS)
@@ -276,6 +284,7 @@ add_executable(${TERA_GUI_NAME} WIN32 MACOSX_BUNDLE
         ${UI_HEADERS}
         ${TERA_GUI_UI}
         ${TERA_GUI_SRC}
+        ${TERA_GUI_MAC_SRC}
         ${SOURCES}
         ${TERA_LIBDIGIDOC_SRC}
         ${CONFIG_SOURCES}

@@ -8,10 +8,30 @@
 
 #include <iostream>
 
+#ifdef Q_OS_OSX
+    #include <unistd.h>
+    #include <sys/types.h>
+    #include <pwd.h>
+    #include <assert.h>
+
+    #include "utils_mac.h"
+#endif
+
 #include <QCoreApplication>
+#include <QDebug>
 #include <QDir>
 
 #include "logging.h"
+
+namespace {
+
+QString RealMacOSHomeDirectory() {
+    struct passwd *pw = getpwuid(getuid());
+    if (!pw) return nullptr;
+    return pw->pw_dir;
+}
+
+};
 
 namespace ria_tera {
 
@@ -45,8 +65,13 @@ bool isSubfolder(QString const& path, QSet<QString> const& refDirs) {
 }
 
 QString fix_path(QString const& path) {
-    if ("~" == path) return QDir::homePath();
-    if (path.startsWith("~/")) return QDir::homePath() + path.mid(1);
+#ifdef Q_OS_OSX
+    QString const home = RealMacOSHomeDirectory();
+#else
+    QString const home = QDir::homePath();
+#endif
+    if ("~" == path) return home;
+    if (path.startsWith("~/")) return home + path.mid(1);
     return path;
 }
 

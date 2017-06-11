@@ -33,6 +33,10 @@
 #include "src/libdigidoc/Configuration.h"
 #include "src/client/about/AboutDialog.h"
 
+#ifdef Q_OS_OSX
+    #include "utils_mac.h"
+#endif
+
 namespace {
     static int PP_TS_TEST = 100;
     static int PP_SEARCH = 500;
@@ -196,6 +200,18 @@ void TeraMainWin::handleStartStamping() {
     if (!checkSettingsWithGUI()) {
         return;
     }
+
+#ifdef Q_OS_OSX
+    MacUtils mu;
+    QList<QString> inclDirs = processor.getInclDirList();
+    for (int i = 0; i < inclDirs.size(); ++i) {
+        QString dirPath = inclDirs[i];
+        if (!mu.askPermissions(dirPath.toUtf8().constData())) {
+            QMessageBox::critical(this, tr("Error"), tr("Couldn't get permissions for input directory: '%1'.").arg(dirPath) );
+            return;
+        };
+    }
+#endif
 
     if (useIDCardAuthentication) {
         doPin1Authentication();
