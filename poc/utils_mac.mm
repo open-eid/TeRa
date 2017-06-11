@@ -24,6 +24,7 @@ MacUtils::~MacUtils()
 }
 
 bool MacUtils::askPermissions(char const* path) {
+    // https://stackoverflow.com/questions/12153504/accessing-the-desktop-in-a-sandboxed-app
     std::string url;
     url.append("file://");
     url.append(path);
