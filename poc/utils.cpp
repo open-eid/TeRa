@@ -23,6 +23,7 @@
 
 #include "logging.h"
 
+#ifdef Q_OS_OSX
 namespace {
 
 QString RealMacOSHomeDirectory() {
@@ -32,6 +33,7 @@ QString RealMacOSHomeDirectory() {
 }
 
 };
+#endif
 
 namespace ria_tera {
 
