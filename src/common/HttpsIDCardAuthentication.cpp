@@ -31,7 +31,7 @@ bool HttpsIDCardAuthentication::useIDAuth(QString& url) {
     static const QString ID_CARD_AUTH_PREFIX("#IDCard-AUTH#");
 
     bool useIDCardAuthentication = false;
-    if (url == "https://puhver.ria.ee/tsa") {
+    if ((url == "https://puhver.ria.ee/tsa") || (url == "https://puhvertest.ria.ee/tsa")) {
         useIDCardAuthentication = true;
     }
     else if (url.startsWith(ID_CARD_AUTH_PREFIX)) {
