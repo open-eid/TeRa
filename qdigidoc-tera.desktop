@@ -1,0 +1,14 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=TeRa client
+Name[et]=TeRa tembeldamisrakendus
+Name[ru]=Приложение 'Цифровой штамп'
+
+Keywords=ID-card;Utility;
+Keywords[et_EE]=ID-kaart;Haldusvahend;
+
+Exec=qdigidoc-tera-gui %F
+Icon=qdigidoc-tera
+Terminal=false
+Categories=Qt;Utility;

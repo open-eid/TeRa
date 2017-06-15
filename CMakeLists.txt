@@ -345,7 +345,20 @@ elseif( APPLE )
     )
 else()
     include( GNUInstallDirs )
-    # configure_file( qesteidutil.1.cmake qesteidutil.1 )
+    configure_file( qdigidoc-tera.1.cmake qdigidoc-tera.1 )
+    configure_file( qdigidoc-tera-gui.1.cmake qdigidoc-tera-gui.1 )
     install( TARGETS ${TERA_CMD_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR} )
     install( TARGETS ${TERA_GUI_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR} )
+    install( FILES ${CMAKE_CURRENT_BINARY_DIR}/qdigidoc-tera.1 DESTINATION ${CMAKE_INSTALL_MANDIR}/man1 )
+    install( FILES ${CMAKE_CURRENT_BINARY_DIR}/qdigidoc-tera-gui.1 DESTINATION ${CMAKE_INSTALL_MANDIR}/man1 )
+    install( FILES qdigidoc-tera.appdata.xml DESTINATION ${CMAKE_INSTALL_DATADIR}/appdata RENAME ee.tera.qdigidoc-tera.desktop )
+    install( FILES qdigidoc-tera.desktop DESTINATION ${CMAKE_INSTALL_DATADIR}/applications RENAME ee.tera.qdigidoc-tera.desktop )
+    foreach( RES 16x16 32x32 48x48 128x128 )
+        install(
+            FILES images/tera_icon_${RES}.png
+            DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/${RES}/apps/
+            RENAME qdigidoc-tera.png
+        )
+    endforeach(RES)
+
 endif()

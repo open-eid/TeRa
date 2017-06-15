@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>ee.id.digidoc-tera</id>
+  <launchable type="desktop-id">ee.id.qdigidoc-tera.desktop</launchable>
+  <metadata_license>CC0</metadata_license>
+  <project_license>LGPL-2.1</project_license>
+  <name>TeRa client</name>
+  <summary>Estonian DDOC re-timestamping utility</summary>
+  <description>
+    <p>
+      The timestamping application is created for eID (ID-card, Digi-ID,
+      e-residency ID, etc) holders by The Information System Authority.
+      The software provides a timestamping service in accordance with
+      &quot;conditions of use for the timestamping service&quot;. To use the
+      timestamping service in industrial scale or for commercial purposes
+      please contact a timestamping service provider directly.
+    </p>
+    <p>
+      To start the timestamping application an eID document with valid
+      certificates and an internet connection is required. The application
+      will ask You to authenticate yourself using PIN1.
+    </p>
+  </description>
+  <kudos>
+    <kudo>HiDpiIcon</kudo>
+    <kudo>ModernToolkit</kudo>
+  </kudos>
+  <url type="homepage">http://www.id.ee/</url>
+  <developer_name>Open Electronic Identity developers</developer_name>
+  <updatecontact>abi_at_id.ee</updatecontact>
+</component>
