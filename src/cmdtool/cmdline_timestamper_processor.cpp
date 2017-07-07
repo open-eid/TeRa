@@ -242,22 +242,23 @@ void TeRaMonitor::stepAuthenticatePIN1() {
 }
 
 void TeRaMonitor::stepFindAndStamp() {
-    namegen.reset(new ria_tera::OutputNameGenerator(ria_tera::Config::EXTENSION_IN, io_params.out_extension));
+    namegen.reset(new ria_tera::OutputNameGenerator(ria_tera::Config::IN_EXTENSIONS, io_params.out_extension));
 
     QStringList inFiles;
     if (io_params.in_file.isEmpty()) {
-        ria_tera::DiskCrawler dc(*this, ria_tera::Config::EXTENSION_IN);
+        ria_tera::DiskCrawler dc(*this, ria_tera::Config::IN_EXTENSIONS);
         dc.addExcludeDirs(io_params.excl_dirs);
         dc.addInputDir(io_params.in_dir, io_params.in_dir_recursive);
         inFiles = dc.crawl();
     }
     else {
+        //any file is valid for timestamping process here by force
         inFiles.append(io_params.in_file);
         namegen->setFixedOutFile(io_params.in_file, io_params.file_out);
     }
 
     if (0 == inFiles.size()) {
-        TERA_COUT("No *." << QSTR_TO_CCHAR(ria_tera::Config::EXTENSION_IN) << " files found.");
+        TERA_COUT("No *.(" << QSTR_TO_CCHAR(ria_tera::Config::IN_EXTENSIONS.join(", ")) << ") files found.");
     }
     stamper.reset(new ria_tera::BatchStamper(*this, *namegen, false));
 

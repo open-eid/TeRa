@@ -70,7 +70,7 @@ TeraMainWin::TeraMainWin(QWidget *parent) :
     QWidget(parent),
     initDone(false),
     showingIntro(false),
-    nameGen("ddoc", "asics"), // TODO consts
+    nameGen(ria_tera::Config::IN_EXTENSIONS, ria_tera::Config::DEFAULT_OUT_EXTENSION),
     stamper(*this, nameGen, false),
     settingsWin(NULL),
     appTranslator(this),
@@ -152,7 +152,7 @@ TeraMainWin::~TeraMainWin()
 }
 
 CrawlDiskJob::CrawlDiskJob(TeraMainWin& mainWindow, int jobid, GuiTimestamperProcessor const & processor) :
-gui(mainWindow), jobId(jobid), dc(*this, Config::EXTENSION_IN)
+gui(mainWindow), jobId(jobid), dc(*this, Config::IN_EXTENSIONS)
 {
     dc.addExcludeDirs(processor.exclDirs.toList());
 

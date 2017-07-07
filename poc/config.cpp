@@ -37,10 +37,11 @@ QString const Config::INI_PARAM_EXCL_DIRS = Config::INI_GROUP_ + "excl_dir";
 QString const Config::INI_PARAM_EXCL_DIRS_EXCEPTIONS = Config::INI_GROUP_ + "central_excl_dirs_removed_by_user.no_need_to_changed_manully";
 QString const Config::INI_PARAM_TRUSTED_CERT = Config::INI_GROUP_ + "time_server.trusted_cert";
 
-QString const Config::EXTENSION_IN = "ddoc";
+QString const Config::EXTENSION_DDOC = "ddoc";
 QString const Config::EXTENSION_BDOC = "bdoc";
 QString const Config::EXTENSION_ASICS = "asics";
 QString const Config::DEFAULT_OUT_EXTENSION = Config::EXTENSION_ASICS; // TODO move away from here? or private?
+QStringList const Config::IN_EXTENSIONS = {EXTENSION_BDOC, EXTENSION_DDOC};
 
 Config::Config()
 {

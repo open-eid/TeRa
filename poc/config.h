@@ -27,10 +27,11 @@ public:
     static QString const INI_PARAM_EXCL_DIRS_EXCEPTIONS;
     static QString const INI_PARAM_TRUSTED_CERT;
 
-    static QString const EXTENSION_IN;
     static QString const EXTENSION_BDOC;
+    static QString const EXTENSION_DDOC;
     static QString const EXTENSION_ASICS;
     static QString const DEFAULT_OUT_EXTENSION;
+    static QStringList const IN_EXTENSIONS;
 
     Config();
     virtual ~Config();

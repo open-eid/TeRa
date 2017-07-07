@@ -89,7 +89,7 @@ int main(int argc, char *argv[]) {
                     "file to be time-stamped", file_in_param));
     parser.addOption(
             QCommandLineOption(dir_in_param,
-                    "input directory (*." + ria_tera::Config::EXTENSION_IN + " recursiveness can be determined with option '" + in_dir_recursive_param + "')", dir_in_param));
+                    "input directory (*.(" + ria_tera::Config::IN_EXTENSIONS.join(", ") + ") recursiveness can be determined with option '" + in_dir_recursive_param + "')", dir_in_param));
     parser.addOption(
             QCommandLineOption(in_dir_recursive_param,
                     "if set then input directories are searched recursively"));
@@ -248,7 +248,7 @@ int main(int argc, char *argv[]) {
         if (parser.isSet(file_out_param)) {
             file_out = parser.value(file_out_param);
         } else {
-            ria_tera::OutputNameGenerator namegen(ria_tera::Config::EXTENSION_IN, out_extension);
+            ria_tera::OutputNameGenerator namegen(ria_tera::Config::IN_EXTENSIONS, out_extension);
             file_out = namegen.getOutFile(in_file);
         }
     }
