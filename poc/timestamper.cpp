@@ -411,7 +411,8 @@ void OutputNameGenerator::setFixedOutFile(QString const& in_file, QString const&
 }
 
 void OutputNameGenerator::setInExts(QStringList const& inExts) {
-    foreach (QString ext, inExts) {
+    inExtensions.clear();
+    for (QString const& ext : inExts) {
         if (!ext.startsWith(".")) {
             inExtensions << ("." + ext);
         }

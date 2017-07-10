@@ -62,7 +62,7 @@ QStringList DiskCrawler::crawl() {
     }
 
     QStringList nameFilter;
-    foreach (QString ext, extensions) {
+    for (QString const& ext : qAsConst(extensions)) {
         nameFilter << ("*." + ext);
     }
 
