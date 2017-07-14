@@ -384,7 +384,9 @@ void TeraMainWin::startStampingFiles() {
             QString partition = it.key();
             qint64 filesTotalSize = it.value();
             qint64 partitionAvailableSize = QStorageInfo(partition).bytesAvailable();
-            if (filesTotalSize > partitionAvailableSize) {
+            if (-1 == partitionAvailableSize) {
+                // Ignoring UNC path issue or any
+            } else if (filesTotalSize > partitionAvailableSize) {
                 spaceIssue = true;
                 sizeInfo = QString(tr("* %1: free space %2, space needed %3 (approximately)")).
                     arg(hrPath(partition), hrSize(partitionAvailableSize), hrSize(filesTotalSize)) + "\n";
@@ -402,8 +404,9 @@ void TeraMainWin::startStampingFiles() {
             QMessageBox::StandardButtons button = QMessageBox::warning(this, this->windowTitle(), message, QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
             if (QMessageBox::Yes == button) {
                 doUserCancel(errorMsg);
+                return;
             }
-            return;
+            // Continue timestamping with a space issue
         }
     }
 
