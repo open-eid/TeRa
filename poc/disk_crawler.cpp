@@ -15,6 +15,9 @@
 #include <QSet>
 #include <QStack>
 
+#include "config.h"
+#include "../src/common/Bdoc10Handler.h"
+
 namespace {
 
 bool inExclDirs(QString const& filePath, QStringList const& excldir) {
@@ -28,8 +31,8 @@ bool inExclDirs(QString const& filePath, QStringList const& excldir) {
 
 namespace ria_tera {
 
-DiskCrawler::DiskCrawler(DiscCrawlMonitorCallback& mon, QString const& ext) :
-    monitor(mon), extension(ext) {
+DiskCrawler::DiskCrawler(DiscCrawlMonitorCallback& mon, QStringList const& ext) :
+    monitor(mon), extensions(ext) {
 }
 
 void DiskCrawler::addExcludeDirs(QStringList const& excl) {
@@ -42,8 +45,9 @@ bool DiskCrawler::addInputDir(QString const& dir, bool rec) {
 }
 
 QStringList DiskCrawler::crawl() {
-    QStringList res;
+    const QString EXTENSION_BDOC_WITH_DOT("." + ria_tera::Config::EXTENSION_BDOC);
 
+    QStringList res;
     QStringList excldir;
     const QString separator("/");
     for (int i = 0; i < excl_dirs.size(); ++i) {
@@ -58,7 +62,9 @@ QStringList DiskCrawler::crawl() {
     }
 
     QStringList nameFilter;
-    nameFilter << ("*." + extension);
+    for (QString const& ext : qAsConst(extensions)) {
+        nameFilter << ("*." + ext);
+    }
 
     for (int i = 0; i < in_dirs.length(); ++i) {
         DirIterator::InDir in_dir = in_dirs.at(i);
@@ -80,6 +86,12 @@ QStringList DiskCrawler::crawl() {
                 continue;
             }
 
+            //in case of BDOC only BDOC1.0 need be processed
+            if (filePath.endsWith(EXTENSION_BDOC_WITH_DOT)) {
+                if (!Bdoc10Handler::isBdoc10Container(filePath)) {
+                    continue;
+                }
+            }
             monitor.foundFile(filePath);  // TODO cancel returns false
             res << filePath;
         }

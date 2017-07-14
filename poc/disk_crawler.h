@@ -16,13 +16,13 @@ namespace ria_tera {
 class DiskCrawler
 {
 public:
-    DiskCrawler(DiscCrawlMonitorCallback& mon, QString const& ext); //, QString const& dir, QStringList const& exclDirs);
+    DiskCrawler(DiscCrawlMonitorCallback& mon, QStringList const& ext);
     void addExcludeDirs(QStringList const& excl);
     bool addInputDir(QString const& dir, bool recursive);
     QStringList crawl();
 private:
     /// file extension to search
-    QString extension;
+    QStringList extensions;
     DiscCrawlMonitorCallback& monitor;
     QList<DirIterator::InDir> in_dirs;
     QStringList excl_dirs;

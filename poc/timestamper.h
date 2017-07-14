@@ -93,12 +93,13 @@ private:
 
 class OutputNameGenerator {
 public:
-    OutputNameGenerator(QString const& inExt, QString const& outExt);
+    OutputNameGenerator(QStringList const& inExts, QString const& outExt);
     QString getOutFile(QString const& filePath);
     void setFixedOutFile(QString const& in_file, QString const& file_out);
+    void setInExts(QStringList const& inExts);
     void setOutExt(QString const& oe);
 private:
-    QString inExtension;
+    QStringList inExtensions;
     QString outExtension;
     QMap<QString, QString> fixedConversion;
 };

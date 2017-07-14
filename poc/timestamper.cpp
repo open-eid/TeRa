@@ -369,9 +369,8 @@ void TimeStamper::startTimestamping(QString const& tsUrl, QString const& infile,
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-OutputNameGenerator::OutputNameGenerator(QString const& inExt, QString const& outExt)
-    : inExtension(inExt) {
-    if (!inExtension.startsWith(".")) inExtension = "." + inExtension;
+OutputNameGenerator::OutputNameGenerator(QStringList const& inExts, QString const& outExt) {
+    setInExts(inExts);
     setOutExt(outExt);
 }
 
@@ -382,8 +381,12 @@ QString OutputNameGenerator::getOutFile(QString const& filePath) {
 
     QFileInfo fileInfo(filePath);
     QString name = fileInfo.fileName();
-
-    if (name.endsWith(inExtension)) name = name.left(name.size() - inExtension.size());
+    for (int i = 0; i < inExtensions.size(); i++) {
+        if (name.endsWith(inExtensions[i])) {
+            name = name.left(name.size() - inExtensions[i].size());
+            break;
+        }
+    }
 
     QString res;
     int nr = 0;
@@ -405,6 +408,18 @@ QString OutputNameGenerator::getOutFile(QString const& filePath) {
 
 void OutputNameGenerator::setFixedOutFile(QString const& in_file, QString const& file_out) {
     fixedConversion[in_file] = file_out;
+}
+
+void OutputNameGenerator::setInExts(QStringList const& inExts) {
+    inExtensions.clear();
+    for (QString const& ext : inExts) {
+        if (!ext.startsWith(".")) {
+            inExtensions << ("." + ext);
+        }
+        else {
+            inExtensions << ext;
+        }
+    }
 }
 
 void OutputNameGenerator::setOutExt(QString const& oe) {

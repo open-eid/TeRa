@@ -192,6 +192,7 @@ SET (TERA_COMMON_LIB_GUI_SRC
 
 SET (TERA_COMMON_SRC
       src/version.h
+      src/common/Bdoc10Handler.h src/common/Bdoc10Handler.cpp
       src/common/HttpsIDCardAuthentication.h src/common/HttpsIDCardAuthentication.cpp
      )
 
