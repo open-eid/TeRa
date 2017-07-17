@@ -582,4 +582,47 @@ Viga: %1</translation>
         <translation>Turvaline ühendus katkes. Palun proovige uuesti.</translation>
     </message>
 </context>
+<context>
+    <name>PinDialog</name>
+    <message>
+        <source>Selected action requires sign certificate.</source>
+        <translation>Valitud tegevuse jaoks on vaja kasutada allkirjastamise sertifikaati.</translation>
+    </message>
+    <message>
+        <source>For using sign certificate enter PIN2</source>
+        <translation>Sertifikaadi kasutamiseks sisesta PIN2</translation>
+    </message>
+    <message>
+        <source>PIN will be locked next failed attempt</source>
+        <translation>Järgmise vale sisestusega lukustub PIN</translation>
+    </message>
+    <message>
+        <source>PIN has been entered incorrectly one time</source>
+        <translation>PIN-i on sisestatud vigaselt üks kord</translation>
+    </message>
+    <message>
+        <source>Signing</source>
+        <translation>Allkirjastamine</translation>
+    </message>
+    <message>
+        <source>For using sign certificate enter PIN2 at the reader</source>
+        <translation>Sertifikaadi kasutamiseks sisesta PIN2 kaardilugeja sõrmistikult</translation>
+    </message>
+    <message>
+        <source>Authentication</source>
+        <translation>Isikutuvastus</translation>
+    </message>
+    <message>
+        <source>For using authentication certificate enter PIN1 at the reader</source>
+        <translation>Sertifikaadi kasutamiseks sisesta PIN1 kaardilugeja sõrmistikult</translation>
+    </message>
+    <message>
+        <source>For using authentication certificate enter PIN1</source>
+        <translation>Sertifikaadi kasutamiseks sisesta PIN1</translation>
+    </message>
+    <message>
+        <source>Selected action requires authentication certificate.</source>
+        <translation>Valitud tegevuse jaoks on vaja kasutada isikutuvastuse sertifikaati.</translation>
+    </message>
+</context>
 </TS>

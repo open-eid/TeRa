@@ -583,4 +583,47 @@ Error: %1</translation>
         <translation>Secure channel disconnected. Please try again.</translation>
     </message>
 </context>
+<context>
+    <name>PinDialog</name>
+    <message>
+        <source>Selected action requires sign certificate.</source>
+        <translation>Selected action requires signing certificate.</translation>
+    </message>
+    <message>
+        <source>For using sign certificate enter PIN2</source>
+        <translation>For using signing certificate enter PIN2</translation>
+    </message>
+    <message>
+        <source>PIN will be locked next failed attempt</source>
+        <translation>PIN will be locked next failed attempt</translation>
+    </message>
+    <message>
+        <source>PIN has been entered incorrectly one time</source>
+        <translation>PIN has been entered incorrectly one time</translation>
+    </message>
+    <message>
+        <source>Signing</source>
+        <translation>Signing</translation>
+    </message>
+    <message>
+        <source>For using sign certificate enter PIN2 at the reader</source>
+        <translation>For using signing certificate enter PIN2 at the reader</translation>
+    </message>
+    <message>
+        <source>Authentication</source>
+        <translation>Authentication</translation>
+    </message>
+    <message>
+        <source>For using authentication certificate enter PIN1 at the reader</source>
+        <translation>For using authentication certificate enter PIN1 at the reader</translation>
+    </message>
+    <message>
+        <source>For using authentication certificate enter PIN1</source>
+        <translation>For using authentication certificate enter PIN1</translation>
+    </message>
+    <message>
+        <source>Selected action requires authentication certificate.</source>
+        <translation>Selected action requires authentication certificate.</translation>
+    </message>
+</context>
 </TS>
