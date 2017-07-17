@@ -258,7 +258,7 @@ void TeRaMonitor::stepFindAndStamp() {
     }
 
     if (0 == inFiles.size()) {
-        TERA_COUT("No *.(" << QSTR_TO_CCHAR(ria_tera::Config::IN_EXTENSIONS.join(", ")) << ") files found.");
+        TERA_COUT("No *.(" << QSTR_TO_CCHAR(ria_tera::Config::IN_EXTENSIONS.join(", ")) << ") files selected for timestamping.");
     }
     stamper.reset(new ria_tera::BatchStamper(*this, *namegen, false));
 

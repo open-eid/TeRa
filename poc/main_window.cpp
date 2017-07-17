@@ -522,7 +522,7 @@ void TeraMainWin::timestampingFinished(BatchStamper::FinishingDetails details) {
 
     if (processor.logfile) {
         if (details.success) {
-            if (0 == processor.inFiles.size()) processor.logfile->getStream() << "No *.ddoc files found" << endl;
+            if (0 == processor.inFiles.size()) processor.logfile->getStream() << "No *.(" << ria_tera::Config::IN_EXTENSIONS.join(", ") << ") files selected for timestamping." << endl;
         } else {
             if (details.userCancelled) {
                 processor.logfile->getStream() << "Operation cancelled by user" << endl;
