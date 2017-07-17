@@ -560,4 +560,47 @@ Timestamped files might not fit on disk.</source>
         <translation>Ошибка Безопасное соединение. Пожалуйста, попробуйте еще раз.</translation>
     </message>
 </context>
+<context>
+    <name>PinDialog</name>
+    <message>
+        <source>Selected action requires sign certificate.</source>
+        <translation>Для данной операции необходим сертификат подписи.</translation>
+    </message>
+    <message>
+        <source>For using sign certificate enter PIN2</source>
+        <translation>Для использования сертификата подписи введите PIN2</translation>
+    </message>
+    <message>
+        <source>PIN will be locked next failed attempt</source>
+        <translation>После следующего неудачного ввода PIN код будет заблокирован</translation>
+    </message>
+    <message>
+        <source>PIN has been entered incorrectly one time</source>
+        <translation>Pin введён неправильно один раз</translation>
+    </message>
+    <message>
+        <source>Signing</source>
+        <translation>Подписывание</translation>
+    </message>
+    <message>
+        <source>For using sign certificate enter PIN2 at the reader</source>
+        <translation>Для использования сертификата подписи введите PIN2 с клавиатуры считывателя</translation>
+    </message>
+    <message>
+        <source>Authentication</source>
+        <translation>Идентификация</translation>
+    </message>
+    <message>
+        <source>For using authentication certificate enter PIN1 at the reader</source>
+        <translation>Для использования сертификата идентификации введите PIN1 с клавиатуры считывателя</translation>
+    </message>
+    <message>
+        <source>For using authentication certificate enter PIN1</source>
+        <translation>Для использования сертификата идентификации введите PIN1</translation>
+    </message>
+    <message>
+        <source>Selected action requires authentication certificate.</source>
+        <translation>Данная операция требует сертификат идентификации.</translation>
+    </message>
+</context>
 </TS>
