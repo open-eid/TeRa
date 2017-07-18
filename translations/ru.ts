@@ -360,7 +360,7 @@ Please check if ID-card is still in the reader.</source>
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="156"/>
         <source>%1 retries left for PIN1</source>
-        <translation>Неправильный PIN1. Осталось 1% попыток</translation>
+        <translation>Неправильный PIN1. Осталось %1 попыток</translation>
     </message>
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="142"/>
