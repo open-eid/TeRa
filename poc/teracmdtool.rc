@@ -2,7 +2,7 @@
 
 #define VER_STR_HELPER(x)	#x
 #define VER_STR(x)		VER_STR_HELPER(x)
-#define VER_APP_NAME	"TeRa"
+#define VER_APP_NAME	"TeRaTool"
 
 VS_VERSION_INFO VERSIONINFO
   FILEVERSION MAJOR_VER,MINOR_VER,RELEASE_VER,BUILD_VER
@@ -22,23 +22,23 @@ BEGIN
 		BLOCK "040904B0"
 		BEGIN
 			VALUE "CompanyName", ORG
-			VALUE "FileDescription", "TeRa Client"
+			VALUE "FileDescription", "TeRa Tool"
 			VALUE "FileVersion", VER_STR(MAJOR_VER.MINOR_VER.RELEASE_VER.BUILD_VER)
 			VALUE "InternalName", VER_APP_NAME
 			VALUE "LegalCopyright", "Copyright (C) 2017-2017 Estonian Information System Authority"
 			VALUE "OriginalFilename", VER_APP_NAME ".exe"
-			VALUE "ProductName", "TeRa Client"
+			VALUE "ProductName", "TeRa Tool"
 			VALUE "ProductVersion", VER_STR(MAJOR_VER.MINOR_VER.RELEASE_VER.BUILD_VER)
 		END
 		BLOCK "042504B0"
 		BEGIN
 			VALUE "CompanyName", ORG
-			VALUE "FileDescription", "TeRa Klient"
+			VALUE "FileDescription", "TeRa käsurealiides"
 			VALUE "FileVersion", VER_STR(MAJOR_VER.MINOR_VER.RELEASE_VER.BUILD_VER)
 			VALUE "InternalName", VER_APP_NAME
 			VALUE "LegalCopyright", "Copyright (C) 2017-2017 Riigi Infosüsteemi Amet"
 			VALUE "OriginalFilename", VER_APP_NAME ".exe"
-			VALUE "ProductName", "TeRa Klient"
+			VALUE "ProductName", "TeRa käsurealiides"
 			VALUE "ProductVersion", VER_STR(MAJOR_VER.MINOR_VER.RELEASE_VER.BUILD_VER)
 		END
 	END

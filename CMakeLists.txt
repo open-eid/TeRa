@@ -252,7 +252,7 @@ if( APPLE )
 else()
 add_executable(${TERA_CMD_NAME}
         ${TERA_COMMON_SRC}
-        poc/teragui.rc
+        poc/teracmdtool.rc
         poc/terapoc.cpp
         poc/utils.h poc/utils.cpp
         poc/openssl_utils.h poc/openssl_utils.cpp
