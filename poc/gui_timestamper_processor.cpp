@@ -252,7 +252,30 @@ QSet<QString> const& GuiTimestamperProcessor::_getInclDirs() const {
 }
 
 QList<QString> GuiTimestamperProcessor::getInclDirList() const {
+#ifdef Q_OS_OSX
+    QSet<QString> includedDirs(_getInclDirs());
+
+    if (!revoked.isNull()) {
+        includedDirs.subtract(*revoked);
+    }
+    if (!granted.isNull()) {
+        includedDirs.unite(*granted);
+    }
+
+    // Keep folders sorted, parent folders before children
+    auto included = includedDirs.toList();
+    std::sort(included.begin(), included.end());
+    return included;
+#else
     return _getInclDirs().toList();
+#endif
 }
 
+#ifdef Q_OS_OSX
+void GuiTimestamperProcessor::resetGrants(QScopedPointer<QSet<QString>> &removed,
+                                          QScopedPointer<QSet<QString>> &added) {
+    revoked.reset(removed.take());
+    granted.reset(added.take());
+}
+#endif
 }

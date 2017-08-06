@@ -85,6 +85,9 @@ public:
     void saveSettings();
 
     QList<QString> getInclDirList() const;
+#ifdef Q_OS_OSX
+    void resetGrants(QScopedPointer<QSet<QString>> &removed, QScopedPointer<QSet<QString>> &added);
+#endif
 
     void initializeFilePreviewWindow(FileListWindow& fw);
     void copySelectedFiles(FileListWindow& fw);
@@ -118,6 +121,10 @@ private:
     QSet<QString>& _getInclDirs();
     QSet<QString> const& _getInclDirs() const;
     mutable QScopedPointer<QSet<QString>> inclDirs;
+#ifdef Q_OS_OSX
+    QScopedPointer<QSet<QString>> revoked;
+    QScopedPointer<QSet<QString>> granted;
+#endif
 public:
     bool previewFiles;
 
