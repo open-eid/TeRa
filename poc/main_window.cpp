@@ -648,6 +648,10 @@ void TeraMainWin::showLog(QUrl const& link) {
     if (!success) {
         success = QProcess::startDetached("open", QStringList()  << link.url());
     }
+#elif defined(Q_OS_WIN)
+    if (!success) {
+        success = QDesktopServices::openUrl(QUrl("file:///" + link.url(), QUrl::TolerantMode));
+    }
 #endif
 
     if (!success) {
