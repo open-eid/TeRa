@@ -2,3 +2,4 @@ TeRa*.msi
 tera.wixobj
 tera.wixpdb
 TeRa_64.wixpdb
+env.sh
