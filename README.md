@@ -54,9 +54,8 @@ GUI:
 
 #### 1. Install build tools
 
-    xcode
-    git
-    cmake
+Install [XCode](https://itunes.apple.com/ee/app/xcode/id497799835?mt=12)
+Download CMake binary package from https://cmake.org or install via homebrew.
 
 #### 2. Install project dependencies
 
