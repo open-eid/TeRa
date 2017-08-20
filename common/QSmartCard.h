@@ -22,7 +22,7 @@
 #include <QThread>
 #include <QMutex> // TODO
 
-#include <QSharedDataPointer>
+#include <QExplicitlySharedDataPointer>
 
 #include <common/PinDialogInterface.h>
 
@@ -98,7 +98,7 @@ public:
 	static QString typeString( PinType type );
 
 private:
-	QSharedDataPointer<QSmartCardDataPrivate> d;
+	QExplicitlySharedDataPointer<QSmartCardDataPrivate> d;
 
 	friend class QSmartCard;
 	friend class QSmartCardPrivate;

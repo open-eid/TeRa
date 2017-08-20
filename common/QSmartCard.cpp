@@ -87,7 +87,7 @@ QSharedPointer<QPCSCReader> QSmartCardPrivate::connect(const QString &reader)
 QSmartCard::ErrorType QSmartCardPrivate::handlePinResult(QPCSCReader *reader, QPCSCReader::Result response, bool forceUpdate)
 {
 	if(!response.resultOk() || forceUpdate)
-		updateCounters(reader, t.d);
+		updateCounters(reader, t.d.data());
 	switch((quint8(response.SW[0]) << 8) + quint8(response.SW[1]))
 	{
 	case 0x9000: return QSmartCard::NoError;
@@ -344,7 +344,7 @@ QSmartCard::ErrorType QSmartCard::login(QSmartCardData::PinType type)
 	QSmartCard::ErrorType err = d->handlePinResult(d->reader.data(), result, false);
 	if(!result.resultOk())
 	{
-		d->updateCounters(d->reader.data(), d->t.d);
+		d->updateCounters(d->reader.data(), d->t.d.data());
 		d->reader.clear();
 		d->m.unlock();
 	}
@@ -355,7 +355,7 @@ void QSmartCard::logout()
 {
 	if(d->reader.isNull())
 		return;
-	d->updateCounters(d->reader.data(), d->t.d);
+	d->updateCounters(d->reader.data(), d->t.d.data());
 	d->reader.clear();
 	d->m.unlock();
 }
@@ -475,7 +475,8 @@ void QSmartCard::run()
 			// if none is selected select first from cardlist
 			if(d->t.card().isEmpty() && !d->t.cards().isEmpty())
 			{
-				QSharedDataPointer<QSmartCardDataPrivate> t = d->t.d;
+				QExplicitlySharedDataPointer<QSmartCardDataPrivate> t = d->t.d;
+				t.detach();
 				t->card = d->t.cards().first();
 				t->data.clear();
 				t->authCert = QSslCertificate();
@@ -492,7 +493,8 @@ void QSmartCard::run()
 				QSharedPointer<QPCSCReader> reader(d->connect(cards.value(d->t.card())));
 				if(!reader.isNull())
 				{
-					QSharedDataPointer<QSmartCardDataPrivate> t = d->t.d;
+					QExplicitlySharedDataPointer<QSmartCardDataPrivate> t = d->t.d;
+					t.detach();
 					t->reader = reader->name();
 					t->pinpad = reader->isPinPad();
 					t->version = atrList.value(reader->atr(), QSmartCardData::VER_INVALID);
@@ -515,7 +517,7 @@ void QSmartCard::run()
 						}
 					}
 
-					bool tryAgain = !d->updateCounters(reader.data(), t);
+					bool tryAgain = !d->updateCounters(reader.data(), t.data());
 					if(reader->transfer(d->PERSONALDATA).resultOk())
 					{
 						QByteArray cmd = d->READRECORD;
@@ -608,7 +610,8 @@ void QSmartCard::run()
 void QSmartCard::selectCard(const QString &card)
 {
 	QMutexLocker locker(&d->m);
-	QSharedDataPointer<QSmartCardDataPrivate> t = d->t.d;
+	QExplicitlySharedDataPointer<QSmartCardDataPrivate> t = d->t.d;
+	t.detach();
 	t->card = card;
 	t->data.clear();
 	t->authCert = QSslCertificate();
