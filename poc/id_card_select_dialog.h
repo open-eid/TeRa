@@ -13,6 +13,15 @@ class IDCardSelectDialog : public QDialog, public Ui::IDCardSelectionDialog {
     Q_OBJECT
 
 public:
+    enum CertValidity
+    {
+        Valid,
+        Invalid,
+        ValidButBlocked,
+        InvalidAndBlocked,
+        NullData
+    };
+
     explicit IDCardSelectDialog(QWidget *parent = 0);
     virtual ~IDCardSelectDialog();
 
@@ -29,6 +38,7 @@ private:
     void bufferCardData();
     void populateGuiFromIDCard();
     void populateIDCardInfoText(QSmartCardData const& t);
+    CertValidity validateAuthCert(QSmartCardData const& t);
 
 public: // TODO
     PinDialogGUIFactory pdf;

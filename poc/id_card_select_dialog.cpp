@@ -84,7 +84,7 @@ void IDCardSelectDialog::populateGuiFromIDCard() {
     // see void MainWindow::updateData() from qestidutil
     populateIDCardInfoText(smartCardData);
 
-    btnStart->setEnabled(!smartCardData.isNull());
+    btnStart->setEnabled(CertValidity::Valid == validateAuthCert(smartCardData));
 
     comboBoxIDCardSelect->clear();
     comboBoxIDCardSelect->addItems(smartCardData.cards());
@@ -134,18 +134,29 @@ void IDCardSelectDialog::populateIDCardInfoText(QSmartCardData const& t) {
         st << "<br/>";
 
         // Card validity
-        bool validForAuth = false;
         QString authValidity;
-        if (t.retryCount(QSmartCardData::Pin1Type) == 0)
-            authValidity = (t.authCert().isValid() ? tr("valid but blocked") : tr("invalid and blocked"));
-        else if (!t.authCert().isValid())
-            authValidity = tr("expired");
-        else {
-            validForAuth = true;
+        CertValidity certValidity = validateAuthCert(t);
+        switch (certValidity)
+        {
+        case CertValidity::Valid:
             authValidity = tr("valid and applicable");
+            break;
+        case CertValidity::Invalid:
+            authValidity = tr("expired");
+            break;
+        case CertValidity::ValidButBlocked:
+            authValidity = tr("valid but blocked");
+            break;
+        case CertValidity::InvalidAndBlocked:
+            authValidity = tr("invalid and blocked");
+            break;
+        case CertValidity::NullData:
+            break;
+        default:
+            break;
         }
 
-        QString validityColor = (validForAuth ? "#509b00" : "#e80303");
+        QString validityColor = ((CertValidity::Valid == certValidity) ? "#509b00" : "#e80303");
         st << tr("Authentication certificate is");
         st << "<font style='color: " << validityColor << ";'> " << authValidity << "</font>";
 
@@ -164,4 +175,16 @@ void IDCardSelectDialog::bufferCardData() {
     smartCardData = smartCard->dataXXX();
 }
 
+IDCardSelectDialog::CertValidity IDCardSelectDialog::validateAuthCert(QSmartCardData const& t) {
+    CertValidity res = CertValidity::NullData;
+    if (!t.isNull()) {
+        if (t.retryCount(QSmartCardData::Pin1Type) == 0) {
+            res = (t.authCert().isValid() ? CertValidity::ValidButBlocked : CertValidity::InvalidAndBlocked);
+        }
+        else {
+            res = (t.authCert().isValid() ? CertValidity::Valid : CertValidity::Invalid);
+        }
+    }
+    return res;
+}
 }
