@@ -57,7 +57,8 @@ bool isSubfolder(QString const& path, QSet<QString> const& refDirs) {
 
         // found parent
         QString parent = p.left(pos);
-        if (refDirs.contains(parent)) {
+        if (refDirs.contains(parent) ||
+            refDirs.contains(parent + QDir::separator())) {
             return true;
         }
 

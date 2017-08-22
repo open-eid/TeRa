@@ -400,6 +400,18 @@ Please check if ID-card is still in the reader.</source>
         <translation>Time server URL is empty.</translation>
     </message>
     <message>
+        <source>No directories selected for search!</source>
+        <translation>No directories selected for search!</translation>
+    </message>
+    <message>
+        <source>SANDBOX_MESSAGE</source>
+        <translation>Please select an input directory from which the TeRa application can find DDOC format documents.</translation>
+    </message>
+    <message>
+        <source>Do not show this message again</source>
+        <translation>Do not show this message again</translation>
+    </message>
+    <message>
         <source> * &apos;%1&apos;: free space %2, space needed %3 (approximately)</source>
         <translation type="vanished"> * %1: free space %2, space needed %3 (approximately)</translation>
     </message>

@@ -395,6 +395,19 @@ Please check if ID-card is still in the reader.</source>
         <translation>Ajatempliserveri URL on tühi.</translation>
     </message>
     <message>
+        <source>No directories selected for search!</source>
+        <translation>Otsinguks ei valitud ühtegi kataloogi!</translation>
+    </message>
+    <message>
+        <location filename="../poc/main_window.cpp" line="243"/>
+        <source>SANDBOX_MESSAGE</source>
+        <translation>Palun valige sisendkataloog, kust TeRa rakendus saaks üles leida DDOC formaadis olevad dokumendid.</translation>
+    </message>
+    <message>
+        <source>Do not show this message again</source>
+        <translation>Ära rohkem seda teadet näita</translation>
+    </message>
+    <message>
         <source> * &apos;%1&apos;: free space %2, space needed %3 (approximately)</source>
         <translation type="vanished"> * &apos;%1&apos;: vaba ruumi %2, vajalik ruum (ligikaudu) %3</translation>
     </message>

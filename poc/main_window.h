@@ -124,10 +124,14 @@ protected:
     void fillDoneLog();
 private:
     enum PAGE {START, PROCESS, READY, INTRO};
+    void resetLogFormat();
     void setPage(PAGE p);
     void setBackgroundImg(QString path);
     void doUserCancel(QString msg = QString());
     void loadTranslation(QString const& language_short);
+#ifdef Q_OS_OSX
+    bool grantPermissions(QSet<QString> const& deniedDirs);
+#endif
 private:
     bool initDone;
     bool showingIntro;

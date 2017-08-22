@@ -381,6 +381,19 @@ Please check if ID-card is still in the reader.</source>
         <translation>URL-адрес сервера отметки времени пуст.</translation>
     </message>
     <message>
+        <source>No directories selected for search!</source>
+        <translation>Для поиска не выбрали ни одного каталога!</translation>
+    </message>
+    <message>
+        <location filename="../poc/main_window.cpp" line="243"/>
+        <source>SANDBOX_MESSAGE</source>
+        <translation>Выберите каталог ввода, в котором приложение TeRa может найти документы в формате DDOC.</translation>
+    </message>
+    <message>
+        <source>Do not show this message again</source>
+        <translation>Больше не показывать это сообщение</translation>
+    </message>
+    <message>
         <location filename="../poc/main_window.cpp" line="367"/>
         <source>The space needed to timestamp all the DDOC files found exceeds the amount of free space found:
 

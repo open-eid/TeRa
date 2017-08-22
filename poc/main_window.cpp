@@ -17,6 +17,9 @@
 #include <QRegion>
 #include <QProcess>
 #include <QThreadPool>
+#ifdef Q_OS_OSX
+    #include <QFileDialog>
+#endif
 
 
 #include <openssl/evp.h>
@@ -202,14 +205,24 @@ void TeraMainWin::handleStartStamping() {
     }
 
 #ifdef Q_OS_OSX
+    QScopedPointer<QSet<QString>> nullVal;
+    processor.resetGrants(nullVal, nullVal);
+
     MacUtils mu;
     QList<QString> inclDirs = processor.getInclDirList();
+    QSet<QString> deniedDirs;
     for (int i = 0; i < inclDirs.size(); ++i) {
         QString dirPath = inclDirs[i];
-        if (!mu.askPermissions(dirPath.toUtf8().constData())) {
-            QMessageBox::critical(this, tr("Error"), tr("Couldn't get permissions for input directory: '%1'.").arg(dirPath) );
-            return;
-        };
+        if (!ria_tera::isSubfolder(dirPath, deniedDirs)) {
+            if (!mu.askPermissions(dirPath.toUtf8().constData())) {
+                deniedDirs.insert(dirPath);
+            }
+        }
+    }
+    if (!deniedDirs.isEmpty() && !grantPermissions(deniedDirs)) {
+        QMessageBox::critical(this, tr("Error"),
+                              tr("No directories selected for search!") );
+        return;
     }
 #endif
 
@@ -219,6 +232,42 @@ void TeraMainWin::handleStartStamping() {
         doTestStamp();
     }
 }
+
+#ifdef Q_OS_OSX
+bool TeraMainWin::grantPermissions(QSet<QString> const& deniedDirs) {
+    QScopedPointer<QSet<QString>> revoked(new QSet<QString>());
+    QScopedPointer<QSet<QString>> granted(new QSet<QString>());
+
+    if (!QSettings().value("hideAccess").toBool()) {
+        QMessageBox msgBox(QMessageBox::Information, tr("Access rights"),
+            tr("SANDBOX_MESSAGE"),
+            0, this);
+        msgBox.addButton(tr("OK"), QMessageBox::AcceptRole);
+        QCheckBox *cb = new QCheckBox(tr("Do not show this message again"));
+        cb->setCheckState(Qt::CheckState::Checked);
+        msgBox.setCheckBox(cb);
+        msgBox.exec();
+        if (cb->checkState() == Qt::CheckState::Checked) {
+            QSettings().setValue("hideAccess", true);
+        }
+    }
+
+    // Ask folder grants (new folders can be selected by user)
+    for (auto it = deniedDirs.begin(); it != deniedDirs.end(); ++it) {
+        // macOS file dialog has no title
+        QString newPath = QFileDialog::getExistingDirectory(this, "", *it);
+        if (newPath != *it) {
+            revoked->insert(*it);
+            if (!newPath.isNull()) {
+                granted->insert(newPath);
+            }
+        }
+    }
+
+    processor.resetGrants(revoked, granted);
+    return !processor.getInclDirList().isEmpty();
+}
+#endif
 
 bool TeraMainWin::checkSettingsWithGUI() {
     processor.timeServerUrl = processor.timeServerUrl.trimmed(); // TODO
@@ -627,6 +676,8 @@ void TeraMainWin::fillDoneLog() {
         cursor.movePosition(QTextCursor::End, QTextCursor::MoveAnchor);
         cursor.insertText(tr("HERE"), format);
     }
+
+    return;
 }
 
 void TeraMainWin::handleAbout() {
