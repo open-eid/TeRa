@@ -142,7 +142,7 @@ void GuiTimestamperProcessor::copySelectedFiles(FileListWindow& fw) {
 bool GuiTimestamperProcessor::openLogFile(QString& errorText) {
     logfile.reset();
 
-    QDir dir = QDir::home();
+    QDir dir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
     QString file_prefix = "tera_" + QDateTime::currentDateTime().toString("yyyyMMdd_HHmmss_zzz");
     QString file_sufix = ".log";
 
