@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QDialog>
+#include <QScopedPointer>
 
 #include "ui_IDCardSelectionDialog.h"
 
@@ -39,6 +40,8 @@ private:
     void populateGuiFromIDCard();
     void populateIDCardInfoText(QSmartCardData const& t);
     CertValidity validateAuthCert(QSmartCardData const& t);
+
+    QScopedPointer<QMovie> movie;
 
 public: // TODO
     PinDialogGUIFactory pdf;

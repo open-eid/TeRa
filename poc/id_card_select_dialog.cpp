@@ -1,6 +1,7 @@
 #include "id_card_select_dialog.h"
 
 #include <QDebug>
+#include <QMovie>
 #include <QMessageBox>
 #include <QTextStream>
 #include <QTimer>
@@ -13,6 +14,8 @@ IDCardSelectDialog::IDCardSelectDialog(QWidget *parent)
     : QDialog(parent)
 {
     setupUi(this);
+    movie.reset(new QMovie(":/images/wait.gif"));
+    labelCardInfo->setMovie(movie.data());
 
     populateGuiFromIDCard();
 
@@ -105,17 +108,25 @@ static QString formatLine(QString const& title, QString const& value) {
 }
 
 void IDCardSelectDialog::populateIDCardInfoText(QSmartCardData const& t) {
-    QString text;
-    QTextStream st(&text);
+    QString cards;
+    QTextStream stCards(&cards);
 
     QString needPinText = tr("NEED_PIN1_FOR_AUTHENTICATION");
     if (!needPinText.trimmed().isEmpty()) {
-        st << tr("NEED_PIN1_FOR_AUTHENTICATION") << "<br/><br/>\n";
+        stCards << tr("NEED_PIN1_FOR_AUTHENTICATION") << "<br/><br/>\n";
     }
 
-    st << tr("%1 cards in the reader(s)").arg(QString::number(smartCardData.cards().size())) << "<br/><br/>";
+    stCards << tr("%1 cards in the reader(s)").arg(QString::number(smartCardData.cards().size())) << "<br/><br/>";
+    labelCardsInReader->setText(cards);
 
-    if (!t.isNull()) {
+    if (t.isNull()) {
+        labelCardInfo->setAlignment(Qt::AlignCenter | Qt::AlignHCenter);
+        labelCardInfo->setMovie(movie.data());
+        movie->start();
+    } else {
+        QString text;
+        QTextStream st(&text);
+
         // Card number
         st << "<font style='color: #54859b;'>" // <font style='font-weight: bold;'>
             << tr("Card in reader") << " <font style='color: black;'>"
@@ -166,9 +177,10 @@ void IDCardSelectDialog::populateIDCardInfoText(QSmartCardData const& t) {
         if (retryCount < 3) {
             st << tr("%1 retries left for PIN1").arg(QString::number(retryCount));
         }
-    }
 
-    label->setText(text);
+        labelCardInfo->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+        labelCardInfo->setText(text);
+    }
 }
 
 void IDCardSelectDialog::bufferCardData() {
