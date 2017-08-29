@@ -132,18 +132,18 @@ fi
 if [[ $TARGETS == *"qt"* ]] && [[ "$REBUILD" = true || ! -d ${QT_PATH} ]] ; then
     echo -e "\n${ORANGE}##### Building Qt #####${RESET}\n"
     mkdir -p ${BUILD_PATH} && cd ${BUILD_PATH}
-    curl -O -L http://download.qt.io/official_releases/qt/${QT_MINOR}/${QT_VER}/submodules/qtbase-opensource-src-${QT_VER}.tar.gz
-    tar xf qtbase-opensource-src-${QT_VER}.tar.gz
+    curl -O -L http://download.qt.io/official_releases/qt/${QT_MINOR}/${QT_VER}/submodules/qtbase-opensource-src-${QT_VER}.tar.xz
+    tar xf qtbase-opensource-src-${QT_VER}.tar.xz
     cd qtbase-opensource-src-${QT_VER}
     ./configure -prefix ${QT_PATH} -opensource -nomake tests -nomake examples -no-securetransport -openssl-linked -confirm-license -I /usr/local/opt/openssl/include -L /usr/local/opt/openssl/lib
     make
     make install
     rm -rf ${BUILD_PATH}/qtbase-opensource-src-${QT_VER}
-    rm ${BUILD_PATH}/qtbase-opensource-src-${QT_VER}.tar.gz
+    rm ${BUILD_PATH}/qtbase-opensource-src-${QT_VER}.tar.xz
 
     cd ${BUILD_PATH}
-    curl -O -L http://download.qt.io/official_releases/qt/${QT_MINOR}/${QT_VER}/submodules/qttools-opensource-src-${QT_VER}.tar.gz
-    tar xf qttools-opensource-src-${QT_VER}.tar.gz
+    curl -O -L http://download.qt.io/official_releases/qt/${QT_MINOR}/${QT_VER}/submodules/qttools-opensource-src-${QT_VER}.tar.xz
+    tar xf qttools-opensource-src-${QT_VER}.tar.xz
     cd qttools-opensource-src-${QT_VER}
     "${QT_PATH}"/bin/qmake
     make
