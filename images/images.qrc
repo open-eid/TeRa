@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/images" >
+    <qresource prefix="/images">
         <file>background.png</file>
         <file>background.clean.png</file>
         <file>EL_Regionaalareng_horisontaal.png</file>
@@ -11,5 +11,6 @@
         <file>Glass_button_red_resized.png</file>
         <file>Glass_button_green_resized.png</file>
         <file>Glass_button_blue_resized.png</file>
+        <file>wait.gif</file>
     </qresource>
 </RCC>
