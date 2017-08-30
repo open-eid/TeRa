@@ -30,8 +30,8 @@ SET(CMAKE_AUTORCC ON)
 
 SET( CMAKE_OSX_DEPLOYMENT_TARGET "10.10.5")
 include( TeRaVersionInfo )
-if( APPLE )
-    set_app_name( PROGNAME qdigidoc-tera )
+if( WIN32 )
+    set_app_name( PROGNAME qdigidoc_tera )
 else()
     set_app_name( PROGNAME qdigidoc-tera )
 endif()
@@ -242,10 +242,10 @@ qt5_add_resources( SOURCES images/images.qrc translations/tr.qrc )
 qt5_wrap_ui( UI_HEADERS ${TERA_GUI_UI} )
 
 # TeRaTool
-if( UNIX )
-    SET (TERA_CMD_NAME qdigidoc-tera)
+if( WIN32 )
+    SET (TERA_CMD_NAME qdigidoc_tera)
 else()
-    SET (TERA_CMD_NAME TeRaTool)
+    SET (TERA_CMD_NAME qdigidoc-tera)
 endif()
 
 if( APPLE )
@@ -274,10 +274,10 @@ endif()
 # TeRa GUI
 if ( APPLE )
     SET (TERA_GUI_NAME ${PROGNAME})
-elseif( UNIX AND NOT APPLE )
-    SET (TERA_GUI_NAME qdigidoc-tera-gui)
+elseif( WIN32 )
+    SET (TERA_GUI_NAME qdigidoc_tera_gui)
 else()
-    SET (TERA_GUI_NAME TeRa)
+    SET (TERA_GUI_NAME qdigidoc-tera-gui)
 endif()
 add_executable(${TERA_GUI_NAME} WIN32 MACOSX_BUNDLE
         ${TERA_COMMON_SRC}

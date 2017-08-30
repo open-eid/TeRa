@@ -10,7 +10,7 @@ msiexec /a Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi /qn TARGETDIR
 "%WIX%\bin\candle.exe" tera.wxs -dMSI_VERSION=0.0.4
  -dlibs_path="C:\target\Estonian ID Card Development\libdigidocpp\x86"
  -dqt_path=C:\Qt5.7.0VS\5.7\msvc2013
- -dclient_path=Release\Tera.exe
+ -dclient_path=Release\qdigidoc_tera_gui.exe
 
 "%WIX%\bin\light.exe" -out qdigidoc.msi qdigidoc.wixobj CertsFragment.wixobj -v -ext WixUIExtension
 -->
@@ -44,8 +44,8 @@ msiexec /a Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi /qn TARGETDIR
       Id="*" Language="1033" Version="$(var.MSI_VERSION)" Codepage="1251" Manufacturer="RIA"> <!-- TODO UpgradeCode -->
     <Package Platform="$(var.Platform)" Keywords="Installer" InstallerVersion="405" Compressed="yes" InstallScope="perMachine"/>
     <MediaTemplate EmbedCab="yes" CompressionLevel="high"/>
-    <Icon Id="TeRa.exe" SourceFile="$(var.client_path)\TeRa.exe"/>
-    <Property Id="ARPPRODUCTICON" Value="Tera.exe"/>
+    <Icon Id="qdigidoc_tera_gui.exe" SourceFile="$(var.client_path)\qdigidoc_tera_gui.exe"/>
+    <Property Id="ARPPRODUCTICON" Value="qdigidoc_tera_gui.exe"/>
     <Property Id="DESKTOP_SHORTCUT" Value="1"/>
     <MajorUpgrade AllowSameVersionUpgrades="yes" Schedule="afterInstallInitialize" DowngradeErrorMessage=
       "A newer version of [ProductName] is already installed. If you are trying to downgrade, please uninstall the newer version first."/>
@@ -83,7 +83,7 @@ msiexec /a Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi /qn TARGETDIR
           <Condition>DESKTOP_SHORTCUT = 1</Condition> <!-- TODO use 0 instead -->
           <!-- Name="!(loc.qdigidocclientLabel)" -->
           <Shortcut Id="TeraDesktopShortcut" Name="!(loc.TeRaShortcutName)"
-                    Target="[!TeRa.exe]" WorkingDirectory="APPLICATIONFOLDER"/>
+                    Target="[!qdigidoc_tera_gui.exe]" WorkingDirectory="APPLICATIONFOLDER"/>
           <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Name="DesktopShortcut" Value="1" Type="integer" KeyPath="yes"/>
         </Component>
       </Directory>
@@ -91,11 +91,11 @@ msiexec /a Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi /qn TARGETDIR
       <Directory Id='$(var.PlatformProgramFilesFolder)'>
         <Directory Id="APPLICATIONFOLDER" Name="TeRa Client">
           <Component Id="Application" Guid="810cbd57-b24d-49ee-939a-a1fc38dda4ff"> <!-- TODO Guid -->
-            <File Source="$(var.client_path)\TeRa.exe" KeyPath='yes'>
-              <Shortcut Id="TeRaClientStartMenu" Advertise="yes" Icon="TeRa.exe" Name="TeRa Client"
+            <File Source="$(var.client_path)\qdigidoc_tera_gui.exe" KeyPath='yes'>
+              <Shortcut Id="TeRaClientStartMenu" Advertise="yes" Icon="qdigidoc_tera_gui.exe" Name="TeRa Client"
                 Directory="ProgramMenuDir" WorkingDirectory="APPLICATIONFOLDER"/>
             </File>
-            <File Source="$(var.client_path)\TeRaTool.exe"/>
+            <File Source="$(var.client_path)\qdigidoc_tera.exe"/>
 
 <?ifdef var.qt_path ?>
             <?if $(var.Platform) = x64 ?>

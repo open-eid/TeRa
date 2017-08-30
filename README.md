@@ -205,8 +205,8 @@ Open Visual Stuido 2013 command line and set up parameters as described in "Wind
 
 In Windows
 
-    Release\TeRa.exe        // for GUI
-    Release\TeRaTool.exe    // for command line
+    Release\qdigidoc_tera_gui.exe   // for GUI
+    Release\qdigidoc_tera.exe       // for command line
 
 PS The following dll's need to be copied to Release directory
 Qt5Core.dll, Qt5Gui.dll, Qt5Network.dll, Qt5Widgets.dll, d3dcompiler_47.dll, libEGL.dll, libGLESv2.dll, opengl32sw.dll (C:\Qt5.7.0VS\5.7\msvc2013\bin),
