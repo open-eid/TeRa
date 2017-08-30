@@ -301,7 +301,8 @@ qt5_use_modules(${TERA_GUI_NAME} Core Concurrent Network Widgets Gui)
 
 if( WIN32 )
     add_custom_target( run_wix_candle
-        COMMAND "${WIX_PATH}candle.exe" ${CMAKE_SOURCE_DIR}/tera.wxs -dMSI_VERSION=${VERSION} -dqt_path=$ENV{TERA_QT_CMAKE_DIR} -dopenssl_path=$ENV{TERA_OPENSSL_DIR} -dclient_path=${CMAKE_CURRENT_BINARY_DIR}/Release -dPlatform=${TERA_WIX_PLATFORM}
+        COMMAND "${WIX_PATH}candle.exe" ${CMAKE_SOURCE_DIR}/tera.wxs -dMSI_VERSION=${VERSION} -dqt_path=$ENV{TERA_QT_CMAKE_DIR} -dopenssl_path=$ENV{TERA_OPENSSL_DIR} -dclient_path=${CMAKE_CURRENT_BINARY_DIR}/Release 
+        -dqtconf=${CMAKE_SOURCE_DIR}/qt.conf -dPlatform=${TERA_WIX_PLATFORM}
     )
     list(APPEND LIGHT_CMD "${WIX_PATH}light.exe" -sice:ICE80 ${CMAKE_CURRENT_BINARY_DIR}/tera.wixobj -v -ext WixUIExtension
             -dWixUILicenseRtf=${CMAKE_SOURCE_DIR}/cmake/modules/LICENSE.LGPL.rtf)

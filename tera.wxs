@@ -25,13 +25,13 @@ msiexec /a Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi /qn TARGETDIR
   <?define PlatformProgramFilesFolder = "ProgramFilesFolder" ?>
 <?endif ?>
 
-<!--?if $(env.VCINSTALLDIR) = "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\" ?>
+<?if $(env.VCINSTALLDIR) = "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\" ?>
 <?define VCVER = "140" ?>
 <?define VCRT = "vcruntime" ?>
 <?else?>
 <?define VCVER = "120" ?>
 <?define VCRT = "msvcr" ?>
-<?endif?-->
+<?endif?>
 
 
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
@@ -98,13 +98,8 @@ msiexec /a Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi /qn TARGETDIR
             <File Source="$(var.client_path)\TeRaTool.exe"/>
 
 <?ifdef var.qt_path ?>
-            <?if $(var.Platform) = x64 ?>
-                <File Source="C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\redist\x64\Microsoft.VC120.CRT\msvcp120.dll"/>
-                <File Source="C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\redist\x64\Microsoft.VC120.CRT\msvcr120.dll"/>
-            <?else ?>
-                <File Source="C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\redist\x86\Microsoft.VC120.CRT\msvcp120.dll"/>
-                <File Source="C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\redist\x86\Microsoft.VC120.CRT\msvcr120.dll"/>
-            <?endif ?>
+            <File Source="$(env.VCINSTALLDIR)\redist\$(var.Platform)\Microsoft.VC$(var.VCVER).CRT\msvcp$(var.VCVER).dll"/>
+            <File Source="$(env.VCINSTALLDIR)\redist\$(var.Platform)\Microsoft.VC$(var.VCVER).CRT\$(var.VCRT)$(var.VCVER).dll"/>
 
             <File Source="$(var.qt_path)\bin\Qt5Core.dll"/>
             <File Source="$(var.qt_path)\bin\Qt5Gui.dll"/>
@@ -119,6 +114,9 @@ msiexec /a Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi /qn TARGETDIR
             <!-- OpenSSL libraries needed by Qt -->
             <File Source="$(var.openssl_path)\bin\libeay32.dll" />
             <File Source="$(var.openssl_path)\bin\ssleay32.dll" />
+
+            <!-- Hidpi settings -->
+            <File Source="$(var.qtconf)" />
 
           </Component>
 <?ifdef var.qt_path ?>
