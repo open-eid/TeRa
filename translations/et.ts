@@ -401,7 +401,7 @@ Please check if ID-card is still in the reader.</source>
     <message>
         <location filename="../poc/main_window.cpp" line="243"/>
         <source>SANDBOX_MESSAGE</source>
-        <translation>Palun valige sisendkataloog, kust TeRa rakendus saaks üles leida DDOC formaadis olevad dokumendid.</translation>
+        <translation>Palun valige sisendkataloog, kus kohast TeRa rakendus saaks üles leida DDOC formaadis olevad dokumendid.</translation>
     </message>
     <message>
         <source>Do not show this message again</source>
