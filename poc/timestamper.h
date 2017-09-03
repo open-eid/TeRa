@@ -48,7 +48,7 @@ public:
     void run();
     bool createAsicsContainer(QString& errorStr);
 private:
-    bool fillTmpAsicsContainer(zip* zip, QByteArray const& mimeCont, QByteArray const& manifestCont, QString& errorStr);
+    bool fillTmpAsicsContainer(zip* zip, QByteArray const& mimeCont, QString& errorStr);
     bool insertInputFile(zip* zip, QString const& path, QString& errorStr);
     bool addFile(zip* zip, QString const& name, QByteArray const& data, QString& errorStr);
     qint64 jobId;
