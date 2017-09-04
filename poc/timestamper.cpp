@@ -80,16 +80,7 @@ bool TeraCreateAsicsJob::createAsicsContainer(QString& errorStr) {
     // create zip file
     QByteArray fileMimetypeContent = "application/vnd.etsi.asic-s+zip";
 
-    QByteArray manifestContent;
-    manifestContent.append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?>\n");
-    manifestContent.append("<manifest:manifest xmlns:manifest=\"urn:oasis:names:tc:opendocument:xmlns:manifest:1.0\" manifest:version=\"1.2\">\n");
-    manifestContent.append("  <manifest:file-entry manifest:full-path=\"/\" manifest:media-type=\"application/vnd.etsi.asic-e+zip\"/>\n");
-    manifestContent.append("  <manifest:file-entry manifest:full-path=\"");
-    manifestContent.append(QFileInfo(infile).fileName().toUtf8());
-    manifestContent.append("\" manifest:media-type=\"application/octet-stream\"/>\n");
-    manifestContent.append("</manifest:manifest>\n");
-
-    bool res = fillTmpAsicsContainer(zip, fileMimetypeContent, manifestContent, errorStr);
+    bool res = fillTmpAsicsContainer(zip, fileMimetypeContent, errorStr);
 
     // close zip file
     if (res) {
@@ -115,7 +106,7 @@ bool TeraCreateAsicsJob::createAsicsContainer(QString& errorStr) {
     return true;
 }
 
-bool TeraCreateAsicsJob::fillTmpAsicsContainer(zip* zip, QByteArray const& mimeCont, QByteArray const& manifestCont, QString& errorStr) {
+bool TeraCreateAsicsJob::fillTmpAsicsContainer(zip* zip, QByteArray const& mimeCont, QString& errorStr) {
     int error = 0;
 
     if (!addFile(zip, "mimetype", mimeCont, errorStr)) return false;
@@ -127,8 +118,6 @@ bool TeraCreateAsicsJob::fillTmpAsicsContainer(zip* zip, QByteArray const& mimeC
         errorStr = QString("could not add dir '%1' to ddoc").arg(metaDirName);
         return false;
     }
-
-    if (!addFile(zip, "META-INF/manifest.xml", manifestCont, errorStr)) return false;
 
     if (!addFile(zip, "META-INF/timestamp.tst", timestamp, errorStr)) return false;
 
