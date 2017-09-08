@@ -167,8 +167,8 @@ TeraMainWin::~TeraMainWin()
 {
 }
 
-CrawlDiskJob::CrawlDiskJob(TeraMainWin& mainWindow, int jobid, GuiTimestamperProcessor const & processor) :
-gui(mainWindow), jobId(jobid), dc(*this, Config::IN_EXTENSIONS)
+CrawlDiskJob::CrawlDiskJob(TeraMainWin& mainWindow, int jobid, GuiTimestamperProcessor const & processor, QStringList const &extensions) :
+gui(mainWindow), jobId(jobid), dc(*this, extensions)
 {
     dc.addExcludeDirs(processor.exclDirs.toList());
 
@@ -361,7 +361,14 @@ void TeraMainWin::timestampingTestFinished(bool success, QByteArray resp, QStrin
     fillProgressBar();
 
     int newJobId = jobId.fetchAndAddOrdered(1)+1;
-    CrawlDiskJob* crawlJob = new CrawlDiskJob(*this, newJobId, processor);
+    selectedExtensions.clear();
+    if (processor.stampDDoc) selectedExtensions.append(Config::EXTENSION_DDOC);
+    if (processor.stampBDoc) selectedExtensions.append(Config::EXTENSION_BDOC);
+    if (processor.logfile) {
+        processor.logfile->getStream() << "Searching for extensions *.(" << selectedExtensions.join(", ") << ")." << endl;
+    }
+
+    CrawlDiskJob* crawlJob = new CrawlDiskJob(*this, newJobId, processor, selectedExtensions);
     connect(crawlJob, SIGNAL(signalProcessingPath(int, QString, double)),
         this, SLOT(processProcessingPath(int, QString, double)));
     connect(crawlJob, SIGNAL(signalExcludingPath(int, QString)),
@@ -584,7 +591,7 @@ void TeraMainWin::timestampingFinished(BatchStamper::FinishingDetails details) {
 
     if (processor.logfile) {
         if (details.success) {
-            if (0 == processor.inFiles.size()) processor.logfile->getStream() << "No *.(" << ria_tera::Config::IN_EXTENSIONS.join(", ") << ") files selected for timestamping." << endl;
+            if (0 == processor.inFiles.size()) processor.logfile->getStream() << "No *.(" << selectedExtensions.join(", ") << ") files selected for timestamping." << endl;
         } else {
             if (details.userCancelled) {
                 processor.logfile->getStream() << "Operation cancelled by user" << endl;

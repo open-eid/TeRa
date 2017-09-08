@@ -257,6 +257,14 @@ By default only files on local drives will be timestamped. If you wish to also t
         <source>Preview file list</source>
         <translation>Preview file list</translation>
     </message>
+    <message>
+        <source>Stamp .DDOC files</source>
+        <translation>Stamp .DDOC files</translation>
+    </message>
+    <message>
+        <source>Stamp .BDOC 1.0 files</source>
+        <translation>Stamp .BDOC 1.0 files</translation>
+    </message>
 </context>
 <context>
     <name>ria_tera::AboutDialog</name>
