@@ -43,6 +43,8 @@ QString const file_in_param("file_in");
 QString const dir_in_param("dir_in");
 QString const in_dir_recursive_param("R");
 QString const file_out_param("file_out");
+QString const ddoc_param("ddoc");
+QString const bdoc_param("bdoc");
 QString const ext_out_param("ext_out");
 QString const excl_dir_param("excl_dir");
 QString const no_ini_excl_dirs_param("no_ini_excl_dirs");
@@ -108,10 +110,16 @@ int main(int argc, char *argv[]) {
                     "file to be time-stamped", file_in_param));
     parser.addOption(
             QCommandLineOption(dir_in_param,
-                    "input directory (*.(" + ria_tera::Config::IN_EXTENSIONS.join(", ") + ") recursiveness can be determined with option '" + in_dir_recursive_param + "')", dir_in_param));
+                    "input directory (*.(" + ria_tera::Config::IN_EXTENSIONS.join(", ") + ")); searches recursively if option '" + in_dir_recursive_param + "' is selected", dir_in_param));
     parser.addOption(
             QCommandLineOption(in_dir_recursive_param,
                     "if set then input directories are searched recursively"));
+    parser.addOption(
+            QCommandLineOption(ddoc_param,
+                    "stamp only *.ddoc files"));
+    parser.addOption(
+            QCommandLineOption(bdoc_param,
+                    "stamp only *.bdoc files; if both --" + bdoc_param + " and --" + ddoc_param + " options are selected, only *.bdoc files are stamped"));
     QString parTSDefault = (config.getTimeServerURL().isEmpty() ? "ex. http://demo.sk.ee/tsa" : QString("(default %1)").arg(config.getTimeServerURL())); // TODO
     parser.addOption(
             QCommandLineOption(ts_url_param,
@@ -315,6 +323,14 @@ int main(int argc, char *argv[]) {
     for (int i = 0; i < excl_dirs.size(); ++i) {
         TERA_COUT("Parameter - exclude-directory: " << excl_dirs[i].toUtf8().constData());
     }
+    QStringList extensions;
+    if (parser.isSet(bdoc_param)) {
+        extensions.append(ria_tera::Config::EXTENSION_BDOC);
+    } else if (parser.isSet(ddoc_param)) {
+        extensions.append(ria_tera::Config::EXTENSION_DDOC);
+    } else {
+        extensions = ria_tera::Config::IN_EXTENSIONS;
+    }
 
     ///////////////////////////////////////////////////////////////////////////
     ria_tera::TeRaMonitor::IOParameters ioparams;
@@ -323,6 +339,7 @@ int main(int argc, char *argv[]) {
     ioparams.excl_dirs        = excl_dirs;
     ioparams.in_dir           = in_dir;
     ioparams.in_dir_recursive = in_dir_recursive;
+    ioparams.in_extensions    = extensions;
     ioparams.file_out         = file_out;
 
     ria_tera::TeRaMonitor monitor;

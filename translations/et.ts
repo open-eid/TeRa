@@ -248,6 +248,14 @@ Vaikimisi ajatembeldatakse ainult arvutis asuvaid DDOC faile. Kui soovite võrgu
         <source>Preview file list</source>
         <translation>Kuva leitud failide nimekiri</translation>
     </message>
+    <message>
+        <source>Stamp .DDOC files</source>
+        <translation>Tembelda .DDOC faile</translation>
+    </message>
+    <message>
+        <source>Stamp .BDOC 1.0 files</source>
+        <translation>Tembelda .BDOC 1.0 faile</translation>
+    </message>
 </context>
 <context>
     <name>ria_tera::AboutDialog</name>

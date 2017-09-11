@@ -42,6 +42,7 @@ public:
         QStringList excl_dirs;
         QString in_dir;
         bool in_dir_recursive = false;
+        QStringList in_extensions;
         QString file_out;
     };
 private:

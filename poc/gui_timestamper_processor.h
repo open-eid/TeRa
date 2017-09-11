@@ -123,6 +123,9 @@ public: // TODO
     QString iniPath; // user changes
 
     bool showIntro;
+    bool stampDDoc;
+    bool stampBDoc;
+
     QString minSupportedVersion;
     QString timeServerUrl;
     QString outExt;
@@ -133,6 +136,7 @@ private:
     /// For lazy evaluation of inclDirs
     QSet<QString>& _getInclDirs();
     QSet<QString> const& _getInclDirs() const;
+    void syncSettings();
     mutable QScopedPointer<QSet<QString>> inclDirs;
 #ifdef Q_OS_OSX
     QScopedPointer<QSet<QString>> revoked;

@@ -265,7 +265,8 @@ void TeRaMonitor::stepFindAndStamp() {
 
     QStringList inFiles;
     if (io_params.in_file.isEmpty()) {
-        ria_tera::DiskCrawler dc(*this, ria_tera::Config::IN_EXTENSIONS);
+        TERA_COUT("Searching for extensions *.(" << QSTR_TO_CCHAR(io_params.in_extensions.join(", ")) << ").");
+        ria_tera::DiskCrawler dc(*this, io_params.in_extensions);
         dc.addExcludeDirs(io_params.excl_dirs);
         dc.addInputDir(io_params.in_dir, io_params.in_dir_recursive);
         inFiles = dc.crawl();
@@ -277,7 +278,7 @@ void TeRaMonitor::stepFindAndStamp() {
     }
 
     if (0 == inFiles.size()) {
-        TERA_COUT("No *.(" << QSTR_TO_CCHAR(ria_tera::Config::IN_EXTENSIONS.join(", ")) << ") files selected for timestamping.");
+        TERA_COUT("No *.(" << QSTR_TO_CCHAR(io_params.in_extensions.join(", ")) << ") files selected for timestamping.");
     }
     stamper.reset(new ria_tera::BatchStamper(*this, *namegen, false));
 

@@ -53,6 +53,7 @@ private slots:
     void handleDelInclDir();
     void handleInclDirSearch();
 private:
+    void stampTypeChanged(QCheckBox* checkBox, int state);
     void gotoInputDirTab();
     void addDirToList(QString const& line, QStringListModel* model);
     void addDirToList(QLineEdit* line, QStringListModel* model);

@@ -51,7 +51,7 @@ class CrawlDiskJob : public QObject, public QRunnable, public DiscCrawlMonitorCa
     Q_OBJECT
 
 public:
-    CrawlDiskJob(TeraMainWin& mainWindow, int jobid, GuiTimestamperProcessor const & processor);
+    CrawlDiskJob(TeraMainWin& mainWindow, int jobid, GuiTimestamperProcessor const & processor, QStringList const &extensions);
     virtual void run();
 
     virtual bool processingPath(QString const& path, double progress_percent);
@@ -168,6 +168,8 @@ private:
     QPushButton* btnIntroReject;
 
     QString backgroundImg;
+
+    QStringList selectedExtensions;
 };
 
 }

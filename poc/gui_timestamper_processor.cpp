@@ -51,6 +51,9 @@ QString toBulletedList(QList<QString> list) {
 namespace ria_tera {
 
 static char const* REG_PARAM_SHOW_INTRO = "ShowIntro";
+static char const* REG_PARAM_STAMP_DDOC = "stampDDoc";
+static char const* REG_PARAM_STAMP_BDOC = "stampBDoc";
+
 QString const GuiTimestamperProcessor::JSON_TERA_MIN_SUPPORTED_VERSION("TERA-SUPPORTED");
 QString const GuiTimestamperProcessor::JSON_TERA_DEFAULT_OUT_EXT("TERA-DEFAULT-OUT-EXTENSION");
 QString const GuiTimestamperProcessor::JSON_TERA_EXCL_DIRS_("TERA-EXCL-DIRS-");
@@ -74,6 +77,12 @@ GuiTimestamperProcessor::GuiTimestamperProcessor() :
 bool GuiTimestamperProcessor::isShowIntroPage() {
     return showIntro;
 }
+
+void GuiTimestamperProcessor::syncSettings() {
+    settings.setValue(REG_PARAM_STAMP_DDOC, QVariant(stampDDoc));
+    settings.setValue(REG_PARAM_STAMP_BDOC, QVariant(stampBDoc));
+    saveShowIntro(showIntro);
+;}
 
 void GuiTimestamperProcessor::saveShowIntro(bool show) {
     showIntro = show;
@@ -127,6 +136,9 @@ void GuiTimestamperProcessor::initializeSettingsWindow(TeraSettingsWin& sw) {
 
     // preview files
     sw.cbPreviewFiles->setChecked(previewFiles);
+
+    sw.cbStampDDoc->setChecked(stampDDoc);
+    sw.cbStampBDoc->setChecked(stampBDoc);
 }
 
 void GUI2QSet(QStringListModel const& model, QSet<QString>& set) {
@@ -142,6 +154,9 @@ void GuiTimestamperProcessor::readSettings(TeraSettingsWin& sw) {
     previewFiles = sw.cbPreviewFiles->isChecked();
 
     showIntro = sw.cbShowIntro->isChecked();
+
+    stampDDoc = sw.cbStampDDoc->isChecked();
+    stampBDoc = sw.cbStampBDoc->isChecked();
 }
 
 void GuiTimestamperProcessor::initializeFilePreviewWindow(FileListWindow& fw) {
@@ -220,6 +235,8 @@ void GuiTimestamperProcessor::readSettings() {
     centralExclDirsDisabledByUser.unite(config.getExclDirExclusions());
 
     showIntro = settings.value(REG_PARAM_SHOW_INTRO, QVariant(true)).toBool();
+    stampDDoc = settings.value(REG_PARAM_STAMP_DDOC, QVariant(true)).toBool();
+    stampBDoc = settings.value(REG_PARAM_STAMP_BDOC, QVariant(true)).toBool();
 }
 
 QString asPathList(QSet<QString> set) {
@@ -252,7 +269,7 @@ void GuiTimestamperProcessor::saveSettings() {
 
     // save
     ini.sync();
-    saveShowIntro(showIntro);
+    syncSettings();
 }
 
 QSet<QString>& GuiTimestamperProcessor::_getInclDirs() {

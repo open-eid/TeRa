@@ -49,6 +49,9 @@ TeraSettingsWin::TeraSettingsWin(QWidget *parent) :
     connect(btnDelInclDir, SIGNAL (clicked()), this, SLOT (handleDelInclDir()));
     connect(btnInclDirSearch, SIGNAL (clicked()), this, SLOT (handleInclDirSearch()));
 
+    connect(cbStampDDoc, &QCheckBox::stateChanged, this, [this](int state){ stampTypeChanged(cbStampBDoc, state); });
+    connect(cbStampBDoc, &QCheckBox::stateChanged, this, [this](int state){ stampTypeChanged(cbStampDDoc, state); });
+
     connect(buttonBox, SIGNAL(accepted()), this, SLOT(handleTryAccept()));
     connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
 }
@@ -92,6 +95,13 @@ void TeraSettingsWin::handleDelInclDir() {
 
 void TeraSettingsWin::handleInclDirSearch() {
     searchDir(this, lineInclDir, modelInclDir);
+}
+
+void TeraSettingsWin::stampTypeChanged(QCheckBox* checkBox, int state) {
+    // At least one of DDOC or BDOC must be selected
+    if (state == Qt::Unchecked) {
+        checkBox->setCheckState(Qt::Checked);
+    }
 }
 
 void TeraSettingsWin::addDirToList(QString const& line, QStringListModel* model) {
