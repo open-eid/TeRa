@@ -30,10 +30,10 @@ script: case ${TARGET} in
     make macdeployqt zip && cd ..;
     ;;
   *)
-    docker run -e BUILD_NUMBER=${TRAVIS_BUILD_NUMBER} -e DEBFULLNAME="Travis" -e RUN_TESTS=${RUN_TESTS} -e DEBEMAIL="travis-ci@travis" -v $(pwd):$(pwd) -t "${TARGET}" /bin/bash -c "cd $(pwd);"'
+    docker run -e BUILD_NUMBER=${TRAVIS_BUILD_NUMBER} -e DEBFULLNAME="Travis" -e RUN_TESTS=${RUN_TESTS} -e DEBEMAIL="travis-ci@travis" -e COVERITY_SCAN_TOKEN=${COVERITY_SCAN_TOKEN} -e TRAVIS_BRANCH=${TRAVIS_BRANCH} -e IMAGE=${TARGET} -v $(pwd):$(pwd) -t "${TARGET}" /bin/bash -c "cd $(pwd);"'
       set -e;
       apt-get update -qq; 
-      apt-get install -y cmake git dh-make devscripts dpkg-dev cdbs libdrm-dev build-essential libgl1-mesa-dev zlib1g zlib1g-dev libpcsclite-dev libssl-dev qtbase5-dev qttools5-dev qttools5-dev-tools libzip-dev pcscd;
+      apt-get install -y cmake git dh-make wget ruby curl devscripts dpkg-dev cdbs libdrm-dev build-essential libgl1-mesa-dev zlib1g zlib1g-dev libpcsclite-dev libssl-dev qtbase5-dev qttools5-dev qttools5-dev-tools libzip-dev pcscd;
       export MAJOR_VER=$(grep "set( MAJOR_VER" cmake/modules/TeRaVersionInfo.cmake | egrep -o "[0-9]{1,}");
       export MINOR_VER=$(grep "set( MINOR_VER" cmake/modules/TeRaVersionInfo.cmake | egrep -o "[0-9]{1,}");
       export PATCH_VER=$(grep "set( RELEASE_VER" cmake/modules/TeRaVersionInfo.cmake | egrep -o "[0-9]{1,}");
@@ -41,5 +41,15 @@ script: case ${TARGET} in
       dh_make --createorig --addmissing --defaultless -y -p qdigidoc-tera_${VERSION};
       dch --distribution $(lsb_release -cs) -v ${VERSION} "Release ${VERSION}.";
       dpkg-buildpackage -rfakeroot -us -uc;
+      set +e;
+      if [ "${IMAGE}" = "ubuntu:17.04" ]; then
+        export COVERITY_SCAN_PROJECT_NAME="open-eid_BT-TeRa";
+        export COVERITY_SCAN_NOTIFICATION_EMAIL="toomas.uudisaru@gmail.com";
+        export COVERITY_SCAN_BRANCH_PATTERN=coverity_scan;
+        export COVERITY_SCAN_BUILD_COMMAND_PREPEND="cmake ."
+        export COVERITY_SCAN_BUILD_COMMAND=make;
+        wget https://scan.coverity.com/scripts/travisci_build_coverity_scan.sh;
+        bash travisci_build_coverity_scan.sh;
+      fi;
       git clean -dxf';
   esac
