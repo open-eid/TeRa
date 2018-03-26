@@ -57,7 +57,7 @@ private:
     ID_AUTH_STATE idAuthState = ID_AUTH_STATE::WAIT_CARD_LIST;
     QSharedPointer<QSmartCard> smartCard;
     QString selectedCard;
-    QSmartCardData smartCardData;
+    TokenData smartCardData;
     HttpsIDCardAuthentication idCardAuth;
 
     QScopedPointer<ria_tera::OutputNameGenerator> namegen;
