@@ -10,19 +10,7 @@ Install [XCode](https://itunes.apple.com/ee/app/xcode/id497799835?mt=12)
 
 Download CMake binary package from https://cmake.org or install via homebrew.
 
-##### c) zlib
-
-Download and install the latest zlib from http://zlib.net/
-
-    mkdir -p ~/cmake_builds/ && cd ~/cmake_builds/
-    curl -O -L http://zlib.net/zlib-1.2.11.tar.gz
-    tar xf zlib-1.2.11.tar.gz
-    mkdir -p ~/cmake_builds/zlib && cd ~/cmake_builds/zlib
-    cmake -DCMAKE_INSTALL_PREFIX=~/cmake_builds/zlib_bin -G "Unix Makefiles" ../zlib-1.2.11
-    cmake --build .
-    make install
-
-##### d) libzip
+##### c) libzip
 
 Download and install the latest version from https://nih.at/libzip/
 (NB! Do make static version of the libraries as well uncomment lines at the end of the file libzip-1.1.3/lib/CMakeList.txt before running cmake (starting from "#ADD_LIBRARY(zipstatic STATIC ...").)
@@ -36,7 +24,7 @@ Download and install the latest version from https://nih.at/libzip/
     cmake --build .
     make install
 
-##### e) OpenSSL
+##### d) OpenSSL
 
 Install OpenSSL from https://www.openssl.org/source/openssl-1.0.2h.tar.gz (for details, see https://wiki.openssl.org/index.php/Compilation_and_Installation#OS_X)
 See http://stackoverflow.com/questions/41865537/how-does-apples-codesign-utility-decide-which-sha-algorithms-to-sign-a-shared and https://wiki.openssl.org/index.php/Compilation_and_Installation (look for "-mios-version-min=")
@@ -51,7 +39,7 @@ See http://stackoverflow.com/questions/41865537/how-does-apples-codesign-utility
     make test
 
 
-##### f) Qt with OpenSSL support
+##### e) Qt with OpenSSL support
 
 
     export C_INCLUDE_PATH=$HOME/cmake_builds/openssl-1.0.2h.bin/include/

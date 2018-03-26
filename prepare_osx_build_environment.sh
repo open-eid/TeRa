@@ -3,10 +3,9 @@
 # Python must be present in path - it is available in macOS
 
 ######### Versions of libraries/frameworks to be compiled
-ZLIB_VER="1.2.11"
 LIBZIP_VER="1.1.3"
-QT_VER="5.8.0"
-CMAKE_OSX_DEPLOYMENT_TARGET="10.10.5"
+QT_VER="5.9.4"
+export MACOSX_DEPLOYMENT_TARGET="10.11"
 #########
 
 
@@ -41,11 +40,11 @@ do
     -r|--rebuild)
         REBUILD=true
         ;;
-    libzip|zlib|qt)
+    libzip|qt)
         TARGETS="$TARGETS,$key"
         ;;
     -h|--help)
-        echo "Build dependencies (zlib, libzip and optionally Qt) of TeRa project"
+        echo "Build dependencies (libzip and optionally Qt) of TeRa project"
         echo ""
         echo "Usage: $PROG [-r|--rebuild] [-p build-path] [-h|--help] [targets]"
         echo ""
@@ -61,7 +60,7 @@ do
         echo "  -r or --rebuild:"
         echo "     Rebuild even if dependency is already built"
         echo "  targets:"
-        echo "     zlib libzip qt; default zlib libzip; "
+        echo "     libzip qt; default libzip; "
         echo "     If qt is not defined, the script shall use the Qt installed by homebrew"
         echo " "
         echo "  -h or --help:"
@@ -73,7 +72,7 @@ do
 done
 
 if [ -z "$TARGETS" ] ; then
-    TARGETS="zlib,libzip,qt"
+    TARGETS="libzip,qt"
 fi
 if [ "$NO_QT" = true ] ; then
     TARGETS="${TARGETS//,qt}"
@@ -85,7 +84,6 @@ fi
 qt_ver_parts=( ${QT_VER//./ } )
 QT_MINOR="${qt_ver_parts[0]}.${qt_ver_parts[1]}"
 
-ZLIB_PATH=${BUILD_PATH}/zlib_bin
 LIBZIP_PATH=${BUILD_PATH}/libzip_bin
 QT_PATH=${BUILD_PATH}/Qt-${QT_VER}-OpenSSL
 
@@ -95,22 +93,6 @@ RED='\033[0;31m'
 RESET='\033[0m'
 
 
-if [[ $TARGETS == *"zlib"* ]] && [[ "$REBUILD" = true || ! -d ${ZLIB_PATH} ]] ; then
-    echo -e "\n${ORANGE}##### Building zlib #####${RESET}\n"
-    mkdir -p ${BUILD_PATH} && cd ${BUILD_PATH}
-    curl -O -L http://zlib.net/zlib-${ZLIB_VER}.tar.gz
-    tar xf zlib-${ZLIB_VER}.tar.gz
-    mkdir -p ${BUILD_PATH}/zlib && cd ${BUILD_PATH}/zlib
-    cmake -DCMAKE_OSX_DEPLOYMENT_TARGET=${CMAKE_OSX_DEPLOYMENT_TARGET} -DCMAKE_INSTALL_PREFIX=${ZLIB_PATH} -G "Unix Makefiles" ../zlib-${ZLIB_VER}
-    cmake --build .
-    make install
-    rm -rf ${BUILD_PATH}/zlib
-    rm -rf ${BUILD_PATH}/zlib-${ZLIB_VER}
-    rm ${BUILD_PATH}/zlib-${ZLIB_VER}.tar.gz
-else
-    echo -e "\n${GREY}  zlib not built${RESET}"
-fi
-
 if [[ $TARGETS == *"libzip"* ]] && [[ "$REBUILD" = true || ! -d ${LIBZIP_PATH} ]] ; then
     echo -e "\n${ORANGE}##### Building libzip #####${RESET}\n"
     mkdir -p ${BUILD_PATH} && cd ${BUILD_PATH}
@@ -118,7 +100,6 @@ if [[ $TARGETS == *"libzip"* ]] && [[ "$REBUILD" = true || ! -d ${LIBZIP_PATH} ]
     tar xf libzip-${LIBZIP_VER}.tar.gz
     python $TERA_PATH/mac/libzip_static.py libzip-${LIBZIP_VER}/lib/CMakeLists.txt
     mkdir -p ${BUILD_PATH}/libzip && cd ${BUILD_PATH}/libzip
-    export CMAKE_PREFIX_PATH=${ZLIB_PATH}
     cmake -DCMAKE_OSX_DEPLOYMENT_TARGET=${CMAKE_OSX_DEPLOYMENT_TARGET} -DCMAKE_INSTALL_PREFIX=${LIBZIP_PATH} -G "Unix Makefiles" ../libzip-${LIBZIP_VER}
     cmake --build .
     make install
@@ -163,8 +144,7 @@ echo "# Load TERA build variables:
 # . ./env.sh or source ./env.sh
 export TERA_QT_DIR=${QT_PATH}
 export TERA_LIBZIP_DIR=${LIBZIP_PATH}
-export TERA_ZLIB_DIR=${ZLIB_PATH}
 export TERA_OPENSSL_DIR=${OPENSSL_PATH}
-export CMAKE_PREFIX_PATH=$QT_PATH/lib/cmake:$TERA_ZLIB_DIR:$TERA_LIBZIP_DIR:$TERA_OPENSSL_DIR
+export CMAKE_PREFIX_PATH=$QT_PATH/lib/cmake:$TERA_LIBZIP_DIR:$TERA_OPENSSL_DIR
 " > $TERA_PATH/env.sh
 chmod u+x $TERA_PATH/env.sh

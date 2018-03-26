@@ -5,12 +5,12 @@ Depends package: Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi
 msiexec /a Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi /qn TARGETDIR=C:\target
 
 "%WIX%\bin\heat.exe dir "C:\target\Estonian ID Card Development\libdigidocpp\certs"
- -cg Certs -gg -scom -sreg -sfrag -srd -dr CertsFolder -var var.certsLocation -out CertsFragment.wxs
+-cg Certs -gg -scom -sreg -sfrag -srd -dr CertsFolder -var var.certsLocation -out CertsFragment.wxs
 
 "%WIX%\bin\candle.exe" tera.wxs -dMSI_VERSION=0.0.4
- -dlibs_path="C:\target\Estonian ID Card Development\libdigidocpp\x86"
- -dqt_path=C:\Qt5.7.0VS\5.7\msvc2013
- -dclient_path=Release\qdigidoc_tera_gui.exe
+-dlibs_path="C:\target\Estonian ID Card Development\libdigidocpp\x86"
+-dqt_path=C:\Qt5.7.0VS\5.7\msvc2013
+-dclient_path=Release\qdigidoc_tera_gui.exe
 
 "%WIX%\bin\light.exe" -out qdigidoc.msi qdigidoc.wixobj CertsFragment.wixobj -v -ext WixUIExtension
 -->
@@ -20,9 +20,9 @@ msiexec /a Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi /qn TARGETDIR
 <?endif ?>
 
 <?if $(var.Platform) = x64 ?>
-  <?define PlatformProgramFilesFolder = "ProgramFiles64Folder" ?>
+<?define PlatformProgramFilesFolder = "ProgramFiles64Folder" ?>
 <?else ?>
-  <?define PlatformProgramFilesFolder = "ProgramFilesFolder" ?>
+<?define PlatformProgramFilesFolder = "ProgramFilesFolder" ?>
 <?endif ?>
 
 <?if $(env.VCINSTALLDIR) = "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\" ?>
@@ -40,21 +40,18 @@ msiexec /a Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi /qn TARGETDIR
 
 
 
-  <Product Name="TeRa Client" UpgradeCode="67932072-aa9e-45e3-b697-d825349f27ff"
-      Id="*" Language="1033" Version="$(var.MSI_VERSION)" Codepage="1251" Manufacturer="RIA"> <!-- TODO UpgradeCode -->
-    <Package Platform="$(var.Platform)" Keywords="Installer" InstallerVersion="405" Compressed="yes" InstallScope="perMachine"/>
-    <MediaTemplate EmbedCab="yes" CompressionLevel="high"/>
-    <Icon Id="qdigidoc_tera_gui.exe" SourceFile="$(var.client_path)\qdigidoc_tera_gui.exe"/>
-    <Property Id="ARPPRODUCTICON" Value="qdigidoc_tera_gui.exe"/>
-    <Property Id="DESKTOP_SHORTCUT" Value="1"/>
-    <MajorUpgrade AllowSameVersionUpgrades="yes" Schedule="afterInstallInitialize" DowngradeErrorMessage=
-      "A newer version of [ProductName] is already installed. If you are trying to downgrade, please uninstall the newer version first."/>
-    <Condition Message="[ProductName] requires Windows 7 or higher.">
-      <![CDATA[Installed OR (VersionNT >= 601)]]>
-    </Condition>
-
-    <WixVariable Id="WixUIBannerBmp" Value="banner.bmp" />
-    <WixVariable Id="WixUIDialogBmp" Value="dlgbmp.bmp" />
+<Product Name="TeRa Client" UpgradeCode="67932072-aa9e-45e3-b697-d825349f27ff"
+Id="*" Language="1033" Version="$(var.MSI_VERSION)" Codepage="1251" Manufacturer="RIA"> <!-- TODO UpgradeCode -->
+<Package Platform="$(var.Platform)" Keywords="Installer" InstallerVersion="405" Compressed="yes" InstallScope="perMachine"/>
+<MediaTemplate EmbedCab="yes" CompressionLevel="high"/>
+<Icon Id="qdigidoc_tera_gui.exe" SourceFile="$(var.client_path)\qdigidoc_tera_gui.exe"/>
+<Property Id="ARPPRODUCTICON" Value="qdigidoc_tera_gui.exe"/>
+<Property Id="DESKTOP_SHORTCUT" Value="1"/>
+<MajorUpgrade AllowSameVersionUpgrades="yes" Schedule="afterInstallInitialize" DowngradeErrorMessage=
+"A newer version of [ProductName] is already installed. If you are trying to downgrade, please uninstall the newer version first."/>
+<Condition Message="[ProductName] requires Windows 7 or higher.">
+<![CDATA[Installed OR (VersionNT >= 601)]]>
+</Condition>
 
     <!--UIRef Id="WixUI_Minimal" http://wixtoolset.org/documentation/manual/v3/wixui/wixui_customizations.html /-->
 <!--UI Id='xxx'>
