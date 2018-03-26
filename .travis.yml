@@ -3,7 +3,7 @@
 language: c++
 sudo: true
 dist: trusty
-osx_image: xcode8.3
+osx_image: xcode9.2
 services:
 - docker
 matrix:
@@ -12,7 +12,7 @@ matrix:
     env: TARGET=osx
     sudo: true
   - os: linux
-    env: TARGET=ubuntu:17.04
+    env: TARGET=ubuntu:16.04
     sudo: false
 env:
   global:
@@ -23,9 +23,8 @@ before_install: if [ "${TARGET}" = "osx" ]; then
   fi
 script: case ${TARGET} in
   *osx*)
-    set -e;
     source ./env.sh;
-    mkdir build && cd build && cmake ..;
+    mkdir build && cd build && cmake -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl ..;
     make;
     make macdeployqt zip && cd ..;
     ;;
@@ -33,7 +32,7 @@ script: case ${TARGET} in
     docker run -e BUILD_NUMBER=${TRAVIS_BUILD_NUMBER} -e DEBFULLNAME="Travis" -e RUN_TESTS=${RUN_TESTS} -e DEBEMAIL="travis-ci@travis" -e COVERITY_SCAN_TOKEN=${COVERITY_SCAN_TOKEN} -e TRAVIS_BRANCH=${TRAVIS_BRANCH} -e IMAGE=${TARGET} -v $(pwd):$(pwd) -t "${TARGET}" /bin/bash -c "cd $(pwd);"'
       set -e;
       apt-get update -qq; 
-      apt-get install -y cmake git dh-make wget ruby curl devscripts dpkg-dev cdbs libdrm-dev build-essential libgl1-mesa-dev zlib1g zlib1g-dev libpcsclite-dev libssl-dev qtbase5-dev qttools5-dev qttools5-dev-tools libzip-dev pcscd;
+      apt-get install -y cmake git dh-make wget ruby curl devscripts dpkg-dev cdbs zlib1g-dev libpcsclite-dev libssl-dev qtbase5-dev qttools5-dev qttools5-dev-tools libzip-dev;
       export MAJOR_VER=$(grep "set( MAJOR_VER" cmake/modules/TeRaVersionInfo.cmake | egrep -o "[0-9]{1,}");
       export MINOR_VER=$(grep "set( MINOR_VER" cmake/modules/TeRaVersionInfo.cmake | egrep -o "[0-9]{1,}");
       export PATCH_VER=$(grep "set( RELEASE_VER" cmake/modules/TeRaVersionInfo.cmake | egrep -o "[0-9]{1,}");
@@ -42,7 +41,7 @@ script: case ${TARGET} in
       dch --distribution $(lsb_release -cs) -v ${VERSION} "Release ${VERSION}.";
       dpkg-buildpackage -rfakeroot -us -uc;
       set +e;
-      if [ "${IMAGE}" = "ubuntu:17.04" ]; then
+      if [ "${IMAGE}" = "ubuntu:16.04" ]; then
         export COVERITY_SCAN_PROJECT_NAME="open-eid_BT-TeRa";
         export COVERITY_SCAN_NOTIFICATION_EMAIL="toomas.uudisaru@gmail.com";
         export COVERITY_SCAN_BRANCH_PATTERN=coverity_scan;

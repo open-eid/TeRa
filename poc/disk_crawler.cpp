@@ -32,6 +32,14 @@
 #include "config.h"
 #include "../src/common/Bdoc10Handler.h"
 
+#if QT_VERSION < 0x050700
+template <class T>
+constexpr typename std::add_const<T>::type& qAsConst(T& t) noexcept
+{
+        return t;
+}
+#endif
+
 namespace {
 
 bool inExclDirs(QString const& filePath, QStringList const& excldir) {
