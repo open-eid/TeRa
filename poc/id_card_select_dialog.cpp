@@ -39,12 +39,12 @@ IDCardSelectDialog::IDCardSelectDialog(QWidget *parent)
     populateGuiFromIDCard();
 
     btnStart->setEnabled(false);
-    connect(btnStart, SIGNAL(clicked(bool)), this, SLOT(startAuthentication()));
-    connect(btnCancel, SIGNAL(clicked(bool)), this, SLOT(reject()));
+    connect(btnStart, &QPushButton::clicked, this, &IDCardSelectDialog::startAuthentication);
+    connect(btnCancel, &QPushButton::clicked, this, &IDCardSelectDialog::reject);
     QTimer::singleShot(0, this, SLOT(initSmartCard()));
 }
 
-IDCardSelectDialog::~IDCardSelectDialog() {}
+IDCardSelectDialog::~IDCardSelectDialog() = default;
 
 void IDCardSelectDialog::onTranslate() {
     populateGuiFromIDCard();
@@ -56,38 +56,36 @@ void IDCardSelectDialog::showEvent(QShowEvent * event) {
 }
 
 void IDCardSelectDialog::startAuthentication() {
-    if (smartCard.isNull()) return;
-    QSmartCard::ErrorType error = smartCard->login(QSmartCardData::Pin1Type);
-    if (QSmartCard::ErrorType::NoError != error) {
-        bufferCardData();
-
-        if (QSmartCard::ErrorType::CancelError != error) {
-            QString title = tr("PIN Verification");
-            QString message;
-
-            if (QSmartCard::ErrorType::ValidateError == error) {
-                int retryCount = smartCardData.retryCount(QSmartCardData::PinType::Pin1Type);
-                message = tr("Wrong PIN1. %1 retries left").arg(QString::number(retryCount));
-            } else if (QSmartCard::ErrorType::BlockedError == error) {
-                message = tr("PIN1 is blocked.");
-            } else if (QSmartCard::ErrorType::UnknownError == error) {
-                message = tr("Error occurred while verifying PIN.\nPlease check if ID-card is still in the reader.");
-                smartCard->logout();
-            } else {
-                message = tr("Error: ") + QString::number(error); // TODO
-                smartCard->logout();
-            }
-            populateGuiFromIDCard();
-            QMessageBox::warning(this, title, message);
-        }
-    } else {
-        accept();
-    }
+	if (smartCard.isNull())
+		return;
+	QSmartCard::ErrorType error = smartCard->login();
+	if(error == QSmartCard::ErrorType::NoError)
+		return accept();
+	bufferCardData();
+	QString message;
+	switch(error) {
+	case QSmartCard::ErrorType::CancelError: return;
+	case QSmartCard::ErrorType::ValidateError:
+		message = tr("Wrong PIN1.");
+		break;
+	case QSmartCard::ErrorType::BlockedError:
+		message = tr("PIN1 is blocked.");
+		break;
+	case QSmartCard::ErrorType::UnknownError:
+		message = tr("Error occurred while verifying PIN.\nPlease check if ID-card is still in the reader.");
+		smartCard->logout();
+		break;
+	default:
+		message = tr("Error: ") + QString::number(error); // TODO
+		smartCard->logout();
+	}
+	populateGuiFromIDCard();
+	QMessageBox::warning(this, tr("PIN Verification"), message);
 }
 
 void IDCardSelectDialog::initSmartCard() {
     if (smartCard.isNull()) {
-        smartCard.reset(new QSmartCard(pdf));
+        smartCard.reset(QSmartCard::create(pdf));
         connect(smartCard.data(), SIGNAL(dataChanged()), this, SLOT(cardDataChanged()), Qt::QueuedConnection);
         connect(comboBoxIDCardSelect, SIGNAL(activated(QString)),
             smartCard.data(), SLOT(selectCard(QString)), Qt::QueuedConnection);
@@ -126,7 +124,7 @@ static QString formatLine(QString const& title, QString const& value) {
     return text;
 }
 
-void IDCardSelectDialog::populateIDCardInfoText(QSmartCardData const& t) {
+void IDCardSelectDialog::populateIDCardInfoText(TokenData const& t) {
     QString cards;
     QTextStream stCards(&cards);
 
@@ -149,13 +147,13 @@ void IDCardSelectDialog::populateIDCardInfoText(QSmartCardData const& t) {
         // Card number
         st << "<font style='color: #54859b;'>" // <font style='font-weight: bold;'>
             << tr("Card in reader") << " <font style='color: black;'>"
-            << t.data(QSmartCardData::DocumentId).toString() << "</font><br />";
+			<< t.card() << "</font><br />";
 
         // User data
-        QString fname = t.data(QSmartCardData::FirstName1).toString() + " " + t.data(QSmartCardData::FirstName2).toString();
+		QString fname = t.cert().subjectInfo("GN").join(" ");
         fname = fname.trimmed();
-        QString surname = t.data(QSmartCardData::SurName).toString();
-        QString userid = t.data(QSmartCardData::Id).toString();
+		QString surname = t.cert().subjectInfo("SN").join(" ");
+		QString userid = t.cert().subjectInfo("serialNumber").join(" ");
 
         st << formatLine(tr("Given Names:"), fname) << "<br/>";
         st << formatLine(tr("Surname:"), surname) << "<br/>";
@@ -192,11 +190,6 @@ void IDCardSelectDialog::populateIDCardInfoText(QSmartCardData const& t) {
 
         st << "<br/><br/>";
 
-        int retryCount = smartCardData.retryCount(QSmartCardData::PinType::Pin1Type);
-        if (retryCount < 3) {
-            st << tr("%1 retries left for PIN1").arg(QString::number(retryCount));
-        }
-
         labelCardInfo->setAlignment(Qt::AlignLeft | Qt::AlignTop);
         labelCardInfo->setText(text);
     }
@@ -206,15 +199,10 @@ void IDCardSelectDialog::bufferCardData() {
     smartCardData = smartCard->dataXXX();
 }
 
-IDCardSelectDialog::CertValidity IDCardSelectDialog::validateAuthCert(QSmartCardData const& t) {
+IDCardSelectDialog::CertValidity IDCardSelectDialog::validateAuthCert(TokenData const& t) {
     CertValidity res = CertValidity::NullData;
     if (!t.isNull()) {
-        if (t.retryCount(QSmartCardData::Pin1Type) == 0) {
-            res = (t.authCert().isValid() ? CertValidity::ValidButBlocked : CertValidity::InvalidAndBlocked);
-        }
-        else {
-            res = (t.authCert().isValid() ? CertValidity::Valid : CertValidity::Invalid);
-        }
+        res = (SslCertificate(t.cert()).isValid() ? CertValidity::Valid : CertValidity::Invalid);
     }
     return res;
 }

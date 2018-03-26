@@ -1,5 +1,5 @@
 /*
- * QEstEidUtil
+ * QDigiDocClient
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,42 +19,26 @@
 
 #pragma once
 
-#include <QThread>
+#include "QWin.h"
 
-#include <common/PinDialogInterface.h>
-
-class PinDialogFactory;
-class TokenData;
-
-class QSmartCard: public QThread
+class QCNG: public QWin
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    enum ErrorType
-    {
-        NoError,
-        CancelError,
-        ValidateError,
-        BlockedError,
-        UnknownError,
-    };
+	explicit QCNG(QObject *parent = nullptr);
+	~QCNG() override;
 
-    static QSmartCard *create(PinDialogFactory &pdf);
-    virtual ~QSmartCard();
-    TokenData dataXXX() const;
-    QSslKey key() const;
-    virtual ErrorType login() = 0;
-    virtual void logout() = 0;
-    virtual QByteArray sign(int type, const QByteArray &dgst) = 0;
+	QList<TokenData> tokens() const override;
+#ifdef CRYPTO
+	QByteArray decrypt(const QByteArray &data) override;
+	QByteArray deriveConcatKDF(const QByteArray &publicKey, const QString &digest, int keySize,
+		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const override;
+#endif
+	PinStatus lastError() const override;
+	TokenData selectCert(const SslCertificate &cert) override;
+	QByteArray sign(int method, const QByteArray &digest) const override;
 
-public slots:
-    virtual void selectCard(const QString &card) = 0;
-
-signals:
-    void dataChanged();
-
-protected:
-    QSmartCard(PinDialogFactory &pdf);
-    class Private;
-    Private *d;
+private:
+	class Private;
+	Private *d;
 };

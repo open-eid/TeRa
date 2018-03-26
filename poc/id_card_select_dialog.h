@@ -57,15 +57,15 @@ private slots:
 private:
     void bufferCardData();
     void populateGuiFromIDCard();
-    void populateIDCardInfoText(QSmartCardData const& t);
-    CertValidity validateAuthCert(QSmartCardData const& t);
+    void populateIDCardInfoText(const TokenData &t);
+    CertValidity validateAuthCert(TokenData const& t);
 
     QScopedPointer<QMovie> movie;
 
 public: // TODO
     PinDialogGUIFactory pdf;
     QSharedPointer<QSmartCard> smartCard;
-    QSmartCardData smartCardData;
+    TokenData smartCardData;
 };
 
 }

@@ -87,6 +87,7 @@ bool TokenData::cardsOrder( const QString &s1, const QString &s2 )
 QSslCertificate TokenData::cert() const { return d->cert; }
 void TokenData::setCert( const QSslCertificate &cert ) { d->cert = cert; }
 
+bool TokenData::isNull() const { return d->card.isNull() && d->cert.isNull(); }
 void TokenData::clear() { d = new TokenDataPrivate; }
 
 TokenData::TokenFlags TokenData::flags() const { return d->flags; }

@@ -310,7 +310,7 @@ void TeraMainWin::doPin1Authentication() {
 }
 
 void TeraMainWin::pin1AuthenticaionDone() {
-    idCardAuth.setAuthCert(cardSelectDialog->smartCardData.authCert(), cardSelectDialog->smartCard->key()); // TODO API
+    idCardAuth.setAuthCert(cardSelectDialog->smartCardData.cert(), cardSelectDialog->smartCard->key()); // TODO API
     doTestStamp();
 }
 

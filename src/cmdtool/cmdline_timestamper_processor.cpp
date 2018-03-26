@@ -23,6 +23,7 @@
 #include <string>
 #include <sstream>
 
+#include <QMutex>
 #include <QWaitCondition>
 
 #include "poc/config.h"
@@ -161,7 +162,7 @@ void TeRaMonitor::stepStartProcess() {
     useIDCardAuthentication = idCardAuth.useIDAuth(time_server_url);
 
     if (useIDCardAuthentication) {
-        smartCard.reset(new QSmartCard(*this));
+        smartCard.reset(QSmartCard::create(*this));
         connect(smartCard.data(), SIGNAL(dataChanged()), this, SLOT(cardDataChanged()), Qt::QueuedConnection);
         smartCard->start();
         std::cout << "Looking for ID-card..." << std::endl;
@@ -174,10 +175,7 @@ void TeRaMonitor::stepStartProcess() {
 void TeRaMonitor::cardDataChanged() {
     smartCardData = smartCard->dataXXX();
     if (ID_AUTH_STATE::WAIT_CARD_LIST == idAuthState) {
-        if (smartCardData.reader().isNull()) {
-            return;
-        }
-        QString documentId = smartCardData.data(QSmartCardData::DocumentId).toString();
+        QString documentId = smartCardData.card();
         if (documentId.isNull()) {
             return;
         }
@@ -187,10 +185,10 @@ void TeRaMonitor::cardDataChanged() {
         if (0 == cards.size()) {
             qDebug() << "!!!!!!!!!!!!! No ID-cards inserted";
         } if (cards.size() == 1 || smartCardData.card() == selectedCard) {
-            QString fname = smartCardData.data(QSmartCardData::FirstName1).toString() + " " + smartCardData.data(QSmartCardData::FirstName2).toString();
+            QString fname = smartCardData.cert().subjectInfo("GN").join(" ");
             fname = fname.trimmed();
-            QString surname = smartCardData.data(QSmartCardData::SurName).toString();
-            QString userid = smartCardData.data(QSmartCardData::Id).toString();
+            QString surname = smartCardData.cert().subjectInfo("SN").join(" ");
+            QString userid = smartCardData.cert().subjectInfo("serialNumber").join(" ");
 
             TERA_LOG(info) << "Authenticating using ID-card";
             TERA_LOG(info) << "Document ID: " << documentId;
@@ -233,15 +231,13 @@ void TeRaMonitor::stepSelectCard() {
 
 void TeRaMonitor::stepAuthenticatePIN1() {
     if (smartCard.isNull()) return; // TODO error
-    QSmartCard::ErrorType error = smartCard->login(QSmartCardData::Pin1Type);
+    QSmartCard::ErrorType error = smartCard->login();
     if (QSmartCard::ErrorType::NoError != error) {
         smartCardData = smartCard->dataXXX();
         QString message;
 
         if (QSmartCard::ErrorType::ValidateError == error) {
-            int retryCount = smartCardData.retryCount(QSmartCardData::PinType::Pin1Type);
-            //message = QString("Wrong PIN1. %1 retries left").arg(QString::number(retryCount));
-            message = QString("Wrong PIN1.").arg(QString::number(retryCount));
+            message = QString("Wrong PIN1.");
         } else if (QSmartCard::ErrorType::BlockedError == error) {
             message = "PIN1 is blocked.";
         } else if (QSmartCard::ErrorType::UnknownError == error) {
@@ -255,7 +251,7 @@ void TeRaMonitor::stepAuthenticatePIN1() {
         QCoreApplication::exit(4);
     } else {
         smartCardData = smartCard->dataXXX();
-        idCardAuth.setAuthCert(smartCardData.authCert(), smartCard->key()); // TODO API
+        idCardAuth.setAuthCert(smartCardData.cert(), smartCard->key()); // TODO API
         emit signal_stepFindAndStamp();
     }
 }
