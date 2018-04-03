@@ -20,7 +20,7 @@ if(POLICY CMP0071)
     cmake_policy(SET CMP0071 NEW)
 endif()
 
-project (TeRa VERSION 1.1.0)
+project(TeRa VERSION 1.1.0)
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 # Find includes in corresponding build directories
@@ -32,24 +32,29 @@ SET(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 14)
 SET(CMAKE_OSX_DEPLOYMENT_TARGET "10.11.0")
 
-include( TeRaVersionInfo )
-if( WIN32 )
-    set_app_name( PROGNAME qdigidoc_tera )
-else()
-    set_app_name( PROGNAME qdigidoc-tera )
-endif()
-
-IF (WIN32)
+include(VersionInfo)
+if(WIN32)
+    set_app_name(PROGNAME qdigidoc_tera)
+    set(TERA_CMD_NAME qdigidoc_tera)
+    set(TERA_GUI_NAME qdigidoc_tera_gui)
     set(TERA_SCARD_LIBRARIES Version SetupApi winscard NCrypt Crypt32)
+
     ADD_DEFINITIONS(-DZIP_STATIC)
-    SET (ZIP_LIBRARIES "$ENV{TERA_LIBZIP_DIR}/lib/zipstatic.lib")
+    find_library(ZIP_LIBRARIES NAMES zipstatic HINTS $ENV{TERA_LIBZIP_DIR}/lib)
     SET (ZIP_INCLUDE_DIR "$ENV{TERA_LIBZIP_DIR}/include" "$ENV{TERA_LIBZIP_DIR}/lib/libzip/include")
-ELSEIF (APPLE)
+elseif(APPLE)
+    set_app_name(PROGNAME qdigidoc-tera)
+    set(TERA_GUI_NAME ${PROGNAME})
     set(TERA_SCARD_LIBRARIES "-framework Cocoa -framework PCSC -fobjc-arc")
+
     ADD_DEFINITIONS(-DZIP_STATIC)
-    SET (ZIP_LIBRARIES "$ENV{TERA_LIBZIP_DIR}/lib/libzipstatic.a")
+    find_library(ZIP_LIBRARIES NAMES zipstatic HINTS $ENV{TERA_LIBZIP_DIR}/lib)
     SET (ZIP_INCLUDE_DIR "$ENV{TERA_LIBZIP_DIR}/include" "$ENV{TERA_LIBZIP_DIR}/lib/libzip/include")
-ELSE()
+else()
+    set_app_name(PROGNAME qdigidoc-tera)
+    set(TERA_CMD_NAME qdigidoc-tera)
+    set(TERA_GUI_NAME qdigidoc-tera-gui)
+
     find_package(PCSCLite REQUIRED)
     find_package(Threads)
     include_directories(${PCSCLITE_INCLUDE_DIR})
@@ -61,10 +66,11 @@ ELSE()
     find_path(ZIP_INCLUDE_DIR__ZIP_H NAMES zip.h)
     find_path(ZIP_INCLUDE_DIR__ZIPCONF_H NAMES zipconf.h HINTS ${ZIP_INCLUDE_DIR__ZIP_H}/../lib/libzip/include/ )
     SET (ZIP_INCLUDE_DIR ${ZIP_INCLUDE_DIR__ZIP_H} ${ZIP_INCLUDE_DIR__ZIPCONF_H})
-    find_library(ZIP_LIBRARIES NAMES libzipstatic zip)
-ENDIF()
+    find_library(ZIP_LIBRARIES NAMES zipstatic zip)
+endif()
 
 find_package(Qt5 COMPONENTS Core Widgets Network LinguistTools REQUIRED)
+find_package(PKCS11)
 find_package(OpenSSL REQUIRED)
 find_package(ZLIB REQUIRED)
 include_directories(${OPENSSL_INCLUDE_DIR} ${ZIP_INCLUDE_DIR})
@@ -76,9 +82,8 @@ message(STATUS "ZIP_LIBRARIES:       " ${ZIP_LIBRARIES})
 message(STATUS "ZIP_INCLUDE_DIR:     " ${ZIP_INCLUDE_DIR})
 message(STATUS "OPENSSL_INCLUDE_DIR: " ${OPENSSL_INCLUDE_DIR})
 message(STATUS "OPENSSL_LIBRARIES:   " ${OPENSSL_LIBRARIES})
-
-message(STATUS "TERA VERSION:              " ${VERSION})
-message(STATUS "TERA_MAC_RESOURCE_FILES:   " ${TERA_MAC_RESOURCE_FILES})
+message(STATUS "TERA VERSION:        " ${VERSION})
+message(STATUS "RESOURCE_FILES:      " ${RESOURCE_FILES})
 
 SET (TERA_COMMON_LIB_SRC
      common/QPCSC.h common/QPCSC.cpp common/QPCSC_p.h
@@ -149,12 +154,6 @@ qt5_add_resources( SOURCES images/images.qrc translations/tr.qrc )
 qt5_wrap_ui( UI_HEADERS ${TERA_GUI_UI} )
 
 # TeRaTool
-if( WIN32 )
-    SET (TERA_CMD_NAME qdigidoc_tera)
-else()
-    SET (TERA_CMD_NAME qdigidoc-tera)
-endif()
-
 if(NOT APPLE)
     add_executable(${TERA_CMD_NAME}
         ${TERA_COMMON_SRC}
@@ -177,13 +176,6 @@ if(NOT APPLE)
 endif()
 
 # TeRa GUI
-if ( APPLE )
-    SET (TERA_GUI_NAME ${PROGNAME})
-elseif( WIN32 )
-    SET (TERA_GUI_NAME qdigidoc_tera_gui)
-else()
-    SET (TERA_GUI_NAME qdigidoc-tera-gui)
-endif()
 add_executable(${TERA_GUI_NAME} WIN32 MACOSX_BUNDLE
         ${TERA_COMMON_SRC}
         poc/teragui.rc
@@ -198,7 +190,7 @@ add_executable(${TERA_GUI_NAME} WIN32 MACOSX_BUNDLE
         ${TRANS}
         ${TERA_COMMON_LIB_SRC}
         ${TERA_COMMON_LIB_GUI_SRC}
-        ${TERA_MAC_RESOURCE_FILES}
+        ${RESOURCE_FILES}
         )
 target_link_libraries(${TERA_GUI_NAME}
     ${ZIP_LIBRARIES} ${OPENSSL_LIBRARIES} ${ZLIB_LIBRARIES} ${TERA_SCARD_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT}
@@ -236,11 +228,17 @@ if( WIN32 )
         )
     endif()
 elseif( APPLE )
+    add_custom_command( TARGET ${PROGNAME} POST_BUILD
+        COMMAND cp -a ${PKCS11_MODULE} $<TARGET_FILE_DIR:${TERA_GUI_NAME}>
+    )
+    get_filename_component( PKCS11_NAME ${PKCS11_MODULE} NAME )
     add_custom_target( macdeployqt DEPENDS ${TERA_GUI_NAME}
         COMMAND ${_qt5Core_install_prefix}/bin/macdeployqt ${CMAKE_CURRENT_BINARY_DIR}/${TERA_GUI_NAME}.app
+            -executable=${CMAKE_CURRENT_BINARY_DIR}/${PROGNAME}.app/Contents/MacOS/${PKCS11_NAME}
     )
     add_custom_target( codesign DEPENDS ${TERA_GUI_NAME}
         COMMAND codesign -f -s \"$$SIGNCERT\"
+            $<TARGET_FILE_DIR:${PROGNAME}>/*.*
             $<TARGET_FILE_DIR:${TERA_GUI_NAME}>/../Frameworks/*
             $<TARGET_FILE_DIR:${TERA_GUI_NAME}>/../PlugIns/*/*
         COMMAND codesign -f -v -s \"$$SIGNCERT\" $<TARGET_FILE_DIR:${TERA_GUI_NAME}>/../..
@@ -257,10 +255,8 @@ else()
     include( GNUInstallDirs )
     configure_file( qdigidoc-tera.1.cmake qdigidoc-tera.1 )
     configure_file( qdigidoc-tera-gui.1.cmake qdigidoc-tera-gui.1 )
-    install( TARGETS ${TERA_CMD_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR} )
-    install( TARGETS ${TERA_GUI_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR} )
-    install( FILES ${CMAKE_CURRENT_BINARY_DIR}/qdigidoc-tera.1 DESTINATION ${CMAKE_INSTALL_MANDIR}/man1 )
-    install( FILES ${CMAKE_CURRENT_BINARY_DIR}/qdigidoc-tera-gui.1 DESTINATION ${CMAKE_INSTALL_MANDIR}/man1 )
+    install( TARGETS ${TERA_CMD_NAME} ${TERA_GUI_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR} )
+    install( FILES ${CMAKE_CURRENT_BINARY_DIR}/qdigidoc-tera.1 ${CMAKE_CURRENT_BINARY_DIR}/qdigidoc-tera-gui.1 DESTINATION ${CMAKE_INSTALL_MANDIR}/man1 )
     install( FILES qdigidoc-tera.appdata.xml DESTINATION ${CMAKE_INSTALL_DATADIR}/appdata RENAME ee.tera.qdigidoc-tera.desktop )
     install( FILES qdigidoc-tera.desktop DESTINATION ${CMAKE_INSTALL_DATADIR}/applications RENAME ee.tera.qdigidoc-tera.desktop )
     foreach( RES 16x16 32x32 48x48 128x128 )

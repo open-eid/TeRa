@@ -67,7 +67,7 @@ See http://stackoverflow.com/questions/41865537/how-does-apples-codesign-utility
 #### 2. Fetch the source
 
     mkdir -p ~/cmake_builds/github && cd ~/cmake_builds/github
-    git clone https://github.com/open-eid/TeRa.git
+    git clone --recursive https://github.com/open-eid/TeRa.git
 
 #### 3. Configure
 

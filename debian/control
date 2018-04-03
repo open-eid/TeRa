@@ -7,17 +7,15 @@ Build-Depends:
  cmake,
  libpcsclite-dev,
  libssl-dev,
- qtbase5-dev,
  qttools5-dev,
- qttools5-dev-tools,
- zlib1g,
  zlib1g-dev
-Standards-Version: 1.0.0
+Standards-Version: 3.9.8
 Homepage: https://github.com/open-eid/tera
 
 Package: qdigidoc-tera
 Architecture: any
 Depends:
+ opensc,
  fonts-liberation,
  pcscd (>=1.5),
  ${misc:Depends},
