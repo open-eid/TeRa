@@ -23,9 +23,9 @@
 
 namespace ria_tera {
 
-HttpsIDCardAuthentication::HttpsIDCardAuthentication() {}
+HttpsIDCardAuthentication::HttpsIDCardAuthentication() = default;
 
-HttpsIDCardAuthentication::~HttpsIDCardAuthentication() {}
+HttpsIDCardAuthentication::~HttpsIDCardAuthentication() = default;
 
 bool HttpsIDCardAuthentication::useIDAuth(QString& url) {
     static const QString ID_CARD_AUTH_PREFIX("#IDCard-AUTH#");
@@ -59,9 +59,7 @@ void HttpsIDCardAuthentication::configureRequest(QNetworkRequest& request) {
     QSslCertificate cert = m_authSert;
 
     QSslConfiguration ssl = QSslConfiguration::defaultConfiguration();
-    QList<QSslCertificate> trusted;
     ssl.setCaCertificates(QList<QSslCertificate>());
-    ssl.setProtocol(QSsl::TlsV1_0);
     if (!m_key.isNull())
     {
         ssl.setPrivateKey(m_key);

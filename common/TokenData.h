@@ -50,6 +50,7 @@ public:
 	void setCert( const QSslCertificate &cert );
 
 	void clear();
+	bool isNull() const;
 
 	TokenFlags flags() const;
 	void setFlag( TokenFlags flag, bool enabled = true );

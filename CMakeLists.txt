@@ -89,6 +89,11 @@ SET (TERA_COMMON_LIB_SRC
      common/TokenData.h common/TokenData.cpp
      common/PinDialogInterface.h
      )
+IF (WIN32)
+    list(APPEND TERA_COMMON_LIB_SRC common/QCNG.h common/QCNG.cpp common/QWin.h common/QWin.cpp)
+else ()
+    list(APPEND TERA_COMMON_LIB_SRC common/QPKCS11.h common/QPKCS11.cpp common/QPKCS11_p.h)
+endif()
 
 SET (TERA_COMMON_LIB_GUI_SRC
      common/PinDialog.h common/PinDialog.cpp
@@ -166,8 +171,9 @@ if(NOT APPLE)
         ${TERA_LIBDIGIDOC_SRC}
         ${CONFIG_SOURCES}
         )
-    target_link_libraries(${TERA_CMD_NAME} ${ZIP_LIBRARIES} ${OPENSSL_LIBRARIES} ${ZLIB_LIBRARIES} ${TERA_SCARD_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
-    qt5_use_modules(${TERA_CMD_NAME} Core Concurrent Network Widgets Gui)
+    target_link_libraries(${TERA_CMD_NAME}
+        ${ZIP_LIBRARIES} ${OPENSSL_LIBRARIES} ${ZLIB_LIBRARIES} ${TERA_SCARD_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT}
+        Qt5::Network Qt5::Widgets)
 endif()
 
 # TeRa GUI
@@ -194,8 +200,9 @@ add_executable(${TERA_GUI_NAME} WIN32 MACOSX_BUNDLE
         ${TERA_COMMON_LIB_GUI_SRC}
         ${TERA_MAC_RESOURCE_FILES}
         )
-target_link_libraries(${TERA_GUI_NAME} ${ZIP_LIBRARIES} ${OPENSSL_LIBRARIES} ${ZLIB_LIBRARIES} ${TERA_SCARD_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
-qt5_use_modules(${TERA_GUI_NAME} Core Concurrent Network Widgets Gui)
+target_link_libraries(${TERA_GUI_NAME}
+    ${ZIP_LIBRARIES} ${OPENSSL_LIBRARIES} ${ZLIB_LIBRARIES} ${TERA_SCARD_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT}
+    Qt5::Network Qt5::Widgets)
 
 if( WIN32 )
     IF (CMAKE_SIZEOF_VOID_P EQUAL 8)
