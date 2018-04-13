@@ -23,7 +23,7 @@
 #### 2. Fetch the source
 
     mkdir -p ~/cmake_builds/github && cd ~/cmake_builds/github
-    git clone https://github.com/open-eid/TeRa.git
+    git clone --recursive https://github.com/open-eid/TeRa.git
 
 #### 3. Configure
 
@@ -68,7 +68,7 @@ Alternatively you can install all dependencies manually, see [instructions for m
 
 #### 3. Fetch the source
 
-    git clone https://github.com/open-eid/TeRa.git
+    git clone --recursive https://github.com/open-eid/TeRa.git
 
 #### 3. Configure
 

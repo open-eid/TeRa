@@ -21,7 +21,7 @@ BEGIN
 	BEGIN
 		BLOCK "040904B0"
 		BEGIN
-			VALUE "CompanyName", ORG
+			VALUE "CompanyName", "RIA"
 			VALUE "FileDescription", "TeRa Client"
 			VALUE "FileVersion", VER_STR(MAJOR_VER.MINOR_VER.RELEASE_VER.BUILD_VER)
 			VALUE "InternalName", VER_APP_NAME
@@ -32,7 +32,7 @@ BEGIN
 		END
 		BLOCK "042504B0"
 		BEGIN
-			VALUE "CompanyName", ORG
+			VALUE "CompanyName", "RIA"
 			VALUE "FileDescription", "TeRa Klient"
 			VALUE "FileVersion", VER_STR(MAJOR_VER.MINOR_VER.RELEASE_VER.BUILD_VER)
 			VALUE "InternalName", VER_APP_NAME
