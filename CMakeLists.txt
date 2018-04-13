@@ -122,7 +122,7 @@ SET (TERA_GUI_UI
         src/client/about/AboutDialog.ui)
 SET (TERA_GUI_SRC
         poc/xxx.cpp
-        poc/main_window.h poc/main_window.cpp ComboBox.h ComboBox.cpp
+        poc/main_window.h poc/main_window.cpp common/ComboBox.h common/ComboBox.cpp
         poc/gui_timestamper_processor.h poc/gui_timestamper_processor.cpp
         poc/settings_window.h poc/settings_window.cpp
         poc/files_window.h poc/files_window.cpp

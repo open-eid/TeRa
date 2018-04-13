@@ -626,6 +626,11 @@ Viga: %1</translation>
         <translation>Allkirjastamine</translation>
     </message>
     <message>
+        <location filename="../poc/timestamper.cpp" line="276"/>
+        <source>The number of queries for time-stamps has been reached(5000 per day/25 000 per month).</source>
+        <translation>Ajatemplite limiit on ületatud: kuni 5000 päringut päevas ning 25 000 päringut kuus.</translation>
+    </message>
+    <message>
         <source>For using sign certificate enter PIN2 at the reader</source>
         <translation>Sertifikaadi kasutamiseks sisesta PIN2 kaardilugeja sõrmistikult</translation>
     </message>
