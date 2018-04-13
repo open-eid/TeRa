@@ -272,7 +272,10 @@ void TimeStamper::tsReplyFinished(QNetworkReply *reply) {
     if (QNetworkReply::NoError != reply->error()) {
         QString error;
         error.push_back("Time-stamping request failed: ");
-        error.push_back(reply->errorString());
+        if(reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() == 403)
+            error.push_back(tr("The number of queries for time-stamps has been reached(5000 per day/25 000 per month)."));
+        else
+            error.push_back(reply->errorString());
         if (!testRequest && retriesLeft > 0) {
             error.push_back(QString(". Trying to resend data. %1 retries left.").arg(QString::number(retriesLeft)) );
             TERA_LOG(warn) << error;

@@ -2061,7 +2061,7 @@ font-weight: bold;
   <customwidget>
    <class>ComboBox</class>
    <extends>QComboBox</extends>
-   <header>ComboBox.h</header>
+   <header>common/ComboBox.h</header>
   </customwidget>
  </customwidgets>
  <resources>

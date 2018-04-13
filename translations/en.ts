@@ -618,6 +618,11 @@ Error: %1</translation>
         <translation>PIN will be locked next failed attempt</translation>
     </message>
     <message>
+        <location filename="../poc/timestamper.cpp" line="276"/>
+        <source>The number of queries for time-stamps has been reached(5000 per day/25 000 per month).</source>
+        <translation>The number of queries for time-stamps has been reached(5000 per day/25 000 per month).</translation>
+    </message>
+    <message>
         <source>PIN has been entered incorrectly one time</source>
         <translation>PIN has been entered incorrectly one time</translation>
     </message>

@@ -604,6 +604,11 @@ Timestamped files might not fit on disk.</source>
         <translation>Подписывание</translation>
     </message>
     <message>
+        <location filename="../poc/timestamper.cpp" line="276"/>
+        <source>The number of queries for time-stamps has been reached(5000 per day/25 000 per month).</source>
+        <translation>предел запросов на метку времени превышен: до 5000 запросов в день и 25 000 запросов в месяц.</translation>
+    </message>
+    <message>
         <source>For using sign certificate enter PIN2 at the reader</source>
         <translation>Для использования сертификата подписи введите PIN2 с клавиатуры считывателя</translation>
     </message>
