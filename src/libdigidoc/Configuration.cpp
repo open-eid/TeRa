@@ -1,5 +1,5 @@
 /*
- * TeRa
+ * QEstEidCommon
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -95,12 +95,11 @@ QString CONFIG_URL = "https://id.eesti.ee/config.json"; // TODO
 	QUrl rsaurl, url = QUrl(CONFIG_URL);
 	RSA *rsa = nullptr;
 	QNetworkRequest req;
-        QNetworkAccessManager *net = nullptr;
+	QNetworkAccessManager *net = nullptr;
 	QList<QNetworkReply*> requestcache;
 #ifdef LAST_CHECK_DAYS
 	Settings s;
 #endif
-	bool forceUpdate = false;
 };
 
 void ConfigurationPrivate::initCache(bool clear)
@@ -130,7 +129,6 @@ void ConfigurationPrivate::initCache(bool clear)
 	}
 	if(f.open(QFile::ReadOnly))
 		setData(f.readAll());
-
 	f.close();
 #else
 	// Signature
@@ -173,7 +171,7 @@ bool ConfigurationPrivate::lessThanVersion( const QString &current, const QStrin
 
 bool ConfigurationPrivate::validate(const QByteArray &data, const QByteArray &signature) const
 {
-    if (!rsa || data.isEmpty())
+	if(!rsa || data.isEmpty())
 		return false;
 
 	QByteArray digest(RSA_size(rsa), 0);
@@ -342,9 +340,7 @@ Configuration::Configuration(QObject *parent)
 			if(reply->url() == d->rsaurl)
 			{
 				d->tmpsignature = QByteArray::fromBase64(reply->readAll());
-				if(d->forceUpdate)
-					TERA_LOG(debug) << "Forced update";
-				else if(d->validate(d->data, d->tmpsignature))
+				if(d->validate(d->data, d->tmpsignature))
 				{
 #ifdef LAST_CHECK_DAYS
 					d->s.setValue("LastCheck", QDate::currentDate().toString("yyyyMMdd"));
@@ -401,7 +397,6 @@ Configuration::Configuration(QObject *parent)
 			break;
 		default:
 			Q_EMIT finished(false, reply->errorString());
-            Q_EMIT networkError(reply->errorString());
 			break;
 		}
 		reply->deleteLater();
@@ -448,7 +443,7 @@ Configuration::Configuration(QObject *parent)
 			TERA_LOG(debug) << "Bundled configuration serial:" << bundledSerial;
 			if(serial < bundledSerial)
 			{
-				qWarning() << "Bundled configuration is recent than cache, reseting cache";
+				qWarning() << "Bundled configuration is recent than cache, resetting cache";
 				d->initCache(true);
 			}
 		}
@@ -472,27 +467,25 @@ Configuration::~Configuration()
 	delete d;
 }
 
-//qApp->activeWindow()
 void Configuration::checkVersion(const QString &name)
 {
-	//if(ConfigurationPrivate::lessThanVersion(qApp->applicationVersion(), object()[name+"-SUPPORTED"].toString()))
- //       QMessageBox::warning(QApplication::activeWindow(), tr("Update is available"),
-	//		tr("Your ID-software has expired. To download the latest software version, go to the "
-	//			"<a href=\"http://installer.id.ee/?lang=eng\">id.ee</a> website. "
-	//			"Mac OS X users can download the latest ID-software version from the "
-	//			"<a href=\"http://appstore.com/mac/ria\">Mac App Store</a>."));
- //   /*
-	//connect(this, &Configuration::finished, [=](bool changed, const QString &error){
-	//	if(changed && ConfigurationPrivate::lessThanVersion(qApp->applicationVersion(), object()[name+"-LATEST"].toString()))
-	//		QMessageBox::information(qApp->activeWindow(), tr("Update is available"),
-	//			tr("An ID-software update has been found. To download the update, go to the "
-	//				"<a href=\"http://installer.id.ee/?lang=eng\">id.ee</a> website. "
-	//				"Mac OS X users can download the update from the "
-	//				"<a href=\"http://appstore.com/mac/ria\">Mac App Store</a>."));
-	//	else if(d->forceUpdate && error.isEmpty())
-	//		QMessageBox::information(qApp->activeWindow(), tr("No updates are available"),
-	//			tr("You are using the latest software version. Software and configuration updates are not available."));
-	//});
+#if 0
+	if(ConfigurationPrivate::lessThanVersion(qApp->applicationVersion(), object()[name+"-SUPPORTED"].toString()))
+		QMessageBox::warning(qApp->activeWindow(), tr("Update is available"),
+			tr("Your ID-software has expired. To download the latest software version, go to the "
+				"<a href=\"http://installer.id.ee/?lang=eng\">id.ee</a> website. "
+				"Mac OS X users can download the latest ID-software version from the "
+				"<a href=\"http://appstore.com/mac/ria\">Mac App Store</a>."));
+
+	connect(this, &Configuration::finished, [=](bool changed, const QString &){
+		if(changed && ConfigurationPrivate::lessThanVersion(qApp->applicationVersion(), object()[name+"-LATEST"].toString()))
+			QMessageBox::information(qApp->activeWindow(), tr("Update is available"),
+				tr("An ID-software update has been found. To download the update, go to the "
+					"<a href=\"http://installer.id.ee/?lang=eng\">id.ee</a> website. "
+					"Mac OS X users can download the update from the "
+					"<a href=\"http://appstore.com/mac/ria\">Mac App Store</a>."));
+	});
+#endif
 }
 
 Configuration& Configuration::instance()
@@ -525,8 +518,7 @@ void Configuration::sendRequest(const QUrl &url)
 	timer->start(30*1000);
 }
 
-void Configuration::update(bool force)
+void Configuration::update()
 {
-	d->forceUpdate = force;
 	sendRequest(d->rsaurl);
 }
