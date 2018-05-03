@@ -60,12 +60,10 @@ Config::Config()
 {
     outExtension = DEFAULT_OUT_EXTENSION;
     appendIniFile(INI_FILE_DEFAULTS);
-    timeServerURLDefault = timeServerURL;
+    timeServerURLDefault = Configuration::instance().object().value("TERA-URL").toString();
 }
 
-Config::~Config() {
-    ;
-}
+Config::~Config() = default;
 
 void Config::appendIniFile(QString const& ini_path) {
     QSettings settings(ini_path, QSettings::IniFormat);
@@ -101,7 +99,7 @@ QString Config::getDefaultTimeServerURL() {
 }
 
 QString Config::getTimeServerURL() {
-    return timeServerURL;
+    return timeServerURL.isEmpty() ? timeServerURLDefault : timeServerURL;
 }
 
 QString Config::getOutExtension() {

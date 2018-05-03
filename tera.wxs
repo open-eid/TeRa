@@ -25,7 +25,7 @@ msiexec /a Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi /qn TARGETDIR
 <?define PlatformProgramFilesFolder = "ProgramFilesFolder" ?>
 <?endif ?>
 
-<?if $(env.VCINSTALLDIR) = "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\" ?>
+<?if $(env.VisualStudioVersion) = "14.0" ?>
 <?define VCVER = "140" ?>
 <?define VCRT = "vcruntime" ?>
 <?else?>

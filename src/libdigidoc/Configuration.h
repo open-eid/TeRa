@@ -1,5 +1,5 @@
 /*
- * TeRa
+ * QEstEidCommon
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -29,11 +29,10 @@ public:
 	void checkVersion(const QString &name);
 	static Configuration& instance();
 	QJsonObject object() const;
-	void update(bool force = false);
+	void update();
 
 Q_SIGNALS:
 	void finished(bool changed, const QString &error);
-    void networkError(const QString &error);
 
 private:
 	explicit Configuration(QObject *parent = 0);
