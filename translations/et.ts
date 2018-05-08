@@ -13,10 +13,10 @@
     <message>
         <location filename="../src/client/about/AboutDialog.ui" line="62"/>
         <source>&lt;p&gt;Estonian ID-software is released by Information Systems&apos;s Auhtority, developed by AS Sertifitseerimiskeskus&lt;br /&gt;
-Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.&lt;/p&gt;
+In case of questions please conctact our support via &lt;a href=&quot;https://www.id.ee&quot;&gt;https://www.id.ee&lt;/a&gt; or by phone (+372) 666 8888.&lt;/p&gt;
 Additional licenses and components</source>
         <translation>&lt;p&gt;ID-tarkvara arendaja Riigi Infosüsteemi Amet&lt;br /&gt;
-Küsimuste korral pöörduge ID-abiliini poole e-kirja teel &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; või helistage Eesti-siseselt lühinumbril 1777, välismaalt (+372) 677 3377.&lt;/p&gt;
+Küsimuste korral pöörduge &lt;a href=&quot;https://www.id.ee&quot;&gt;https://www.id.ee&lt;/a&gt; või helistage (+372) 666 8888.&lt;/p&gt;
 Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
