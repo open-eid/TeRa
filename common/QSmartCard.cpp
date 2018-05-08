@@ -80,9 +80,9 @@ QSmartCard::QSmartCard(PinDialogFactory &pdf)
     ECDSA_METHOD_set_sign(d->ecmethod, Private::ecdsa_do_sign);
     ECDSA_METHOD_set_app_data(d->ecmethod, const_cast<QSmartCard*>(this));
 #else
-    RSA_meth_set1_name(rsamethod, "QSmartCard");
-    RSA_meth_set_sign(rsamethod, Private::rsa_sign);
-    EC_KEY_METHOD_set_sign(ecmethod, nullptr, nullptr, Private::ecdsa_do_sign);
+    RSA_meth_set1_name(d->rsamethod, "QSmartCard");
+    RSA_meth_set_sign(d->rsamethod, Private::rsa_sign);
+    EC_KEY_METHOD_set_sign(d->ecmethod, nullptr, nullptr, Private::ecdsa_do_sign);
 #endif
 }
 
