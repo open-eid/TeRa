@@ -162,7 +162,7 @@ private:
 
     QString lang;
     QStringList langs;
-    QTranslator appTranslator;
+    QTranslator appTranslator, qtTranslator;
 
     QPushButton* btnIntroAccept;
     QPushButton* btnIntroReject;
