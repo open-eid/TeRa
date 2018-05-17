@@ -90,6 +90,7 @@ TeraMainWin::TeraMainWin(QWidget *parent) :
     stamper(*this, nameGen, false),
     settingsWin(NULL),
     appTranslator(this),
+    qtTranslator(this),
     btnIntroAccept(NULL),
     btnIntroReject(NULL)
 {
@@ -743,8 +744,11 @@ void TeraMainWin::loadTranslation(QString const& language_short) {
     else QLocale::setDefault( QLocale( QLocale::Estonian, QLocale::Estonia ) );
 
     qApp->removeTranslator(&appTranslator);
+    qApp->removeTranslator(&qtTranslator);
     appTranslator.load(":/translations/" + lang + ".qm");
+    qtTranslator.load(":/translations/qtbase_" + lang + ".qm");
     qApp->installTranslator(&appTranslator);
+    qApp->installTranslator(&qtTranslator);
 
     retranslateUi(this);
     settingsWin.data()->retranslateUi(settingsWin.data());
