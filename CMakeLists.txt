@@ -119,7 +119,7 @@ SET (TERA_GUI_UI
         poc/SettingsDialog.ui
         poc/FileListDialog.ui
         poc/IDCardSelectionDialog.ui
-        src/client/about/AboutDialog.ui)
+        common/AboutDialog.ui)
 SET (TERA_GUI_SRC
         poc/xxx.cpp
         poc/main_window.h poc/main_window.cpp common/ComboBox.h common/ComboBox.cpp
@@ -127,7 +127,7 @@ SET (TERA_GUI_SRC
         poc/settings_window.h poc/settings_window.cpp
         poc/files_window.h poc/files_window.cpp
         poc/id_card_select_dialog.h poc/id_card_select_dialog.cpp
-        src/client/about/AboutDialog.h src/client/about/AboutDialog.cpp
+        common/AboutDialog.h common/AboutDialog.cpp
 
         poc/utils.h poc/utils.cpp
         poc/openssl_utils.h poc/openssl_utils.cpp

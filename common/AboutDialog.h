@@ -29,9 +29,7 @@ namespace ria_tera {
         Q_OBJECT
 
     public:
-        explicit AboutDialog(QWidget *parent = 0);
-        virtual ~AboutDialog();
+        explicit AboutDialog(QWidget *parent = nullptr);
     };
 
 }
-

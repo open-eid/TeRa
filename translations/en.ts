@@ -4,20 +4,20 @@
 <context>
     <name>AboutDialog</name>
     <message>
-        <location filename="../src/client/about/AboutDialog.ui" line="14"/>
-        <location filename="../src/client/about/AboutDialog.ui" line="30"/>
+        <location filename="../common/AboutDialog.ui" line="14"/>
+        <location filename="../common/AboutDialog.ui" line="30"/>
         <source>About</source>
         <translation>About</translation>
     </message>
     <message>
-        <location filename="../src/client/about/AboutDialog.ui" line="62"/>
-        <source>&lt;p&gt;Estonian ID-software is released by Information Systems&apos;s Auhtority, developed by AS Sertifitseerimiskeskus&lt;br /&gt;
+        <location filename="../common/AboutDialog.ui" line="62"/>
+        <source>&lt;p&gt;Estonian ID-software is released by Information Systems&apos;s Auhtority&lt;br /&gt;
 In case of questions please conctact our support via &lt;a href=&quot;https://www.id.ee&quot;&gt;https://www.id.ee&lt;/a&gt; or by phone (+372) 666 8888.&lt;/p&gt;
 Additional licenses and components</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/client/about/AboutDialog.ui" line="105"/>
+        <location filename="../common/AboutDialog.ui" line="105"/>
         <source>Diagnostics</source>
         <translation>Diagnostics</translation>
     </message>
@@ -269,14 +269,19 @@ By default only files on local drives will be timestamped. If you wish to also t
 <context>
     <name>ria_tera::AboutDialog</name>
     <message>
-        <location filename="../src/client/about/AboutDialog.cpp" line="14"/>
+        <location filename="../common/AboutDialog.cpp" line="31"/>
         <source>Close</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/client/about/AboutDialog.cpp" line="18"/>
+        <location filename="../common/AboutDialog.cpp" line="34"/>
         <source>%1 version %2, released %3%4</source>
         <translation>%1 version %2, released %3%4</translation>
+    </message>
+    <message>
+        <location filename="../common/AboutDialog.cpp" line="36"/>
+        <source>:/images/EL_Regionaalareng_horisontaal.png</source>
+        <translation>:/images/eu_regional_development_fund_horizontal.jpg</translation>
     </message>
 </context>
 <context>
