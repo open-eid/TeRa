@@ -40,14 +40,13 @@
 #include <QSslKey>
 #include "common/QPCSC.h"
 #include "common/SslCertificate.h"
-//#include <AboutDialog.h>
+#include "common/AboutDialog.h"
 
 
 
 #include "disk_crawler.h"
 #include "settings_window.h"
 #include "src/libdigidoc/Configuration.h"
-#include "src/client/about/AboutDialog.h"
 
 #ifdef Q_OS_OSX
     #include "utils_mac.h"

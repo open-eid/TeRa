@@ -59,7 +59,7 @@
        <item>
         <widget class="QLabel" name="label">
          <property name="text">
-          <string>&lt;p&gt;Estonian ID-software is released by Information Systems's Auhtority, developed by AS Sertifitseerimiskeskus&lt;br /&gt;
+          <string>&lt;p&gt;Estonian ID-software is released by Information Systems's Auhtority&lt;br /&gt;
 In case of questions please conctact our support via &lt;a href=&quot;https://www.id.ee&quot;&gt;https://www.id.ee&lt;/a&gt; or by phone (+372) 666 8888.&lt;/p&gt;
 Additional licenses and components</string>
          </property>
