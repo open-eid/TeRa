@@ -73,7 +73,7 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <location filename="../poc/IDCardSelectionDialog.ui" line="26"/>
         <source>TextLabel</source>
-        <translation>Ajatempli teenuse kasutamiseks on vajalik kasutaja tuvastamine.&lt;br/&gt;Palun veenduge, et ID-kaart on kaardilugejas ja arvuti on ühendatud internetti</translation>
+        <translation>Ajatempli teenuse kasutamiseks on vajalik kasutaja tuvastamine.&lt;br/&gt;Palun veenduge, et ID-kaart on kaardilugejas ja arvuti ühendatud internetti.</translation>
     </message>
     <message>
         <location filename="../poc/IDCardSelectionDialog.ui" line="94"/>
