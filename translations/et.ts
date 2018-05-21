@@ -388,7 +388,7 @@ Please check if ID-card is still in the reader.</source>
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="142"/>
         <source>expired</source>
-        <translation>expired</translation>
+        <translation>aegunud</translation>
     </message>
 </context>
 <context>
