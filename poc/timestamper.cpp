@@ -271,11 +271,10 @@ void TimeStamper::tsReplyFinished(QNetworkReply *reply) {
 
     if (QNetworkReply::NoError != reply->error()) {
         QString error;
-        error.push_back("Time-stamping request failed: ");
         if(reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() == 403)
             error.push_back(tr("The number of queries for time-stamps has been reached(5000 per day/25 000 per month)."));
         else
-            error.push_back(reply->errorString());
+            error.push_back(tr("Time-stamping request failed: %1").arg(reply->errorString()));
         if (!testRequest && retriesLeft > 0) {
             error.push_back(QString(". Trying to resend data. %1 retries left.").arg(QString::number(retriesLeft)) );
             TERA_LOG(warn) << error;
@@ -342,7 +341,7 @@ void TimeStamper::createAsicsContainerFinished(qint64 doneJobId, bool asicsSucce
     notifyClientOnTimestampingFinished(false, asicsSuccess, error);
 }
 
-void TimeStamper::notifyClientOnTimestampingFinished(bool test, bool success, QString errString, TS_FINISH_DETAILS details, QByteArray resp) {
+void TimeStamper::notifyClientOnTimestampingFinished(bool test, bool success, const QString &errString, TS_FINISH_DETAILS details, const QByteArray &resp) {
     // TODO bad design
     if (test) {
         emit timestampingTestFinished(success, resp, errString);

@@ -90,7 +90,7 @@ public slots:
     void doPin1Authentication();
     void pin1AuthenticaionDone();
     void doTestStamp();
-    void timestampingTestFinished(bool success, QByteArray resp, QString errString);
+    void timestampingTestFinished(bool success, const QByteArray &resp, const QString &errString);
 
     void processProcessingPath(int jobid, QString path, double progress_percent);
     void processExcludingPath(int jobid, QString path); // TODO delete
