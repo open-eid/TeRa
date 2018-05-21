@@ -108,11 +108,8 @@ SET (TERA_COMMON_SRC
       src/version.h
       src/common/Bdoc10Handler.h src/common/Bdoc10Handler.cpp
       src/common/HttpsIDCardAuthentication.h src/common/HttpsIDCardAuthentication.cpp
-     )
-
-SET (TERA_LIBDIGIDOC_SRC
-        src/libdigidoc/Configuration.h src/libdigidoc/Configuration.cpp
-        src/libdigidoc/Settings.h)
+      common/Configuration.h common/Configuration.cpp
+      common/Settings.h)
 
 SET (TERA_GUI_UI
         poc/MainWindow.ui
@@ -169,7 +166,6 @@ if(NOT APPLE)
         poc/config.h poc/config.cpp
         src/cmdtool/cmdline_timestamper_processor.h src/cmdtool/cmdline_timestamper_processor.cpp
         ${TERA_COMMON_LIB_SRC}
-        ${TERA_LIBDIGIDOC_SRC}
         ${CONFIG_SOURCES}
         )
     target_link_libraries(${TERA_CMD_NAME}
@@ -186,7 +182,6 @@ add_executable(${TERA_GUI_NAME} WIN32 MACOSX_BUNDLE
         ${TERA_GUI_SRC}
         ${TERA_GUI_MAC_SRC}
         ${SOURCES}
-        ${TERA_LIBDIGIDOC_SRC}
         ${CONFIG_SOURCES}
         ${QM}
         ${TRANS_QT}

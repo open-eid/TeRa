@@ -28,7 +28,7 @@
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
 
-#include "src/libdigidoc/Configuration.h"
+#include "common/Configuration.h"
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 4, 0)
 #else

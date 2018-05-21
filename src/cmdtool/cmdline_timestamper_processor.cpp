@@ -28,7 +28,7 @@
 
 #include "poc/config.h"
 #include "common/SslCertificate.h"
-#include "src/libdigidoc/Configuration.h"
+#include "common/Configuration.h"
 
 #ifdef WIN32
 #include <windows.h>

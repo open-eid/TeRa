@@ -38,7 +38,7 @@
 #include "common/AboutDialog.h"
 #include "disk_crawler.h"
 #include "settings_window.h"
-#include "src/libdigidoc/Configuration.h"
+#include "common/Configuration.h"
 
 #ifdef Q_OS_OSX
     #include "utils_mac.h"

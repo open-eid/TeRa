@@ -336,29 +336,15 @@ padding: 5px;
            <property name="text">
             <string notr="true">Eesti</string>
            </property>
-           <property name="icon">
-            <iconset theme=":/images/flag-estonia.png">
-             <normalon>:/images/flag-estonia.png</normalon>
-            </iconset>
-           </property>
           </item>
           <item>
            <property name="text">
             <string notr="true">English</string>
            </property>
-           <property name="icon">
-            <iconset theme=":/images/flag-united-kingdom.png">
-             <normaloff>.</normaloff>
-             <normalon>:/images/flag-united-kingdom.png</normalon>.</iconset>
-           </property>
           </item>
           <item>
            <property name="text">
             <string notr="true">Русский</string>
-           </property>
-           <property name="icon">
-            <iconset resource="../images/images.qrc">
-             <normaloff>:/images/flag-russia.png</normaloff>:/images/flag-russia.png</iconset>
            </property>
           </item>
          </widget>
