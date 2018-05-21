@@ -87,7 +87,7 @@ signals:
     void timestampingTestFinished(bool success, QByteArray resp, QString errString);
     void signalAsicsContainerFinished(bool);
 private:
-    void notifyClientOnTimestampingFinished(bool test, bool success, QString errString, TS_FINISH_DETAILS details = TS_FINISH_DETAILS::OTHER, QByteArray resp = QByteArray());
+    void notifyClientOnTimestampingFinished(bool test, bool success, const QString &errString, TS_FINISH_DETAILS details = TS_FINISH_DETAILS::OTHER, const QByteArray &resp = QByteArray());
 
     qint64 jobId;
     QString inputFilePath;

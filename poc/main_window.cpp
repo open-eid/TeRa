@@ -329,9 +329,9 @@ void TeraMainWin::doTestStamp() {
     stamper.getTimestamper().sendTSRequest(req, true); // TODO api is rubbish
 }
 
-void TeraMainWin::timestampingTestFinished(bool success, QByteArray resp, QString errString) {
+void TeraMainWin::timestampingTestFinished(bool success, const QByteArray &resp, const QString &errString) {
     if (!success) {
-        timestampingFinished(BatchStamper::FinishingDetails::error(tr("Test request to Time Server failed. ") + "\n" + errString));
+        timestampingFinished(BatchStamper::FinishingDetails::error(errString));
         return;
     }
 
