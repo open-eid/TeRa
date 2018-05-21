@@ -33,7 +33,7 @@
 #include <QTemporaryFile>
 
 #include "utils.h"
-#include "../src/libdigidoc/Configuration.h"
+#include "../common/Configuration.h"
 
 namespace {
 
