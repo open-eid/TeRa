@@ -35,15 +35,7 @@
 #endif
 
 
-#include <openssl/evp.h>
-#include <openssl/rsa.h>
-#include <QSslKey>
-#include "common/QPCSC.h"
-#include "common/SslCertificate.h"
 #include "common/AboutDialog.h"
-
-
-
 #include "disk_crawler.h"
 #include "settings_window.h"
 #include "src/libdigidoc/Configuration.h"
@@ -94,6 +86,8 @@ TeraMainWin::TeraMainWin(QWidget *parent) :
     btnIntroReject(NULL)
 {
     setupUi(this);
+    qApp->installTranslator(&appTranslator);
+    qApp->installTranslator(&qtTranslator);
     fixFontSizeInStyleSheet(btnStamp);
     fixFontSizeInStyleSheet(cancelProcess);
     fixFontSizeInStyleSheet(btnReady);
@@ -163,20 +157,14 @@ TeraMainWin::TeraMainWin(QWidget *parent) :
     Configuration::instance().update();
 }
 
-TeraMainWin::~TeraMainWin()
-{
-}
+TeraMainWin::~TeraMainWin() = default;
 
 CrawlDiskJob::CrawlDiskJob(TeraMainWin& mainWindow, int jobid, GuiTimestamperProcessor const & processor, QStringList const &extensions) :
 gui(mainWindow), jobId(jobid), dc(*this, extensions)
 {
     dc.addExcludeDirs(processor.exclDirs.toList());
-
-    QList<QString> inDirList = processor.getInclDirList(); // TODO checked previously
-    for (int i = 0; i < inDirList.size(); ++i) {
-        QString dir = inDirList.at(i);
+    for (const QString &dir: processor.getInclDirList()) // TODO checked previously
         dc.addInputDir(dir, true);
-    }
 }
 
 void CrawlDiskJob::run() {
@@ -222,10 +210,8 @@ void TeraMainWin::handleStartStamping() {
     processor.resetGrants(nullVal, nullVal);
 
     MacUtils mu;
-    QList<QString> inclDirs = processor.getInclDirList();
     QSet<QString> deniedDirs;
-    for (int i = 0; i < inclDirs.size(); ++i) {
-        QString dirPath = inclDirs[i];
+    for (const QString &dirPath: processor.getInclDirList()) {
         if (!ria_tera::isSubfolder(dirPath, deniedDirs)) {
             if (!mu.askPermissions(dirPath.toUtf8().constData())) {
                 deniedDirs.insert(dirPath);
@@ -742,12 +728,8 @@ void TeraMainWin::loadTranslation(QString const& language_short) {
     else if( lang == "ru" ) QLocale::setDefault( QLocale( QLocale::Russian, QLocale::RussianFederation ) );
     else QLocale::setDefault( QLocale( QLocale::Estonian, QLocale::Estonia ) );
 
-    qApp->removeTranslator(&appTranslator);
-    qApp->removeTranslator(&qtTranslator);
-    appTranslator.load(":/translations/" + lang + ".qm");
-    qtTranslator.load(":/translations/qtbase_" + lang + ".qm");
-    qApp->installTranslator(&appTranslator);
-    qApp->installTranslator(&qtTranslator);
+    qDebug() << "load " << appTranslator.load(":/translations/" + lang + ".qm");
+    qDebug() << "load qt" << qtTranslator.load(":/translations/qtbase_" + lang + ".qm");
 
     retranslateUi(this);
     settingsWin.data()->retranslateUi(settingsWin.data());
