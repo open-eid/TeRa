@@ -144,12 +144,13 @@ IF ( APPLE )
 ENDIF()
 
 SET (TRANS translations/et.ts translations/en.ts translations/ru.ts)
+SET (TRANS_QT ${TRANS} translations/qtbase_et.ts translations/qtbase_ru.ts)
 
 if (UPDATE_TRANSLATIONS)
     qt5_create_translation( QM ${TERA_GUI_UI} ${TERA_GUI_SRC} ${TRANS})
 ENDIF()
 configure_file( translations/tr.qrc tr.qrc COPYONLY )
-qt5_add_translation( QM ${TRANS} translations/qtbase_et.ts translations/qtbase_ru.ts )
+qt5_add_translation( QM ${TRANS_QT} )
 qt5_add_resources( CONFIG_SOURCES res/config.qrc )
 qt5_add_resources( SOURCES images/images.qrc ${CMAKE_BINARY_DIR}/tr.qrc )
 qt5_wrap_ui( UI_HEADERS ${TERA_GUI_UI} )
@@ -188,7 +189,7 @@ add_executable(${TERA_GUI_NAME} WIN32 MACOSX_BUNDLE
         ${TERA_LIBDIGIDOC_SRC}
         ${CONFIG_SOURCES}
         ${QM}
-        ${TRANS}
+        ${TRANS_QT}
         ${TERA_COMMON_LIB_SRC}
         ${TERA_COMMON_LIB_GUI_SRC}
         ${RESOURCE_FILES}
