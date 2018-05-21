@@ -333,7 +333,7 @@ Please check if ID-card is still in the reader.</source>
         <location filename="../poc/id_card_select_dialog.cpp" line="111"/>
         <location filename="../poc/id_card_select_dialog.cpp" line="113"/>
         <source>NEED_PIN1_FOR_AUTHENTICATION</source>
-        <translation>Ajatempli teenuse kasutamiseks on vajalik kasutaja tuvastamine.&lt;br/&gt;Palun veenduge, et ID-kaart on kaardilugejas ja arvuti on ühendatud internetti</translation>
+        <translation>Ajatempli teenuse kasutamiseks on vajalik kasutaja tuvastamine.&lt;br/&gt;Palun veenduge, et ID-kaart on kaardilugejas ja arvuti ühendatud internetti.</translation>
     </message>
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="116"/>
