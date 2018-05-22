@@ -67,21 +67,17 @@ public:
         enum e_ProgressStage {
             TESTING_TIME_SERVER, SEARCHING_FILES, CONVERTING_FILES, DONE
         };
-        Result() :
-            progressStage(TESTING_TIME_SERVER), progressConverted(0),
-            progressSuccess(0), progressFailed(0),
-            success(false), cnt(-1), cntFound(-1) {}
-        e_ProgressStage progressStage;
-        int progressConverted;
-        int progressSuccess;
-        int progressFailed;
-        int progressUnprocessed;
-        bool success;
+        e_ProgressStage progressStage = TESTING_TIME_SERVER;
+        int progressConverted = 0;
+        int progressSuccess = 0;
+        int progressFailed = 0;
+        int progressUnprocessed = 0;
+        bool success = false;
         QString error;
         /// show "Error:" before error string?
         bool isSystemError = true;
-        int cnt;
-        int cntFound;
+        int cnt = -1;
+        int cntFound = -1;
     };
 
     GuiTimestamperProcessor();
