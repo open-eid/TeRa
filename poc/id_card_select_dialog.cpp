@@ -133,7 +133,6 @@ void IDCardSelectDialog::populateIDCardInfoText(TokenData const& t) {
         stCards << tr("NEED_PIN1_FOR_AUTHENTICATION") << "<br/><br/>\n";
     }
 
-    stCards << tr("%1 cards in the reader(s)").arg(QString::number(smartCardData.cards().size())) << "<br/><br/>";
     labelCardsInReader->setText(cards);
 
     if (t.isNull()) {
