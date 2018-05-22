@@ -106,14 +106,23 @@ Additional licenses and components</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/MainWindow.ui" line="1894"/>
+        <location filename="../poc/MainWindow.ui" line="485"/>
+        <source>To protect you from possible future security issues your digitally signed files will be timestamped. Timestamped files will have a .asics extention and will be placed in the same folder with the original DDOC and BDOC 1.0 files.
+
+By default only files on local drives will be timestamped. If you wish to also timestamp files from network drives or change other settings please open the &quot;Settings&quot; menu.</source>
+        <translation>To protect you from possible future security issues your digitally signed files will be timestamped. Timestamped files will have a .asics extention and will be placed in the same folder with the original DDOC and BDOC 1.0 files.
+
+By default only files on local drives will be timestamped. If you wish to also timestamp files from network drives or change other settings please open the &quot;Settings&quot; menu.</translation>
+    </message>
+    <message>
+        <location filename="../poc/MainWindow.ui" line="1880"/>
         <source>Downloading configuration updates...</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../poc/MainWindow.ui" line="1969"/>
         <source>TextLabel TeRa Intro</source>
-        <translation type="unfinished">Welcome to using the timestamping application.&lt;br&gt;
+        <translation>Welcome to using the timestamping application.&lt;br&gt;
 &lt;br&gt;
 The timestamping application is created for eID (ID-card, Digi-ID, e-residency ID, etc) holders by The Information System Authority.&lt;br&gt;
 &lt;br&gt;
@@ -161,13 +170,6 @@ p, li { white-space: pre-wrap; }
         <location filename="../poc/MainWindow.ui" line="1257"/>
         <source>Ready</source>
         <translation>Ready</translation>
-    </message>
-    <message>
-        <location filename="../poc/MainWindow.ui" line="499"/>
-        <source>To protect you from possible future security issues your digitally signed DDOC files will be timestamped. Timestamped files will have a .asics extention and will be placed in the same folder with the original DDOC files.
-
-By default only files on local drives will be timestamped. If you wish to also timestamp files from network drives or change other settings please open the &quot;Settings&quot; menu.</source>
-        <translation></translation>
     </message>
     <message>
         <source>TeRa client 0.4.0</source>
@@ -513,24 +515,9 @@ Please check if ID-card is still in the reader.</source>
         <translation>Error:</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="569"/>
-        <source>Finished timestamping DDOC files</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../poc/main_window.cpp" line="573"/>
-        <source>DDOC files found: %1</source>
-        <translation>DDOC files found: %1</translation>
-    </message>
-    <message>
         <location filename="../poc/main_window.cpp" line="575"/>
         <source>   of which %1 where chosen for timestamping</source>
         <translation>   of which %1 where chosen for timestamping</translation>
-    </message>
-    <message>
-        <location filename="../poc/main_window.cpp" line="576"/>
-        <source>DDOC files timestamped: %1</source>
-        <translation></translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="578"/>
@@ -538,12 +525,7 @@ Please check if ID-card is still in the reader.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="256"/>
-        <source>Test request to Time Server failed. </source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../poc/main_window.cpp" line="359"/>
+        <location filename="../poc/main_window.cpp" line="446"/>
         <source>* %1: free space %2, space needed %3 (approximately)</source>
         <translation></translation>
     </message>
@@ -589,7 +571,22 @@ Error: %1</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="581"/>
+        <location filename="../poc/main_window.cpp" line="657"/>
+        <source>Finished timestamping files</source>
+        <translation>Finished timestamping files</translation>
+    </message>
+    <message>
+        <location filename="../poc/main_window.cpp" line="661"/>
+        <source>Files found: %1</source>
+        <translation>Files found: %1</translation>
+    </message>
+    <message>
+        <location filename="../poc/main_window.cpp" line="664"/>
+        <source>Files timestamped: %1</source>
+        <translation>Files timestamped: %1</translation>
+    </message>
+    <message>
+        <location filename="../poc/main_window.cpp" line="669"/>
         <source>Files left unprocessed: %1</source>
         <translation></translation>
     </message>
@@ -658,7 +655,7 @@ Error: %1</translation>
     <message>
         <location filename="../poc/timestamper.cpp" line="277"/>
         <source>Time-stamping request failed: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Time-stamping request failed: %1</translation>
     </message>
     <message>
         <location filename="../poc/timestamper.cpp" line="288"/>

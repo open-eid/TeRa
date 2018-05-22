@@ -104,14 +104,23 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Abi</translation>
     </message>
     <message>
-        <location filename="../poc/MainWindow.ui" line="1894"/>
+        <location filename="../poc/MainWindow.ui" line="485"/>
+        <source>To protect you from possible future security issues your digitally signed files will be timestamped. Timestamped files will have a .asics extention and will be placed in the same folder with the original DDOC and BDOC 1.0 files.
+
+By default only files on local drives will be timestamped. If you wish to also timestamp files from network drives or change other settings please open the &quot;Settings&quot; menu.</source>
+        <translation>Teie digiallkirjastatud failidele lisatakse ajatempel, et kaitsta teid võimalike tulevaste turvanõrkuste eest. Ajatempliga failid on ASICS laiendiga ja asuvad samas kataloogis.
+
+Vaikimisi ajatembeldatakse ainult arvutis asuvaid DDOC ja BDOC 1.0 faile. Kui soovite võrguketastel asuvaid faile tembeldada või muid seadeid muuta, avage &quot;Seaded&quot; menüü.</translation>
+    </message>
+    <message>
+        <location filename="../poc/MainWindow.ui" line="1880"/>
         <source>Downloading configuration updates...</source>
         <translation>Konfiguratsiooniuuenduste allalaadimine...</translation>
     </message>
     <message>
         <location filename="../poc/MainWindow.ui" line="1969"/>
         <source>TextLabel TeRa Intro</source>
-        <translation type="unfinished">Tere tulemast kasutama tembeldamisrakenduse tarkvara.&lt;br&gt;
+        <translation>Tere tulemast kasutama tembeldamisrakenduse tarkvara.&lt;br&gt;
 &lt;br&gt;
 Tembeldamisrakendus on loodud Riigi Infosüsteemi Ameti tellimusel, eID (ID-kaart, Digi-ID, e-Residendi digi-ID vms) omanikele kasutamiseks.&lt;br&gt;
 &lt;br&gt;
@@ -138,26 +147,9 @@ Ajatempliteenuse osutamise tingimused on kättesaadavad lehel &lt;a href=&quot;h
         <translation>Alusta</translation>
     </message>
     <message>
-        <source>TextLabel</source>
-        <translation type="vanished">Tere tulemast kasutama tembeldamisrakenduse tarkvara.
-Tembeldamisrakendus on loodud Riigi Infosüsteemi Ameti tellimusel, eID (ID-kaart, Digi-ID, e-Residendi digi-ID vms) omanikele kasutamiseks.
-Tarkvara osutab kasutajale ajatempliteenust, vastavalt „ajatempliteenuse kasutustingimustele“. Ajatempliteenuse kasutamiseks tööstuslikus ulatuses või kommertseesmärkidel pöörduge ajatempliteenuse osutaja poole.
- 
-Tembeldamisrakenduse käivitamiseks vajad kehtivate sertifikaatidega eID dokumenti ja toimivat internetiühendust. Enda tuvastamiseks palub rakendus sisestada PIN1 koodi.</translation>
-    </message>
-    <message>
         <location filename="../poc/MainWindow.ui" line="1257"/>
         <source>Ready</source>
         <translation>Valmis</translation>
-    </message>
-    <message>
-        <location filename="../poc/MainWindow.ui" line="499"/>
-        <source>To protect you from possible future security issues your digitally signed DDOC files will be timestamped. Timestamped files will have a .asics extention and will be placed in the same folder with the original DDOC files.
-
-By default only files on local drives will be timestamped. If you wish to also timestamp files from network drives or change other settings please open the &quot;Settings&quot; menu.</source>
-        <translation>Teie digiallkirjastatud DDOC failidele lisatakse ajatempel, et kaitsta teid võimalike tulevaste turvanõrkuste eest. Ajatempliga failid on ASICS laiendiga ja asuvad samas kataloogis.
-
-Vaikimisi ajatembeldatakse ainult arvutis asuvaid DDOC faile. Kui soovite võrguketastel asuvaid faile tembeldada või muid seadeid muuta, avage &quot;Seaded&quot; menüü.</translation>
     </message>
     <message>
         <location filename="../poc/MainWindow.ui" line="304"/>
@@ -509,34 +501,14 @@ Please check if ID-card is still in the reader.</source>
         <translation>Viga:</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="569"/>
-        <source>Finished timestamping DDOC files</source>
-        <translation>DDOC failide tembeldamine on lõppenud</translation>
-    </message>
-    <message>
-        <location filename="../poc/main_window.cpp" line="573"/>
-        <source>DDOC files found: %1</source>
-        <translation>DDOC faile leitud: %1</translation>
-    </message>
-    <message>
         <location filename="../poc/main_window.cpp" line="575"/>
         <source>   of which %1 where chosen for timestamping</source>
         <translation>  milles %1 olid valitud tembeldamiseks</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="576"/>
-        <source>DDOC files timestamped: %1</source>
-        <translation>DDOC faile tembeldatud: %1</translation>
-    </message>
-    <message>
         <location filename="../poc/main_window.cpp" line="578"/>
         <source>Failed timestampings: %1</source>
         <translation>Ebaõnnestunud tembeldamisi: %1</translation>
-    </message>
-    <message>
-        <location filename="../poc/main_window.cpp" line="256"/>
-        <source>Test request to Time Server failed. </source>
-        <translation>Aja-serveri kontroll-päring ebaõnnestus. </translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="359"/>
@@ -590,7 +562,22 @@ Viga: %1</translation>
         <translation>Tembeldamine pole lõppenud. Katkestada protsess?</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="581"/>
+        <location filename="../poc/main_window.cpp" line="657"/>
+        <source>Finished timestamping files</source>
+        <translation>Failide tembeldamine on lõppenud</translation>
+    </message>
+    <message>
+        <location filename="../poc/main_window.cpp" line="661"/>
+        <source>Files found: %1</source>
+        <translation>Faile leitud: %1</translation>
+    </message>
+    <message>
+        <location filename="../poc/main_window.cpp" line="664"/>
+        <source>Files timestamped: %1</source>
+        <translation>Faile tembeldatud: %1</translation>
+    </message>
+    <message>
+        <location filename="../poc/main_window.cpp" line="669"/>
         <source>Files left unprocessed: %1</source>
         <translation>Töötlemata jäänud faile: %1</translation>
     </message>

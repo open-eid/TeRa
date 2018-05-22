@@ -654,14 +654,14 @@ void TeraMainWin::fillDoneLog() {
         logText->append("<font color='red'>" + prefix + " " + processor.result->error + "</font>");
         logText->append("");
     } else {
-        logText->append(tr("Finished timestamping DDOC files"));
+        logText->append(tr("Finished timestamping files"));
     }
 
     if (processor.result->cntFound >= 0) {
-        logText->append(tr("DDOC files found: %1").arg(QString::number(processor.result->cntFound)));
+        logText->append(tr("Files found: %1").arg(QString::number(processor.result->cntFound)));
         if (processor.result->cntFound != processor.result->cnt && processor.result->cnt >= 0)
             logText->append(tr("   of which %1 where chosen for timestamping").arg(QString::number(processor.result->cnt)));
-        logText->append(tr("DDOC files timestamped: %1").arg(QString::number(processor.result->progressSuccess)));
+        logText->append(tr("Files timestamped: %1").arg(QString::number(processor.result->progressSuccess)));
         if (processor.result->progressFailed > 0) {
             logText->append(tr("Failed timestampings: %1").arg(QString::number(processor.result->progressFailed)));
         }
