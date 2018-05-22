@@ -103,14 +103,23 @@ Additional licenses and components</source>
         <translation>Справка</translation>
     </message>
     <message>
-        <location filename="../poc/MainWindow.ui" line="1894"/>
+        <location filename="../poc/MainWindow.ui" line="485"/>
+        <source>To protect you from possible future security issues your digitally signed files will be timestamped. Timestamped files will have a .asics extention and will be placed in the same folder with the original DDOC and BDOC 1.0 files.
+
+By default only files on local drives will be timestamped. If you wish to also timestamp files from network drives or change other settings please open the &quot;Settings&quot; menu.</source>
+        <translation>Чтобы защитить вас от возможных будущих проблем безопасности, ваши цифровые файлы будут отмечены меткой времени. Временные файлы будут иметь расширение .asics и будут помещены в одну папку с исходными файлами DDOC и BDOC 1.0.
+
+По умолчанию только файлы на локальных дисках будут отмечены меткой времени. Если вы хотите также установить временные метки файлов с сетевых дисков или изменить другие настройки, откройте меню &quot;Настройки&quot;. </translation>
+    </message>
+    <message>
+        <location filename="../poc/MainWindow.ui" line="1880"/>
         <source>Downloading configuration updates...</source>
         <translation>Загрузка обновления конфигурации...</translation>
     </message>
     <message>
         <location filename="../poc/MainWindow.ui" line="1969"/>
         <source>TextLabel TeRa Intro</source>
-        <translation type="unfinished">Добро пожаловать в приложение &quot;Цифровой штамп&quot;.&lt;br&gt;
+        <translation>Добро пожаловать в приложение &quot;Цифровой штамп&quot;.&lt;br&gt;
 &lt;br&gt;
 Приложение &quot;Цифровой штамп&quot; создано по заказу Riigi Infosüsteemi Ameti tellimusel, для владельцев eID карт (ID-карта, Digi-ID, карта e-Residend и т.д.).&lt;br&gt;
 &lt;br&gt;
@@ -142,15 +151,6 @@ Additional licenses and components</source>
         <location filename="../poc/MainWindow.ui" line="1257"/>
         <source>Ready</source>
         <translation>Готово</translation>
-    </message>
-    <message>
-        <location filename="../poc/MainWindow.ui" line="499"/>
-        <source>To protect you from possible future security issues your digitally signed DDOC files will be timestamped. Timestamped files will have a .asics extention and will be placed in the same folder with the original DDOC files.
-
-By default only files on local drives will be timestamped. If you wish to also timestamp files from network drives or change other settings please open the &quot;Settings&quot; menu.</source>
-        <translation>Чтобы защитить вас от возможных будущих проблем безопасности, ваши цифровые файлы DDOC будут отмечены меткой времени. Временные файлы будут иметь расширение .asics и будут помещены в одну папку с исходными файлами DDOC.
-
-По умолчанию только файлы на локальных дисках будут отмечены меткой времени. Если вы хотите также установить временные метки файлов с сетевых дисков или изменить другие настройки, откройте меню &quot;Настройки&quot;. </translation>
     </message>
     <message>
         <source>TeRa client 0.4.0</source>
@@ -521,34 +521,14 @@ Please upgrade your software from https://installer.id.ee/</source>
         <translation>Ошибка: </translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="569"/>
-        <source>Finished timestamping DDOC files</source>
-        <translation>Завершенные временные метки файлов DDOC </translation>
-    </message>
-    <message>
-        <location filename="../poc/main_window.cpp" line="573"/>
-        <source>DDOC files found: %1</source>
-        <translation>DDOC файлов найдено: %1</translation>
-    </message>
-    <message>
         <location filename="../poc/main_window.cpp" line="575"/>
         <source>   of which %1 where chosen for timestamping</source>
         <translation>из которых %1 выбраны для временных меток </translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="576"/>
-        <source>DDOC files timestamped: %1</source>
-        <translation>DDOC файлов с временной меткой: %1</translation>
-    </message>
-    <message>
         <location filename="../poc/main_window.cpp" line="578"/>
         <source>Failed timestampings: %1</source>
         <translation>Ошибка выдачи временной метки: %1</translation>
-    </message>
-    <message>
-        <location filename="../poc/main_window.cpp" line="256"/>
-        <source>Test request to Time Server failed. </source>
-        <translation>Не удалось сделать тестовый запрос на сервера отметки времени. </translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="359"/>
@@ -568,7 +548,22 @@ Timestamped files might not fit on disk.</source>
         <translation>Выдача временных меток не закончена. Вы уверены?</translation>
     </message>
     <message>
-        <location filename="../poc/main_window.cpp" line="581"/>
+        <location filename="../poc/main_window.cpp" line="657"/>
+        <source>Finished timestamping files</source>
+        <translation>Завершенные временные метки файлов</translation>
+    </message>
+    <message>
+        <location filename="../poc/main_window.cpp" line="661"/>
+        <source>Files found: %1</source>
+        <translation>Файлов найдено: %1</translation>
+    </message>
+    <message>
+        <location filename="../poc/main_window.cpp" line="664"/>
+        <source>Files timestamped: %1</source>
+        <translation>Файлов с временной меткой: %1</translation>
+    </message>
+    <message>
+        <location filename="../poc/main_window.cpp" line="669"/>
         <source>Files left unprocessed: %1</source>
         <translation>Файлы, оставшиеся необработанными:%1</translation>
     </message>

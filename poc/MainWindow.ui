@@ -482,7 +482,7 @@ padding: 5px;
                 <item row="2" column="0">
                  <widget class="QLabel" name="label_2">
                   <property name="text">
-                   <string>To protect you from possible future security issues your digitally signed DDOC files will be timestamped. Timestamped files will have a .asics extention and will be placed in the same folder with the original DDOC files.
+                   <string>To protect you from possible future security issues your digitally signed files will be timestamped. Timestamped files will have a .asics extention and will be placed in the same folder with the original DDOC and BDOC 1.0 files.
 
 By default only files on local drives will be timestamped. If you wish to also timestamp files from network drives or change other settings please open the &quot;Settings&quot; menu.</string>
                   </property>
