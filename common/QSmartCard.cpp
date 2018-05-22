@@ -194,6 +194,7 @@ void WinCard::selectCard(const QString &card)
         if(i->card() == card)
         {
             TokenData token;
+            token.setCards({i->card()});
             token.setCard(i->card());
             token.setCert(i->cert());
             d->selected = token;
