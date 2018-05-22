@@ -56,11 +56,6 @@ public:
 	static bool lessThanVersion( const QString &current, const QString &available );
 	void setData(const QByteArray &_data)
 	{
-QFile tf(cache + "config.test.json");
-if (tf.exists() && tf.open(QIODevice::ReadOnly)) {
-    data = tf.readAll();
-    TERA_LOG(debug) << "Using config.test.json instead of downloaded config file. Data len = " << data.length() << " " << _data.length();
-} else
 		data = _data;
 		dataobject = QJsonDocument::fromJson(data).object();
 		Settings s2(QSettings::SystemScope);
@@ -91,7 +86,6 @@ if (tf.exists() && tf.open(QIODevice::ReadOnly)) {
 #endif
 	QByteArray data, signature, tmpsignature;
 	QJsonObject dataobject;
-QString CONFIG_URL = "https://id.eesti.ee/config.json"; // TODO
 	QUrl rsaurl, url = QUrl(CONFIG_URL);
 	RSA *rsa = nullptr;
 	QNetworkRequest req;

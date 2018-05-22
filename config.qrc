@@ -1,0 +1,7 @@
+<RCC>
+  <qresource prefix="/" >
+    <file >config.json</file>
+    <file >config.rsa</file>
+    <file >config.pub</file>
+  </qresource>
+</RCC>
