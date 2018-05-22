@@ -472,10 +472,6 @@ Please check if ID-card is still in the reader.</source>
         <translation>Kõigi DDOC failide ajatembeldamiseks vajalik kettaruum on suurem kui saadaolev vaba ruum:</translation>
     </message>
     <message>
-        <source>Timestamped files might not fit on disk.</source>
-        <translation type="vanished">Ajatembeldatud failid ei pruugi kettale mahtuda.</translation>
-    </message>
-    <message>
         <location filename="../poc/main_window.cpp" line="370"/>
         <source>Abort timestamping?</source>
         <translation>Katkesta tembeldamine?</translation>
@@ -514,13 +510,6 @@ Please check if ID-card is still in the reader.</source>
         <location filename="../poc/main_window.cpp" line="359"/>
         <source>* %1: free space %2, space needed %3 (approximately)</source>
         <translation> * &apos;%1&apos;: vaba ruumi %2, vajalik ruum (ligikaudu) %3</translation>
-    </message>
-    <message>
-        <location filename="../poc/main_window.cpp" line="369"/>
-        <source>
-Timestamped files might not fit on disk.</source>
-        <translation>
-Ajatembeldatud failid ei pruugi kettale mahtuda.</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="456"/>

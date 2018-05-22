@@ -109,7 +109,7 @@ Additional licenses and components</source>
 By default only files on local drives will be timestamped. If you wish to also timestamp files from network drives or change other settings please open the &quot;Settings&quot; menu.</source>
         <translation>Чтобы защитить вас от возможных будущих проблем безопасности, ваши цифровые файлы будут отмечены меткой времени. Временные файлы будут иметь расширение .asics и будут помещены в одну папку с исходными файлами DDOC и BDOC 1.0.
 
-По умолчанию только файлы на локальных дисках будут отмечены меткой времени. Если вы хотите также установить временные метки файлов с сетевых дисков или изменить другие настройки, откройте меню &quot;Настройки&quot;. </translation>
+По умолчанию только файлы на локальных дисках будут отмечены меткой времени. Если вы хотите также установить временные метки файлов с сетевых дисков или изменить другие настройки, откройте меню &quot;Настройки&quot;.</translation>
     </message>
     <message>
         <location filename="../poc/MainWindow.ui" line="1880"/>
@@ -300,7 +300,7 @@ By default only files on local drives will be timestamped. If you wish to also t
     </message>
     <message>
         <source>Stamp .DDOC files</source>
-        <translation>Oтметить .DDOC 1.0 файлы</translation>
+        <translation>Oтметить .DDOC файлы</translation>
     </message>
     <message>
         <source>Stamp .BDOC 1.0 files</source>
@@ -534,12 +534,6 @@ Please upgrade your software from https://installer.id.ee/</source>
         <location filename="../poc/main_window.cpp" line="359"/>
         <source>* %1: free space %2, space needed %3 (approximately)</source>
         <translation>* %1: свободное пространство %2, пространства необходимо %3 (приблизительно)</translation>
-    </message>
-    <message>
-        <location filename="../poc/main_window.cpp" line="369"/>
-        <source>
-Timestamped files might not fit on disk.</source>
-        <translation>Файлы с отметкой времени не помещаются на диске</translation>
     </message>
     <message>
         <location filename="../poc/main_window.cpp" line="516"/>

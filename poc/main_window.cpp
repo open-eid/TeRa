@@ -450,10 +450,9 @@ void TeraMainWin::startStampingFiles() {
 #endif
 
         if (spaceIssue) {
-            QString errorMsg = QString() +
+            QString errorMsg =
                 tr("The space needed to timestamp all the DDOC files found exceeds the amount of free space found:\n\n") +
-                sizeInfo +
-                tr("\nTimestamped files might not fit on disk.");
+                sizeInfo;
             QString message = errorMsg + "\n\n" + tr("Abort timestamping?");
 
             QMessageBox::StandardButtons button = QMessageBox::warning(this, this->windowTitle(), message, QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
