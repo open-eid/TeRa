@@ -486,10 +486,6 @@ Please check if ID-card is still in the reader.</source>
         <translation>The space needed to timestamp all the DDOC files found exceeds the amount of free space found:</translation>
     </message>
     <message>
-        <source>Timestamped files might not fit on disk.</source>
-        <translation type="vanished">Timestamped files might not fit on disk.</translation>
-    </message>
-    <message>
         <location filename="../poc/main_window.cpp" line="370"/>
         <source>Abort timestamping?</source>
         <translation>Abort timestamping?</translation>
@@ -527,12 +523,6 @@ Please check if ID-card is still in the reader.</source>
     <message>
         <location filename="../poc/main_window.cpp" line="446"/>
         <source>* %1: free space %2, space needed %3 (approximately)</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../poc/main_window.cpp" line="369"/>
-        <source>
-Timestamped files might not fit on disk.</source>
         <translation></translation>
     </message>
     <message>
