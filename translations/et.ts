@@ -176,6 +176,59 @@ Vaikimisi ajatembeldatakse ainult arvutis asuvaid DDOC faile. Kui soovite võrgu
     </message>
 </context>
 <context>
+    <name>PinDialog</name>
+    <message>
+        <location filename="../common/PinDialog.cpp" line="101"/>
+        <source>Selected action requires sign certificate.</source>
+        <translation>Valitud tegevuse jaoks on vaja kasutada allkirjastamise sertifikaati.</translation>
+    </message>
+    <message>
+        <location filename="../common/PinDialog.cpp" line="100"/>
+        <source>For using sign certificate enter PIN2</source>
+        <translation>Sertifikaadi kasutamiseks sisesta PIN2</translation>
+    </message>
+    <message>
+        <location filename="../common/PinDialog.cpp" line="90"/>
+        <source>PIN will be locked next failed attempt</source>
+        <translation>Järgmise vale sisestusega lukustub PIN</translation>
+    </message>
+    <message>
+        <location filename="../common/PinDialog.cpp" line="92"/>
+        <source>PIN has been entered incorrectly one time</source>
+        <translation>PIN-i on sisestatud vigaselt üks kord</translation>
+    </message>
+    <message>
+        <location filename="../common/PinDialog.cpp" line="97"/>
+        <source>Signing</source>
+        <translation>Allkirjastamine</translation>
+    </message>
+    <message>
+        <location filename="../common/PinDialog.cpp" line="99"/>
+        <source>For using sign certificate enter PIN2 at the reader</source>
+        <translation>Sertifikaadi kasutamiseks sisesta PIN2 kaardilugeja sõrmistikult</translation>
+    </message>
+    <message>
+        <location filename="../common/PinDialog.cpp" line="106"/>
+        <source>Authentication</source>
+        <translation>Isikutuvastus</translation>
+    </message>
+    <message>
+        <location filename="../common/PinDialog.cpp" line="108"/>
+        <source>For using authentication certificate enter PIN1 at the reader</source>
+        <translation>Sertifikaadi kasutamiseks sisesta PIN1 kaardilugeja sõrmistikult</translation>
+    </message>
+    <message>
+        <location filename="../common/PinDialog.cpp" line="109"/>
+        <source>For using authentication certificate enter PIN1</source>
+        <translation>Sertifikaadi kasutamiseks sisesta PIN1</translation>
+    </message>
+    <message>
+        <location filename="../common/PinDialog.cpp" line="110"/>
+        <source>Selected action requires authentication certificate.</source>
+        <translation>Valitud tegevuse jaoks on vaja kasutada isikutuvastuse sertifikaati.</translation>
+    </message>
+</context>
+<context>
     <name>QObject</name>
     <message>
         <location filename="../poc/main_window.cpp" line="289"/>
@@ -259,11 +312,6 @@ Vaikimisi ajatembeldatakse ainult arvutis asuvaid DDOC faile. Kui soovite võrgu
 </context>
 <context>
     <name>ria_tera::AboutDialog</name>
-    <message>
-        <location filename="../common/AboutDialog.cpp" line="31"/>
-        <source>Close</source>
-        <translation>Sulge</translation>
-    </message>
     <message>
         <location filename="../common/AboutDialog.cpp" line="34"/>
         <source>%1 version %2, released %3%4</source>
@@ -603,57 +651,19 @@ Viga: %1</translation>
 <context>
     <name>ria_tera::TimeStamper</name>
     <message>
-        <location filename="../poc/timestamper.cpp" line="283"/>
-        <source>Couldn&apos;t use ID-card for authentication. </source>
-        <translation>Turvaline ühendus katkes. Palun proovige uuesti.</translation>
-    </message>
-</context>
-<context>
-    <name>PinDialog</name>
-    <message>
-        <source>Selected action requires sign certificate.</source>
-        <translation>Valitud tegevuse jaoks on vaja kasutada allkirjastamise sertifikaati.</translation>
-    </message>
-    <message>
-        <source>For using sign certificate enter PIN2</source>
-        <translation>Sertifikaadi kasutamiseks sisesta PIN2</translation>
-    </message>
-    <message>
-        <source>PIN will be locked next failed attempt</source>
-        <translation>Järgmise vale sisestusega lukustub PIN</translation>
-    </message>
-    <message>
-        <source>PIN has been entered incorrectly one time</source>
-        <translation>PIN-i on sisestatud vigaselt üks kord</translation>
-    </message>
-    <message>
-        <source>Signing</source>
-        <translation>Allkirjastamine</translation>
-    </message>
-    <message>
-        <location filename="../poc/timestamper.cpp" line="276"/>
+        <location filename="../poc/timestamper.cpp" line="275"/>
         <source>The number of queries for time-stamps has been reached(5000 per day/25 000 per month).</source>
         <translation>Ajatemplite limiit on ületatud: kuni 5000 päringut päevas ning 25 000 päringut kuus.</translation>
     </message>
     <message>
-        <source>For using sign certificate enter PIN2 at the reader</source>
-        <translation>Sertifikaadi kasutamiseks sisesta PIN2 kaardilugeja sõrmistikult</translation>
+        <location filename="../poc/timestamper.cpp" line="277"/>
+        <source>Time-stamping request failed: %1</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Authentication</source>
-        <translation>Isikutuvastus</translation>
-    </message>
-    <message>
-        <source>For using authentication certificate enter PIN1 at the reader</source>
-        <translation>Sertifikaadi kasutamiseks sisesta PIN1 kaardilugeja sõrmistikult</translation>
-    </message>
-    <message>
-        <source>For using authentication certificate enter PIN1</source>
-        <translation>Sertifikaadi kasutamiseks sisesta PIN1</translation>
-    </message>
-    <message>
-        <source>Selected action requires authentication certificate.</source>
-        <translation>Valitud tegevuse jaoks on vaja kasutada isikutuvastuse sertifikaati.</translation>
+        <location filename="../poc/timestamper.cpp" line="288"/>
+        <source>Couldn&apos;t use ID-card for authentication. </source>
+        <translation>Turvaline ühendus katkes. Palun proovige uuesti.</translation>
     </message>
 </context>
 </TS>

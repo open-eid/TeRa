@@ -93,23 +93,17 @@ SET (TERA_COMMON_LIB_SRC
      common/IKValidator.h common/IKValidator.cpp
      common/TokenData.h common/TokenData.cpp
      common/PinDialogInterface.h
+     common/Configuration.h common/Configuration.cpp
+     common/Settings.h
+     src/version.h
+     src/common/Bdoc10Handler.h src/common/Bdoc10Handler.cpp
+     src/common/HttpsIDCardAuthentication.h src/common/HttpsIDCardAuthentication.cpp
      )
 IF (WIN32)
     list(APPEND TERA_COMMON_LIB_SRC common/QCNG.h common/QCNG.cpp common/QWin.h common/QWin.cpp)
 else ()
     list(APPEND TERA_COMMON_LIB_SRC common/QPKCS11.h common/QPKCS11.cpp common/QPKCS11_p.h)
 endif()
-
-SET (TERA_COMMON_LIB_GUI_SRC
-     common/PinDialog.h common/PinDialog.cpp
-    )
-
-SET (TERA_COMMON_SRC
-      src/version.h
-      src/common/Bdoc10Handler.h src/common/Bdoc10Handler.cpp
-      src/common/HttpsIDCardAuthentication.h src/common/HttpsIDCardAuthentication.cpp
-      common/Configuration.h common/Configuration.cpp
-      common/Settings.h)
 
 SET (TERA_GUI_UI
         poc/MainWindow.ui
@@ -125,6 +119,7 @@ SET (TERA_GUI_SRC
         poc/files_window.h poc/files_window.cpp
         poc/id_card_select_dialog.h poc/id_card_select_dialog.cpp
         common/AboutDialog.h common/AboutDialog.cpp
+        common/PinDialog.h common/PinDialog.cpp
 
         poc/utils.h poc/utils.cpp
         poc/openssl_utils.h poc/openssl_utils.cpp
@@ -155,7 +150,6 @@ qt5_wrap_ui( UI_HEADERS ${TERA_GUI_UI} )
 # TeRaTool
 if(NOT APPLE)
     add_executable(${TERA_CMD_NAME}
-        ${TERA_COMMON_SRC}
         poc/teracmdtool.rc
         poc/terapoc.cpp
         poc/utils.h poc/utils.cpp
@@ -175,7 +169,6 @@ endif()
 
 # TeRa GUI
 add_executable(${TERA_GUI_NAME} WIN32 MACOSX_BUNDLE
-        ${TERA_COMMON_SRC}
         poc/teragui.rc
         ${UI_HEADERS}
         ${TERA_GUI_UI}
@@ -186,7 +179,6 @@ add_executable(${TERA_GUI_NAME} WIN32 MACOSX_BUNDLE
         ${QM}
         ${TRANS_QT}
         ${TERA_COMMON_LIB_SRC}
-        ${TERA_COMMON_LIB_GUI_SRC}
         ${RESOURCE_FILES}
         )
 target_link_libraries(${TERA_GUI_NAME}

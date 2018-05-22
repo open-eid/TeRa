@@ -185,6 +185,59 @@ By default only files on local drives will be timestamped. If you wish to also t
     </message>
 </context>
 <context>
+    <name>PinDialog</name>
+    <message>
+        <location filename="../common/PinDialog.cpp" line="101"/>
+        <source>Selected action requires sign certificate.</source>
+        <translation>Selected action requires signing certificate.</translation>
+    </message>
+    <message>
+        <location filename="../common/PinDialog.cpp" line="100"/>
+        <source>For using sign certificate enter PIN2</source>
+        <translation>For using signing certificate enter PIN2</translation>
+    </message>
+    <message>
+        <location filename="../common/PinDialog.cpp" line="90"/>
+        <source>PIN will be locked next failed attempt</source>
+        <translation>PIN will be locked next failed attempt</translation>
+    </message>
+    <message>
+        <location filename="../common/PinDialog.cpp" line="92"/>
+        <source>PIN has been entered incorrectly one time</source>
+        <translation>PIN has been entered incorrectly one time</translation>
+    </message>
+    <message>
+        <location filename="../common/PinDialog.cpp" line="97"/>
+        <source>Signing</source>
+        <translation>Signing</translation>
+    </message>
+    <message>
+        <location filename="../common/PinDialog.cpp" line="99"/>
+        <source>For using sign certificate enter PIN2 at the reader</source>
+        <translation>For using signing certificate enter PIN2 at the reader</translation>
+    </message>
+    <message>
+        <location filename="../common/PinDialog.cpp" line="106"/>
+        <source>Authentication</source>
+        <translation>Authentication</translation>
+    </message>
+    <message>
+        <location filename="../common/PinDialog.cpp" line="108"/>
+        <source>For using authentication certificate enter PIN1 at the reader</source>
+        <translation>For using authentication certificate enter PIN1 at the reader</translation>
+    </message>
+    <message>
+        <location filename="../common/PinDialog.cpp" line="109"/>
+        <source>For using authentication certificate enter PIN1</source>
+        <translation>For using authentication certificate enter PIN1</translation>
+    </message>
+    <message>
+        <location filename="../common/PinDialog.cpp" line="110"/>
+        <source>Selected action requires authentication certificate.</source>
+        <translation>Selected action requires authentication certificate.</translation>
+    </message>
+</context>
+<context>
     <name>QObject</name>
     <message>
         <location filename="../poc/main_window.cpp" line="289"/>
@@ -268,11 +321,6 @@ By default only files on local drives will be timestamped. If you wish to also t
 </context>
 <context>
     <name>ria_tera::AboutDialog</name>
-    <message>
-        <location filename="../common/AboutDialog.cpp" line="31"/>
-        <source>Close</source>
-        <translation></translation>
-    </message>
     <message>
         <location filename="../common/AboutDialog.cpp" line="34"/>
         <source>%1 version %2, released %3%4</source>
@@ -603,57 +651,19 @@ Error: %1</translation>
 <context>
     <name>ria_tera::TimeStamper</name>
     <message>
-        <location filename="../poc/timestamper.cpp" line="283"/>
-        <source>Couldn&apos;t use ID-card for authentication. </source>
-        <translation>Secure channel disconnected. Please try again.</translation>
-    </message>
-</context>
-<context>
-    <name>PinDialog</name>
-    <message>
-        <source>Selected action requires sign certificate.</source>
-        <translation>Selected action requires signing certificate.</translation>
-    </message>
-    <message>
-        <source>For using sign certificate enter PIN2</source>
-        <translation>For using signing certificate enter PIN2</translation>
-    </message>
-    <message>
-        <source>PIN will be locked next failed attempt</source>
-        <translation>PIN will be locked next failed attempt</translation>
-    </message>
-    <message>
-        <location filename="../poc/timestamper.cpp" line="276"/>
+        <location filename="../poc/timestamper.cpp" line="275"/>
         <source>The number of queries for time-stamps has been reached(5000 per day/25 000 per month).</source>
         <translation>The number of queries for time-stamps has been reached(5000 per day/25 000 per month).</translation>
     </message>
     <message>
-        <source>PIN has been entered incorrectly one time</source>
-        <translation>PIN has been entered incorrectly one time</translation>
+        <location filename="../poc/timestamper.cpp" line="277"/>
+        <source>Time-stamping request failed: %1</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Signing</source>
-        <translation>Signing</translation>
-    </message>
-    <message>
-        <source>For using sign certificate enter PIN2 at the reader</source>
-        <translation>For using signing certificate enter PIN2 at the reader</translation>
-    </message>
-    <message>
-        <source>Authentication</source>
-        <translation>Authentication</translation>
-    </message>
-    <message>
-        <source>For using authentication certificate enter PIN1 at the reader</source>
-        <translation>For using authentication certificate enter PIN1 at the reader</translation>
-    </message>
-    <message>
-        <source>For using authentication certificate enter PIN1</source>
-        <translation>For using authentication certificate enter PIN1</translation>
-    </message>
-    <message>
-        <source>Selected action requires authentication certificate.</source>
-        <translation>Selected action requires authentication certificate.</translation>
+        <location filename="../poc/timestamper.cpp" line="288"/>
+        <source>Couldn&apos;t use ID-card for authentication. </source>
+        <translation>Secure channel disconnected. Please try again.</translation>
     </message>
 </context>
 </TS>
