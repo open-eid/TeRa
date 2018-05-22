@@ -173,6 +173,59 @@ By default only files on local drives will be timestamped. If you wish to also t
     </message>
 </context>
 <context>
+    <name>PinDialog</name>
+    <message>
+        <location filename="../common/PinDialog.cpp" line="101"/>
+        <source>Selected action requires sign certificate.</source>
+        <translation>Для данной операции необходим сертификат подписи.</translation>
+    </message>
+    <message>
+        <location filename="../common/PinDialog.cpp" line="100"/>
+        <source>For using sign certificate enter PIN2</source>
+        <translation>Для использования сертификата подписи введите PIN2</translation>
+    </message>
+    <message>
+        <location filename="../common/PinDialog.cpp" line="90"/>
+        <source>PIN will be locked next failed attempt</source>
+        <translation>После следующего неудачного ввода PIN код будет заблокирован</translation>
+    </message>
+    <message>
+        <location filename="../common/PinDialog.cpp" line="92"/>
+        <source>PIN has been entered incorrectly one time</source>
+        <translation>Pin введён неправильно один раз</translation>
+    </message>
+    <message>
+        <location filename="../common/PinDialog.cpp" line="97"/>
+        <source>Signing</source>
+        <translation>Подписывание</translation>
+    </message>
+    <message>
+        <location filename="../common/PinDialog.cpp" line="99"/>
+        <source>For using sign certificate enter PIN2 at the reader</source>
+        <translation>Для использования сертификата подписи введите PIN2 с клавиатуры считывателя</translation>
+    </message>
+    <message>
+        <location filename="../common/PinDialog.cpp" line="106"/>
+        <source>Authentication</source>
+        <translation>Идентификация</translation>
+    </message>
+    <message>
+        <location filename="../common/PinDialog.cpp" line="108"/>
+        <source>For using authentication certificate enter PIN1 at the reader</source>
+        <translation>Для использования сертификата идентификации введите PIN1 с клавиатуры считывателя</translation>
+    </message>
+    <message>
+        <location filename="../common/PinDialog.cpp" line="109"/>
+        <source>For using authentication certificate enter PIN1</source>
+        <translation>Для использования сертификата идентификации введите PIN1</translation>
+    </message>
+    <message>
+        <location filename="../common/PinDialog.cpp" line="110"/>
+        <source>Selected action requires authentication certificate.</source>
+        <translation>Данная операция требует сертификат идентификации.</translation>
+    </message>
+</context>
+<context>
     <name>QObject</name>
     <message>
         <location filename="../poc/main_window.cpp" line="289"/>
@@ -256,11 +309,6 @@ By default only files on local drives will be timestamped. If you wish to also t
 </context>
 <context>
     <name>ria_tera::AboutDialog</name>
-    <message>
-        <location filename="../common/AboutDialog.cpp" line="31"/>
-        <source>Close</source>
-        <translation>Закрыть</translation>
-    </message>
     <message>
         <location filename="../common/AboutDialog.cpp" line="34"/>
         <source>%1 version %2, released %3%4</source>
@@ -581,57 +629,19 @@ Timestamped files might not fit on disk.</source>
 <context>
     <name>ria_tera::TimeStamper</name>
     <message>
-        <location filename="../poc/timestamper.cpp" line="283"/>
-        <source>Couldn&apos;t use ID-card for authentication. </source>
-        <translation>Ошибка Безопасное соединение. Пожалуйста, попробуйте еще раз.</translation>
-    </message>
-</context>
-<context>
-    <name>PinDialog</name>
-    <message>
-        <source>Selected action requires sign certificate.</source>
-        <translation>Для данной операции необходим сертификат подписи.</translation>
-    </message>
-    <message>
-        <source>For using sign certificate enter PIN2</source>
-        <translation>Для использования сертификата подписи введите PIN2</translation>
-    </message>
-    <message>
-        <source>PIN will be locked next failed attempt</source>
-        <translation>После следующего неудачного ввода PIN код будет заблокирован</translation>
-    </message>
-    <message>
-        <source>PIN has been entered incorrectly one time</source>
-        <translation>Pin введён неправильно один раз</translation>
-    </message>
-    <message>
-        <source>Signing</source>
-        <translation>Подписывание</translation>
-    </message>
-    <message>
-        <location filename="../poc/timestamper.cpp" line="276"/>
+        <location filename="../poc/timestamper.cpp" line="275"/>
         <source>The number of queries for time-stamps has been reached(5000 per day/25 000 per month).</source>
         <translation>предел запросов на метку времени превышен: до 5000 запросов в день и 25 000 запросов в месяц.</translation>
     </message>
     <message>
-        <source>For using sign certificate enter PIN2 at the reader</source>
-        <translation>Для использования сертификата подписи введите PIN2 с клавиатуры считывателя</translation>
+        <location filename="../poc/timestamper.cpp" line="277"/>
+        <source>Time-stamping request failed: %1</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Authentication</source>
-        <translation>Идентификация</translation>
-    </message>
-    <message>
-        <source>For using authentication certificate enter PIN1 at the reader</source>
-        <translation>Для использования сертификата идентификации введите PIN1 с клавиатуры считывателя</translation>
-    </message>
-    <message>
-        <source>For using authentication certificate enter PIN1</source>
-        <translation>Для использования сертификата идентификации введите PIN1</translation>
-    </message>
-    <message>
-        <source>Selected action requires authentication certificate.</source>
-        <translation>Данная операция требует сертификат идентификации.</translation>
+        <location filename="../poc/timestamper.cpp" line="288"/>
+        <source>Couldn&apos;t use ID-card for authentication. </source>
+        <translation>Ошибка Безопасное соединение. Пожалуйста, попробуйте еще раз.</translation>
     </message>
 </context>
 </TS>
