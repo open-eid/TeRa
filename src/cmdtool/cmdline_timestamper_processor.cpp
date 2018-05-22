@@ -173,7 +173,7 @@ void TeRaMonitor::stepStartProcess() {
 }
 
 void TeRaMonitor::cardDataChanged() {
-    smartCardData = smartCard->dataXXX();
+    smartCardData = smartCard->data();
     if (ID_AUTH_STATE::WAIT_CARD_LIST == idAuthState) {
         QString documentId = smartCardData.card();
         if (documentId.isNull()) {
@@ -233,7 +233,7 @@ void TeRaMonitor::stepAuthenticatePIN1() {
     if (smartCard.isNull()) return; // TODO error
     QSmartCard::ErrorType error = smartCard->login();
     if (QSmartCard::ErrorType::NoError != error) {
-        smartCardData = smartCard->dataXXX();
+        smartCardData = smartCard->data();
         QString message;
 
         if (QSmartCard::ErrorType::ValidateError == error) {
@@ -250,7 +250,7 @@ void TeRaMonitor::stepAuthenticatePIN1() {
         std::cout << "Error on authentication: " << message.toUtf8().constData() << std::endl;
         QCoreApplication::exit(4);
     } else {
-        smartCardData = smartCard->dataXXX();
+        smartCardData = smartCard->data();
         idCardAuth.setAuthCert(smartCardData.cert(), smartCard->key()); // TODO API
         emit signal_stepFindAndStamp();
     }

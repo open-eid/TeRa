@@ -40,8 +40,8 @@ public:
     };
 
     static QSmartCard *create(PinDialogFactory &pdf);
-    virtual ~QSmartCard();
-    TokenData dataXXX() const;
+    ~QSmartCard() override;
+    TokenData data() const;
     QSslKey key() const;
     virtual ErrorType login() = 0;
     virtual void logout() = 0;
@@ -54,7 +54,7 @@ signals:
     void dataChanged();
 
 protected:
-    QSmartCard(PinDialogFactory &pdf);
+    QSmartCard(PinDialogFactory &pdf, QObject *parent = nullptr);
     class Private;
     Private *d;
 };

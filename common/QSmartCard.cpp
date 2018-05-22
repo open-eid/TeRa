@@ -70,8 +70,9 @@ ECDSA_SIG* QSmartCard::Private::ecdsa_do_sign(const unsigned char *dgst, int dgs
 
 
 
-QSmartCard::QSmartCard(PinDialogFactory &pdf)
-    : d(new Private(pdf))
+QSmartCard::QSmartCard(PinDialogFactory &pdf, QObject *parent)
+    : QThread(parent)
+    , d(new Private(pdf))
 {
 #if OPENSSL_VERSION_NUMBER < 0x10010000L || defined(LIBRESSL_VERSION_NUMBER)
     d->rsamethod.name = "QSmartCard";
@@ -88,6 +89,8 @@ QSmartCard::QSmartCard(PinDialogFactory &pdf)
 
 QSmartCard::~QSmartCard()
 {
+    requestInterruption();
+    wait();
 #if OPENSSL_VERSION_NUMBER >= 0x10010000L
     RSA_meth_free(d->rsamethod);
     EC_KEY_METHOD_free(d->ecmethod);
@@ -136,7 +139,7 @@ QSslKey QSmartCard::key() const
     return key;
 }
 
-TokenData QSmartCard::dataXXX() const
+TokenData QSmartCard::data() const
 {
     return d->selected;
 }
@@ -146,12 +149,6 @@ TokenData QSmartCard::dataXXX() const
 WinCard::WinCard(PinDialogFactory &pdf)
     : QSmartCard(pdf)
 {
-}
-
-WinCard::~WinCard()
-{
-    isRunning = false;
-    wait();
 }
 
 WinCard::ErrorType WinCard::login()
@@ -165,8 +162,7 @@ void WinCard::logout()
 
 void WinCard::run()
 {
-    isRunning = true;
-    while (isRunning)
+    while (!isInterruptionRequested())
     {
         QList<TokenData> tmp = win.tokens();
         for(QList<TokenData>::iterator i = tmp.begin(); i != tmp.end();)
@@ -213,12 +209,6 @@ PKCS11Card::PKCS11Card(PinDialogFactory &pdf)
     : QSmartCard(pdf)
 {}
 
-PKCS11Card::~PKCS11Card()
-{
-    isRunning = false;
-    wait();
-}
-
 PKCS11Card::ErrorType PKCS11Card::login()
 {
     switch (stack.login(d->selected, d->pdf))
@@ -238,9 +228,8 @@ void PKCS11Card::logout()
 
 void PKCS11Card::run()
 {
-    isRunning = true;
-    stack.load();
-    while (isRunning)
+    stack.reload();
+    while (!isInterruptionRequested())
     {
         QList<TokenData> tmp = stack.tokens();
         if (tmp != cache)

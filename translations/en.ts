@@ -395,11 +395,6 @@ Please check if ID-card is still in the reader.</source>
         <translation>It is necessary to authenticate user to use timestamping service.&lt;br/&gt;Please make sure that ID card is in the reader and computer is connected to the Internet</translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="116"/>
-        <source>%1 cards in the reader(s)</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="121"/>
         <source>Card in reader</source>
         <translation></translation>

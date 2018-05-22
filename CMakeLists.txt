@@ -137,6 +137,7 @@ IF ( APPLE )
             poc/utils_mac.mm)
 ENDIF()
 
+add_definitions(-DNO_PKCS11_CRYPTO)
 set_source_files_properties( common/Configuration.cpp PROPERTIES COMPILE_DEFINITIONS "LAST_CHECK_DAYS=${LAST_CHECK_DAYS};CONFIG_URL=\"${CONFIG_URL}\"" )
 file( DOWNLOAD ${CONFIG_URL} ${CMAKE_CURRENT_BINARY_DIR}/config.json )
 string( REPLACE ".json" ".rsa" RSA_URL ${CONFIG_URL} )
