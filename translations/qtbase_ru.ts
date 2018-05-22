@@ -3278,7 +3278,7 @@ Do you want to delete it anyway?</source>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Отменить</translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <source>Discard</source>
