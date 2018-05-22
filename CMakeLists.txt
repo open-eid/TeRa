@@ -31,8 +31,10 @@ SET(CMAKE_AUTOUIC ON)
 SET(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 14)
 SET(CMAKE_OSX_DEPLOYMENT_TARGET "10.11.0")
-
 include(VersionInfo)
+set_env( CONFIG_URL "https://id.eesti.ee/config.json" CACHE STRING "Set Config URL" )
+set_env( LAST_CHECK_DAYS 7 CACHE STRING "How often check configuration changes" )
+
 if(WIN32)
     set_app_name(PROGNAME qdigidoc_tera)
     set(TERA_CMD_NAME qdigidoc_tera)
@@ -134,6 +136,15 @@ IF ( APPLE )
             poc/utils_mac.h
             poc/utils_mac.mm)
 ENDIF()
+
+set_source_files_properties( common/Configuration.cpp PROPERTIES COMPILE_DEFINITIONS "LAST_CHECK_DAYS=${LAST_CHECK_DAYS};CONFIG_URL=\"${CONFIG_URL}\"" )
+file( DOWNLOAD ${CONFIG_URL} ${CMAKE_CURRENT_BINARY_DIR}/config.json )
+string( REPLACE ".json" ".rsa" RSA_URL ${CONFIG_URL} )
+file( DOWNLOAD ${RSA_URL} ${CMAKE_CURRENT_BINARY_DIR}/config.rsa )
+string( REPLACE ".json" ".pub" PUB_URL ${CONFIG_URL} )
+file( DOWNLOAD ${PUB_URL} ${CMAKE_CURRENT_BINARY_DIR}/config.pub )
+configure_file( config.qrc config.qrc COPYONLY )
+qt5_add_resources( TERA_COMMON_LIB_SRC ${CMAKE_CURRENT_BINARY_DIR}/config.qrc )
 
 SET (TRANS translations/et.ts translations/en.ts translations/ru.ts)
 SET (TRANS_QT ${TRANS} translations/qtbase_et.ts translations/qtbase_ru.ts)
