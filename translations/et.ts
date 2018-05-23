@@ -348,10 +348,13 @@ Ajatempliteenuse osutamise tingimused on kättesaadavad lehel &lt;a href=&quot;h
         <source>PIN Verification</source>
         <translation>PIN1 kontroll</translation>
     </message>
-    <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="48"/>
-        <source>Wrong PIN1. %1 retries left</source>
-        <translation>Vale PIN1. %1 katset jäänud</translation>
+    <message numerus="yes">
+        <location filename="../poc/id_card_select_dialog.cpp" line="81"/>
+        <source>Wrong PIN1. %n retries left</source>
+        <translation>
+            <numerusform>Vale PIN1. %n katse jäänud</numerusform>
+            <numerusform>Vale PIN1. %n katset jäänud</numerusform>
+        </translation>
     </message>
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="50"/>

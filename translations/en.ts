@@ -367,10 +367,13 @@ p, li { white-space: pre-wrap; }
         <source>PIN Verification</source>
         <translation></translation>
     </message>
-    <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="48"/>
-        <source>Wrong PIN1. %1 retries left</source>
-        <translation></translation>
+    <message numerus="yes">
+        <location filename="../poc/id_card_select_dialog.cpp" line="81"/>
+        <source>Wrong PIN1. %n retries left</source>
+        <translation>
+            <numerusform>Wrong PIN1. %n retry left</numerusform>
+            <numerusform>Wrong PIN1. %n retries left</numerusform>
+        </translation>
     </message>
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="50"/>

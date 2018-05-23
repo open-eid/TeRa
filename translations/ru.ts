@@ -346,10 +346,14 @@ By default only files on local drives will be timestamped. If you wish to also t
         <source>PIN Verification</source>
         <translation>Проверка PIN-кода</translation>
     </message>
-    <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="48"/>
-        <source>Wrong PIN1. %1 retries left</source>
-        <translation>Неправильный PIN1. Осталось 1% попыток</translation>
+    <message numerus="yes">
+        <location filename="../poc/id_card_select_dialog.cpp" line="81"/>
+        <source>Wrong PIN1. %n retries left</source>
+        <translation>
+            <numerusform>Неправильный PIN1. Осталось %n попыток</numerusform>
+            <numerusform>Неправильный PIN1. Осталось %n попыток</numerusform>
+            <numerusform>Неправильный PIN1. Осталось %n попыток</numerusform>
+        </translation>
     </message>
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="50"/>
@@ -472,7 +476,7 @@ Please check if ID-card is still in the reader.</source>
 Minimum supported version is %2.
 
 Please upgrade your software from https://installer.id.ee/</source>
-        <translation>Ваша версия используемого программного обеспечения (1%), слишком старая.
+        <translation>Ваша версия используемого программного обеспечения (%1), слишком старая.
 
 Минимальная поддерживаемая версия %2.
 

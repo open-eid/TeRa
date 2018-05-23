@@ -66,16 +66,22 @@ void IDCardSelectDialog::startAuthentication() {
 	switch(error) {
 	case QSmartCard::ErrorType::CancelError: return;
 	case QSmartCard::ErrorType::ValidateError:
-        message = tr("Wrong PIN1. %1 retries left").arg([](TokenData::TokenFlags flags){
-                switch(flags)
-                {
-                case TokenData::PinCountLow: return 2;
-                case TokenData::PinFinalTry: return 1;
-                case TokenData::PinLocked: return 0;
-                default: return 3;
-                }
-            }(smartCard->data().flags()));
-		break;
+    {
+        int count = [](TokenData::TokenFlags flags){
+            switch(flags)
+            {
+            case TokenData::PinCountLow: return 2;
+            case TokenData::PinFinalTry: return 1;
+            case TokenData::PinLocked: return 0;
+            default: return 3;
+            }
+        }(smartCard->data().flags());
+        if(count > 0)
+        {
+            message = tr("Wrong PIN1. %n retries left", "", count);
+            break;
+        }
+    }
 	case QSmartCard::ErrorType::BlockedError:
 		message = tr("PIN1 is blocked.");
 		break;
