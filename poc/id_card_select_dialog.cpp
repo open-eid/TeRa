@@ -206,8 +206,8 @@ void IDCardSelectDialog::populateIDCardInfoText(TokenData const& t) {
             default: return 3;
             }
         }(smartCard->data().flags());
-        if (retryCount < 3) {
-            st << tr("%1 retries left for PIN1").arg(QString::number(retryCount));
+        if (retryCount > 0 && retryCount < 3) {
+            st << tr("%n retries left for PIN1", "", retryCount);
         }
 
         labelCardInfo->setAlignment(Qt::AlignLeft | Qt::AlignTop);
