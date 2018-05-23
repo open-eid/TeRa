@@ -434,10 +434,13 @@ Please check if ID-card is still in the reader.</source>
         <source>Authentication certificate is</source>
         <translation></translation>
     </message>
-    <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="156"/>
-        <source>%1 retries left for PIN1</source>
-        <translation></translation>
+    <message numerus="yes">
+        <location filename="../poc/id_card_select_dialog.cpp" line="210"/>
+        <source>%n retries left for PIN1</source>
+        <translation>
+            <numerusform>%n retry left for PIN1</numerusform>
+            <numerusform>%n retries left for PIN1</numerusform>
+        </translation>
     </message>
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="142"/>

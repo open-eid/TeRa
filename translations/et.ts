@@ -415,10 +415,13 @@ Please check if ID-card is still in the reader.</source>
         <source>Authentication certificate is</source>
         <translation>Isikutuvastuse sertifikaat on</translation>
     </message>
-    <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="156"/>
-        <source>%1 retries left for PIN1</source>
-        <translation>%1 katset jäänud PIN1 lukustumiseni</translation>
+    <message numerus="yes">
+        <location filename="../poc/id_card_select_dialog.cpp" line="210"/>
+        <source>%n retries left for PIN1</source>
+        <translation>
+            <numerusform>%n katse jäänud PIN1 lukustumiseni</numerusform>
+            <numerusform>%n katset jäänud PIN1 lukustumiseni</numerusform>
+        </translation>
     </message>
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="142"/>

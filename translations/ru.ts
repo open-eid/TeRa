@@ -413,10 +413,14 @@ Please check if ID-card is still in the reader.</source>
         <source>Authentication certificate is</source>
         <translation>Идентификационный сертификат</translation>
     </message>
-    <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="156"/>
-        <source>%1 retries left for PIN1</source>
-        <translation>Неправильный PIN1. Осталось %1 попыток</translation>
+    <message numerus="yes">
+        <location filename="../poc/id_card_select_dialog.cpp" line="210"/>
+        <source>%n retries left for PIN1</source>
+        <translation>
+            <numerusform>Неправильный PIN1. Осталось %n попыток</numerusform>
+            <numerusform>Неправильный PIN1. Осталось %n попыток</numerusform>
+            <numerusform>Неправильный PIN1. Осталось %n попыток</numerusform>
+        </translation>
     </message>
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="142"/>
