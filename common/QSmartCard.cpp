@@ -179,7 +179,7 @@ void WinCard::run()
                 selectCard(tmp.front().card());
             Q_EMIT dataChanged();
         }
-        sleep(5*1000);
+        sleep(5);
     }
 }
 
@@ -240,7 +240,7 @@ void PKCS11Card::run()
                 d->selected = tmp[0];
             Q_EMIT dataChanged();
         }
-        sleep(5*1000);
+        sleep(5);
     }
 }
 
