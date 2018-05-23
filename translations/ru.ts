@@ -374,11 +374,6 @@ Please check if ID-card is still in the reader.</source>
         <translation>Для использования сервиса Метки времени требуется идентификации пользователя. &lt;br/&gt; Пожалуйста, убедитесь, что ID-карта вставлена в считывающее устройство и компьютер подключен к Интернету</translation>
     </message>
     <message>
-        <location filename="../poc/id_card_select_dialog.cpp" line="116"/>
-        <source>%1 cards in the reader(s)</source>
-        <translation>%1 карт(а) в считывающем устройстве</translation>
-    </message>
-    <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="121"/>
         <source>Card in reader</source>
         <translation>Карта в считывателе</translation>

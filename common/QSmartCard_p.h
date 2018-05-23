@@ -26,8 +26,8 @@
 #include "QPKCS11.h"
 #endif
 
-#include <openssl/rsa.h>
 #include <openssl/ecdsa.h>
+#include <openssl/rsa.h>
 
 class QSmartCard::Private
 {
@@ -57,7 +57,6 @@ class WinCard: public QSmartCard
     Q_OBJECT
 public:
     WinCard(PinDialogFactory &pdf);
-    ~WinCard();
 
     ErrorType login() override;
     void logout() override;
@@ -70,7 +69,6 @@ public slots:
 private:
     QCNG win;
     QList<TokenData> cache;
-    mutable bool isRunning = false;
 };
 
 #else
@@ -80,7 +78,6 @@ class PKCS11Card: public QSmartCard
     Q_OBJECT
 public:
     PKCS11Card(PinDialogFactory &pdf);
-    ~PKCS11Card();
     ErrorType login() override;
     void logout() override;
     void run() override;
@@ -90,9 +87,8 @@ public slots:
     void selectCard(const QString &card) override;
 
 private:
-    QPKCS11Stack stack;
+    QPKCS11 stack;
     QList<TokenData> cache;
-    mutable bool isRunning = false;
 };
 
 #endif

@@ -66,7 +66,15 @@ void IDCardSelectDialog::startAuthentication() {
 	switch(error) {
 	case QSmartCard::ErrorType::CancelError: return;
 	case QSmartCard::ErrorType::ValidateError:
-		message = tr("Wrong PIN1.");
+        message = tr("Wrong PIN1. %1 retries left").arg([](TokenData::TokenFlags flags){
+                switch(flags)
+                {
+                case TokenData::PinCountLow: return 2;
+                case TokenData::PinFinalTry: return 1;
+                case TokenData::PinLocked: return 0;
+                default: return 3;
+                }
+            }(smartCard->data().flags()));
 		break;
 	case QSmartCard::ErrorType::BlockedError:
 		message = tr("PIN1 is blocked.");
@@ -189,13 +197,26 @@ void IDCardSelectDialog::populateIDCardInfoText(TokenData const& t) {
 
         st << "<br/><br/>";
 
+        int retryCount = [](TokenData::TokenFlags flags){
+            switch(flags)
+            {
+            case TokenData::PinCountLow: return 2;
+            case TokenData::PinFinalTry: return 1;
+            case TokenData::PinLocked: return 0;
+            default: return 3;
+            }
+        }(smartCard->data().flags());
+        if (retryCount < 3) {
+            st << tr("%1 retries left for PIN1").arg(QString::number(retryCount));
+        }
+
         labelCardInfo->setAlignment(Qt::AlignLeft | Qt::AlignTop);
         labelCardInfo->setText(text);
     }
 }
 
 void IDCardSelectDialog::bufferCardData() {
-    smartCardData = smartCard->dataXXX();
+    smartCardData = smartCard->data();
 }
 
 IDCardSelectDialog::CertValidity IDCardSelectDialog::validateAuthCert(TokenData const& t) {
