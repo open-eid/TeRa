@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>tera.ini</file>
+    </qresource>
+</RCC>
