@@ -226,10 +226,10 @@ void IDCardSelectDialog::bufferCardData() {
 }
 
 IDCardSelectDialog::CertValidity IDCardSelectDialog::validateAuthCert(TokenData const& t) {
-    CertValidity res = CertValidity::NullData;
-    if (!t.isNull()) {
-        res = (SslCertificate(t.cert()).isValid() ? CertValidity::Valid : CertValidity::Invalid);
-    }
-    return res;
+    if (t.isNull())
+        return CertValidity::NullData;
+    if(SslCertificate(t.cert()).isValid())
+        return t.flags() == TokenData::PinLocked ? CertValidity::ValidButBlocked : CertValidity::Valid;
+    return t.flags() == TokenData::PinLocked ? CertValidity::InvalidAndBlocked : CertValidity::Invalid;
 }
 }
