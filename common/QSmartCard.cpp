@@ -83,7 +83,13 @@ QSmartCard::QSmartCard(PinDialogFactory &pdf, QObject *parent)
 #else
     RSA_meth_set1_name(d->rsamethod, "QSmartCard");
     RSA_meth_set_sign(d->rsamethod, Private::rsa_sign);
-    EC_KEY_METHOD_set_sign(d->ecmethod, nullptr, nullptr, Private::ecdsa_do_sign);
+    typedef int (*EC_KEY_sign)(int type, const unsigned char *dgst, int dlen, unsigned char *sig,
+        unsigned int *siglen, const BIGNUM *kinv, const BIGNUM *r, EC_KEY *eckey);
+    typedef int (*EC_KEY_sign_setup)(EC_KEY *eckey, BN_CTX *ctx_in, BIGNUM **kinvp, BIGNUM **rp);
+    EC_KEY_sign sign = nullptr;
+    EC_KEY_sign_setup sign_setup = nullptr;
+    EC_KEY_METHOD_get_sign(d->ecmethod, &sign, &sign_setup, nullptr);
+    EC_KEY_METHOD_set_sign(d->ecmethod, sign, sign_setup, Private::ecdsa_do_sign);
 #endif
 }
 
