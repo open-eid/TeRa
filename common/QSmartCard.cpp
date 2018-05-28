@@ -243,7 +243,10 @@ void PKCS11Card::run()
         {
             cache = tmp;
             if(!tmp.isEmpty())
+            {
                 d->selected = tmp[0];
+                d->selected.setCards({d->selected.card()});
+            }
             Q_EMIT dataChanged();
         }
         sleep(5);
