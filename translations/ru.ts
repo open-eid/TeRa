@@ -12,10 +12,10 @@
     <message>
         <location filename="../common/AboutDialog.ui" line="62"/>
         <source>&lt;p&gt;Estonian ID-software is released by Information Systems&apos;s Auhtority&lt;br /&gt;
-In case of questions please conctact our support via &lt;a href=&quot;https://www.id.ee&quot;&gt;https://www.id.ee&lt;/a&gt; or by phone (+372) 666 8888.&lt;/p&gt;
+In case of questions please conctact our support via &lt;a href=&quot;https://www.id.ee&quot;&gt;https://www.id.ee&lt;/a&gt;.&lt;/p&gt;
 Additional licenses and components</source>
         <translation>&lt;p&gt;Разработчиком программного обеспечения ID-карты является Riigi Infosüsteemi Amet.&lt;br /&gt;
-Если у вас возникнут вопросы, пожалуйста, обратитесь на &lt;a href=&quot;https://www.id.ee&quot;&gt;https://www.id.ee&lt;/a&gt; или позвоните по телефону (+372) 666 8888.&lt;/p&gt;
+Если у вас возникнут вопросы, пожалуйста, обратитесь на &lt;a href=&quot;https://www.id.ee&quot;&gt;https://www.id.ee&lt;/a&gt;s.&lt;/p&gt;
 Дополнительные лицензии и компоненты</translation>
     </message>
     <message>
