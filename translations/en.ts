@@ -12,7 +12,7 @@
     <message>
         <location filename="../common/AboutDialog.ui" line="62"/>
         <source>&lt;p&gt;Estonian ID-software is released by Information Systems&apos;s Auhtority&lt;br /&gt;
-In case of questions please conctact our support via &lt;a href=&quot;https://www.id.ee&quot;&gt;https://www.id.ee&lt;/a&gt;.&lt;/p&gt;
+In case of questions please conctact our support via &lt;a href=&quot;https://id.ee&quot;&gt;https://id.ee&lt;/a&gt;.&lt;/p&gt;
 Additional licenses and components</source>
         <translation></translation>
     </message>
@@ -384,7 +384,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../poc/id_card_select_dialog.cpp" line="52"/>
         <source>Error occurred while verifying PIN.
 Please check if ID-card is still in the reader.</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../poc/id_card_select_dialog.cpp" line="55"/>
