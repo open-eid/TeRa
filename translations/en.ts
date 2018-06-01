@@ -331,7 +331,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../common/AboutDialog.cpp" line="36"/>
         <source>:/images/EL_Regionaalareng_horisontaal.png</source>
-        <translation>:/images/eu_regional_development_fund_horizontal.jpg</translation>
+        <translation>:/images/eu_regional_development_fund_horizontal.png</translation>
     </message>
 </context>
 <context>
