@@ -317,7 +317,7 @@ By default only files on local drives will be timestamped. If you wish to also t
     <message>
         <location filename="../common/AboutDialog.cpp" line="36"/>
         <source>:/images/EL_Regionaalareng_horisontaal.png</source>
-        <translation>:/images/eu_regional_development_fund_horizontal.jpg</translation>
+        <translation>:/images/eu_regional_development_fund_horizontal.png</translation>
     </message>
 </context>
 <context>
