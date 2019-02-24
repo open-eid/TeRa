@@ -62,6 +62,7 @@ private:
 
     QScopedPointer<QMovie> movie;
 
+    static QRegExp const ETSI_SEMANTICSID_NATURAL;
 public: // TODO
     PinDialogGUIFactory pdf;
     QSharedPointer<QSmartCard> smartCard;
