@@ -9,8 +9,6 @@ Build-Depends:
  libssl-dev,
  qttools5-dev,
  zlib1g-dev
-Recommends:
- awp
 Standards-Version: 3.9.8
 Homepage: https://github.com/open-eid/tera
 
@@ -22,6 +20,8 @@ Depends:
  pcscd (>=1.5),
  ${misc:Depends},
  ${shlibs:Depends}
+Recommends:
+ awp
 Description: Estonian DDOC re-timestamping utility
  TeRa is a part of Estonian national ID-card software developed by
  CGI on behalf of governmental institution - Estonian
