@@ -29,6 +29,8 @@
 
 namespace ria_tera {
 
+QRegExp const IDCardSelectDialog::ETSI_SEMANTICSID_NATURAL("\\w{2}[\\w:]\\w{2}-.*");
+
 IDCardSelectDialog::IDCardSelectDialog(QWidget *parent)
     : QDialog(parent)
 {
@@ -166,11 +168,16 @@ void IDCardSelectDialog::populateIDCardInfoText(TokenData const& t) {
 		QString fname = t.cert().subjectInfo("GN").join(" ");
         fname = fname.trimmed();
 		QString surname = t.cert().subjectInfo("SN").join(" ");
+		// See ETSI TS 119 412-1 V1.2.1: 5.1.3 Natural person semantics identifier
 		QString userid = t.cert().subjectInfo("serialNumber").join(" ");
+		if (ETSI_SEMANTICSID_NATURAL.exactMatch(userid)) {
+			userid = userid.remove(0, 6);
+		}
 
         st << formatLine(tr("Given Names:"), fname) << "<br/>";
         st << formatLine(tr("Surname:"), surname) << "<br/>";
         st << formatLine(tr("Personal Code:"), userid) << "<br/>";
+
 
         st << "<br/>";
 
