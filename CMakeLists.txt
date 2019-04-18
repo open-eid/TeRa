@@ -20,7 +20,7 @@ if(POLICY CMP0071)
     cmake_policy(SET CMP0071 NEW)
 endif()
 
-project(TeRa VERSION 1.1.0)
+project(TeRa VERSION 1.2.0)
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 # Find includes in corresponding build directories
