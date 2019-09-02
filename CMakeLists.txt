@@ -75,7 +75,6 @@ find_package(Qt5 COMPONENTS Core Widgets Network LinguistTools REQUIRED)
 find_package(PKCS11)
 find_package(OpenSSL REQUIRED)
 find_package(ZLIB REQUIRED)
-find_library( AWP_MODULE NAMES libOcsCryptoki.dylib PATHS /Library/AWP/lib /usr/local/AWP/lib )
 include_directories(${OPENSSL_INCLUDE_DIR} ${ZIP_INCLUDE_DIR})
 
 message(STATUS "Qt5Core version:     " ${Qt5Core_VERSION})
@@ -237,14 +236,6 @@ elseif( APPLE )
         COMMAND ${_qt5Core_install_prefix}/bin/macdeployqt ${CMAKE_CURRENT_BINARY_DIR}/${TERA_GUI_NAME}.app
             -executable=${CMAKE_CURRENT_BINARY_DIR}/${PROGNAME}.app/Contents/MacOS/${PKCS11_NAME}
     )
-    if(AWP_MODULE)
-        get_filename_component(AWP_PATH ${AWP_MODULE} PATH)
-        get_filename_component(AWP_PATH ${AWP_PATH} PATH)
-        add_custom_command(TARGET macdeployqt POST_BUILD
-            COMMAND cp -a ${AWP_PATH}/lib/* $<TARGET_FILE_DIR:${PROGNAME}>
-            COMMAND cp -a ${AWP_PATH}/*.xml $<TARGET_FILE_DIR:${PROGNAME}>/../Resources
-        )
-    endif()
     add_custom_target( codesign DEPENDS ${TERA_GUI_NAME}
         COMMAND codesign -f -s \"$$SIGNCERT\"
             $<TARGET_FILE_DIR:${PROGNAME}>/*.*
