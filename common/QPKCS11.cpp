@@ -347,7 +347,7 @@ bool QPKCS11::reload()
 {
 	static QMultiHash<QString,QByteArray> drivers {
 #ifdef Q_OS_MAC
-		{ "/Library/OpenSC/lib/opensc-pkcs11.so", QByteArray() },
+		{ qApp->applicationDirPath() + "/opensc-pkcs11.so", QByteArray() },
 		{ "/Library/latvia-eid/lib/otlv-pkcs11.so", "3BDD18008131FE45904C41545649412D65494490008C" },
 		{ "/Library/Security/tokend/CCSuite.tokend/Contents/Frameworks/libccpkip11.dylib", "3BF81300008131FE45536D617274417070F8" },
 		{ "/Library/Security/tokend/CCSuite.tokend/Contents/Frameworks/libccpkip11.dylib", "3B7D94000080318065B08311C0A983009000" },
