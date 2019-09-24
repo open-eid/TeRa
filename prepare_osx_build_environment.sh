@@ -4,7 +4,7 @@
 
 ######### Versions of libraries/frameworks to be compiled
 LIBZIP_VER="1.1.3"
-QT_VER="5.9.4"
+QT_VER="5.9.8"
 export MACOSX_DEPLOYMENT_TARGET="10.11"
 #########
 
@@ -116,7 +116,8 @@ if [[ $TARGETS == *"qt"* ]] && [[ "$REBUILD" = true || ! -d ${QT_PATH} ]] ; then
     curl -O -L http://download.qt.io/official_releases/qt/${QT_MINOR}/${QT_VER}/submodules/qtbase-opensource-src-${QT_VER}.tar.xz
     tar xf qtbase-opensource-src-${QT_VER}.tar.xz
     cd qtbase-opensource-src-${QT_VER}
-    ./configure -prefix ${QT_PATH} -opensource -nomake tests -nomake examples -no-securetransport -openssl-linked -confirm-license -I /usr/local/opt/openssl/include -L /usr/local/opt/openssl/lib
+    patch -Np1 -i $TERA_PATH/Qt-5.9.8-OpenSSL-1.1.patch
+    ./configure -prefix ${QT_PATH} -opensource -nomake tests -nomake examples -no-securetransport -openssl -confirm-license OPENSSL_PREFIX=${OPENSSL_PATH}
     make
     make install
     rm -rf ${BUILD_PATH}/qtbase-opensource-src-${QT_VER}
@@ -145,6 +146,6 @@ echo "# Load TERA build variables:
 export TERA_QT_DIR=${QT_PATH}
 export TERA_LIBZIP_DIR=${LIBZIP_PATH}
 export TERA_OPENSSL_DIR=${OPENSSL_PATH}
-export CMAKE_PREFIX_PATH=$QT_PATH/lib/cmake:$TERA_LIBZIP_DIR:$TERA_OPENSSL_DIR
+export CMAKE_PREFIX_PATH=$QT_PATH/lib/cmake:$LIBZIP_DIR:$OPENSSL_DIR
 " > $TERA_PATH/env.sh
 chmod u+x $TERA_PATH/env.sh
