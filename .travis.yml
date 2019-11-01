@@ -2,8 +2,8 @@
 ---
 language: c++
 sudo: false
-dist: trusty
-osx_image: xcode9.4
+dist: bionic
+osx_image: xcode11.1
 services:
 - docker
 matrix:
@@ -19,15 +19,13 @@ env:
   global:
   - BUILD_NUMBER=${TRAVIS_BUILD_NUMBER}
 before_install: git submodule update --init --recursive && if [ "${TARGET}" = "osx" ]; then
-    brew install --force openssl qt;
+    brew install --force openssl qt libzip;
     curl -s --location "https://github.com/open-eid/esteid-pkcs11/releases/download/v3.10.1/esteid-pkcs11_3.10.1.64.pkg" -o esteid-pkcs11.pkg;
     sudo installer -verboseR -pkg esteid-pkcs11.pkg -target /;
-    ./prepare_osx_build_environment.sh --no-qt;
   fi
 script: case ${TARGET} in
   *osx*)
-    source ./env.sh;
-    mkdir build && cd build && cmake -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl ..;
+    mkdir build && cd build && cmake -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl -DQt5_DIR=/usr/local/opt/qt/lib/cmake/Qt5 ..;
     make;
     make macdeployqt zip && cd ..;
     ;;
