@@ -7,7 +7,7 @@
 
 ## Building
 
-[![Build Status](https://travis-ci.org/open-eid/TeRa.svg?branch=master)](https://travis-ci.org/open-eid/TeRa)
+[![Build Status](https://travis-ci.com/open-eid/TeRa.svg?branch=master)](https://travis-ci.com/open-eid/TeRa)
 
 * [Ubuntu](#ubuntu)
 * [OS X](#osx)
