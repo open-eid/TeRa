@@ -1,4 +1,4 @@
-# TeRa command-line tool GUI
+# DEPRECATED TeRa command-line tool GUI
 
 ![European Regional Development Fund](/images/reg_logo.png "European Regional Development Fund")
 
