@@ -27,7 +27,7 @@ Description: Estonian DDOC re-timestamping utility
  .
  TeRa utility allows you to search local *.ddoc files and timestamp
  them into *.asics container.
- *.ddoc files used SHA-1 hash that might soon be attacable. TeRa
+ *.ddoc files used SHA-1 hash that might soon be attackable. TeRa
  timestamps found *.ddoc files using SHA-256 and encapsulates them 
  into *.asics container ensuring its validity. No signature is
  added to the container so signature information has to be
